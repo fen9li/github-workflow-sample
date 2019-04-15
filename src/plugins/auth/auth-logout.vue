@@ -5,9 +5,14 @@
 </template>
 
 <script>
+import BaseLoader from '../../components/base/loader'
+
 export default {
+  components: {
+    BaseLoader,
+  },
   created() {
-    this.$auth.logOut()
-  }
+    this.$auth.logout()
+  },
 }
 </script>

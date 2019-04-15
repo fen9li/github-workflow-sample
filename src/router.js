@@ -5,20 +5,20 @@ Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: process.env.BASE_URL || '/',
   routes: [
     {
       path: '/',
       redirect: {
-        name: 'applications'
-      }
+        name: 'applications',
+      },
     },
     {
       path: '/applications',
       name: 'applications',
-      component: () => import('./views/applications')
+      component: () => import('./views/applications'),
     },
-  ]
+  ],
 })
 
 export default router

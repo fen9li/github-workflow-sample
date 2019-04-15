@@ -1,10 +1,15 @@
 import auth0 from 'auth0-js'
 import { EventEmitter } from 'events'
 
+const DEFAULTS = {
+  domain: 'club.au.auth0.com',
+  clientID: 'tEPB55eg2HRofRrhjuCx9lf7tQu8cC8j',
+}
+
 const webAuth = new auth0.WebAuth({
-  domain: process.env.VUE_APP_AUTH0_DOMAIN,
+  domain: process.env.VUE_APP_AUTH0_DOMAIN || DEFAULTS.domain,
   redirectUri: `${window.location.origin}/callback`,
-  clientID: process.env.VUE_APP_AUTH0_CLIENT_ID,
+  clientID: process.env.VUE_APP_AUTH0_CLIENT_ID || DEFAULTS.clientID,
   responseType: 'id_token',
   scope: 'openid profile email',
 })
@@ -13,17 +18,19 @@ const localStorageKey = 'loggedIn'
 const loginEvent = 'loginEvent'
 
 class AuthService extends EventEmitter {
-  idToken = null;
-  profile = null;
-  tokenExpiry = null;
+  contructor() {
+    this.idToken = null
+    this.profile = null
+    this.tokenExpiry = null
+  }
 
   login(customState) {
     webAuth.authorize({
-      appState: customState
+      appState: customState,
     })
   }
 
-  logOut() {
+  logout() {
     localStorage.removeItem(localStorageKey)
 
     this.idToken = null
@@ -31,7 +38,7 @@ class AuthService extends EventEmitter {
     this.profile = null
 
     webAuth.logout({
-      returnTo: `${window.location.origin}`
+      returnTo: `${window.location.origin}`,
     })
 
     this.emit(loginEvent, { loggedIn: false })
@@ -80,6 +87,7 @@ class AuthService extends EventEmitter {
   }
 
   localLogin(authResult) {
+    console.log('local: ', authResult)
     this.idToken = authResult.idToken
     this.profile = authResult.idTokenPayload
 
@@ -92,20 +100,18 @@ class AuthService extends EventEmitter {
     this.emit(loginEvent, {
       loggedIn: true,
       profile: authResult.idTokenPayload,
-      state: authResult.appState || {}
+      state: authResult.appState || {},
     })
   }
 
   renewTokens() {
     return new Promise((resolve, reject) => {
       if (localStorage.getItem(localStorageKey) !== 'true') {
-        // eslint-disabled
-        const j = 3
-        return reject(j)
+        /* eslint-disable prefer-promise-reject-errors */
+        return reject()
       }
 
       webAuth.checkSession({}, (err, authResult) => {
-        console.log(authResult, err)
         if (err) {
           reject(err)
         } else {

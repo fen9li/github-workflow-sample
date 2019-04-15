@@ -1,7 +1,9 @@
 import authService from './auth.service'
+import authState from './auth.state'
 
 export default {
   install(Vue, options) {
+    const { router, store } = options
     /*
      * Register auth service in Vue instance
      * and add handling for login event
@@ -19,14 +21,26 @@ export default {
         if (this.handleLoginEvent) {
           authService.removeListener('loginEvent', this.handleLoginEvent)
         }
-      }
+      },
     })
+
+    /*
+     * Register auth state
+     */
+    if (store) {
+      store.registerModule('auth', authState)
+
+      authService.addListener('loginEvent', e => {
+        const profile = e.loggedIn ? e.profile : null
+        store.commit('auth/SET_PROFILE', profile)
+      })
+    }
 
     /*
      * Create auth routes
      */
-    if (options.router) {
-      options.router.addRoutes([
+    if (router) {
+      router.addRoutes([
         {
           path: '/login',
           name: 'login',
@@ -36,22 +50,35 @@ export default {
         {
           path: '/logout',
           name: 'logout',
-          component: () => import('./auth-logout')
+          component: () => import('./auth-logout'),
         },
         {
           path: '/callback',
           name: 'callback',
-          component: () => import('./auth-callback')
-        }
+          component: () => import('./auth-callback'),
+        },
       ])
 
-      options.router.beforeEach((to, from, next) => {
-        if (/callback|login|logout/.test(to.path) || authService.isAuthenticated()) {
+      router.beforeEach((to, from, next) => {
+        if (
+          /callback|login|logout/.test(to.path) ||
+          authService.isAuthenticated()
+        ) {
           return next()
         }
 
+        // if (process.env.VUE_APP_STANDALONE) {
         next({ name: 'login' })
+        // } else {
+        //   window.location.href = '/signin'
+        // }
       })
     }
-  }
+
+    // if (!process.env.VUE_APP_STANDALONE) {
+    //   authService.renewTokens().catch(() => {
+    //     window.location.href = '/signin'
+    //   })
+    // }
+  },
 }
