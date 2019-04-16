@@ -1,0 +1,47 @@
+module.exports = {
+  information: {
+    dateCreated: '2018-08-30T16:20:26.843Z',
+    customerId: '98379',
+    companyName: '-',
+    companyAbn: '-',
+    firstName: 'Mary',
+    lastName: 'Gregov',
+    email: 'mary@email.com.au',
+    telephone: '0477 777 777',
+    address: '11 Devine Drive, Camberwell VIC 3298',
+    total: 5430,
+    owing: 630,
+  },
+  methods: [
+    {
+      type: 'account',
+      firstName: 'John',
+      lastName: 'Smith',
+      bsb: '*** 126',
+      accountNumber: '*** *** 8233',
+    },
+    {
+      type: 'card',
+      firstName: 'John',
+      lastName: 'Smith',
+      cardNumber: '**** **** **** 8269',
+      expiry: '08/19',
+      provider: 'visa',
+    },
+    {
+      type: 'account',
+      firstName: 'John',
+      lastName: 'Smith',
+      bsb: '*** 126',
+      accountNumber: '*** *** 8233',
+    },
+    {
+      type: 'card',
+      firstName: 'John',
+      lastName: 'Smith',
+      cardNumber: '**** **** **** 8269',
+      expiry: '08/19',
+      provider: 'visa',
+    },
+  ],
+}

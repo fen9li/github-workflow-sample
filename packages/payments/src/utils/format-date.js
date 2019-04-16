@@ -1,0 +1,18 @@
+import dayjs from 'dayjs'
+
+export function formatDate(value, format) {
+  if (!format) {
+    throw Error('"date" formatter requires format argument')
+  }
+
+  if (!value) {
+    return '-'
+  }
+
+  const utcOffset = new Date().getTimezoneOffset()
+
+  return dayjs
+    .utc(value)
+    .add(utcOffset, 'minute')
+    .format(format)
+}

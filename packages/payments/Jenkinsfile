@@ -1,0 +1,66 @@
+@Library('ciinabox') _
+pipeline {
+  environment {
+    AWS_REGION = 'ap-southeast-2'
+    PROJECT_NAME = 'eonx-payments-ui'
+    SOURCE_BUCKET = 'source.tools.loyaltycorp.com.au'
+    DEV_ACCOUNT_ID = '517701979379'
+    PROD_ACCOUNT_ID = '398184425460'
+    OPS_ACCOUNT_ID = '599070804856'
+    CIINABOX_ROLE = 'ciinabox'
+    BUILD_VER = "${env.BRANCH_NAME}-${env.GIT_COMMIT.substring(0,7)}"
+  }
+  agent {
+    node {
+      label 'docker'
+    }
+  }
+  options {
+    disableConcurrentBuilds()
+  }
+  stages {
+    stage('Test Package') {
+        agent {
+            docker {
+                image 'node'
+                reuseNode true
+            }
+        }
+        steps {
+            sh "yarn"
+            sh "yarn lint"
+            sh "yarn test:unit"
+            sh "yarn build"
+        }
+    }
+    // stage('Package Test') {
+    //   when {
+    //     expression { env.BRANCH_NAME == 'development' || env.BRANCH_NAME == 'base2-development' }
+    //   }
+    //   steps {
+    //     sh """
+    //     tar -zcvf ${env.BUILD_VER}.tar.gz ./dist
+    //     aws s3 cp ${env.BUILD_VER}.tar.gz s3://${env.SOURCE_BUCKET}/apps/${env.PROJECT_NAME}/
+    //     """
+    //   }
+    // }
+    // stage('Deploy Test') {
+    //     when {
+    //       expression { env.BRANCH_NAME == 'development' || env.BRANCH_NAME =='base2-development' }
+    //     }
+    //     steps {
+    //       withAWS(roleAccount:env.DEV_ACCOUNT_ID, region: env.AWS_REGION, role: env.CIINABOX_ROLE) {
+    //         sh """
+    //           aws s3 sync ./dist s3://${env.BUCKET_PREFIX}.test.${env.DNS_DOMAIN}/ --delete
+    //           rm -rf ./dist
+    //           """
+    //       }
+    //     }
+    // }
+  }
+  post {
+    always {
+      deleteDir()
+    }
+  }
+}

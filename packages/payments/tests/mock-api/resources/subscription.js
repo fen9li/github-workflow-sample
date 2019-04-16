@@ -1,0 +1,21 @@
+module.exports = {
+  information: {
+    startDate: '2018-08-30T16:20:26.843Z',
+    endDate: '2018-08-30T16:20:26.843Z',
+    productName: 'Earning less than $35.000 p.a.',
+    productCode: 'HJ72362',
+    billingCycle: 'Pro-Rata',
+    billingInterval: 'Monthly',
+    pricingPlan: 30,
+    nextBillingDate: '2018-08-30T16:20:26.843Z',
+    customer: 'litzy_schumm@yahoo.com',
+    balance: 430,
+    coupon: '10% Off First Purchase',
+    companyName: '',
+    companyAbn: '',
+    firstName: 'Mary',
+    lastName: 'Gregov',
+    customerId: 'HJ9278',
+    customerEmail: 'john@email.com.au',
+  },
+}
