@@ -87,7 +87,6 @@ class AuthService extends EventEmitter {
   }
 
   localLogin(authResult) {
-    console.log('local: ', authResult)
     this.idToken = authResult.idToken
     this.profile = authResult.idTokenPayload
 

@@ -1,2 +1,4 @@
-/dist/
-/tests/unit/coverage/
+dist
+tests/unit/coverage
+cli.js
+node_modules

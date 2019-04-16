@@ -6,6 +6,7 @@ export const STATE = {
 
 export const GETTERS = {
   profile: s => s.profile,
+  loggedIn: s => s.profile,
 }
 
 export const MUTATIONS = {

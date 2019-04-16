@@ -44,8 +44,13 @@ export default {
         {
           path: '/login',
           name: 'login',
-          component: () => import('./auth-login'),
-          props: true,
+          beforeEnter(to, from, next) {
+            authService.renewTokens()
+              .then(() => next(from))
+              .catch(() => {
+                authService.login()
+              })
+          },
         },
         {
           path: '/logout',

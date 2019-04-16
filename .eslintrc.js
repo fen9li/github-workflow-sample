@@ -1,7 +1,7 @@
 module.exports = {
-  root: true,
   parserOptions: {
-    sourceType: 'script',
+    parser: 'babel-eslint',
+    sourceType: 'module',
   },
   env: {
     es6: true,
