@@ -27,7 +27,7 @@ export default {
     onRowClick(row) {
       this.$router.push({
         name: 'payment-settlement-details',
-        params: { id: row.orderId || 1 },
+        params: { id: row.externalId || 1 },
       })
     },
   },
@@ -37,6 +37,7 @@ export default {
 <template>
   <main-layout title="Settlements">
     <table-layout
+      table-name="settlements"
       :processor="processor"
       :filters="filters"
       :columns="columns"

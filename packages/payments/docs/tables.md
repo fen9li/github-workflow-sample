@@ -186,6 +186,9 @@ Describes each column in the table.
 | `icon` | `String` | icon class name from Element UI. Is used only in the **columns-hider** component | - |
 | `format` | `FormatDescriptor` | **(optional)** formatter that will be applied to each value in the current column | `{}` |
 | `component` | `CellComponent` | **(optional)** describe a component that will be used for cells rendering in the current column | `{}` |
+| sortable | `String` | **(optional)** use `Boolean` `false` to disable sorting for this column | `'custom'` |
+| overflowTooltip | `String` | **(optional)** determine whether to show a tooltip for values that doesn't fit in their cells | `true` |
+| width | `Number` | **(optional)** column width in pixels | `180` |
 
 #### Example
 
@@ -432,7 +435,7 @@ Due to a large amount of data to process, this component runs in a parallel thre
 
 #### Data Table Props
 
-| Prop      | Type                             | required |
+| Prop      | Type                             | Required |
 | --------- | -------------------------------- | -------- |
 | processor | `DataProcessorInstance`          | true     |
 | columns   | [ColumnsConfig](#columns-config) | true     |
@@ -441,26 +444,27 @@ Also supports `row-click` event listener.
 
 #### Data Filter Props
 
-| Prop      | Type                             | required |
+| Prop      | Type                             | Required |
 | --------- | -------------------------------- | -------- |
 | processor | `DataProcessorInstance`          | true     |
 | filters   | [FiltersConfig](#filters-config) | true     |
 
 #### Fragments Manager Props
 
-| Prop      | Type                    | required |
-| --------- | ----------------------- | -------- |
-| processor | `DataProcessorInstance` | true     |
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| processor | `DataProcessorInstance` | true |
+| tableName | `String` | true | is used to avoid collisions when saving displays for different tables |
 
 #### Columns Hider Props
 
-| Prop      | Type                             | required |
+| Prop      | Type                             | Required |
 | --------- | -------------------------------- | -------- |
 | processor | `DataProcessorInstance`          | true     |
 | columns   | [ColumnsConfig](#columns-config) | true     |
 
 #### Data Exporter Props
 
-| Prop      | Type                    | required |
+| Prop      | Type                    | Required |
 | --------- | ----------------------- | -------- |
 | processor | `DataProcessorInstance` | true     |

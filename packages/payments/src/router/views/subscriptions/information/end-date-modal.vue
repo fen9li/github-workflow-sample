@@ -31,8 +31,8 @@ export default {
 <template>
   <div :class="$style.root">
     <el-button
-      :class="$style.trigger"
       type="primary"
+      :class="$style.trigger"
       size="small"
       plain
       @click="dialogVisible = true"
@@ -41,8 +41,8 @@ export default {
     </el-button>
 
     <state-dialog
-      :visible.sync="dialogVisible"
       title="Edit Subscription"
+      :visible.sync="dialogVisible"
     >
       <el-icon
         slot="icon"
@@ -62,9 +62,9 @@ export default {
         value-format="dd/MM/yy"
       />
       <el-button
-        :disabled="!form.endDate"
         type="primary"
         class="wide-button"
+        :disabled="!form.endDate"
         @click="submit"
       >
         Set Date

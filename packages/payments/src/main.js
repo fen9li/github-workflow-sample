@@ -12,12 +12,6 @@ import '@loyalty-corp/superadmin/src/components/base'
 // Don't warn about using the dev version of Vue in development.
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
 
-// If running inside Cypress...
-if (window.Cypress) {
-  // Ensure tests fail when Vue emits an error.
-  Vue.config.errorHandler = window.Cypress.cy.onUncaughtException
-}
-
 Vue.use(AuthPlugin, {
   router,
   store,
@@ -35,4 +29,5 @@ if (window.Cypress) {
   // for manually setting state in Cypress commands
   // such as `cy.logIn()`.
   window.__app__ = app
+  Vue.config.errorHandler = window.Cypress.cy.onUncaughtException
 }

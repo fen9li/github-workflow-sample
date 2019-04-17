@@ -129,8 +129,8 @@ export default {
       </el-tab-pane>
     </el-tabs>
     <el-button
-      :class="$style.saveButton"
       type="primary"
+      :class="$style.saveButton"
       @click="$emit('save')"
     >
       Save

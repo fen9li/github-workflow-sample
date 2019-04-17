@@ -2,13 +2,13 @@
 <script>
 import MainLayout from '@layouts/main/main-layout'
 import TableLayout from '@layouts/table/table-layout'
-import StatisProcessor from '@core/static-processor'
+import StaticProcessor from '@core/static-processor'
 import CouponsCreateModal from './coupons-create'
 import CouponsEditModal from './coupons-edit'
 import CouponsDeleteModal from './coupons-delete'
 import tableConfig from './coupons-table'
 
-const coupons = require('@mock-api/resources/coupons')
+const couponsMock = require('@mock-api/resources/coupons')
 
 export default {
   name: 'Coupons',
@@ -29,9 +29,9 @@ export default {
         delete: false,
         create: false,
       },
-      processor: new StatisProcessor({
+      processor: new StaticProcessor({
         component: this,
-        data: coupons.data,
+        data: couponsMock.table,
       }),
       filters: tableConfig.filters,
       columns: tableConfig.columns,
@@ -43,12 +43,12 @@ export default {
 <template>
   <main-layout title="Coupons">
     <table-layout
+      table-name="coupons"
       :processor="processor"
       :filters="filters"
       :columns="columns"
     >
       <el-table-column
-        slot="column"
         class-name="fixed-column"
         fixed="right"
         width="90"

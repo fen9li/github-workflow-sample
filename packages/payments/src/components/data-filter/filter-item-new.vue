@@ -56,18 +56,18 @@ export default {
   />
   <el-popover
     v-else
-    :class="$style.popover"
-    :visible-arrow="false"
     trigger="click"
     position="bottom"
+    :class="$style.popover"
+    :visible-arrow="false"
   >
     <el-input
       ref="input"
       v-model="searchInput"
-      :class="$style.searchInput"
-      #header
       prefix-icon="el-icon-search"
       placeholder="Type to search..."
+      #header
+      :class="$style.searchInput"
     />
     <div
       v-for="filter in foundFilters"
@@ -86,8 +86,8 @@ export default {
     </div>
     <el-button
       slot="reference"
-      :class="$style.addFilter"
       type="text"
+      :class="$style.addFilter"
     >
       + Add Filter
     </el-button>

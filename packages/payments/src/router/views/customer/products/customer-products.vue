@@ -2,7 +2,7 @@
 import DataTable from '@components/data-table'
 import ElasticProcessor from '@core/elastic-processor'
 import tableConfig from './products-table'
-import addProduct from './add-product'
+import addProduct from './product-add'
 
 export default {
   name: 'CustomerProducts',
@@ -18,6 +18,9 @@ export default {
         disableQueryString: true,
       }),
       columns: tableConfig.columns,
+      modal: {
+        add: false,
+      },
     }
   },
   methods: {
@@ -40,16 +43,24 @@ export default {
       align="middle"
     >
       <span>Products</span>
-
-      <el-row type="flex">
-        <add-product />
-      </el-row>
+      <el-button
+        type="primary"
+        size="small"
+        class="wide-button"
+        @click="modal.add = true"
+      >
+        Add
+      </el-button>
+      <add-product
+        v-if="modal.add"
+        :visible.sync="modal.add"
+      />
     </el-row>
 
     <data-table
+      title="Subscriptions"
       :processor="processor"
       :columns="columns"
-      title="Subscriptions"
       @row-click="onRowClick"
     />
   </el-card>

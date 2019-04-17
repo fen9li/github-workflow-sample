@@ -72,10 +72,10 @@ export default {
 </script>
 
 <template>
-  <div class="columns-hider">
+  <div :class="$style.root">
     <el-dropdown trigger="click">
       <el-button
-        class="columns-hider-button"
+        :class="$style.button"
         size="small"
         type="primary"
         plain
@@ -84,11 +84,11 @@ export default {
         <i class="el-icon-caret-bottom el-icon--right" />
       </el-button>
       <el-dropdown-menu slot="dropdown">
-        <div class="columns-hider-wrapper">
+        <div :class="$style.wrapper">
           <el-checkbox-group
             v-if="columnNames.length"
             v-model="visibleList"
-            class="columns-hider__list"
+            :class="$style.list"
           >
             <el-checkbox
               v-for="column in realColumns"
@@ -100,7 +100,7 @@ export default {
               <i
                 :class="[
                   'el-icon-arrow-down',
-                  'columns-hider__list__item-icon',
+                  $style.itemIco,
                   column.icon,
                 ]"
               />
@@ -121,44 +121,46 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
-  .columns-hider {
-    margin-left: 15px;
+<style lang="scss" module>
+  @import '@design';
 
-    &-button {
-      height: 32px;
+  .root {
+    margin-left: rem(15px);
+  }
 
+  .button {
+    height: 2rem;
+
+    :global {
       .el-icon--right {
-        margin-left: 10px;
+        margin-left: rem(10px);
       }
     }
+  }
 
-    &-wrapper {
-      padding: 0 25px 0 15px;
-    }
+  .wrapper {
+    padding: 0 rem(25px) 0 rem(15px);
+  }
 
-    &__list {
-      display: flex !important;
-      flex-direction: column !important;
+  .list {
+    display: flex !important;
+    flex-direction: column !important;
 
+    :global {
       .el-checkbox {
         align-items: center;
         margin: 0 !important;
 
         &__label {
-          padding: 10px 0;
-          font-size: 16px;
-          line-height: 16px;
-        }
-      }
-
-      &__item {
-        &-icon {
-          margin: 0 10px 0 12px;
+          padding: rem(10px) 0;
+          font-size: 1rem;
+          line-height: 1rem;
         }
       }
     }
+  }
 
-
+  .itemIco {
+    margin: 0 rem(10px) 0 rem(12px);
   }
 </style>

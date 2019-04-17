@@ -1,6 +1,5 @@
-
 module.exports = {
-  data: [
+  table: [
     {
       dateCreated: '2018-10-15T12:40:31.965Z',
       couponName: '10% Off Monthly',

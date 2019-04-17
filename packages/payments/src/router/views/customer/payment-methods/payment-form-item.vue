@@ -58,15 +58,15 @@ export default {
 <template>
   <div>
     <el-form-item
-      :class="$style.methodsElem"
       label="Payment Method"
+      :class="$style.methodsElem"
       required
     >
       <div :class="$style.methods">
         <template v-if="!displayForm">
           <el-button
-            :class="$style.newMethod"
             type="text"
+            :class="$style.newMethod"
             @click="$emit('showForm', true)"
           >
             <i class="el-icon-plus" />
@@ -86,8 +86,8 @@ export default {
         </template>
         <el-button
           v-if="displayClose"
-          :class="$style.formClose"
           type="text"
+          :class="$style.formClose"
           @click="$emit('showForm', false)"
         >
           <i class="el-icon-plus" />

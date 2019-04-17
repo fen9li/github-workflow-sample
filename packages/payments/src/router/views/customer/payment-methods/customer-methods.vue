@@ -1,6 +1,6 @@
 <script>
-import AddModal from './add-modal'
-import DeleteModal from './delete-modal'
+import AddModal from './payment-method-add'
+import DeleteModal from './payment-method-delete'
 import MockData from '@mock-api/resources/customer'
 
 export default {
@@ -59,8 +59,8 @@ export default {
       <div
         v-for="(method, idx) in methods"
         :key="idx"
-        :class="$style.card"
         shadow="never"
+        :class="$style.card"
       >
         <div :class="$style.cardLogo">
           <img
@@ -90,8 +90,8 @@ export default {
           ACC {{ method.accountNumber }}
         </div>
         <el-button
-          :class="$style.cardDelete"
           type="danger"
+          :class="$style.cardDelete"
           icon="el-icon-delete"
           size="small"
           circle

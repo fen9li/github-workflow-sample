@@ -43,6 +43,12 @@
   box-shadow: none !important;
 }
 
+.el-table__footer-wrapper tbody td {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #2f3033 !important;
+}
+
 .el-dialog {
   max-width: 32rem !important;
   font-weight: initial;
@@ -183,37 +189,21 @@
   }
 }
 
-.el-message {
-  right: 2rem;
-  left: auto;
-  align-items: flex-start !important;
+.el-notification {
   padding: 1.2rem;
-  background-color: #fff;
-  border: none;
-  -webkit-box-shadow: 0 0 7px 1px rgba(218, 218, 218, 1);
-  -moz-box-shadow: 0 0 7px 1px rgba(218, 218, 218, 1);
-  box-shadow: 0 0 7px 1px rgba(218, 218, 218, 1);
-  transform: none !important;
 
-  .el-message__icon {
+  .el-notification__icon {
     margin-right: 1.5rem;
     font-size: 1.6rem;
   }
 
-  .el-message__closeBtn {
-    top: 1.5rem;
+  .el-notification__title {
+    font-size: 1.2rem;
+    line-height: 1.2rem;
   }
 
-  .el-message__content {
+  .el-notification__content {
+    font-size: 1rem;
     color: #000;
-
-    strong {
-      font-size: 1.2rem;
-    }
-
-    p {
-      margin-top: 0.8rem;
-      font-size: 1rem;
-    }
   }
 }

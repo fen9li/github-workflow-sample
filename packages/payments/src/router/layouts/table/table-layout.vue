@@ -76,11 +76,14 @@ export default {
         v-bind="$attrs"
         v-on="$listeners"
       >
-        <slot
-          slot="column"
-          name="column"
-        />
+        <slot slot="columns" />
       </data-table>
+    </div>
+    <div
+      v-if="$slots.note"
+      :class="$style.tableNote"
+    >
+      <slot name="note" />
     </div>
   </el-card>
 </template>
@@ -103,8 +106,15 @@ export default {
   }
 }
 
-.tableWrapper, .subheader {
+.tableWrapper, .tableNote, .subheader {
   padding: 1rem 3rem;
+}
+
+.tableNote {
+  padding-bottom: 2rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #909399;
 }
 
 .filter {

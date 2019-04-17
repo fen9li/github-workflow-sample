@@ -1,4 +1,4 @@
-import CustomerInformationCharge from './customer-information-charge.vue'
+import CustomerInformationCharge from './customer-charge.vue'
 
 const dateFormat = 'DD/MM/YYYY hh:mm A'
 

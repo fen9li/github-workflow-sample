@@ -52,13 +52,16 @@ export default {
   >
     <div
       slot="header"
-      :class="$style.balance"
+      :class="[
+        $style.balance,
+        subscription.balance < 0 && $style.balanceNegative
+      ]"
     >
       <big :class="$style.balanceCount">
         {{ subscription.balance | dollar }}
       </big>
       <small :class="$style.balanceLabel">
-        Subscription Balance
+        Amount Owing
       </small>
     </div>
     <el-tabs
@@ -86,6 +89,8 @@ export default {
 </template>
 
 <style lang="scss" module>
+@import '@design';
+
 .tabs {
   margin-bottom: 1.5rem;
 }
@@ -102,11 +107,17 @@ export default {
   flex-direction: column;
   justify-content: center;
   margin-top: 2rem;
+  font-size: 1.2rem;
   text-align: right;
 }
 
+.balanceNegative {
+  color: $color-error;
+}
+
 .balanceCount {
-  margin-bottom: .5rem;
-  font-size: 1.5rem;
+  margin-bottom: .7rem;
+  font-size: 1.7rem;
+  font-weight: bold;
 }
 </style>

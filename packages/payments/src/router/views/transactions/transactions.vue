@@ -3,7 +3,7 @@ import MainLayout from '@layouts/main/main-layout'
 import TableLayout from '@layouts/table/table-layout'
 import ElasticProcessor from '@core/elastic-processor'
 import tableConfig from './transactions-table'
-import VirtualPos from './pos-virtual-modal'
+import VirtualPos from './transactions-virtual-pos.vue'
 
 export default {
   name: 'PaymentTransactions',
@@ -23,6 +23,9 @@ export default {
       }),
       filters: tableConfig.filters,
       columns: tableConfig.columns,
+      modal: {
+        pos: false,
+      },
     }
   },
   methods: {
@@ -39,13 +42,22 @@ export default {
 <template>
   <main-layout title="Transactions">
     <table-layout
+      table-name="transactions"
       :processor="processor"
       :filters="filters"
       :columns="columns"
       @row-click="onRowClick"
     />
-    <virtual-pos
+    <el-button
       slot="header"
+      type="primary"
+      @click="modal.pos = true"
+    >
+      Virtual POS
+    </el-button>
+    <virtual-pos
+      v-if="modal.pos"
+      :visible.sync="modal.pos"
     />
   </main-layout>
 </template>

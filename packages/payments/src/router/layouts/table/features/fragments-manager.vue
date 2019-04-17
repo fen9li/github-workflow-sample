@@ -7,6 +7,12 @@ import isEqual from 'lodash/isEqual'
 export default {
   name: 'FragmentsManager',
   mixins: [FeaturesMixin],
+  props: {
+    tableName: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       storageApiSupported: 'localStorage' in window,
@@ -24,9 +30,10 @@ export default {
     saveButtonDisabled() {
       const { newDisplayName, savedDisplays } = this
 
-      if (!newDisplayName.length) {
-        return true
-      } else if (savedDisplays && newDisplayName in savedDisplays) {
+      if (
+        !newDisplayName.length ||
+        (savedDisplays && newDisplayName in savedDisplays)
+      ) {
         return true
       }
 
@@ -40,7 +47,13 @@ export default {
   watch: {
     'dataQuery': {
       handler(newVal) {
-        const currentDisplay = this.savedDisplays[this.activeDisplay]
+        const { savedDisplays } = this
+
+        if (!savedDisplays) {
+          return
+        }
+
+        const currentDisplay = savedDisplays[this.activeDisplay]
 
         if (
           !this.skipNextDataWatcher &&
@@ -72,13 +85,22 @@ export default {
       const savedDisplays = localStorage.getItem('savedDisplays')
 
       try {
-        return JSON.parse(savedDisplays)
+        const parsed = JSON.parse(savedDisplays)
+        let displays = null
+
+        if (parsed !== null) {
+          displays = parsed[this.tableName] || null
+        }
+
+        return displays
       } catch (e) {
+        console.error(e)
+
         return null
       }
     },
     saveDisplay() {
-      const { newDisplayName, dataQuery } = this
+      const { newDisplayName, dataQuery, tableName } = this
       const displays = this.getAllDisplays() || {}
 
       displays[newDisplayName] = cloneDeep(dataQuery)
@@ -87,10 +109,10 @@ export default {
       this.newDisplayName = ''
       this.savedDisplays = displays
 
-      localStorage.setItem('savedDisplays', JSON.stringify(displays))
+      localStorage.setItem('savedDisplays', JSON.stringify({ [tableName]: displays }))
     },
     removeDisplay(displayName) {
-      const { savedDisplays, activeDisplay } = this
+      const { savedDisplays, activeDisplay, tableName } = this
 
       this.$delete(savedDisplays, displayName)
 
@@ -98,54 +120,47 @@ export default {
         this.activeDisplay = ''
       }
 
-      localStorage.setItem('savedDisplays', JSON.stringify(savedDisplays))
+      localStorage.setItem('savedDisplays', JSON.stringify({ [tableName]: savedDisplays }))
     },
   },
 }
 </script>
 
 <template>
-  <div class="fragments">
+  <div :class="$style.wrap">
     <el-dialog
       ref="dialog"
-      :visible.sync="showAddModal"
       center
       title="Save new display"
+      :visible.sync="showAddModal"
       width="25%"
       top="30vh"
-      custom-class="fragments__dialog"
     >
       <el-input
         v-model="newDisplayName"
         placeholder="Display name"
       />
       <el-button
-        :disabled="saveButtonDisabled"
         type="primary"
-        class="fragments__dialog-save"
+        :class="$style.save"
+        :disabled="saveButtonDisabled"
         @click="saveDisplay"
       >
         Save
       </el-button>
     </el-dialog>
-    <div
-      v-if="showNoItems"
-      class="fragments__no-items"
-    >
+    <div v-if="showNoItems">
       <el-button
+        type="text"
         :disabled="!storageApiSupported || !dataQuery"
         :title="!storageApiSupported ? 'Not supported by your browser': ''"
-        type="text"
-        class="fragments__trigger"
+        :class="$style.trigger"
         @click="showAddModal = true"
       >
         Save this display
       </el-button>
     </div>
-    <div
-      v-else
-      class="fragments__saved"
-    >
+    <div v-else>
       <el-dropdown trigger="click">
         <el-button size="small">
           Displays saved
@@ -153,14 +168,14 @@ export default {
         </el-button>
         <el-dropdown-menu
           slot="dropdown"
-          class="fragments__saved-dropdown"
+          :class="$style.savedDrop"
         >
           <div
-            class="fragments__saved-create"
+            :class="$style.create"
             @click="showAddModal = true"
           >
             <i
-              class="el-icon-circle-plus-outline fragments__saved-create-icon"
+              :class="['el-icon-circle-plus-outline', $style.createIcon]"
             />
             Create new
           </div>
@@ -171,16 +186,16 @@ export default {
             <div
               v-for="(_, displayName) in savedDisplays"
               :key="displayName"
-              class="fragments__item"
+              :class="$style.item"
             >
               <el-radio
                 :label="displayName"
-                class="fragments__item-radio"
+                :class="$style.itemRadio"
               >
                 {{ displayName }}
               </el-radio>
               <i
-                class="el-icon-close fragments__item-delete"
+                :class="['el-icon-close', $style.delete]"
                 @click="removeDisplay(displayName)"
               />
             </div>
@@ -191,79 +206,79 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
-  .fragments {
-    margin-left: 15px;
+<style lang="scss" module>
+  @import '@design';
 
-    &__dialog {
-      padding: 25px;
+  .root {
+    margin-left: rem(15px);
+  }
 
-      &-save {
+  .save {
+    width: 100%;
+    margin-top: rem(20px) !important;
+  }
+
+  .trigger {
+    font-size: 1rem;
+  }
+
+  .savedDrop {
+    padding: rem(15px) rem(25px) !important;
+
+    :global {
+      .el-radio-group {
         width: 100%;
-        margin-top: 20px !important;
       }
     }
+  }
 
-    &__saved {
-      &-dropdown {
-        padding: 15px 25px !important;
+  .create {
+    padding-top: rem(10px);
+    padding-bottom: rem(10px);
+    color: $color-text-light;
+    cursor: pointer;
+    transition: color .15s ease-in-out;
 
-        .el-radio-group {
-          width: 100%;
-        }
+    &:hover {
+      color: $primary-lightest;
+    }
+  }
+
+  .createIcon {
+    margin-right: rem(8px);
+    margin-left: rem(-1px);
+  }
+
+  .item {
+    display: flex;
+    justify-content: space-between;
+    padding-top: rem(10px);
+    padding-bottom: rem(10px);
+  }
+
+  .itemRadio {
+    width: 100%;
+    margin-right: 0 !important;
+
+    :global {
+      .el-radio__label {
+        font-size: 1rem !important;
       }
 
-      &-create {
-        padding-top: 10px;
-        padding-bottom: 10px;
-        color: #606266;
-        cursor: pointer;
-        transition: color 0.15s ease-in-out;
-
-        &:hover {
-          color: #409eff;
-        }
-
-        &-icon {
-          margin-right: 8px;
-          margin-left: -1px;
-        }
+      .el-radio__inner {
+        width: 1rem;
+        height: 1rem;
       }
     }
+  }
 
-    &__item {
-      display: flex;
-      justify-content: space-between;
-      padding-top: 10px;
-      padding-bottom: 10px;
+  .delete {
+    font-size: rem(18px);
+    cursor: pointer;
+    transition: color .15s ease-in-out;
 
-      &-radio {
-        width: 100%;
-        margin-right: 0 !important;
-
-        .el-radio__label {
-          font-size: 16px !important;
-        }
-
-        .el-radio__inner {
-          width: 16px;
-          height: 16px;
-        }
-      }
-
-      &-delete {
-        font-size: 18px;
-        cursor: pointer;
-        transition: color 0.15s ease-in-out;
-
-        &:hover {
-          color: #409eff;
-        }
-      }
-    }
-
-    &__trigger {
-      font-size: 16px;
+    &:hover {
+      color: $primary-lightest;
     }
   }
 </style>

@@ -89,34 +89,42 @@ export default {
         {
           label: 'Visa',
           value: 'visa',
+          img: '/img/visa_logo.png',
         },
         {
           label: 'BPAY',
           value: 'bpay',
+          img: '/img/bank_icon.png',
         },
         {
           label: 'Mastercard',
           value: 'mastercard',
+          img: '/img/mastercard_logo.png',
         },
         {
           label: 'Direct Debit',
           value: 'direct-debit',
+          img: '/img/bank_icon.png',
         },
         {
           label: 'Amex',
           value: 'amex',
+          img: '/img/amex_logo.png',
         },
         {
           label: '3D Secure',
           value: '3d-secure',
+          img: '/img/bank_icon.png',
         },
         {
           label: 'Bank Accounts',
           value: 'bank-accounts',
+          img: '/img/bank_icon.png',
         },
         {
           label: 'Nominal Amount',
           value: 'nominal-amount',
+          img: '/img/bank_icon.png',
         },
       ]
     },
@@ -145,7 +153,7 @@ export default {
         justify="space-between"
         align="middle"
       >
-        <span>Details</span>
+        <span>Settlment Account Details</span>
 
         <el-row type="flex">
           <el-button
@@ -215,14 +223,28 @@ export default {
       </span>
 
       <div :class="$style.methods">
-        <el-switch
+        <div
           v-for="(method, idx) in paymentMethods"
           :key="idx"
           :class="$style.switch"
-          :value="form.paymentMethods.indexOf(method.value) >= 0"
-          :active-text="method.label"
-          @change="onMethodsChange(method.value)"
-        />
+          @click="onMethodsChange(method.value)"
+        >
+          <el-switch
+            :value="form.paymentMethods.indexOf(method.value) >= 0"
+          />
+          <div
+            :class="$style.switchImgWrapper"
+          >
+            <img
+              :src="method.img"
+              alt=""
+              :class="$style.switchImg"
+            >
+          </div>
+          <span :class="$style.switchLabel">
+            {{ method.label }}
+          </span>
+        </div>
       </div>
     </el-card>
 
@@ -355,9 +377,32 @@ export default {
   flex-wrap: wrap;
   max-width: 30rem;
 }
+
 .switch {
+  display: flex;
+  align-items: center;
   width: 50%;
   margin-bottom: 1.5rem;
+}
+
+.switchImgWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.4rem;
+  height: 1.4rem;
+  padding: 0 1.2rem;
+  cursor: pointer;
+}
+
+.switchImg{
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.switchLabel {
+  cursor: pointer;
 }
 
 .recurring {

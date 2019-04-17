@@ -7,26 +7,10 @@ const TABLE_FILTERS = [
     type: 'date',
   },
   {
-    attribute: 'amount',
-    type: 'numeric',
-    icon: 'el-icon-star-off',
-  },
-  {
-    attribute: 'fee',
-    type: 'numeric',
-    icon: 'el-icon-tickets',
-  },
-  {
     attribute: 'netAmount',
     label: 'NET',
     type: 'numeric',
     icon: 'el-icon-tickets',
-  },
-  {
-    attribute: 'statementDescriptor',
-    label: 'Statement Descriptor',
-    type: 'string',
-    icon: 'el-icon-document',
   },
   {
     attribute: 'accountTransferred',
@@ -69,32 +53,11 @@ const TABLE_COLUMNS = [
     name: 'created',
     label: 'Date created',
     icon: 'el-icon-document',
+    width: 100,
     format: {
       name: 'date',
-      params: [dateFormat],
+      params: ['DD/MM/YYYY'],
     },
-  },
-  {
-    name: 'amount',
-    label: 'Amount',
-    icon: 'el-icon-document',
-    format: 'dollar',
-    component: {
-      props: {
-        styleObj(val) {
-          if (val < 0) {
-            return { color: '#fc7168' }
-          }
-
-          return {}
-        },
-      },
-    },
-  },
-  {
-    name: 'fee',
-    label: 'Fee',
-    icon: 'el-icon-document',
   },
   {
     name: 'netAmount',
@@ -114,17 +77,16 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'statementDescriptor',
-    label: 'Statement Descriptor',
-  },
-  {
     name: 'accountTransferred',
     label: 'Settlment Account',
+    width: 100,
+    format: 'account',
   },
   {
     name: 'status',
     label: 'Status',
     icon: 'el-icon-document',
+    width: 100,
     component: {
       props: {
         styleObj(val) {
@@ -164,6 +126,7 @@ const TABLE_COLUMNS = [
     name: 'dateFinalised',
     label: 'Date Finalised',
     icon: 'el-icon-document',
+    width: 100,
     format: {
       name: 'date',
       params: [dateFormat],

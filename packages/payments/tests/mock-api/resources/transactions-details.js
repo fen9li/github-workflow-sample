@@ -1,6 +1,6 @@
 module.exports = {
   created: '2018-08-30T16:20:26.843Z',
-  status: 'Finalised',
+  status: 'Refund',
   customerIntegrationId: 'PA1729',
   customerName: 'Joaquin Phoenix',
   customerEmailAddress: 'mymail@email.com',

@@ -1,13 +1,13 @@
 module.exports = {
   details: {
-    name: 'PA Membership',
-    product_code: 'FG9288',
-    effective_start_date: '22/06/2019',
-    end_date: '18/05/2020',
-    billing_cycle: 'Pro-Rata',
-    anchor_date: '12/05/2020',
+    productName: 'PA Membership',
+    productCode: 'FG9288',
+    effectiveStartDate: '1/05/2020',
+    endDate: '2/05/2020',
+    billingCycle: 'pro-rata',
+    anchorDate: '12/05/2020',
   },
-  tableData: [
+  table: [
     {
       dateCreated: '2018-08-30T16:20:26.843Z',
       plan: 'Basic',

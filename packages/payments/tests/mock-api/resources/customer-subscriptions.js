@@ -1,5 +1,5 @@
 module.exports = {
-  data: [
+  table: [
     {
       startDate: '2018-10-15T12:40:31.965Z',
       endDate: '2019-04-15T12:40:31.965Z',
@@ -9,6 +9,8 @@ module.exports = {
       nextBillingDate: '2019-04-15T12:40:31.965Z',
       outstandingBalance: 430,
       status: 'Active',
+      paymentMethod: '1',
+      currency: 'usd',
     },
     {
       startDate: '2018-10-15T12:40:31.965Z',
@@ -19,6 +21,8 @@ module.exports = {
       nextBillingDate: '2019-04-15T12:40:31.965Z',
       outstandingBalance: 200,
       status: 'Inactive',
+      paymentMethod: '1',
+      currency: 'aud',
     },
   ],
 }

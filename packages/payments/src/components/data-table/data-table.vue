@@ -95,7 +95,7 @@ export default {
       })
     },
     onSortClick(e, column) {
-      if (!column.name) {
+      if (!column.columnKey) {
         return
       }
 
@@ -142,10 +142,11 @@ export default {
     <el-table
       ref="table"
       v-loading="processor.loading"
+      v-bind="$attrs"
       :data="processor.data"
+      header-cell-class-name="table-header-cell"
       :row-class-name="showRowLink ? 'clickable-row' : ''"
       :row-style="getRowColor"
-      header-cell-class-name="table-header-cell"
       @row-click="onRowClick"
     >
       <el-table-column
@@ -166,7 +167,7 @@ export default {
           />
         </template>
       </el-table-column>
-      <slot name="column" />
+      <slot name="columns" />
       <el-table-column
         v-if="showRowLink"
         fixed="right"
@@ -185,9 +186,9 @@ export default {
       :class="$style.tablePagination"
     >
       <el-pagination
+        layout="prev, pager, next"
         :page-count="processor.pageCount"
         :current-page="dataQuery.page"
-        layout="prev, pager, next"
         @current-change="updatePage"
       />
     </div>

@@ -13,9 +13,6 @@ export default {
     name() {
       return this.auth.profile
     },
-    initial() {
-      return 'NBdd'
-    },
   },
 }
 </script>
@@ -52,7 +49,6 @@ export default {
 
 <style lang="scss">
 @import '@design';
-
 .header-profile {
   &__trigger {
     display: flex;
@@ -61,13 +57,11 @@ export default {
     line-height: 36px;
     cursor: pointer;
   }
-
   &__item {
     + .header-profile__item {
       border-left: 1px solid $color-text;
     }
   }
-
   &__avatar {
     display: inline-block;
     width: 34px;
@@ -81,7 +75,6 @@ export default {
     text-align: center;
     background-image: linear-gradient(180deg, $primary-light 0%, #09bdfe 100%);
     border-radius: 50%;
-
     img {
       display: block;
       width: 100%;

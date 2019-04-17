@@ -1,6 +1,6 @@
 <script>
 import MainLayout from '@layouts/main/main-layout'
-import createProduct from './create/create-product'
+import ProductsCreate from './products-create.vue'
 
 export default {
   name: 'Products',
@@ -9,7 +9,14 @@ export default {
   },
   components: {
     MainLayout,
-    createProduct,
+    ProductsCreate,
+  },
+  data() {
+    return {
+      modal: {
+        create: false,
+      },
+    }
   },
   computed: {
     tabKey() {
@@ -58,7 +65,13 @@ export default {
     </el-tabs>
 
     <template slot="header">
-      <create-product />
+      <el-button
+        type="primary"
+        @click="modal.create = true"
+      >
+        Create Product
+      </el-button>
+      <products-create :visible.sync="modal.create" />
     </template>
     <router-view />
   </main-layout>

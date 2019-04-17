@@ -9,7 +9,7 @@ module.exports = {
     pricingPlan: 30,
     nextBillingDate: '2018-08-30T16:20:26.843Z',
     customer: 'litzy_schumm@yahoo.com',
-    balance: 430,
+    balance: -430,
     coupon: '10% Off First Purchase',
     companyName: '',
     companyAbn: '',

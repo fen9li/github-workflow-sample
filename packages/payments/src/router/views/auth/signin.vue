@@ -46,8 +46,8 @@ export default {
   <div class="signin">
     <el-form
       ref="form"
-      :model="form"
       class="signin__form"
+      :model="form"
       label-width="100px"
       @submit.prevent="tryToLogIn"
     >
@@ -82,9 +82,9 @@ export default {
         </el-button>
       </div>
       <el-button
-        :disabled="tryingToLogIn"
         class="signin__submit"
         type="primary"
+        :disabled="tryingToLogIn"
       >
         Login
       </el-button>

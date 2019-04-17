@@ -49,11 +49,10 @@ export default {
     onSubmit() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.$message.success({
-            dangerouslyUseHTMLString: true,
-            message:
-            '<strong>Success</strong><p>Changed saved successfully.</p>',
-            showClose: true,
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: 'Changes saved successfully.',
           })
           this.$emit('update:visible', false)
         } else {

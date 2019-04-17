@@ -44,8 +44,8 @@ export default {
 
 <template>
   <main-layout
-    :tabs="tabs"
     title="Customer Details"
+    :tabs="tabs"
     back
   >
     <div

@@ -12,14 +12,11 @@ export default {
     BaseLoader,
   },
   created() {
-    console.log('callback')
     this.$auth.handleAuthentication()
   },
   methods: {
     handleLoginEvent(data) {
       const target = data.state.target
-
-      console.log(target)
 
       if (/logout/.test(target)) {
         this.$router.push('/')

@@ -18,15 +18,13 @@
 
 ## Getting Started
 
-All packages with docker compose
-
 ```bash
 # Clone monorepo
 git clone git@github.com:loyaltycorp/manage-v2-frontend.git
-
+# Install development dependencies
+yarn
 # Install package dependencies
 yarn clean
-
 # Start working!
 ```
 

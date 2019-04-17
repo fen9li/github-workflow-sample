@@ -1,10 +1,10 @@
 <script>
 import DataTable from '@components/data-table'
-import StatisProcessor from '@core/static-processor'
+import StaticProcessor from '@core/static-processor'
 import tableConfig from './subscriptions-table'
-import addSubscription from './add-subscription'
+import addSubscription from './subscription-add'
 
-const subscriptions = require('@mock-api/resources/customer-subscriptions')
+const subscriptionsMock = require('@mock-api/resources/customer-subscriptions')
 
 export default {
   name: 'CustomerSubscriptions',
@@ -14,11 +14,14 @@ export default {
   },
   data() {
     return {
-      processor: new StatisProcessor({
+      processor: new StaticProcessor({
         component: this,
-        data: subscriptions.data,
+        data: subscriptionsMock.table,
       }),
       columns: tableConfig.columns,
+      modal: {
+        add: false,
+      },
     }
   },
   methods: {
@@ -42,15 +45,25 @@ export default {
     >
       <span>Subscriptions</span>
 
-      <el-row type="flex">
-        <add-subscription />
-      </el-row>
+      <el-button
+        type="primary"
+        size="small"
+        class="wide-button"
+        @click="modal.add = true"
+      >
+        Add
+      </el-button>
+
+      <add-subscription
+        v-if="modal.add"
+        :visible.sync="modal.add"
+      />
     </el-row>
 
     <data-table
+      title="Subscriptions"
       :processor="processor"
       :columns="columns"
-      title="Subscriptions"
       @row-click="onRowClick"
     />
   </el-card>

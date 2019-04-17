@@ -32,10 +32,10 @@ export default {
 <template>
   <div>
     <el-button
-      :class="$style.trigger"
       type="text"
       size="small"
       icon="el-icon-delete"
+      :class="$style.trigger"
       plain
       circle
       @click="dialogVisible = true"

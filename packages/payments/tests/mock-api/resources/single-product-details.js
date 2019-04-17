@@ -1,8 +1,10 @@
 module.exports = {
-  name: 'T-shirt',
-  product_code: 'FG9288',
-  effective_start_date: '22/06/2019',
-  end_date: '18/05/2020',
-  amount: 20,
+  productName: 'T-shirt',
+  productCode: 'FG9288',
+  effectiveStartDate: '11/06/2019',
+  endDate: '03/05/2020',
+  amount: '20.00',
+  currency: 'aud',
   image: '',
+  active: true,
 }

@@ -1,7 +1,8 @@
 <script>
 import tablesConfig from './home-tables-config'
-import { singleProductsData, subscriptionsData } from './home-tables-mocks'
 import StaticProcessor from '@core/static-processor'
+import singleProductsMock from '@mock-api/resources/home-single-products-mock'
+import subscriptionsMock from '@mock-api/resources/home-subscriptions-mock'
 
 export default {
   name: 'HomeDashboardTables',
@@ -11,12 +12,12 @@ export default {
       // eslint-disable-next-line max-len
       productProcessor: new StaticProcessor({
         component: this,
-        data: singleProductsData,
+        data: singleProductsMock.table,
       }),
       // eslint-disable-next-line max-len
       subscriptionsProcessor: new StaticProcessor({
         component: this,
-        data: subscriptionsData,
+        data: subscriptionsMock.table,
       }),
     }
   },

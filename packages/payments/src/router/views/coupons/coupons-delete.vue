@@ -15,11 +15,10 @@ export default {
   },
   methods: {
     submit() {
-      this.$message.success({
-        dangerouslyUseHTMLString: true,
-        message:
-        '<strong>Success</strong><p>Coupon successfully deleted.</p>',
-        showClose: true,
+      this.$notify({
+        type: 'success',
+        title: 'Success',
+        message: 'Coupon successfully deleted.',
       })
       this.$emit('update:visible', false)
     },
@@ -47,11 +46,11 @@ export default {
       Are you sure you wish to delete this coupon?
     </p>
     <el-button
+      type="danger"
       :class="[
         $style.submit,
         'wide-button',
       ]"
-      type="danger"
       @click="submit"
     >
       Delete

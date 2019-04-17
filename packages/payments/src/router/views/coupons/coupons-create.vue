@@ -48,11 +48,10 @@ export default {
     onSubmit() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.$message.success({
-            dangerouslyUseHTMLString: true,
-            message:
-            '<strong>Success</strong><p>Coupon created.</p>',
-            showClose: true,
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: 'Coupon created.',
           })
           this.$emit('update:visible', false)
         } else {

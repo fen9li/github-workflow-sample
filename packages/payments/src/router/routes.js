@@ -2,25 +2,6 @@ import store from '@state/store'
 import lazy from './meta-views/lazy-load'
 
 export default [
-  // {
-  //   path: '/signin',
-  //   name: 'singin',
-  //   component: () => lazy(import('@views/auth/signin')),
-  //   meta: {
-  //     beforeResolve(routeTo, routeFrom, next) {
-  //       // If the user is already logged in
-  //       if (store.getters['auth/loggedIn']) {
-  //         // Redirect to the home page instead
-  //         next({
-  //           name: 'home',
-  //         })
-  //       } else {
-  //         // Continue to the login page
-  //         next()
-  //       }
-  //     },
-  //   },
-  // },
   {
     path: '/',
     name: 'home',
@@ -29,30 +10,29 @@ export default [
   {
     path: '/payment/transactions',
     name: 'payment-transactions',
-    component: () => lazy(import('@views/transactions/transactions')),
+    component: () => lazy(import('@views/transactions')),
   },
   {
     path: '/payment/transactions/:id',
     name: 'payment-transaction-details',
     component: () =>
-      lazy(import('@views/transactions/transactions-details')),
+      lazy(import('@views/transaction')),
     props: true,
   },
   {
     path: '/payment/settlements',
     name: 'payment-settlements',
-    component: () => lazy(import('@views/settlements/settlements')),
+    component: () => lazy(import('@views/settlements')),
   },
   {
     path: '/payment/settlements/:id',
     name: 'payment-settlement-details',
-    // eslint-disable-next-line max-len
-    component: () => lazy(import('@views/settlements/details/settlement-details')),
+    component: () => lazy(import('@views/settlement')),
   },
   {
     path: '/customers',
     name: 'customers',
-    component: () => lazy(import('@views/customers/customers')),
+    component: () => lazy(import('@views/customers')),
   },
   {
     path: '/customers/:id',
@@ -61,7 +41,7 @@ export default [
       name: 'customer-information',
     },
     component: () => lazy(
-      import('@views/customer/customer')
+      import('@views/customer')
     ),
     props: true,
     children: [
@@ -93,14 +73,14 @@ export default [
         path: 'subscription',
         name: 'products-subscription',
         component: () => lazy(
-          import('@views/products/subscription/subscription-products')
+          import('@views/products/subscription')
         ),
       },
       {
         path: 'single',
         name: 'products-single',
         component: () => lazy(
-          import('@views/products/single/single-products')
+          import('@views/products/single')
         ),
       },
     ],
@@ -109,7 +89,7 @@ export default [
     path: '/products/single/:id',
     name: 'products-single-details',
     component: () => lazy(
-      import('@views/products/single/single-details')
+      import('@views/product-single')
     ),
     props: true,
   },
@@ -117,7 +97,7 @@ export default [
     path: '/products/subscription/:id',
     name: 'products-subscription-details',
     component: () => lazy(
-      import('@views/products/subscription/subscription-details')
+      import('@views/product-subscription')
     ),
     props: true,
   },
@@ -239,29 +219,6 @@ export default [
       user: route.params.user,
     }),
   },
-  // {
-  //   path: '/logout',
-  //   name: 'logout',
-  //   meta: {
-  //     authRequired: true,
-  //     beforeResolve(routeTo, routeFrom, next) {
-  //       store.dispatch('auth/logOut')
-  //       const authRequiredOnPreviousRoute = routeFrom.matched.some(
-  //         route => route.meta.authRequired
-  //       )
-  //       // Navigate back to previous page, or home as a fallback
-  //       next(
-  //         authRequiredOnPreviousRoute
-  //           ? {
-  //             name: 'home',
-  //           }
-  //           : {
-  //             ...routeFrom,
-  //           }
-  //       )
-  //     },
-  //   },
-  // },
   {
     path: '/404',
     name: '404',

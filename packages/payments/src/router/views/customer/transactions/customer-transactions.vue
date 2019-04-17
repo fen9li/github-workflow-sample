@@ -26,6 +26,7 @@ export default {
 
 <template>
   <table-layout
+    table-name="customerTransactions"
     :processor="processor"
     :filters="filters"
     :columns="columns"

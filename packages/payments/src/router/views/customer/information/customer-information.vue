@@ -1,6 +1,6 @@
 <script>
-import EditModal from './customer-edit-modal'
-import DeleteModal from './customer-delete-modal'
+import EditModal from './customer-edit'
+import DeleteModal from './customer-delete'
 
 export default {
   name: 'CustomerInformation',
@@ -82,8 +82,16 @@ export default {
       <dd>{{ customer.address }}</dd>
     </dl>
 
-    <edit-modal :visible.sync="modal.edit" />
-    <delete-modal :visible.sync="modal.delete" />
+    <edit-modal
+      v-if="modal.edit"
+      :visible.sync="modal.edit"
+      :customer="customer"
+    />
+    <delete-modal
+      v-if="modal.delete"
+      :visible.sync="modal.delete"
+      :customer="customer"
+    />
   </el-card>
 </template>
 

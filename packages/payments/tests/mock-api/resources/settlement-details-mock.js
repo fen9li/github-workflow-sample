@@ -1,6 +1,6 @@
 module.exports = {
-  SETTLEMENT_DETAILS: {
-    status: 'successful',
+  settlementDetails: {
+    status: 'paid',
     date_created: '05/05/2019 09:28',
     customer_id: 'PA1729',
     customer_name: 'PA Account',
@@ -13,7 +13,7 @@ module.exports = {
     net: 1819,
     date_finalised: '12/12/2018 09:29',
   },
-  TABLE_DATA: [
+  detailsTable: [
     {
       dateCreated: '2018-08-30T16:20:26.843Z',
       type: 'Charge',
@@ -34,7 +34,7 @@ module.exports = {
       net: 79,
       statementDescriptor: 'Full fee',
       orderId: 'HF104',
-      status: 'Successful',
+      status: 'Paid',
       dateFinalised: '2018-05-16T01:22:01.843Z',
       paymentMethod: '**** 4819',
     },
@@ -49,6 +49,22 @@ module.exports = {
       status: 'Failed',
       dateFinalised: '2019-03-04T23:59:01.843Z',
       paymentMethod: '**** 4819',
+    },
+  ],
+  summaryTable: [
+    {
+      name: 'Charges',
+      type: 56,
+      amount: 8980,
+      fee: 20,
+      net: 8960,
+    },
+    {
+      name: 'Refunds',
+      type: 2,
+      amount: 180,
+      fee: 0.50,
+      net: 179.5,
     },
   ],
 }

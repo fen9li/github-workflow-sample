@@ -1,11 +1,11 @@
 <script>
 import MainLayout from '@layouts/main/main-layout'
 import TableLayout from '@layouts/table/table-layout'
-import StatisProcessor from '@core/static-processor'
+import StaticProcessor from '@core/static-processor'
 import tableConfig from './user-access-table'
 import UserAccessAdd from './user-access-add.vue'
 
-const userAccess = require('@mock-api/resources/user-access')
+const userAccessMock = require('@mock-api/resources/user-access')
 
 export default {
   name: 'UserAccess',
@@ -19,9 +19,9 @@ export default {
   },
   data() {
     return {
-      processor: new StatisProcessor({
+      processor: new StaticProcessor({
         component: this,
-        data: userAccess.data,
+        data: userAccessMock.table,
       }),
       filters: tableConfig.filters,
       columns: tableConfig.columns,
@@ -34,6 +34,7 @@ export default {
   <main-layout title="User Access">
     <user-access-add slot="header" />
     <table-layout
+      table-name="userAccess"
       :processor="processor"
       :filters="filters"
       :columns="columns"

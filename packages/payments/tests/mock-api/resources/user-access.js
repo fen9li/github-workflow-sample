@@ -1,5 +1,5 @@
 module.exports = {
-  data: [
+  table: [
     {
       created: '20198-02-10T12:40:31.965Z',
       externalId: 'PA9298',

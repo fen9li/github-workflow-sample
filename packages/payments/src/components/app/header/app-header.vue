@@ -33,7 +33,7 @@ export default {
       class="app-header__logo"
     >
       <img
-        src="@assets/logo.jpg"
+        src="/img/logo.jpg"
         alt="Logo EONX"
       >
     </router-link>

@@ -37,6 +37,7 @@ export default {
 <template>
   <main-layout title="Subscriptions">
     <table-layout
+      table-name="subscriptions"
       :processor="processor"
       :filters="filters"
       :columns="columns"

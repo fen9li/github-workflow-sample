@@ -414,3 +414,7 @@ $typography-line-heights-contrast: (
 
   @extend %font-content;
 }
+
+@function rem($size) {
+  @return #{$size / $root-font-size}rem;
+}
