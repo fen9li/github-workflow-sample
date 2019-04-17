@@ -1,9 +1,9 @@
 <script>
 import appConfig from '@src/app.config'
 import MockData from '@mock-api/resources/subscription'
-import EditModal from './edit-modal'
-import EndDateModal from './end-date-modal'
-import DeleteModal from './delete-modal'
+import EditModal from './subscription-edit'
+import EndDateModal from './subscription-end-date'
+import DeleteModal from './subscription-delete'
 
 export default {
   name: 'SubscriptionInformation',
@@ -21,6 +21,15 @@ export default {
       type: String,
       required: true,
     },
+  },
+  data() {
+    return {
+      modal: {
+        edit: false,
+        end: false,
+        delete: false,
+      },
+    }
   },
   computed: {
     subscription() {
@@ -41,13 +50,41 @@ export default {
       <span>Details</span>
 
       <el-row type="flex">
+        <el-button
+          type="primary"
+          size="small"
+          plain
+          @click="modal.end = true"
+        >
+          Set End Date
+        </el-button>
+        <el-button
+          type="info"
+          size="small"
+          icon="el-icon-edit"
+          circle
+          @click="modal.edit = true"
+        />
+        <el-button
+          type="danger"
+          icon="el-icon-delete"
+          size="small"
+          circle
+          @click="modal.delete = true"
+        />
         <end-date-modal
+          v-if="modal.end"
           :subscription="subscription"
+          :visible.sync="modal.end"
         />
         <edit-modal
+          v-if="modal.edit"
+          :visible.sync="modal.edit"
           :subscription="subscription"
         />
         <delete-modal
+          v-if="modal.delete"
+          :visible.sync="modal.delete"
           :subscription="subscription"
         />
       </el-row>

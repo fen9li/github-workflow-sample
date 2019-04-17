@@ -14,7 +14,6 @@ export default {
   },
   data() {
     return {
-      dialogVisible: false,
       form: {
         endDate: '',
       },
@@ -22,7 +21,12 @@ export default {
   },
   methods: {
     submit() {
-      this.dialogVisible = false
+      this.$notify({
+        type: 'success',
+        title: 'Success',
+        message: 'Changes successfully saved',
+      })
+      this.$emit('update:visible', false)
     },
   },
 }
@@ -30,19 +34,10 @@ export default {
 
 <template>
   <div :class="$style.root">
-    <el-button
-      type="primary"
-      :class="$style.trigger"
-      size="small"
-      plain
-      @click="dialogVisible = true"
-    >
-      Set End Date
-    </el-button>
-
     <state-dialog
       title="Edit Subscription"
-      :visible.sync="dialogVisible"
+      v-bind="$attrs"
+      v-on="$listeners"
     >
       <el-icon
         slot="icon"

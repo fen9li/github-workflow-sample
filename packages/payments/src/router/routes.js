@@ -104,20 +104,20 @@ export default [
   {
     path: '/subscriptions',
     name: 'subscriptions',
-    component: () => lazy(import('@views/subscriptions/subscriptions')),
+    component: () => lazy(import('@views/subscriptions')),
   },
   {
     path: '/subscriptions/:id',
     name: 'subscription-details',
     redirect: { name: 'subscription-information' },
-    component: () => lazy(import('@views/subscriptions/subscription-details')),
+    component: () => lazy(import('@views/subscription')),
     props: true,
     children: [
       {
         path: 'details',
         name: 'subscription-information',
         component: () => lazy(
-          import('@views/subscriptions/information/subscription-information')
+          import('@views/subscription/information')
         ),
         props: true,
       },
@@ -125,7 +125,7 @@ export default [
         path: 'transactions',
         name: 'subscription-transactions',
         component: () => lazy(
-          import('@views/subscriptions/transactions/subscription-transactions')
+          import('@views/subscription/transactions')
         ),
         props: true,
       },
