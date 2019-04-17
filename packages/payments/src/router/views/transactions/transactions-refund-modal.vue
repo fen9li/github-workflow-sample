@@ -84,8 +84,8 @@ export default {
       Refund
     </el-button>
     <el-dialog
-      title="Refund Payment"
       :visible.sync="dialogVisible"
+      title="Refund Payment"
       class="modal"
     >
       <el-form

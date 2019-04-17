@@ -86,8 +86,8 @@ export default {
     </el-button>
 
     <el-dialog
-      title="Virtual POS"
       :visible.sync="dialogVisible"
+      title="Virtual POS"
     >
       <div class="virtual-pos__body">
         <el-form
@@ -184,13 +184,13 @@ export default {
           </el-form-item>
 
           <el-form-item
-            label="Email Receipt"
-            prop="receiptEmail"
             :rules="[
               { type: 'email',
                 message: 'Must be valid email address',
                 trigger: ['blur', 'change'] }
             ]"
+            label="Email Receipt"
+            prop="receiptEmail"
           >
             <el-input
               v-model="form.receiptEmail"

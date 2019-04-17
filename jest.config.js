@@ -21,19 +21,15 @@ module.exports = {
     '^vue$': '<rootDir>/node_modules/vue',
     '^vuex$': '<rootDir>/node_modules/vuex',
     '^vue-router$': '<rootDir>/node_modules/vue-router',
-    '@loyalty-corp/(.*)$': '<rootDir>/packages/$1',
+    '@loyalty-corp/superadmin': '<rootDir>/packages/admin',
   },
   transformIgnorePatterns: ['/node_modules/(?!vue-resize-sensor)'],
   snapshotSerializers: ['jest-serializer-vue'],
   coverageDirectory: '<rootDir>/tests/unit/coverage',
   collectCoverageFrom: [
     'packages/**/*.{js,vue}',
-    'projects/**/*.{js.vue}',
     '!**/node_modules/**',
   ],
-  // https://facebook.github.io/jest/docs/en/configuration.html#testurl-string
-  // Set the `testURL` to a provided base URL if one exists, or the mock API base URL
-  // Solves: https://stackoverflow.com/questions/42677387/jest-returns-network-error-when-doing-an-authenticated-request-with-axios
   testURL:
     process.env.API_BASE_URL || `http://localhost:${process.env.MOCK_API_PORT}`,
   globals: {

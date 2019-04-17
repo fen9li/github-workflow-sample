@@ -91,8 +91,8 @@ export default {
     </el-form>
 
     <el-button
-      type="primary"
       :class="$style.saveButton"
+      type="primary"
       @click="onSave"
     >
       Save

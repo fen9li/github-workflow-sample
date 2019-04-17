@@ -82,10 +82,10 @@ export default {
 <template>
   <div>
     <el-button
+      :class="$style.trigger"
       type="text"
       size="small"
       icon="el-icon-edit"
-      :class="$style.trigger"
       plain
       circle
       @click="dialogVisible = true"

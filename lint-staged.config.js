@@ -19,5 +19,5 @@ module.exports = {
   ],
   '*.scss': ['stylelint **/*.scss --fix', 'prettier --write', 'git add'],
   '*.md': ['markdownlint', 'prettier --write', 'git add'],
-  // '*.{png,jpeg,jpg,gif,svg}': ['imagemin-lint-staged', 'git add'],
+  '*.{png,jpeg,jpg,gif,svg}': ['imagemin-lint-staged', 'git add'],
 }

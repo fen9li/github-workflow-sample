@@ -59,8 +59,8 @@ export default {
     </el-button>
 
     <el-dialog
-      title="Add Product"
       :visible.sync="dialogVisible"
+      title="Add Product"
     >
       <el-form
         :model="productForm"
@@ -96,9 +96,9 @@ export default {
         </el-form-item>
 
         <el-form-item
+          :class="$style.formItem"
           label="Amount"
           prop="amount"
-          :class="$style.formItem"
           required
         >
           <el-input
@@ -138,8 +138,8 @@ export default {
       </el-form>
       <el-button
         v-if="!displayMethodForm"
-        type="primary"
         :class="[$style.save, 'wide-button']"
+        type="primary"
         @click="payNow"
       >
         Pay Now

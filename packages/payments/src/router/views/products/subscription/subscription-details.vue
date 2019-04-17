@@ -83,10 +83,10 @@ export default {
       </dl>
     </el-card>
     <table-layout
-      title="Plans"
       :processor="processor"
       :columns="columns"
       :table-controls="false"
+      title="Plans"
     >
       <div
         slot="header"

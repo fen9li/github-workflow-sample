@@ -143,9 +143,9 @@ export default {
       ref="table"
       v-loading="processor.loading"
       :data="processor.data"
-      header-cell-class-name="table-header-cell"
       :row-class-name="showRowLink ? 'clickable-row' : ''"
       :row-style="getRowColor"
+      header-cell-class-name="table-header-cell"
       @row-click="onRowClick"
     >
       <el-table-column
@@ -185,9 +185,9 @@ export default {
       :class="$style.tablePagination"
     >
       <el-pagination
-        layout="prev, pager, next"
         :page-count="processor.pageCount"
         :current-page="dataQuery.page"
+        layout="prev, pager, next"
         @current-change="updatePage"
       />
     </div>
@@ -198,7 +198,7 @@ export default {
 @import '@design';
 
 .table {
-  .el-table::before {
+  .el-table:before {
     display: none;
   }
 }
@@ -229,7 +229,7 @@ export default {
     height: 18px !important;
     margin-left: 5px;
 
-    &::after {
+    &:after {
       position: absolute;
       top: 50%;
       right: 2px;
@@ -247,7 +247,7 @@ export default {
 
   &.desc {
     .caret-wrapper {
-      &::after {
+      &:after {
         color: $primary;
       }
     }
@@ -255,7 +255,7 @@ export default {
 
   &.asc {
     .caret-wrapper {
-      &::after {
+      &:after {
         color: $primary;
         transform: rotateZ(180deg);
       }

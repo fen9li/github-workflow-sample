@@ -48,9 +48,9 @@ export default {
     </el-row>
 
     <data-table
-      title="Subscriptions"
       :processor="processor"
       :columns="columns"
+      title="Subscriptions"
       @row-click="onRowClick"
     />
   </el-card>

@@ -28,8 +28,8 @@ export default {
 
 <template>
   <state-dialog
-    title="Delete Pricing Plan"
     v-bind="$attrs"
+    title="Delete Pricing Plan"
     v-on="$listeners"
   >
     <el-icon
@@ -46,11 +46,11 @@ export default {
       Are you sure you wish to delete this Pricing Plan?
     </p>
     <el-button
-      type="danger"
       :class="[
         $style.submit,
         'wide-button',
       ]"
+      type="danger"
       @click="submit"
     >
       Delete

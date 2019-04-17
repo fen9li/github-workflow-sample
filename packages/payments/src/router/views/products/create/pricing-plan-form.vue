@@ -84,8 +84,8 @@ export default {
       >
         <el-input
           :value="data.name"
-          placeholder="Monthly Membership PA"
           :class="$style.formInput"
+          placeholder="Monthly Membership PA"
           @input="changeValue('name', $event)"
         />
       </el-form-item>
@@ -120,9 +120,9 @@ export default {
       >
         <el-date-picker
           :value="data.startDate"
+          :editable="false"
           type="datetime"
           placeholder="DD/MM/YYYY"
-          :editable="false"
           @input="changeValue('startDate', $event)"
         />
         <el-tooltip
@@ -140,9 +140,9 @@ export default {
       </el-form-item>
 
       <el-form-item
+        :class="[$style.formItem, 'amount-form-item']"
         label="Amount"
         prop="amount"
-        :class="[$style.formItem, 'amount-form-item']"
       >
         <el-input
           v-mask="[

@@ -51,12 +51,12 @@ export default {
 
 <template>
   <el-button
-    size="small"
-    type="primary"
     :class="$style.button"
     :disabled="!fileApiSupported"
     :loading="loading"
     :title="!fileApiSupported ? 'Not supported by your browser': ''"
+    size="small"
+    type="primary"
     @click="onExportClick('csv')"
   >
     Export CSV

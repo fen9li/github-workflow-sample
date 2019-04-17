@@ -40,8 +40,8 @@ export default {
     />
 
     <el-dialog
-      title="Edit Subscription"
       :visible.sync="dialogVisible"
+      title="Edit Subscription"
     >
       <el-form
         :model="form"
@@ -56,8 +56,8 @@ export default {
         <el-form-item label="Subscription Starts">
           <el-radio-group
             v-model="form.subscriptionStart"
-            class="virtual-pos__form-charge"
             :disabled="true"
+            class="virtual-pos__form-charge"
           >
             <el-radio label="now">
               Now
@@ -146,26 +146,26 @@ export default {
         </el-form-item>
       </el-form>
       <el-alert
+        :closable="false"
         type="info"
         show-icon
-        :closable="false"
       >
         Editing the Subscription Product or Pricing Plan
         may cause changes to payment dates, billing frequencies,
         and the subscription balance.
       </el-alert>
       <el-alert
+        :closable="false"
         type="info"
         show-icon
-        :closable="false"
       >
         Adding or editing a Coupon will become effective at the next
         billing date.
       </el-alert>
 
       <el-button
-        type="primary"
         :class="$style.saveButton"
+        type="primary"
         @click="onSave"
       >
         Save

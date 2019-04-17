@@ -104,9 +104,9 @@ export default {
       >
         <el-date-picker
           :value="data.effectiveStartDate"
+          :editable="false"
           type="datetime"
           placeholder="DD/MM/YYYY"
-          :editable="false"
           @input="changeValue('effectiveStartDate', $event)"
         />
       </el-form-item>
@@ -114,9 +114,9 @@ export default {
       <el-form-item label="End Date">
         <el-date-picker
           :value="data.endDate"
+          :editable="false"
           type="datetime"
           placeholder="DD/MM/YYYY"
-          :editable="false"
           @input="changeValue('endDate', $event)"
         />
       </el-form-item>
@@ -171,10 +171,10 @@ export default {
       >
         <el-upload
           :class="$style.imageUploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
           :show-file-list="false"
           :on-success="handleImageSuccess"
           :before-upload="beforeImageUpload"
+          action="https://jsonplaceholder.typicode.com/posts/"
         >
           <img
             v-if="data.image"

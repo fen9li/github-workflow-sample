@@ -91,7 +91,7 @@ And much more! I recommend checking out our Cypress tests in `tests/e2e/specs`, 
 Beyond that, also know that you can access our app in Cypress on the `window`. For example, to dispatch a Vuex action that sets up some state:
 
 ```js
-cy.window().then((window) => {
+cy.window().then(window => {
   return window.__app__.$store.dispatch('someModule/someAction')
 })
 ```

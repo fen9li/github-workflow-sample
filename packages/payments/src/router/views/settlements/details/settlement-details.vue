@@ -40,10 +40,10 @@ export default {
       :settlement-details="mockedData.SETTLEMENT_DETAILS"
     />
     <table-layout
-      title="Settlement - Transaction Log"
       :filters="tableConfig.filters"
       :columns="tableConfig.columns"
       :processor="tableProcessor"
+      title="Settlement - Transaction Log"
     />
   </main-layout>
 </template>

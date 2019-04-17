@@ -103,9 +103,9 @@ export default {
       Create Product
     </el-button>
     <el-dialog
-      title="Create Product"
       :visible.sync="dialogVisible"
       :custom-class="$style.wrapper"
+      title="Create Product"
     >
       <div :class="$style.types">
         <el-radio-group v-model="product.type">
@@ -138,8 +138,8 @@ export default {
       />
 
       <el-button
-        type="primary"
         :class="[$style.save, 'wide-button']"
+        type="primary"
         @click="createProduct"
       >
         Save

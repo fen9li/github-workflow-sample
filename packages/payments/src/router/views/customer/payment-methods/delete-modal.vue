@@ -48,11 +48,11 @@ export default {
       There may be payments scheduled using this card details.
     </p>
     <el-button
-      type="danger"
       :class="[
         $style.submit,
         'wide-button',
       ]"
+      type="danger"
       @click="submit"
     >
       Delete

@@ -47,11 +47,11 @@ export default {
       Are you sure you wish to delete this coupon?
     </p>
     <el-button
-      type="danger"
       :class="[
         $style.submit,
         'wide-button',
       ]"
+      type="danger"
       @click="submit"
     >
       Delete

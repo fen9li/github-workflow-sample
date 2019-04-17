@@ -26,22 +26,28 @@ export default {
 
 <template>
   <el-container
+
     v-if="loggedIn"
+
     id="app"
   >
-    <el-header height="72px">
+    <ElHeader
+      height="72px"
+    >
       <app-header />
-    </el-header>
+    </ElHeader>
     <el-container class="main-container">
-      <el-aside width="260px">
+      <el-aside
+        width="260px"
+      >
         <app-sidebar />
       </el-aside>
       <el-main>
-        <router-view :key="$route.path" />
+        <RouterView :key="$route.path" />
       </el-main>
     </el-container>
   </el-container>
-  <router-view v-else />
+  <RouterView v-else />
 </template>
 
 <!-- This should generally be the only global CSS in the app. -->

@@ -132,13 +132,13 @@ The main property of the Data Processor instance is the `dataQuery`.
 
 ### Object `dataQuery`
 
-| Property   | Type          | Description                                          | Default |
-| ---------- | ------------- | ---------------------------------------------------- | ------- |
-| `filters`  | `FiltersList` | active filters                                       | `[]`    |
-| `sort`     | `Object`      | key-value pair with sorting info                     | `{}`    |
-| `page`     | `Number`      | current page number                                  | `1`     |
-| `pageSize` | `Number`      | amount of visible rows per page                      | `20`    |
-| `hide`     | `Array`       | list of column names that **column-hider** will hide | `[]`    |
+| Property | Type | Description | Default |
+| --- | --- | --- | --- |
+| `filters` | `FiltersList` | active filters | `[]` |
+| `sort` | `Object` | key-value pair with sorting info | `{}` |
+| `page` | `Number` | current page number | `1` |
+| `pageSize` | `Number` | amount of visible rows per page | `20` |
+| `hide` | `Array` | list of column names that **column-hider** will hide | `[]` |
 
 ### Array `FilterList`
 
@@ -179,13 +179,13 @@ Columns config must be an `Array` of `ColumnDescriptor`.
 
 Describes each column in the table.
 
-| Property    | Type               | Description                                                                                     | Default |
-| ----------- | ------------------ | ----------------------------------------------------------------------------------------------- | ------- |
-| `name`      | `String`           | name/key of the column                                                                          | -       |
-| `label`     | `String`           | column name to display in column's header                                                       | -       |
-| `icon`      | `String`           | icon class name from Element UI. Is used only in the **columns-hider** component                | -       |
-| `format`    | `FormatDescriptor` | **(optional)** formatter that will be applied to each value in the current column               | `{}`    |
-| `component` | `CellComponent`    | **(optional)** describe a component that will be used for cells rendering in the current column | `{}`    |
+| Property | Type | Description | Default |
+| --- | --- | --- | --- |
+| `name` | `String` | name/key of the column | - |
+| `label` | `String` | column name to display in column's header | - |
+| `icon` | `String` | icon class name from Element UI. Is used only in the **columns-hider** component | - |
+| `format` | `FormatDescriptor` | **(optional)** formatter that will be applied to each value in the current column | `{}` |
+| `component` | `CellComponent` | **(optional)** describe a component that will be used for cells rendering in the current column | `{}` |
 
 #### Example
 
@@ -205,27 +205,27 @@ Describes each column in the table.
 
 Must be one of the following types:
 
-| Type                                    | Description                                                                                                                                    |
-| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `String`                                | name of predefined formatter function. Possible values: `date`, `dateTime`, `dayMonth`,`dollar`, `uppercase`                                   |
-| `Object {name: String, params: Array}`  | is used when predefined formatter function accepts arguments. `params` will be passed to `Function.prototype.apply` method                     |
+| Type | Description |
+| --- | --- |
+| `String` | name of predefined formatter function. Possible values: `date`, `dateTime`, `dayMonth`,`dollar`, `uppercase` |
+| `Object {name: String, params: Array}` | is used when predefined formatter function accepts arguments. `params` will be passed to `Function.prototype.apply` method |
 | `Function (rawValue) => formattedValue` | must accept value as a single argument and return formatted value or empty string. Note: `rawValue` may be `null`, `undefined` or empty string |
 
 ### Type `CellComponent`
 
 Must be one of the following types:
 
-| Type                                                                | Description                                                                                  |
-| ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `CellComponentDescriptor`                                           |
+| Type | Description |
+| --- | --- |
+| `CellComponentDescriptor` |
 | `Function (value, columnName, cellInfo) => CellComponentDescriptor` | `cellInfo` is a default slot scope object of **el-table** component: `{row, column, $index}` |
 
 ### Object `CellComponentDescriptor`
 
-| Property | Type             | Description                                                                            | Default          |
-| -------- | ---------------- | -------------------------------------------------------------------------------------- | ---------------- |
-| `is`     | `VueComponentIs` | **(optional)** see "is" definition in [Vue docs](https://vuejs.org/v2/api/#component). | `'cell-default'` |
-| `props`  | `Object`         | **(optional)** props that will be passed to the cell component. See notes below        | `{}`             |
+| Property | Type | Description | Default |
+| --- | --- | --- | --- |
+| `is` | `VueComponentIs` | **(optional)** see "is" definition in [Vue docs](https://vuejs.org/v2/api/#component). | `'cell-default'` |
+| `props` | `Object` | **(optional)** props that will be passed to the cell component. See notes below | `{}` |
 
 #### Example
 
@@ -246,15 +246,15 @@ Must be one of the following types:
 
 Describes inline CSS styles that will be applied to the cell DOM node. It must be one of the following types:
 
-| Type                                                      | Description                                                                                                                   |
-| --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `styleObjDesriptor`                                       |
+| Type | Description |
+| --- | --- |
+| `styleObjDesriptor` |
 | `Function (value, row, columnName) => styleObjDescriptor` | see [Vue docs](https://vuejs.org/v2/guide/class-and-style.html#Binding-Inline-Styles) for the `styleObjDescriptor` definition |
 
 #### Example
 
 ```javascript
-(value) => {
+value => {
   if (value > 0) {
     return { color: '#000' }
   }
@@ -274,10 +274,10 @@ Describes icon for the cell. It must be one of the following types:
 
 ### Object `badgeDescriptor`
 
-| Property | Type     | Description                                     | Default |
-| -------- | -------- | ----------------------------------------------- | ------- |
-| `name`   | `String` | icon class name from Element UI                 | -       |
-| `pos`    | `String` | icon position. Possible values: `left`, `right` | -       |
+| Property | Type | Description | Default |
+| --- | --- | --- | --- |
+| `name` | `String` | icon class name from Element UI | - |
+| `pos` | `String` | icon position. Possible values: `left`, `right` | - |
 
 #### Example
 
@@ -291,7 +291,7 @@ Describes icon for the cell. It must be one of the following types:
 ### Columns config example
 
 ```javascript
-[
+;[
   {
     name: 'created',
     label: 'Date created',
@@ -328,12 +328,12 @@ Filters config must be an `Array` of `FilterDescriptor`.
 
 Describes each column in the table.
 
-| Property    | Type              | Description                                                                                              | Default |
-| ----------- | ----------------- | -------------------------------------------------------------------------------------------------------- | ------- |
-| `attribute` | `String`          | name/key of the column                                                                                   | -       |
-| `icon`      | `String`          | icon class name from Element UI                                                                          | -       |
-| `type`      | `String`          | type of the associated column. Possible values: `string`, `numeric`, `boolean`, `date`, `time`, `select` | -       |
-| `values`    | `SelectItemsList` | **(optional)** required if `type` is `select`                                                            | `[]`    |
+| Property | Type | Description | Default |
+| --- | --- | --- | --- |
+| `attribute` | `String` | name/key of the column | - |
+| `icon` | `String` | icon class name from Element UI | - |
+| `type` | `String` | type of the associated column. Possible values: `string`, `numeric`, `boolean`, `date`, `time`, `select` | - |
+| `values` | `SelectItemsList` | **(optional)** required if `type` is `select` | `[]` |
 
 #### Example
 
@@ -359,7 +359,7 @@ Is an `Array` of `SelectItem`
 ### Filters config example
 
 ```javascript
-[
+;[
   {
     attribute: 'created',
     icon: 'el-icon-date',
@@ -394,12 +394,12 @@ Data Processor accepts `ProcessorOptions` object as single argument.
 
 ### Object `ProcessorOptions`
 
-| Property             | Type           | Description                                                                                                                                           | Default |
-| -------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `staticQuery`        | `Object`       | **(optional)** static part of the [dataQuery](#object-dataquery). Values in `staticQuery` have priority over values in [dataQuery](#object-dataquery) | `{}`    |
-| `query`              | `Object`       | **(optional)** initial state of the `dataQuery`                                                                                                       | `{}`    |
-| `disableQueryString` | `Boolean`      | **(optional)** processor starts queryObject writing to the URL, also enables URL watcher                                                              | `false` |
-| `component`          | `VueComponent` | **(optional)** Vue component which \$watch function will be used to setup URL watcher. **Required** if `disableQueryString` is `false`                | -       |
+| Property | Type | Description | Default |
+| --- | --- | --- | --- |
+| `staticQuery` | `Object` | **(optional)** static part of the [dataQuery](#object-dataquery). Values in `staticQuery` have priority over values in [dataQuery](#object-dataquery) | `{}` |
+| `query` | `Object` | **(optional)** initial state of the `dataQuery` | `{}` |
+| `disableQueryString` | `Boolean` | **(optional)** processor starts queryObject writing to the URL, also enables URL watcher | `false` |
+| `component` | `VueComponent` | **(optional)** Vue component which \$watch function will be used to setup URL watcher. **Required** if `disableQueryString` is `false` | - |
 
 ### Example of Data Processor settings
 

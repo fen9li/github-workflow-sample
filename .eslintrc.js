@@ -24,6 +24,7 @@ module.exports = {
         SwitchCase: 1,
       },
     ],
+    'max-len': 'off',
     'arrow-parens': ['error', 'as-needed'],
     'array-bracket-newline': ["error", "consistent"],
     'guard-for-in': 'off',

@@ -69,17 +69,17 @@ export default {
 <template>
   <div>
     <table-layout
-      title="Pro-Rata Subscriptions"
       :processor="pro.processor"
       :filters="pro.filters"
       :columns="pro.columns"
+      title="Pro-Rata Subscriptions"
       @row-click="onRowClick"
     />
     <table-layout
-      title="Anniversary Subscriptions"
       :processor="anniversary.processor"
       :columns="anniversary.columns"
       :filters="anniversary.filters"
+      title="Anniversary Subscriptions"
       @row-click="onRowClick"
     />
   </div>

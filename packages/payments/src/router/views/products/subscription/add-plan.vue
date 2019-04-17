@@ -56,8 +56,8 @@ export default {
     </el-button>
 
     <el-dialog
-      title="Add Pricing Plan"
       :visible.sync="dialogVisible"
+      title="Add Pricing Plan"
     >
       <pricing-plan-form
         ref="addPlanForm"

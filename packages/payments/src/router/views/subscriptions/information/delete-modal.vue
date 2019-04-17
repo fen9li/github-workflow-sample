@@ -36,8 +36,8 @@ export default {
     />
 
     <state-dialog
-      title="Delete Subscription"
       :visible.sync="dialogVisible"
+      title="Delete Subscription"
     >
       <el-icon
         slot="icon"
@@ -58,11 +58,11 @@ export default {
         Subscription Balance will be calculated and refundable/payable.
       </p>
       <el-button
-        type="danger"
         :class="[
           $style.submit,
           'wide-button',
         ]"
+        type="danger"
         @click="submit"
       >
         Delete

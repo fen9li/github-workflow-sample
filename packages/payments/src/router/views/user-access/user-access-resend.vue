@@ -34,9 +34,9 @@ export default {
 <template>
   <div>
     <el-button
+      :loading="loading"
       type="primary"
       size="small"
-      :loading="loading"
       @click="onClick"
     >
       Resend Registration Link

@@ -97,9 +97,9 @@ export default {
       >
         <el-date-picker
           :value="data.effectiveStartDate"
+          :editable="false"
           type="datetime"
           placeholder="DD/MM/YYYY"
-          :editable="false"
           @input="changeValue('effectiveStartDate', $event)"
         />
         <el-tooltip placement="right">
@@ -121,9 +121,9 @@ export default {
       >
         <el-date-picker
           :value="data.endDate"
+          :editable="false"
           type="datetime"
           placeholder="DD/MM/YYYY"
-          :editable="false"
           @input="changeValue('endDate', $event)"
         />
         <el-tooltip placement="right">
@@ -175,15 +175,15 @@ export default {
 
       <el-form-item
         v-if="data.billingCycle === 'pro-rata'"
+        :class="$style.lastItem"
         label="Anchor Date"
         prop="anchorDate"
-        :class="$style.lastItem"
       >
         <el-date-picker
           :value="data.anchorDate"
+          :editable="false"
           type="date"
           placeholder="DD/MM"
-          :editable="false"
           @input="changeValue('anchorDate', $event)"
         />
         <el-tooltip placement="right">

@@ -1,6 +1,7 @@
 const path = require('path')
 const appConfig = require('./src/app.config')
 const babelConfig = require('./babel.config')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -16,6 +17,12 @@ module.exports = {
     resolve: {
       alias: require('./aliases.config').webpack,
     },
+    plugins: [
+      new BundleAnalyzerPlugin({
+        analyzerMode: process.env.ANALYZE ? 'static' : 'disabled',
+        openAnalyzer: process.env.CI !== 'true',
+      }),
+    ],
   },
   css: {
     // Enable CSS source maps.

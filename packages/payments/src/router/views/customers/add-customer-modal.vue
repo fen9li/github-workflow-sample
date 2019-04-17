@@ -83,8 +83,8 @@ export default {
     </el-button>
 
     <el-dialog
-      title="Add Customer"
       :visible.sync="dialogVisible"
+      title="Add Customer"
       class="modal"
     >
       <div class="virtual-pos__body">

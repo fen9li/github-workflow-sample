@@ -60,8 +60,8 @@ export default {
     </el-button>
 
     <el-dialog
-      title="Virtual POS"
       :visible.sync="dialogVisible"
+      title="Virtual POS"
     >
       <div :class="$style.tabs">
         <el-tabs
@@ -284,8 +284,8 @@ export default {
         >
           <el-button
             :disabled="disableSubmit"
-            class="wide-button"
             :type="disableSubmit ? 'info' : 'primary'"
+            class="wide-button"
             @click="onSubmit"
           >
             Process Charge

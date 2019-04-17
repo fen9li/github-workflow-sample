@@ -44,15 +44,15 @@ export default {
   <div :class="$style.root">
     <el-card class="card-no-padding">
       <information
-        class="card-inline"
         :customer="customer"
+        class="card-inline"
       />
 
       <hr :class="['divider-primary', $style.divider]">
 
       <payment-methods
-        class="card-inline"
         :customer="customer"
+        class="card-inline"
       />
     </el-card>
 

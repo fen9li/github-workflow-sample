@@ -181,8 +181,8 @@ export default {
       >
         <el-button
           :disabled="disableSubmit"
-          class="wide-button"
           :type="disableSubmit ? 'info' : 'primary'"
+          class="wide-button"
           @click="onSubmit"
         >
           Charge Now

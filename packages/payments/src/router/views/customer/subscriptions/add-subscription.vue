@@ -56,8 +56,8 @@ export default {
       Add
     </el-button>
     <el-dialog
-      title="Add Subscription"
       :visible.sync="dialogVisible"
+      title="Add Subscription"
     >
       <el-form
         :model="subscriptionForm"
@@ -159,8 +159,8 @@ export default {
       </el-form>
       <el-button
         v-if="!displayMethodForm"
-        type="primary"
         :class="[$style.save, 'wide-button']"
+        type="primary"
         @click="addSubscription"
       >
         Save

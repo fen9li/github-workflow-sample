@@ -108,9 +108,9 @@ export default {
   <div class="fragments">
     <el-dialog
       ref="dialog"
+      :visible.sync="showAddModal"
       center
       title="Save new display"
-      :visible.sync="showAddModal"
       width="25%"
       top="30vh"
       custom-class="fragments__dialog"
@@ -120,9 +120,9 @@ export default {
         placeholder="Display name"
       />
       <el-button
+        :disabled="saveButtonDisabled"
         type="primary"
         class="fragments__dialog-save"
-        :disabled="saveButtonDisabled"
         @click="saveDisplay"
       >
         Save
@@ -133,9 +133,9 @@ export default {
       class="fragments__no-items"
     >
       <el-button
-        type="text"
         :disabled="!storageApiSupported || !dataQuery"
         :title="!storageApiSupported ? 'Not supported by your browser': ''"
+        type="text"
         class="fragments__trigger"
         @click="showAddModal = true"
       >

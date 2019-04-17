@@ -59,8 +59,8 @@ export default {
       <div
         v-for="(method, idx) in methods"
         :key="idx"
-        shadow="never"
         :class="$style.card"
+        shadow="never"
       >
         <div :class="$style.cardLogo">
           <img
@@ -90,8 +90,8 @@ export default {
           ACC {{ method.accountNumber }}
         </div>
         <el-button
-          type="danger"
           :class="$style.cardDelete"
+          type="danger"
           icon="el-icon-delete"
           size="small"
           circle

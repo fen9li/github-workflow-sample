@@ -84,26 +84,26 @@ export default {
           v-else-if="filter.type === 'numeric'"
           ref="input"
           v-model="model.value"
-          controls-position="right"
           :class="$style.comparisonValue"
+          controls-position="right"
         />
         <el-date-picker
           v-else-if="filter.type === 'date'"
           ref="input"
           v-model="model.value"
           :class="$style.comparisonValue"
+          :append-to-body="false"
           type="date"
           value-format="dd/MM/yyyy"
-          :append-to-body="false"
         />
         <el-date-picker
           v-else-if="filter.type === 'time'"
           ref="input"
           v-model="model.value"
           :class="$style.comparisonValue"
+          :append-to-body="false"
           type="datetime"
           value-format="dd/MM/yyyy hh:mm"
-          :append-to-body="false"
         />
       </template>
     </div>

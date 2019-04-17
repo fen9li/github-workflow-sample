@@ -41,11 +41,11 @@ export default {
       Are you sure you want to delete this customer?
     </p>
     <el-button
-      type="danger"
       :class="[
         $style.submit,
         'wide-button',
       ]"
+      type="danger"
       @click="submit"
     >
       Delete
