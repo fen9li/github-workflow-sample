@@ -8,7 +8,10 @@ import AuthPlugin from './plugins/auth'
 
 Vue.config.productionTip = false
 
-Vue.use(AuthPlugin, { router })
+Vue.use(AuthPlugin, {
+  router,
+  store,
+})
 
 new Vue({
   router,
