@@ -5,6 +5,9 @@ module.exports = {
     disableHostCheck: true,
   },
   configureWebpack: {
+    resolve: {
+      alias: require('./aliases.config').webpack,
+    },
     plugins: [
       new BundleAnalyzerPlugin({
         analyzerMode: process.env.ANALYZE ? 'static' : 'disabled',

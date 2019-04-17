@@ -1,13 +1,12 @@
-<template>
-  <div id="app">
-    <router-view />
-  </div>
-</template>
-
 <script>
+import AppLayout from './components/layout/app-layout.vue'
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'App',
+  components: {
+    AppLayout,
+  },
   computed: {
     ...mapGetters('auth', [
       'loggedIn',
@@ -16,32 +15,30 @@ export default {
 }
 </script>
 
+<template>
+  <app-layout
+    v-if="loggedIn"
+    id="app"
+  />
+  <router-view v-else />
+</template>
+
+<!-- This should generally be the only global CSS in the app. -->
 <style lang="scss">
-
-/* stylelint-disable selector-max-type */
-
-:root {
-  --color-primary: #5e35b1;
-}
-
-html {
-  font-size: 18px;
-}
-
-body {
-  margin: 0;
-}
+@import './styles/index';
 
 #app {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
+  min-width: 1000px;
   height: 100vh;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  color: #2c3e50;
-  text-align: center;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
 }
+
+#nprogress .bar {
+  background: $color-link-text;
+}
+
+.main-container {
+  height: calc(100vh - 72px);
+}
+
 </style>
