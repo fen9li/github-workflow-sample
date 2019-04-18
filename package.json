@@ -12,8 +12,7 @@
     "publish-packages": "lerna publish --yes",
     "lint": "eslint --ext .js,.vue --fix . && stylelint --fix \"packages/**/*.vue\" \"packages/**/*.scss\" && prettier --list-different --write \"**/*.{json,css,scss,md}\" && markdownlint *.md",
     "list-package": "lerna ls -l",
-    "unit": "lerna run unit --since --parallel",
-    "unit:bail": "lerna run unit:related --since --parallel"
+    "unit": "vue-cli-service test:unit"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",

@@ -5,9 +5,11 @@ import store from './state/store'
 import './components/base'
 import './registerServiceWorker'
 import AuthPlugin from './plugins/auth'
+import LayoutPlugin from './plugins/layout'
 
 Vue.config.productionTip = false
 
+Vue.use(LayoutPlugin)
 Vue.use(AuthPlugin, {
   router,
   store,

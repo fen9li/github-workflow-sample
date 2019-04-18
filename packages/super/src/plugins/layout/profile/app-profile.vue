@@ -48,7 +48,7 @@ export default {
 </template>
 
 <style lang="scss">
-@import '@design';
+
 .header-profile {
   &__trigger {
     display: flex;
@@ -59,7 +59,7 @@ export default {
   }
   &__item {
     + .header-profile__item {
-      border-left: 1px solid $color-text;
+      border-left: 1px solid var(--color-text);
     }
   }
   &__avatar {
@@ -71,9 +71,9 @@ export default {
     font-size: 12px;
     font-weight: 900;
     line-height: 36px;
-    color: $primary-text;
+    color: var(--color-primary-text);
     text-align: center;
-    background-image: linear-gradient(180deg, $primary-light 0%, #09bdfe 100%);
+    background-image: linear-gradient(180deg, var(--color-primary-text) 0%, #09bdfe 100%);
     border-radius: 50%;
     img {
       display: block;

@@ -1,79 +1,10 @@
 <script>
-import { authComputed } from '@state/helpers'
-
 export default {
-  computed: {
-    ...authComputed,
-    menu() {
-      return [
-        {
-          title: 'Home',
-          path: '/',
-          icon: 'news',
-        },
-        {
-          title: 'Transactions',
-          path: '/payment/transactions',
-          icon: 'sort',
-
-        },
-        {
-          title: 'Settlements',
-          path: '/payment/settlements',
-          icon: 'view',
-        },
-        {
-          title: 'Customers',
-          path: '/customers',
-          icon: 'service',
-        },
-        {
-          title: 'Products',
-          path: '/products/subscription',
-          icon: 'goods',
-        },
-        {
-          title: 'Subscriptions',
-          path: '/subscriptions',
-          icon: 'goods',
-        },
-        {
-          title: 'Coupons',
-          path: '/coupons',
-          icon: 'tickets',
-        },
-        {
-          title: 'Settings',
-          path: '/settings',
-          icon: 'setting',
-          children: [
-            {
-              title: 'Business Details',
-              path: '/settings/business',
-            },
-            {
-              title: 'Payment Settings',
-              path: '/settings/payment',
-            },
-            {
-              title: 'Notification Settings',
-              path: '/settings/notification',
-            },
-            {
-              title: 'User Access',
-              path: '/settings/user-access',
-            },
-            {
-              title: 'Templates',
-              path: '/settings/templates',
-            },
-            {
-              title: 'Log History',
-              path: '/settings/history',
-            },
-          ],
-        },
-      ]
+  inheritAttrs: false,
+  props: {
+    menu: {
+      type: Array,
+      default: () => [],
     },
   },
 }
@@ -126,14 +57,13 @@ export default {
 
 <style lang="scss">
 /* stylelint-disable no-descending-specificity */
-@import '@design';
 
 .app-sidebar {
   width: 260px;
   height: 100%;
   padding: 1rem 0;
   overflow-y: auto;
-  background: $color-aside-bg;
+  background: var(--color-aside-bg);
   border: none;
 
   .el-menu {
@@ -142,11 +72,11 @@ export default {
 
     [class*=' el-icon-'],
     [class^='el-icon-'] {
-      color: $primary-text !important;
+      color: var(--color-primary-text) !important;
     }
 
     &-item {
-      color: $primary-text !important;
+      color: var(--color-primary-text) !important;
 
       &:hover,
       &:focus,
@@ -173,7 +103,7 @@ export default {
   .el-submenu {
 
     &__title {
-      color: $primary-text;
+      color: var(--color-primary-text);
 
       &:hover,
       &:focus,

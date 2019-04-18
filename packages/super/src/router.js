@@ -9,14 +9,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: {
-        name: 'applications',
-      },
-    },
-    {
-      path: '/applications',
-      name: 'applications',
-      component: () => import('./views/applications'),
+      component: () => import('./views/home'),
     },
   ],
 })

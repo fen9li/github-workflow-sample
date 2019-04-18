@@ -1,46 +1,94 @@
 <script>
-import appConfig from '@src/app.config'
-import AppHeader from '@components/app/header/app-header.vue'
-import AppSidebar from '@components/app/sidebar/app-sidebar.vue'
 import { mapGetters } from 'vuex'
 
 export default {
-  components: {
-    AppHeader,
-    AppSidebar,
-  },
   computed: {
     ...mapGetters('auth', [
       'loggedIn',
     ]),
-  },
-  page: {
-    // All subcomponent titles will be injected into this template.
-    titleTemplate(title) {
-      title = typeof title === 'function' ? title(this.$store) : title
-      return title ? `${title} | ${appConfig.title}` : appConfig.title
+    menu() {
+      return [
+        {
+          title: 'Home',
+          path: '/',
+          icon: 'news',
+        },
+        {
+          title: 'Transactions',
+          path: '/payment/transactions',
+          icon: 'sort',
+
+        },
+        {
+          title: 'Settlements',
+          path: '/payment/settlements',
+          icon: 'view',
+        },
+        {
+          title: 'Customers',
+          path: '/customers',
+          icon: 'service',
+        },
+        {
+          title: 'Products',
+          path: '/products/subscription',
+          icon: 'goods',
+        },
+        {
+          title: 'Subscriptions',
+          path: '/subscriptions',
+          icon: 'goods',
+        },
+        {
+          title: 'Coupons',
+          path: '/coupons',
+          icon: 'tickets',
+        },
+        {
+          title: 'Settings',
+          path: '/settings',
+          icon: 'setting',
+          children: [
+            {
+              title: 'Business Details',
+              path: '/settings/business',
+            },
+            {
+              title: 'Payment Settings',
+              path: '/settings/payment',
+            },
+            {
+              title: 'Notification Settings',
+              path: '/settings/notification',
+            },
+            {
+              title: 'User Access',
+              path: '/settings/user-access',
+            },
+            {
+              title: 'Templates',
+              path: '/settings/templates',
+            },
+            {
+              title: 'Log History',
+              path: '/settings/history',
+            },
+          ],
+        },
+      ]
     },
   },
 }
 </script>
 
 <template>
-  <el-container
+  <app-layout
     v-if="loggedIn"
-    id="app"
+    :menu="menu"
+    app-code="payments"
   >
-    <el-header height="72px">
-      <app-header />
-    </el-header>
-    <el-container class="main-container">
-      <el-aside width="260px">
-        <app-sidebar />
-      </el-aside>
-      <el-main>
-        <router-view :key="$route.path" />
-      </el-main>
-    </el-container>
-  </el-container>
+    <router-view :key="$route.path" />
+  </app-layout>
   <router-view v-else />
 </template>
 
@@ -48,18 +96,7 @@ export default {
 <style lang="scss">
 @import './styles/index';
 
-#app {
-  min-width: 1000px;
-  height: 100vh;
-  overflow: hidden;
-}
-
 #nprogress .bar {
   background: $color-link-text;
 }
-
-.main-container {
-  height: calc(100vh - 72px);
-}
-
 </style>
