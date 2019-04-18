@@ -3,7 +3,7 @@ module.exports = {
     'eslint --fix',
     'prettier --write',
     'git add',
-    'yarn unit --bail --findRelatedTests',
+    'yarn unit:bail',
   ],
   '{!(package)*.json,*.code-snippets,!.(npmrc)*rc}': [
     'prettier --parser json',

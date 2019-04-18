@@ -1,8 +1,8 @@
 /* eslint-disable max-len */
 import * as usersModule from './users'
 
-describe('@state/modules/users', () => {
-  it.skip('exports a valid Vuex module', () => {
+describe.skip('@state/modules/users', () => {
+  it('exports a valid Vuex module', () => {
     expect(usersModule).toBeAVuexModule()
   })
 
@@ -14,7 +14,7 @@ describe('@state/modules/users', () => {
       })
     })
 
-    it.skip('actions.fetchUser returns the current user without fetching it again', () => {
+    it('actions.fetchUser returns the current user without fetching it again', () => {
       expect.assertions(2)
 
       const axios = require('axios')
@@ -28,7 +28,7 @@ describe('@state/modules/users', () => {
       })
     })
 
-    it.skip('actions.fetchUser rejects with 400 when provided a bad username', () => {
+    it('actions.fetchUser rejects with 400 when provided a bad username', () => {
       expect.assertions(1)
 
       return store
@@ -45,7 +45,7 @@ describe('@state/modules/users', () => {
       store = createModuleStore(usersModule)
     })
 
-    it.skip('actions.fetchUser rejects with 401', () => {
+    it('actions.fetchUser rejects with 401', () => {
       expect.assertions(1)
 
       return store

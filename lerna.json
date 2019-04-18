@@ -1,6 +1,6 @@
 {
   "version": "independent",
-  "useWorkspaces": true,
+  "useWorkspaces": false,
   "npmClient": "yarn",
   "npmClientArgs": ["--no-package-lock"],
   "command": {

@@ -1,6 +1,6 @@
 const path = require('path')
 const appConfig = require('./src/app.config')
-const babelConfig = require('./babel.config')
+const babelConfig = require('./.babelrc')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 function resolve(dir) {
