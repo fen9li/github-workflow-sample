@@ -1,8 +1,5 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
     "bootstrap": "lerna bootstrap --nohoist=*",
     "bootstrap:ci": "lerna bootstrap --ci --force-local",
@@ -15,9 +12,8 @@
     "publish-packages": "lerna publish --yes",
     "lint": "eslint --ext .js,.vue --fix . && stylelint --fix \"packages/**/*.vue\" \"packages/**/*.scss\" && prettier --list-different --write \"**/*.{json,css,scss,md}\" && markdownlint *.md",
     "list-package": "lerna ls -l",
-    "test": "lerna run unit --since --parallel --no-bail",
-    "unit": "vue-cli-service test:unit",
-    "unit:watch": "yarn unit --watch --notify --notifyMode change"
+    "unit": "lerna run unit --since --parallel",
+    "unit:bail": "lerna run unit:related --since --parallel"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -28,7 +24,7 @@
     "@babel/runtime-corejs2": "^7.3.4",
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
-    "@vue/cli-plugin-babel": "^3.5.0",
+    "@vue/cli-plugin-babel": "^3.6.0",
     "@vue/cli-plugin-e2e-cypress": "^3.5.0",
     "@vue/cli-plugin-eslint": "^3.6.0",
     "@vue/cli-plugin-pwa": "^3.5.0",
