@@ -12,14 +12,14 @@ export default {
       default: () => ({}),
     },
   },
-  data() {
-    return {
-      dialogVisible: false,
-    }
-  },
   methods: {
     submit() {
-      this.dialogVisible = false
+      this.$notify({
+        type: 'success',
+        title: 'Success',
+        message: 'Subscription successfully deleted',
+      })
+      this.$emit('update:visible', false)
     },
   },
 }
@@ -27,17 +27,10 @@ export default {
 
 <template>
   <div :class="$style.root">
-    <el-button
-      type="danger"
-      icon="el-icon-delete"
-      size="small"
-      circle
-      @click="dialogVisible = true"
-    />
-
     <state-dialog
       title="Delete Subscription"
-      :visible.sync="dialogVisible"
+      v-bind="$attrs"
+      v-on="$listeners"
     >
       <el-icon
         slot="icon"

@@ -21,9 +21,14 @@ export default {
       rules: {},
     }
   },
-  method: {
-    onSave() {
-      this.dialogVisible = false
+  methods: {
+    submit() {
+      this.$notify({
+        type: 'success',
+        title: 'Success',
+        message: 'Changes successfully saved',
+      })
+      this.$emit('update:visible', false)
     },
   },
 }
@@ -31,17 +36,10 @@ export default {
 
 <template>
   <div :class="$style.root">
-    <el-button
-      type="info"
-      size="small"
-      icon="el-icon-edit"
-      circle
-      @click="dialogVisible = true"
-    />
-
     <el-dialog
       title="Edit Subscription"
-      :visible.sync="dialogVisible"
+      v-bind="$attrs"
+      v-on="$listeners"
     >
       <el-form
         :model="form"
@@ -166,7 +164,7 @@ export default {
       <el-button
         type="primary"
         :class="$style.saveButton"
-        @click="onSave"
+        @click="submit"
       >
         Save
       </el-button>
