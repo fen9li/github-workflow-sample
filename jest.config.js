@@ -20,8 +20,8 @@ module.exports = {
     // Transform any static assets to empty strings
     '\\.(jpe?g|png|gif|webp|svg|mp4|webm|ogg|mp3|wav|flac|aac|woff2?|eot|ttf|otf)$':
       '<rootDir>/tests/unit/fixtures/empty-string.js',
-    ...require('./aliases.config').jest,
-    '@loyalty-corp/superadmin': '<rootDir>/../admin',
+    // ...require('./aliases.config').jest,
+    '@loyalty-corp/superadmin/$1': '<rootDir>/packages/super/$1',
   },
   snapshotSerializers: ['jest-serializer-vue'],
   coverageDirectory: '<rootDir>/tests/unit/coverage',

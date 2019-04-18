@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import fs from 'fs'
-import path from 'path'
-import axios from 'axios'
-import '../../src/externals.js'
+// import fs from 'fs'
+// import path from 'path'
+// import axios from 'axios'
+// import '../../src/externals.js'
 
 // ===
 // Utility functions
@@ -33,15 +33,15 @@ Vue.config.productionTip = false
 // Register global components
 // ===
 
-const globalComponentFiles = fs
-  .readdirSync(path.join(__dirname, '../../src/components'))
-  .filter(fileName => /^_base-.+\.vue$/.test(fileName))
+// const globalComponentFiles = fs
+//   .readdirSync(path.join(__dirname, '../../src/components'))
+//   .filter(fileName => /^_base-.+\.vue$/.test(fileName))
 
-for (const fileName of globalComponentFiles) {
-  const componentName = _.pascalCase(fileName.match(/^_(base-.+)\.vue$/)[1])
-  const componentConfig = require('../../src/components/' + fileName)
-  Vue.component(componentName, componentConfig.default || componentConfig)
-}
+// for (const fileName of globalComponentFiles) {
+//   const componentName = _.pascalCase(fileName.match(/^_(base-.+)\.vue$/)[1])
+//   const componentConfig = require('../../src/components/' + fileName)
+//   Vue.component(componentName, componentConfig.default || componentConfig)
+// }
 
 // ===
 // Mock window properties not handled by jsdom
@@ -171,9 +171,9 @@ global.createModuleStore = (vuexModule, options = {}) => {
       },
     },
   })
-  axios.defaults.headers.common.Authorization = options.currentUser
-    ? options.currentUser.token
-    : ''
+  // axios.defaults.headers.common.Authorization = options.currentUser
+  //   ? options.currentUser.token
+  //   : ''
   if (vuexModule.actions.init) {
     store.dispatch('init')
   }
