@@ -6,8 +6,8 @@ import settlementInfo from './settlement-info'
 import settlementDetailsMock from
   '@mock-api/resources/settlement-details-mock.js'
 import StaticProcessor from '@core/static-processor'
-import summaryTableConfig from './settlement-summary-table-config.js'
-import detailsTableConfig from './settlement-details-tables-config.js'
+import summaryTableConfig from './settlement-summary-table.js'
+import detailsTableConfig from './settlement-table.js'
 import formatDollar from '@utils/format-dollar.js'
 
 export default {
@@ -32,8 +32,8 @@ export default {
         data: settlementDetailsMock.summaryTable,
       }),
       settlementDetailsMock,
-      ...detailsTableConfig,
-      ...summaryTableConfig,
+      detailsColumns: detailsTableConfig.columns,
+      summaryColumns: summaryTableConfig.columns,
     }
   },
   methods: {
@@ -73,7 +73,7 @@ export default {
     <table-layout
       title="Summary"
       table-name="settlementSummary"
-      :columns="summaryTableConfig.columns"
+      :columns="summaryColumns"
       :processor="summaryProcessor"
       :summary-method="getSummary"
       :table-controls="false"
@@ -86,8 +86,7 @@ export default {
     <table-layout
       title="Settlement - Transaction Log"
       table-name="settlementTransactionLog"
-      :filters="detailsTableConfig.filters"
-      :columns="detailsTableConfig.columns"
+      :columns="detailsColumns"
       :processor="detailsProcessor"
       :table-controls="false"
     />
