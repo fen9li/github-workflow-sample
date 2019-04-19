@@ -1,3 +1,4 @@
+import get from 'lodash/get'
 import authService from './auth.service'
 import authState from './auth.state'
 
@@ -46,7 +47,9 @@ export default {
           name: 'login',
           beforeEnter(to, from, next) {
             authService.renewTokens()
-              .then(() => next(from))
+              .then(() => {
+                next(get(to, 'params.targetPath', '/'))
+              })
               .catch(() => {
                 authService.login()
               })
@@ -72,18 +75,13 @@ export default {
           return next()
         }
 
-        // if (process.env.VUE_APP_STANDALONE) {
-        next({ name: 'login' })
-        // } else {
-        //   window.location.href = '/signin'
-        // }
+        next({
+          name: 'login',
+          params: {
+            targetPath: to.fullPath,
+          },
+        })
       })
     }
-
-    // if (!process.env.VUE_APP_STANDALONE) {
-    //   authService.renewTokens().catch(() => {
-    //     window.location.href = '/signin'
-    //   })
-    // }
   },
 }
