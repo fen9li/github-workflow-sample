@@ -1,57 +1,7 @@
 const dateFormat = 'DD/MM/YYYY hh:mm A'
 
-const detailsTableConfig = {
-  filters: [{
-    attribute: 'dateCreated',
-    icon: 'el-icon-tickets',
-    type: 'date',
-  },
+const TABLE_COLUMNS = [
   {
-    attribute: 'type',
-    type: 'string',
-    icon: 'el-icon-tickets',
-  },
-  {
-    attribute: 'amount',
-    type: 'numeric',
-    icon: 'el-icon-tickets',
-  },
-  {
-    attribute: 'fee',
-    type: 'numeric',
-    icon: 'el-icon-tickets',
-  },
-  {
-    attribute: 'net',
-    type: 'numeric',
-    icon: 'el-icon-tickets',
-  },
-  {
-    attribute: 'statementDescriptor',
-    type: 'string',
-    icon: 'el-icon-tickets',
-  },
-  {
-    attribute: 'orderId',
-    type: 'string',
-    icon: 'el-icon-tickets',
-  },
-  {
-    attribute: 'status',
-    type: 'string',
-    icon: 'el-icon-tickets',
-  },
-  {
-    attribute: 'dateFinalised',
-    icon: 'el-icon-tickets',
-    type: 'date',
-  },
-  {
-    attribute: 'paymentMethod',
-    type: 'string',
-    icon: 'el-icon-tickets',
-  }],
-  columns: [{
     name: 'dateCreated',
     label: 'Date Created',
     format: {
@@ -146,9 +96,9 @@ const detailsTableConfig = {
   {
     name: 'paymentMethod',
     label: 'Payment Method',
-  }],
-}
+  },
+]
 
 export default {
-  detailsTableConfig,
+  columns: TABLE_COLUMNS,
 }
