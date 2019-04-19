@@ -41,7 +41,7 @@ module.exports = {
           },
         },
       } : {
-        before: require('./tests/mock-api'),
+        // before: require('./tests/mock-api'),
       }),
   },
   chainWebpack: config => {

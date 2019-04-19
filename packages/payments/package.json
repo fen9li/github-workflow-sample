@@ -12,7 +12,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.14",
     "@fortawesome/free-solid-svg-icons": "^5.7.1",
     "@fortawesome/vue-fontawesome": "^0.1.5",
-    "@loyalty-corp/superadmin": "file:../super",
+    "@loyalty-corp/superadmin": "0.0.1",
     "axios": "^0.18.0",
     "bodybuilder": "^2.2.17",
     "d3": "^5.9.2",
@@ -29,42 +29,6 @@
     "vue-the-mask": "^0.11.1",
     "vuex": "^3.1.0"
   },
-  "devDependencies": {
-    "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
-    "@vue/cli-plugin-babel": "3.6.0",
-    "@vue/cli-plugin-e2e-cypress": "3.6.0",
-    "@vue/cli-plugin-eslint": "3.6.0",
-    "@vue/cli-plugin-unit-jest": "3.6.3",
-    "@vue/cli-service": "3.6.0",
-    "@vue/eslint-config-prettier": "4.0.1",
-    "@vue/eslint-config-standard": "4.0.0",
-    "@vue/test-utils": "1.0.0-beta.29",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "^10.0.1",
-    "babel-jest": "24.7.1",
-    "babel-plugin-component": "^1.1.1",
-    "babel-plugin-require-context-hook": "^1.0.0",
-    "cross-env": "5.2.0",
-    "eslint": "^5.16.0",
-    "eslint-config-google": "^0.12.0",
-    "eslint-plugin-vue": "5.2.2",
-    "express": "4.16.4",
-    "hygen": "2.1.2",
-    "imagemin-lint-staged": "0.4.0",
-    "lint-staged": "^8.1.5",
-    "markdownlint-cli": "0.15.0",
-    "node-sass": "4.11.0",
-    "npm-run-all": "4.1.5",
-    "sass-loader": "7.1.0",
-    "stylelint": "9.10.1",
-    "stylelint-config-css-modules": "1.4.0",
-    "stylelint-config-prettier": "4.0.0",
-    "stylelint-config-recess-order": "2.0.2",
-    "stylelint-config-standard": "18.3.0",
-    "stylelint-scss": "3.6.0",
-    "vue-template-compiler": "2.6.10",
-    "vuepress": "0.14.11"
-  },
   "engines": {
     "node": ">=8.9.0",
     "yarn": ">=1.0.0"
@@ -73,8 +37,5 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ],
-  "devDependencies": {
-    "@babel/plugin-proposal-export-namespace-from": "^7.2.0"
-  }
+  ]
 }

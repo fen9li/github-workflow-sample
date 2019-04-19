@@ -1,6 +1,7 @@
 {
   "name": "@loyalty-corp/superadmin",
   "version": "0.0.1",
+  "main": "./src/library.js",
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
