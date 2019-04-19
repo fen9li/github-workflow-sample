@@ -67,7 +67,6 @@ export default {
   <el-dialog
     v-bind="$attrs"
     title="Create coupon"
-    class="modal"
     v-on="$listeners"
   >
     <div>

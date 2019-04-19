@@ -80,7 +80,6 @@ export default {
   <div>
     <el-dialog
       title="Add Customer"
-      class="modal"
       v-bind="$attrs"
       v-on="$listeners"
     >

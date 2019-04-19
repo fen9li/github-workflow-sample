@@ -73,6 +73,6 @@ export default {
 }
 
 .divider {
-  margin: 0 $side-card-spacing;
+  margin: 0 var(--size-card-spacing);
 }
 </style>

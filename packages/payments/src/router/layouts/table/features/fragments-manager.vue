@@ -210,12 +210,12 @@ export default {
   @import '@design';
 
   .root {
-    margin-left: rem(15px);
+    margin-left: 1rem;
   }
 
   .save {
     width: 100%;
-    margin-top: rem(20px) !important;
+    margin-top: 1.2rem !important;
   }
 
   .trigger {
@@ -223,7 +223,7 @@ export default {
   }
 
   .savedDrop {
-    padding: rem(15px) rem(25px) !important;
+    padding: 1rem 1.5rem !important;
 
     :global {
       .el-radio-group {
@@ -233,8 +233,8 @@ export default {
   }
 
   .create {
-    padding-top: rem(10px);
-    padding-bottom: rem(10px);
+    padding-top: .6rem;
+    padding-bottom: .6rem;
     color: $color-text-light;
     cursor: pointer;
     transition: color .15s ease-in-out;
@@ -245,15 +245,14 @@ export default {
   }
 
   .createIcon {
-    margin-right: rem(8px);
-    margin-left: rem(-1px);
+    margin-right: .5rem;
   }
 
   .item {
     display: flex;
     justify-content: space-between;
-    padding-top: rem(10px);
-    padding-bottom: rem(10px);
+    padding-top: .6rem;
+    padding-bottom: .6rem;
   }
 
   .itemRadio {
@@ -273,7 +272,7 @@ export default {
   }
 
   .delete {
-    font-size: rem(18px);
+    font-size: 1.1rem;
     cursor: pointer;
     transition: color .15s ease-in-out;
 

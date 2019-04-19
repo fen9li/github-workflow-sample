@@ -67,6 +67,6 @@ export default {
 @import '@design';
 
 .button {
-  margin-left: rem(15px);
+  margin-left: 1rem;
 }
 </style>

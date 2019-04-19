@@ -224,7 +224,7 @@ export default {
     padding: 1.3rem;
     text-align: right;
     background: #fff1f1;
-    border-radius: rem(13px);
+    border-radius: 0.7rem;
   }
 
   .warnMeta {
@@ -233,7 +233,7 @@ export default {
 
   .warnDescription {
     margin-top: 1rem;
-    font-size: rem(12px);
+    font-size: .7rem;
   }
 
   .detailsBlock {
@@ -269,7 +269,7 @@ export default {
     font-weight: bold;
     color: $color-body-bg;
     background: $color-error;
-    border-radius: rem(12px);
+    border-radius: 0.7rem;
   }
 
   .list {

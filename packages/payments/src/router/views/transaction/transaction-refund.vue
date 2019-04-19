@@ -86,7 +86,6 @@ export default {
   <el-dialog
     title="Refund Payment"
     :visible="visible"
-    class="modal"
     @update:visible="$emit('update:visible', $event)"
   >
     <el-form

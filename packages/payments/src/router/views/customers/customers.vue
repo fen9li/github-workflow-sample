@@ -31,7 +31,7 @@ export default {
   methods: {
     onRowClick(row) {
       this.$router.push({
-        name: 'customers-details',
+        name: 'customer-details',
         params: { id: 'unknown' },
       })
     },

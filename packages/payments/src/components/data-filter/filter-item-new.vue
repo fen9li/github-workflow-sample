@@ -98,7 +98,6 @@ export default {
 @import '@design';
 
 .filterItem {
-
   button {
     background: rgba(0,0,0,.05);
   }
@@ -138,6 +137,6 @@ export default {
 }
 
 .addFilter {
-  font-size: 1rem;
+  font-size: 1rem !important;
 }
 </style>

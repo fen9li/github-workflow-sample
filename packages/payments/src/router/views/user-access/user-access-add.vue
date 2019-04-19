@@ -66,7 +66,6 @@ export default {
     <el-dialog
       :visible.sync="dialogVisible"
       title="Add User"
-      class="modal"
     >
       <el-form
         ref="form"

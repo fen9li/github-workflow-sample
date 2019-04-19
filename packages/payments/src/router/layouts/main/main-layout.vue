@@ -109,7 +109,7 @@ export default {
   .backButton {
     position: absolute;
     left: 0;
-    padding: .2rem;
+    padding: .2rem !important;
     border-color: $primary;
     border-width: 2px;
 
@@ -124,7 +124,7 @@ export default {
 .headerTitle {
   margin: 0;
   font-size: 1.5rem;
-  font-weight: $heading-font-weight;
+  font-weight: var(--heading-font-weight);
 }
 
 .headerSlot {

@@ -125,7 +125,7 @@ export default {
   @import '@design';
 
   .root {
-    margin-left: rem(15px);
+    margin-left: 1rem;
   }
 
   .button {
@@ -133,13 +133,13 @@ export default {
 
     :global {
       .el-icon--right {
-        margin-left: rem(10px);
+        margin-left: 0.6rem;
       }
     }
   }
 
   .wrapper {
-    padding: 0 rem(25px) 0 rem(15px);
+    padding: 0 1.5rem 0 1rem;
   }
 
   .list {
@@ -152,7 +152,7 @@ export default {
         margin: 0 !important;
 
         &__label {
-          padding: rem(10px) 0;
+          padding: .6rem 0;
           font-size: 1rem;
           line-height: 1rem;
         }
@@ -161,6 +161,6 @@ export default {
   }
 
   .itemIco {
-    margin: 0 rem(10px) 0 rem(12px);
+    margin: 0 0.6rem 0 0.7rem;
   }
 </style>

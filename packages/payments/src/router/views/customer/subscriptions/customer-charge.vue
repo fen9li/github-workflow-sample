@@ -105,7 +105,6 @@ export default {
     <el-dialog
       :visible.sync="dialogVisible"
       title="Charge Amount Owing"
-      class="modal"
     >
       <el-form
         ref="form"
