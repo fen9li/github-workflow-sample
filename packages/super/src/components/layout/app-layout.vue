@@ -159,13 +159,13 @@ export default {
     position: absolute;
     left: 0;
     padding: .2rem !important;
-    border-color: $primary;
+    border-color: var(--color-primary);
     border-width: 2px;
 
     i {
       font-size: 1.2rem;
       font-weight: bold;
-      color: $primary;
+      color: var(--color-primary);
     }
   }
 }
@@ -207,7 +207,7 @@ export default {
   height: 100%;
   padding: 1rem 0;
   overflow-y: auto;
-  background: $color-aside-bg;
+  background: var(--color-aside-bg);
   border: none;
 
   .el-menu {
@@ -216,11 +216,11 @@ export default {
 
     [class*=' el-icon-'],
     [class^='el-icon-'] {
-      color: $primary-text !important;
+      color: var(--color-primary-text) !important;
     }
 
     &-item {
-      color: $primary-text !important;
+      color: var(--color-primary-text) !important;
 
       &:hover,
       &:focus,
@@ -247,7 +247,7 @@ export default {
   .el-submenu {
 
     &__title {
-      color: $primary-text;
+      color: var(--color-primary-text);
 
       &:hover,
       &:focus,

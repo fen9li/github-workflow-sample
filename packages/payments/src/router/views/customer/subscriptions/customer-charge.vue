@@ -219,7 +219,7 @@ export default {
 
 .balance {
   margin-right: 10px;
-  color: $color-error;
+  color: var(--color-error);
 }
 
 .text {

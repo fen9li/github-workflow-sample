@@ -76,11 +76,11 @@ export default {
 
   .trigger {
     font-size: 20px;
-    color: $color-error;
+    color: var(--color-error);
 
     &:hover {
-      color: $color-error !important;
-      border-color: $color-error !important;
+      color: var(--color-error) !important;
+      border-color: var(--color-error) !important;
     }
   }
 
@@ -95,8 +95,8 @@ export default {
     width: 26px;
     height: 26px;
     font-size: 18px;
-    color: $primary-text;
-    background-color: $color-error;
+    color: var(--color-primary-text);
+    background-color: var(--color-error);
     border-radius: 51%
   }
 </style>

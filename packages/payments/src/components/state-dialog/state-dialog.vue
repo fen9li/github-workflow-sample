@@ -88,7 +88,7 @@ export default {
   width: 5.5rem;
   height: 5.5rem;
   margin: 1rem auto;
-  border: .15rem dashed $primary;
+  border: .15rem dashed var(--color-primary);
   border-radius: 50%;
 }
 

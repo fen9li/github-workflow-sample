@@ -180,13 +180,13 @@ export default {
   @import '@design';
 
   .note {
-    color: $color-text-light;
+    color: var(--color-text-light);
   }
 
   .noteIco {
     padding-right: .5rem;
     font-size: 1rem;
-    color: $primary-light;
+    color: var(--color-primary-light);
   }
 
   .amount {

@@ -1,15 +1,40 @@
 /* stylelint-disable custom-property-empty-line-before */
 
 :root {
-  --color-bg: #fff;
-  --color-divider: #e4e7ed;
   --color-primary: #0086ff;
   --color-primary-text: #fff;
-  --color-error: red;
+  --color-primary-black: #000;
+  --color-primary-light: #1c8afa;
+  --color-primary-lightest: #409eff;
+  --color-error: #f00;
   --color-success: #69c755;
+  --color-bg: #fff;
+  --color-aside-bg: var(--color-primary-black);
+
+  // CONTENT§
+  --color-body-bg: #fff;
+  --color-header-bg: #fff;
+  --color-divider: #e4e7ed;
   --color-text: #000;
-  --color-link: #39a275;
-  --color-aside-bg: #000;
+  --color-text-light: lighten(var(--color-text), 60%);
+  --color-heading-text: #35495e;
+
+  // LINKS
+  --color-link-text: #39a275;
+  --color-link-text-active: var(--color-text);
+
+  // BUTTONS
+  --color-button-text: #fff;
+  --color-button-bg: var(--color-primary);
+  --color-button-disabled-bg: darken(
+    desaturate(var(--color-button-bg), 20%),
+    10%
+  );
+
+  // INPUTS
+  --color-input-border: lighten(var(--color-heading-text), 50%);
+
+  // CARDS
   --size-card-spacing: 3rem;
   --heading-font-weight: 400;
   --root-font-size: 16px;

@@ -110,13 +110,13 @@ export default {
     position: absolute;
     left: 0;
     padding: .2rem !important;
-    border-color: $primary;
+    border-color: var(--color-primary);
     border-width: 2px;
 
     i {
       font-size: 1.2rem;
       font-weight: bold;
-      color: $primary;
+      color: var(--color-primary);
     }
   }
 }

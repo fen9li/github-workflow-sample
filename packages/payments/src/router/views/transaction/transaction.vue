@@ -267,8 +267,8 @@ export default {
     margin-bottom: .8rem;
     font-size: 1rem;
     font-weight: bold;
-    color: $color-body-bg;
-    background: $color-error;
+    color: var(--color-body-bg);
+    background: var(--color-error);
     border-radius: 0.7rem;
   }
 

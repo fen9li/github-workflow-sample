@@ -211,7 +211,7 @@ export default {
 }
 
 .cellMore {
-  color: $primary;
+  color: var(--color-primary);
 }
 </style>
 
@@ -249,7 +249,7 @@ export default {
   &.desc {
     .caret-wrapper {
       &:after {
-        color: $primary;
+        color: var(--color-primary);
       }
     }
   }
@@ -257,7 +257,7 @@ export default {
   &.asc {
     .caret-wrapper {
       &:after {
-        color: $primary;
+        color: var(--color-primary);
         transform: rotateZ(180deg);
       }
     }

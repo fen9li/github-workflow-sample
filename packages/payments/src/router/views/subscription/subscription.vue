@@ -112,7 +112,7 @@ export default {
 }
 
 .balanceNegative {
-  color: $color-error;
+  color: var(--color-error);
 }
 
 .balanceCount {

@@ -129,7 +129,7 @@ export default {
 
   .noteIco {
     font-size: 16px;
-    color: $primary-light;
+    color: var(--color-primary-light);
   }
 
   .radioList {

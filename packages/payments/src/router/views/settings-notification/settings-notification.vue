@@ -154,7 +154,7 @@ export default {
 
 .description {
   margin-top: 0.4rem;
-  color: $color-text-light;
+  color: var(--color-text-light);
   white-space: normal;
 }
 

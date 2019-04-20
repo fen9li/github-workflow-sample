@@ -91,7 +91,7 @@ export default {
 }
 
 .owing {
-  color: $color-error;
+  color: var(--color-error);
 }
 
 .balanceCount {

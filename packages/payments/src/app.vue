@@ -97,6 +97,6 @@ export default {
 @import './styles/index';
 
 #nprogress .bar {
-  background: $color-link-text;
+  background: var(--color-link-text);
 }
 </style>

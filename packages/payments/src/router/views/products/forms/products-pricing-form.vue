@@ -188,7 +188,7 @@ export default {
 .rootOutlined {
   min-width: 36rem;
   padding: 2rem 3.5rem 2rem 3rem;
-  border: 1px solid $color-primary;
+  border: 1px solid var(--color-primary);
   border-radius: 0.4rem;
 }
 

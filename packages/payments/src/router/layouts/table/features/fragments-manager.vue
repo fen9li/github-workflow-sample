@@ -235,12 +235,12 @@ export default {
   .create {
     padding-top: .6rem;
     padding-bottom: .6rem;
-    color: $color-text-light;
+    color: var(--color-text-light);
     cursor: pointer;
     transition: color .15s ease-in-out;
 
     &:hover {
-      color: $primary-lightest;
+      color: var(--color-primary-lightest);
     }
   }
 
@@ -277,7 +277,7 @@ export default {
     transition: color .15s ease-in-out;
 
     &:hover {
-      color: $primary-lightest;
+      color: var(--color-primary-lightest);
     }
   }
 </style>

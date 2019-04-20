@@ -168,12 +168,12 @@ export default {
 
   .trigger {
     font-size: 20px;
-    color: $primary-light;
+    color: var(--color-primary-light);
   }
 
   .noteIco {
     font-size: 16px;
-    color: $primary-light;
+    color: var(--color-primary-light);
   }
 
   .radioList {

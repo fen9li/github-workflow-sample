@@ -119,7 +119,7 @@ export default {
   transition: color 0.15s ease-in-out;
 
   &:hover {
-    color: $primary;
+    color: var(--color-primary);
   }
 }
 

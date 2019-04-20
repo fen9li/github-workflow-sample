@@ -70,6 +70,6 @@ export default {
 
   .subicon {
     font-size: 24px;
-    color: $color-success;
+    color: var(--color-success);
   }
 </style>
