@@ -6,30 +6,27 @@ services:
     cap_add: [ 'NET_ADMIN', 'NET_RAW' ]
     restart: on-failure
   super:
-    image: manage_admin:latest
+    image: loyaltycorp/manage-app
     build:
       context: ./
       dockerfile: .docker/app.dockerfile
     working_dir: /home/node/app
     volumes:
       - ./:/home/node/app
-    expose:
-      - "8080"
-    command: bash -c "yarn link node-sass && yarn dev super"
+      - /home/node/app/node_modules/node-sass
   payments:
     depends_on: [ super ]
-    image: manage_admin:latest
+    image: loyaltycorp/manage-app
     working_dir: /home/node/app
     environment:
+      - YARN_DEV_NAME=payments
       - VUE_APP_BASE_URI=/payments
     volumes:
       - ./:/home/node/app
-    expose:
-      - "8080"
-    command: bash -c "yarn link node-sass && yarn dev payments"
+      - /home/node/app/node_modules/node-sass
   nginx:
-    depends_on: [ dockerhost ] # apps should be ready on 8080 port before server launch
-    image: manage_nginx:latest
+    depends_on: [ payments ] # apps should be ready on 8080 port before server launch
+    image: loyaltycorp/manage-nginx
     build:
       context: ./
       dockerfile: .docker/nginx.dockerfile
@@ -41,4 +38,3 @@ services:
       WAIT_HOSTS: super:8080, payments:8080
       WAIT_HOSTS_TIMEOUT: 150
       WAIT_SLEEP_INTERVAL: 3
-    command: /bin/bash -c "/wait && exec nginx -g 'daemon off;'"

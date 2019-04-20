@@ -15,8 +15,7 @@ export default [
   {
     path: '/payment/transactions/:id',
     name: 'payment-transaction-details',
-    component: () =>
-      lazy(import('@views/transaction')),
+    component: () => lazy(import('@views/transaction')),
     props: true,
   },
   {

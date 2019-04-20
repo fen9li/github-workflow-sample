@@ -32,17 +32,7 @@ module.exports = {
   // https://cli.vuejs.org/guide/cli-service.html
   devServer: {
     disableHostCheck: true,
-    port: process.env.VUE_APP_DEV_PORT,
-    ...(process.env.API_BASE_URL
-      ? {
-        proxy: {
-          '/api': {
-            target: process.env.API_BASE_URL,
-          },
-        },
-      } : {
-        // before: require('./tests/mock-api'),
-      }),
+    public: process.env.VUE_APP_DEV_PUBLIC,
   },
   chainWebpack: config => {
     config.module
