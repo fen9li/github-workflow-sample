@@ -8,7 +8,7 @@ function resolve(dir) {
 }
 
 module.exports = {
-  publicPath: process.env.VUE_APP_BASE_URI,
+  publicPath: process.env.VUE_APP_BASE_URL,
   configureWebpack: {
     // We provide the app's title in Webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.

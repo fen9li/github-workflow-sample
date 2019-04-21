@@ -1,4 +1,4 @@
-version: '3'
+version: '3.3'
 
 services:
   dockerhost:
@@ -6,6 +6,7 @@ services:
     cap_add: [ 'NET_ADMIN', 'NET_RAW' ]
     restart: on-failure
   super:
+    &super
     image: loyaltycorp/manage-app
     build:
       context: ./
@@ -15,17 +16,19 @@ services:
       - ./:/home/node/app
       - /home/node/app/node_modules/node-sass
   payments:
+    << : *super
     depends_on: [ super ]
-    image: loyaltycorp/manage-app
-    working_dir: /home/node/app
     environment:
       - YARN_DEV_NAME=payments
-      - VUE_APP_BASE_URI=/payments
-    volumes:
-      - ./:/home/node/app
-      - /home/node/app/node_modules/node-sass
+      - VUE_APP_BASE_URL=/payments
+  online-offers:
+    << : *super
+    depends_on: [ super ]
+    environment:
+      - YARN_DEV_NAME=online-offers
+      - VUE_APP_BASE_URL=/online-offers
   nginx:
-    depends_on: [ payments ] # apps should be ready on 8080 port before server launch
+    depends_on: [ super ] # apps should be ready on 8080 port before server launch
     image: loyaltycorp/manage-nginx
     build:
       context: ./
@@ -35,6 +38,6 @@ services:
     ports:
     - '8080:8080'
     environment:
-      WAIT_HOSTS: super:8080, payments:8080
+      WAIT_HOSTS: super:8080, online-offers:8080, payments:8080
       WAIT_HOSTS_TIMEOUT: 150
       WAIT_SLEEP_INTERVAL: 3

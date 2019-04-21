@@ -2,15 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './state/store'
-import './components/base'
-import './registerServiceWorker'
-import AuthPlugin from './plugins/auth'
-import LayoutPlugin from './plugins/layout'
+import ManageLib from '@lib'
+import applications from '@lib/applications'
 
-Vue.config.productionTip = false
-
-Vue.use(LayoutPlugin)
-Vue.use(AuthPlugin, {
+Vue.use(ManageLib, {
+  config: applications.super,
   router,
   store,
 })

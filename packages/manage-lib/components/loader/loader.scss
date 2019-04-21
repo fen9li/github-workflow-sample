@@ -1,0 +1,58 @@
+.base-loader {
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__spin {
+    position: relative;
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    border-color: rgba(0, 0, 0, 0.12);
+    border-style: solid;
+    border-width: 3px;
+    border-top-color: black;
+    border-top-color: var(--color-primary, black);
+    border-radius: 50%;
+    animation: loading 0.6s linear infinite;
+
+    &--large {
+      width: 3rem;
+      height: 3rem;
+    }
+  }
+
+  &--fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  &--state {
+    flex-direction: column;
+    font-size: 1.5rem;
+    font-weight: 100;
+
+    .base-loader__spin {
+      margin: 1.5rem;
+    }
+  }
+
+  &--transparent {
+    background: rgba(255, 255, 255, 0.8);
+  }
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

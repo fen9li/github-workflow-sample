@@ -91,12 +91,3 @@ export default {
   </app-layout>
   <router-view v-else />
 </template>
-
-<!-- This should generally be the only global CSS in the app. -->
-<style lang="scss">
-@import './styles/index';
-
-#nprogress .bar {
-  background: var(--color-link-text);
-}
-</style>

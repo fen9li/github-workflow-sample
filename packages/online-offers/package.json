@@ -1,0 +1,22 @@
+{
+  "name": "manage-online-offers",
+  "private": true,
+  "version": "0.0.1",
+  "main": "./library.js",
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "build:ci": "cross-env ANALYZE=true vue-cli-service build"
+  },
+  "dependencies": {
+    "@loyalty-corp/manage-lib": "0.0.1",
+    "vue": "^2.6.6",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

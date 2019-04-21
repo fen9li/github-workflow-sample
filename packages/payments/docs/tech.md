@@ -165,18 +165,6 @@ Similarly to importing global modules, referencing aliased assets in _non_-modul
 background: url('~@assets/images/background.png');
 ```
 
-### Design variables and tooling
-
-All our [variables](https://sass-lang.com/guide#topic-2), [placeholder classes](https://sass-lang.com/guide#topic-7), [mixins](https://sass-lang.com/guide#topic-6), and other design tooling are in the `src/design` folder. Each of these files define variables, prefixed with the name of the file, then combined in `src/design/index.scss`. This combined file is aliased as `@design` for convenience and can be imported into SCSS using:
-
-```scss
-@import '@design';
-```
-
-This makes all our design variables available in your component or SCSS file.
-
-> NOTE: The `src/design` folder should never contain code that compiles to actual CSS, as that CSS would be duplicated across every component the file is imported into.
-
 ### CSS modules
 
 As mentioned earlier, every Vue component should be a CSS module. That means the classes you define are not _actually_ classes. When you write:
@@ -256,8 +244,6 @@ You could import our design tooling, then use CSS modules' `:export` it:
 
 ```vue
 <style lang="scss" module>
-@import '@design';
-
 :export {
   grid-padding: $size-grid-padding;
 }

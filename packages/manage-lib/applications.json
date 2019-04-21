@@ -1,0 +1,16 @@
+{
+  "super": {
+    "label": "Super",
+    "path": "/"
+  },
+  "payments": {
+    "label": "Payments",
+    "scope": "read:payments",
+    "path": "/payments"
+  },
+  "onlineOffers": {
+    "label": "Online Offers",
+    "scope": "read:online-offers",
+    "path": "/online-offers"
+  }
+}

@@ -3,16 +3,13 @@ const path = require('path')
 const aliases = {
   '@': '.',
   '@src': 'src',
-  '@core': 'src/core',
   '@router': 'src/router',
-  '@views': 'src/router/views',
-  '@layouts': 'src/router/layouts',
+  '@views': 'src/views',
   '@components': 'src/components',
   '@assets': 'src/assets',
-  '@utils': 'src/utils',
   '@state': 'src/state',
-  '@design': 'src/styles/design/index.scss',
   '@mock-api': 'tests/mock-api',
+  '@lib': 'node_modules/@loyalty-corp/manage-lib',
 }
 
 module.exports = {

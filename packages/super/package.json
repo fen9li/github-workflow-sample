@@ -1,17 +1,14 @@
 {
-  "name": "@loyalty-corp/superadmin",
+  "name": "manage-super",
+  "private": true,
   "version": "0.0.1",
-  "main": "./src/library.js",
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:ci": "cross-env ANALYZE=true vue-cli-service build"
   },
   "dependencies": {
-    "auth0-js": "^9.10.1",
-    "core-js": "^2.6.5",
-    "element-ui": "^2.7.2",
-    "register-service-worker": "^1.6.2",
+    "@loyalty-corp/manage-lib": "0.0.1",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

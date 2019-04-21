@@ -25,8 +25,7 @@ export default {
     v-if="loggedIn"
     id="app"
     :menu="menu"
-    app-code="super"
-    title="Super App"
+    title="Super"
   >
     <router-view />
   </app-layout>

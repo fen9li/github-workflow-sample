@@ -11,10 +11,11 @@
 
 ### Applications
 
-| Application | Description         |
-| ----------- | ------------------- |
-| super       | `yarn dev`          |
-| payments    | `yarn dev payments` |
+| Application   | Description              |
+| ------------- | ------------------------ |
+| super         | `yarn dev`               |
+| payments      | `yarn dev payments`      |
+| online-offers | `yarn dev online-offers` |
 
 ## Getting Started
 
