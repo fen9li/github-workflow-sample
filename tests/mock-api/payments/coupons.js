@@ -23,7 +23,4 @@ module.exports = {
       status: 'Active',
     },
   ],
-  getAllCoupons() {
-    return this.data
-  },
 }

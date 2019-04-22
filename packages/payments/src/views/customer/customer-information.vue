@@ -1,6 +1,6 @@
 <script>
 import appConfig from '@src/app.config'
-import MockData from '@mock-api/resources/customer'
+import MockData from '@mock-api/customer'
 import Information from './information/customer-information'
 import Subscriptions from './subscriptions/customer-subscriptions'
 import Products from './products/customer-products'

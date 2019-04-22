@@ -3,7 +3,7 @@ import StaticProcessor from '@lib/processors/static-processor'
 import tableConfig from './subscriptions-table'
 import addSubscription from './subscription-add'
 
-const subscriptionsMock = require('@mock-api/resources/customer-subscriptions')
+const subscriptionsMock = require('@mock-api/customer-subscriptions')
 
 export default {
   name: 'CustomerSubscriptions',

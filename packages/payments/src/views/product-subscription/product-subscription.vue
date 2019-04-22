@@ -3,7 +3,7 @@ import appConfig from '@src/app.config'
 import StaticProcessor from '@lib/processors/static-processor'
 import tableConfig from './product-subscription-table'
 import subscriptionProductMock
-  from '@mock-api/resources/subscription-product-details'
+  from '@mock-api/subscription-product-details'
 import ProductSubscriptionAddPlan from './product-subscription-add-plan'
 import ProductSubscriptionDeletePlan from './product-subscription-delete-plan'
 import ProductSubscriptionEdit from './product-subscription-edit'

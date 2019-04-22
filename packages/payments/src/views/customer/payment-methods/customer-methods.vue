@@ -1,7 +1,7 @@
 <script>
 import AddModal from './payment-method-add'
 import DeleteModal from './payment-method-delete'
-import MockData from '@mock-api/resources/customer'
+import MockData from '@mock-api/customer'
 
 export default {
   name: 'CustomerPaymentMethods',

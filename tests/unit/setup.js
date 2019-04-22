@@ -1,3 +1,4 @@
+import './register-require-hook.js'
 import Vue from 'vue'
 import Vuex from 'vuex'
 // import fs from 'fs'

@@ -6,7 +6,7 @@ import CouponsEditModal from './coupons-edit'
 import CouponsDeleteModal from './coupons-delete'
 import tableConfig from './coupons-table'
 
-const couponsMock = require('@mock-api/resources/coupons')
+const couponsMock = require('@mock-api/coupons')
 
 export default {
   name: 'Coupons',
