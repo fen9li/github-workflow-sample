@@ -1,6 +1,6 @@
 <script>
-import appConfig from '@src/app.config'
-import MockData from '@mock-api/resources/customer'
+import appConfig from '~/app.config'
+import MockData from '@tests/__fixtures__/customer'
 
 export default {
   name: 'CustomerProfile',

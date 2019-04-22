@@ -78,7 +78,7 @@ _**3**_ Create an instance of your class and pass it to [data-filter](#data-filt
 
 ```vue
 <script>
-import MyProcessor from '@core/my-processor'
+import MyProcessor from '~/processors/my-processor'
 import config from '...'
 
 export default {

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 // https://github.com/declandewet/vue-meta
 import VueMeta from 'vue-meta'
-import store from '@state/store'
+import store from '~/state/store'
 import lazy from '@lib/router/lazy'
 
 Vue.use(VueRouter)
@@ -17,33 +17,33 @@ const router = new VueRouter({
     {
       path: '/',
       name: 'home',
-      component: () => lazy(import('@views/home/home')),
+      component: () => lazy(import('~/views/home/home')),
     },
     {
       path: '/payment/transactions',
       name: 'payment-transactions',
-      component: () => lazy(import('@views/transactions')),
+      component: () => lazy(import('~/views/transactions')),
     },
     {
       path: '/payment/transactions/:id',
       name: 'payment-transaction-details',
-      component: () => lazy(import('@views/transaction')),
+      component: () => lazy(import('~/views/transaction')),
       props: true,
     },
     {
       path: '/payment/settlements',
       name: 'payment-settlements',
-      component: () => lazy(import('@views/settlements')),
+      component: () => lazy(import('~/views/settlements')),
     },
     {
       path: '/payment/settlements/:id',
       name: 'payment-settlement-details',
-      component: () => lazy(import('@views/settlement')),
+      component: () => lazy(import('~/views/settlement')),
     },
     {
       path: '/customers',
       name: 'customers',
-      component: () => lazy(import('@views/customers')),
+      component: () => lazy(import('~/views/customers')),
     },
     {
       path: '/customers/:id',
@@ -52,7 +52,7 @@ const router = new VueRouter({
         name: 'customer-information',
       },
       component: () => lazy(
-      import('@views/customer')
+      import('~/views/customer')
       ),
       props: true,
       children: [
@@ -60,7 +60,7 @@ const router = new VueRouter({
           path: 'details',
           name: 'customer-information',
           component: () => lazy(
-          import('@views/customer/customer-information')
+          import('~/views/customer/customer-information')
           ),
           props: true,
         },
@@ -68,7 +68,7 @@ const router = new VueRouter({
           path: 'transactions',
           name: 'customer-transactions',
           component: () => lazy(
-          import('@views/customer/transactions/customer-transactions')
+          import('~/views/customer/transactions/customer-transactions')
           ),
           props: true,
         },
@@ -77,21 +77,21 @@ const router = new VueRouter({
     {
       path: '/products',
       name: 'products',
-      component: () => lazy(import('@views/products')),
+      component: () => lazy(import('~/views/products')),
       redirect: { name: 'products-subscription' },
       children: [
         {
           path: 'subscription',
           name: 'products-subscription',
           component: () => lazy(
-          import('@views/products/subscription')
+          import('~/views/products/subscription')
           ),
         },
         {
           path: 'single',
           name: 'products-single',
           component: () => lazy(
-          import('@views/products/single')
+          import('~/views/products/single')
           ),
         },
       ],
@@ -100,7 +100,7 @@ const router = new VueRouter({
       path: '/products/single/:id',
       name: 'products-single-details',
       component: () => lazy(
-      import('@views/product-single')
+      import('~/views/product-single')
       ),
       props: true,
     },
@@ -108,27 +108,27 @@ const router = new VueRouter({
       path: '/products/subscription/:id',
       name: 'products-subscription-details',
       component: () => lazy(
-      import('@views/product-subscription')
+      import('~/views/product-subscription')
       ),
       props: true,
     },
     {
       path: '/subscriptions',
       name: 'subscriptions',
-      component: () => lazy(import('@views/subscriptions')),
+      component: () => lazy(import('~/views/subscriptions')),
     },
     {
       path: '/subscriptions/:id',
       name: 'subscription-details',
       redirect: { name: 'subscription-information' },
-      component: () => lazy(import('@views/subscription')),
+      component: () => lazy(import('~/views/subscription')),
       props: true,
       children: [
         {
           path: 'details',
           name: 'subscription-information',
           component: () => lazy(
-          import('@views/subscription/information')
+          import('~/views/subscription/information')
           ),
           props: true,
         },
@@ -136,7 +136,7 @@ const router = new VueRouter({
           path: 'transactions',
           name: 'subscription-transactions',
           component: () => lazy(
-          import('@views/subscription/transactions')
+          import('~/views/subscription/transactions')
           ),
           props: true,
         },
@@ -145,47 +145,47 @@ const router = new VueRouter({
     {
       path: '/coupons',
       name: 'coupons',
-      component: () => lazy(import('@views/coupons')),
+      component: () => lazy(import('~/views/coupons')),
     },
     {
       path: '/coupons/new',
       name: 'coupon-new',
-      component: () => lazy(import('@views/coupons/coupon-new')),
+      component: () => lazy(import('~/views/coupons/coupon-new')),
     },
     {
       path: '/settings/payment',
       name: 'payment-settings',
-      component: () => lazy(import('@views/settings-payment')),
+      component: () => lazy(import('~/views/settings-payment')),
     },
     {
       path: '/settings/notification',
       name: 'settings-notification',
-      component: () => lazy(import('@views/settings-notification')),
+      component: () => lazy(import('~/views/settings-notification')),
     },
     {
       path: '/settings/business',
       name: 'settings-business',
-      component: () => lazy(import('@views/settings-business')),
+      component: () => lazy(import('~/views/settings-business')),
     },
     {
       path: '/settings/user-access',
       name: 'user-access',
-      component: () => lazy(import('@views/user-access')),
+      component: () => lazy(import('~/views/user-access')),
     },
     {
       path: '/settings/templates',
       name: 'settings-templates',
-      component: () => lazy(import('@views/settings-templates')),
+      component: () => lazy(import('~/views/settings-templates')),
     },
     {
       path: '/settings/history',
       name: 'settings-history',
-      component: () => lazy(import('@views/log-history')),
+      component: () => lazy(import('~/views/log-history')),
     },
     {
       path: '/profile',
       name: 'profile',
-      component: () => lazy(import('@views/profile')),
+      component: () => lazy(import('~/views/profile')),
       meta: {
         authRequired: true,
       },
@@ -196,7 +196,7 @@ const router = new VueRouter({
     {
       path: '/profile/:username',
       name: 'username-profile',
-      component: () => lazy(import('@views/profile')),
+      component: () => lazy(import('~/views/profile')),
       meta: {
         authRequired: true,
         beforeResolve(routeTo, routeFrom, next) {

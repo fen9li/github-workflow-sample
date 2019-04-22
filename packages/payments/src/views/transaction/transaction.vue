@@ -1,7 +1,7 @@
 <script>
-import appConfig from '@src/app.config'
+import appConfig from '~/app.config'
 import TransactionRefund from './transaction-refund.vue'
-import mockedData from '@mock-api/resources/transactions-details.js'
+import mockedData from '@tests/__fixtures__/transactions-details.js'
 import formatDollar from '@lib/utils/format-dollar'
 import { formatDate } from '@lib/utils/format-date'
 

@@ -3,7 +3,7 @@ import StaticProcessor from '@lib/processors/static-processor'
 import tableConfig from './user-access-table'
 import UserAccessAdd from './user-access-add.vue'
 
-const userAccessMock = require('@mock-api/user-access')
+const userAccessMock = require('@tests/__fixtures__/user-access')
 
 export default {
   name: 'UserAccess',

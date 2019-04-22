@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD030 -->
+
 # API Mocking Guide
 
 - [Basic concepts](#basic-concepts)
@@ -11,13 +13,13 @@ There are two possible cases where you need to mock some server request:
 1.  you are testing `data-table`/`data-filter` component
 2.  you are testing all other common components
 
-In both cases you must store mock/fixture files in the monorepo root in the folder `/tests/mock-api/<monorepo-package-name>/<mock-file-name>.js`. Ex: `/test/mock-api/payments/transactions-table-mock.js`
+In both cases you must store mock/fixture files in the package root in the folder `/tests/__fixtures__/<mock-file-name>.js`. Ex: `/test/__fixtures__/transactions-table-mock.js`
 
 ## Table/Filter API mocking
 
-There is a special data processor called `mock-processor`. It doesn't make any requests to the server, it just reads the mock file and passes its content like a "server response". MockProcessor requires `mockFrom` key with the string value like `<monorepo-package-name>/<mock-file-name>.js` (without slash at the beginning).
+There is a special data processor called `mock-processor`. It doesn't make any requests to the server, it just reads the mock file and passes its content like a "server response". MockProcessor requires `mockFrom` key with the string value like `<mock-file-name>.js` (without slash at the beginning).
 
-Mock file must export `{ table: [] }` object as a CommonJS module because `mock-processor` will read it like `require('@mock-api/' + mockFrom).table`:
+Mock file must export `{ table: [] }` object as a CommonJS module:
 
 ```javascript
 module.exports = {
@@ -37,7 +39,7 @@ import DataFilter from '...'
 describe('the best data-filter test ever', () => {
   const processor = new MockProcessor({
     disableQueryString: true,
-    mockFrom: 'payments/transactions-table-mock.js',
+    mockFrom: 'transactions-table-mock.js',
   })
 
   let wrapper
@@ -96,7 +98,7 @@ describe('some component test', () => {
      * package because it is our own sugar method.
      * mockResponseFrom works similar to the 'mockFrom' key of mock-processor.
      */
-    mockAxios.mockResponseFrom('payments/transactions-table-mock.js')
+    mockAxios.mockResponseFrom('transactions-table-mock.js')
 
     // 2.3 mock error response (3rd variant)
     mockAxios.mockError(new Error('Awful backend error.'))

@@ -1,7 +1,7 @@
 <script>
 import tableConfig from './products-anchor-dates-table.js'
 import createProductAnchorMock from
-  '@mock-api/resources/create-product-anchor-dates'
+  '@tests/__fixtures__/resources/create-product-anchor-dates'
 import StaticProcessor from '@lib/processors/static-processor'
 
 export default {

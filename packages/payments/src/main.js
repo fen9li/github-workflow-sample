@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './app'
-import router from '@router'
-import store from '@state/store'
+import router from '~/router.js'
+import store from '~/state/store.js'
 import ManageLib from '@lib'
 import applications from '@lib/applications'
 

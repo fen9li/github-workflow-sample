@@ -1,6 +1,6 @@
 <script>
-import appConfig from '@src/app.config'
-import MockData from '@mock-api/subscription'
+import appConfig from '~/app.config'
+import MockData from '@tests/__fixtures__/subscription'
 import EditModal from './subscription-edit'
 import EndDateModal from './subscription-end-date'
 import DeleteModal from './subscription-delete'

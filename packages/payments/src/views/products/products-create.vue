@@ -1,5 +1,5 @@
 <script>
-import appConfig from '@src/app.config'
+import appConfig from '~/app.config'
 import ProductsSubscriptionForm from './forms/products-subscription-form.vue'
 import ProductsSingleForm from './forms/products-single-form.vue'
 import cloneDeep from 'lodash/cloneDeep'

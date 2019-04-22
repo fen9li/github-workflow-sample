@@ -70,6 +70,7 @@ module.exports = {
         shallowMountView: false,
         createComponentMocks: false,
         createModuleStore: false,
+        createLocalVue: false,
       },
     },
   ],

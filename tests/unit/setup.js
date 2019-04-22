@@ -69,6 +69,9 @@ Object.defineProperty(window, 'localStorage', {
 // Global helpers
 // ===
 
+// https://vue-test-utils.vuejs.org/api/#createlocalvue
+global.createLocalVue = vueTestUtils.createLocalVue
+
 // https://vue-test-utils.vuejs.org/api/#mount
 global.mount = vueTestUtils.mount
 

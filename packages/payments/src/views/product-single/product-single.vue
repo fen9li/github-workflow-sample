@@ -1,6 +1,6 @@
 <script>
-import appConfig from '@src/app.config'
-import productDetails from '@mock-api/resources/single-product-details'
+import appConfig from '~/app.config'
+import productDetails from '@tests/__fixtures__/single-product-details'
 import formatDollar from '@lib/utils/format-dollar'
 import ProductSingleEdit from './product-single-edit.vue'
 

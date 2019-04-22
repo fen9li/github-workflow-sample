@@ -1,8 +1,8 @@
 <script>
 import tablesConfig from './home-tables-config'
 import StaticProcessor from '@lib/processors/static-processor'
-import singleProductsMock from '@mock-api/resources/home-single-products-mock'
-import subscriptionsMock from '@mock-api/resources/home-subscriptions-mock'
+import singleProductsMock from '@tests/__fixtures__/home-single-products-mock'
+import subscriptionsMock from '@tests/__fixtures__/home-subscriptions-mock'
 
 export default {
   name: 'HomeDashboardTables',

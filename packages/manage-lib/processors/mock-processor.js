@@ -1,4 +1,4 @@
-import StaticProcessor from '@core/static-processor'
+import StaticProcessor from '~/processors/static-processor'
 
 const jsFileRE = /\.js$/
 
@@ -16,9 +16,7 @@ class MockProcessor extends StaticProcessor {
   }
 
   loadMock(mockFrom) {
-    const { join } = require('path')
-    const mockFolderPath = join(process.cwd(), 'tests/mock-api')
-    const mockContext = require.context(mockFolderPath, true, )
+    const mockContext = require.context('../tests/__fixtures__', true, )
     let mockPath = `./${mockFrom}`
 
     if (!jsFileRE.test(mockPath)) {

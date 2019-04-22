@@ -162,7 +162,7 @@ To import files from `node_modules`, Webpack's [css-loader](https://github.com/w
 Similarly to importing global modules, referencing aliased assets in _non_-module CSS also requires the `~` at the beginning of the name. For example:
 
 ```scss
-background: url('~@assets/images/background.png');
+background: url('~/assets/images/background.png');
 ```
 
 ### CSS modules

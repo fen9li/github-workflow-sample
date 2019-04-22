@@ -1,6 +1,6 @@
 <script>
-import appConfig from '@src/app.config'
-import MockData from '@mock-api/resources/subscription'
+import appConfig from '~/app.config'
+import MockData from '@tests/__fixtures__/resources/subscription'
 
 export default {
   name: 'SubscriptionsDetails',

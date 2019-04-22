@@ -44,7 +44,7 @@ export default {
   methods: {
     getPaymentSysLogo() {
       // eslint-disable-next-line max-len
-      return require(`@assets/images/${this.cardDetails.paymentsSystem}_logo.png`)
+      return require(`~/assets/images/${this.cardDetails.paymentsSystem}_logo.png`)
     },
     onSubmit() {
       this.$refs.form.validate(valid => {

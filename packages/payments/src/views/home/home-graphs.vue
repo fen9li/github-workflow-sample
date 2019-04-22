@@ -148,7 +148,7 @@ export default {
         <div class="home__dashboard__graph-image">
           <chart :data="payments" />
           <!-- <img
-            src="@assets/images/temp_mocks/payments_recieved.png"
+            src="~/assets/images/temp_mocks/payments_recieved.png"
             alt="Payments Overview"
           > -->
         </div>
@@ -187,7 +187,7 @@ export default {
         <div class="home__dashboard__graph-image">
           <chart :data="customers" />
           <!-- <img
-            src="@assets/images/temp_mocks/customers_subscriptions.png"
+            src="~/assets/images/temp_mocks/customers_subscriptions.png"
             alt=""
           > -->
         </div>

@@ -1,8 +1,8 @@
 <script>
-import appConfig from '@src/app.config'
+import appConfig from '~/app.config'
 import settlementInfo from './settlement-info'
 import settlementDetailsMock from
-  '@mock-api/resources/settlement-details-mock.js'
+  '@tests/__fixtures__/settlement-details-mock.js'
 import StaticProcessor from '@lib/processors/static-processor'
 import summaryTableConfig from './settlement-summary-table.js'
 import detailsTableConfig from './settlement-table.js'

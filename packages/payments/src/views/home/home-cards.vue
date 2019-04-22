@@ -58,7 +58,7 @@ export default {
       </div>
       <div class="home__dashboard__card-img">
         <img
-          :src="require(`@assets/images/temp_mocks/${card.imageName}.png`)"
+          :src="require(`~/assets/images/temp_mocks/${card.imageName}.png`)"
           alt="Card icon"
         >
       </div>

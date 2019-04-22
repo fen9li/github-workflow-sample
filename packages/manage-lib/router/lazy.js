@@ -5,14 +5,14 @@ import Timeout from './views/timeout'
 // back to a timeout view in case the page fails to load. You can
 // use this component to lazy-load a route with:
 //
-// component: () => lazyLoadView(import('@views/my-view'))
+// component: () => lazyLoadView(import('~/views/my-view'))
 //
 // NOTE: Components loaded with this strategy DO NOT have access
 // to in-component guards, such as beforeRouteEnter,
 // beforeRouteUpdate, and beforeRouteLeave. You must either use
 // route-level guards instead or lazy-load the component directly:
 //
-// component: () => import('@views/my-view')
+// component: () => import('~/views/my-view')
 //
 export default function(AsyncView) {
   const AsyncHandler = () => ({

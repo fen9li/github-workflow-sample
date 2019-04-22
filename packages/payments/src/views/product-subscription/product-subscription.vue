@@ -1,9 +1,9 @@
 <script>
-import appConfig from '@src/app.config'
+import appConfig from '~/app.config'
 import StaticProcessor from '@lib/processors/static-processor'
 import tableConfig from './product-subscription-table'
 import subscriptionProductMock
-  from '@mock-api/subscription-product-details'
+  from '@tests/__fixtures__/subscription-product-details'
 import ProductSubscriptionAddPlan from './product-subscription-add-plan'
 import ProductSubscriptionDeletePlan from './product-subscription-delete-plan'
 import ProductSubscriptionEdit from './product-subscription-edit'
