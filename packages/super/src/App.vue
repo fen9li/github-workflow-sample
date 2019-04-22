@@ -22,14 +22,12 @@ export default {
 
 <template>
   <app-layout
-    v-if="loggedIn"
     id="app"
     :menu="menu"
     title="Super"
   >
     <router-view />
   </app-layout>
-  <router-view v-else />
 </template>
 
 <!-- This should generally be the only global CSS in the app. -->

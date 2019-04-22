@@ -83,11 +83,9 @@ export default {
 
 <template>
   <app-layout
-    v-if="loggedIn"
     :menu="menu"
     app-code="payments"
   >
     <router-view :key="$route.path" />
   </app-layout>
-  <router-view v-else />
 </template>

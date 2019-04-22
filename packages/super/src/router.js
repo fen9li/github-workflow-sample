@@ -11,7 +11,7 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      component: () => lazy(import('./views/Home')),
+      component: () => lazy(import('./views/home')),
     },
     {
       path: '*',
