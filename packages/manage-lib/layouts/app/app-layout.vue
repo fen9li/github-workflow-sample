@@ -18,7 +18,7 @@ export default {
 </script>
 
 <template>
-  <div v-if="loggedIn && $auth.isAuthorized">
+  <div v-if="loggedIn && $auth.isAuthorized()">
     <el-container :class="$style.root">
       <el-header height="72px">
         <app-header v-bind="$attrs" />
