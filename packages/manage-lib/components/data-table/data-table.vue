@@ -63,6 +63,9 @@ export default {
     sort() {
       return this.dataQuery.sort
     },
+    showHeader() {
+      return !!get(this.processor, 'data.length', false)
+    },
   },
   watch: {
     dataQuery(dataQuery) {
@@ -147,6 +150,7 @@ export default {
       header-cell-class-name="table-header-cell"
       :row-class-name="showRowLink ? 'clickable-row' : ''"
       :row-style="getRowColor"
+      :show-header="showHeader"
       @row-click="onRowClick"
     >
       <el-table-column
