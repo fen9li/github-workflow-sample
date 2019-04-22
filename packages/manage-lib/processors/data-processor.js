@@ -108,7 +108,13 @@ export default class DataProcessor {
   }
 
   applyFiltersFromURL() {
-    const initQuery = this.readQueryString() || this.defaultQuery || {}
+    let queryString = ''
+
+    if (!this.disableQueryString) {
+      queryString = this.readQueryString()
+    }
+
+    const initQuery = queryString || this.defaultQuery || {}
 
     this.dataQuery = mergeQueries(createEmptyQuery(), initQuery)
   }

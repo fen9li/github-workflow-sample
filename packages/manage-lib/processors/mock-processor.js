@@ -1,5 +1,7 @@
 import StaticProcessor from '@core/static-processor'
 
+const jsFileRE = /\.js$/
+
 class MockProcessor extends StaticProcessor {
   constructor(params = {}) {
     const { mockFrom } = params
@@ -8,23 +10,42 @@ class MockProcessor extends StaticProcessor {
       throw Error('mock-processor requires "mockFrom" key')
     }
 
-    const data = require('@mock-api/resources/' + mockFrom).table
+    super(params)
 
-    super({ ...params, data })
+    this.loadMock(mockFrom)
+  }
+
+  loadMock(mockFrom) {
+    const { join } = require('path')
+    const mockFolderPath = join(process.cwd(), 'tests/mock-api')
+    const mockContext = require.context(mockFolderPath, true, )
+    let mockPath = `./${mockFrom}`
+
+    if (!jsFileRE.test(mockPath)) {
+      mockPath += '.js'
+    }
+
+    const { table } = mockContext(mockPath)
+
+    this.fullData = table
+    this.total = table.length
   }
 
   sendRequest() {
     return Promise.resolve(
       { data: this.fullData, total: this.total }
     )
-      .then(this.fullProcess)
+      .then(res => this.filter(res))
+      .then(data => this.sort(data))
+      .then(data => this.paginate(data))
   }
 
   sendRequestAll() {
     return Promise.resolve(
       { data: this.fullData, total: this.total }
     )
-      .then(this.process)
+      .then(res => this.filter(res))
+      .then(data => this.sort(data))
   }
 }
 

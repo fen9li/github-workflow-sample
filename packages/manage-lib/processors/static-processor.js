@@ -1,8 +1,6 @@
 import DataProcessor from './data-processor'
 import orderBy from 'lodash/orderBy'
 
-const compose = (...fns) => arg => fns.reduce((acc, fn) => fn(acc), arg)
-
 class StaticProcessor extends DataProcessor {
   constructor(params) {
     const { data = [] } = params
@@ -13,13 +11,6 @@ class StaticProcessor extends DataProcessor {
     this.data = data
     this.total = data.length
     this.loading = false
-
-    this.process = compose(
-      this.filter.bind(this),
-      this.sort.bind(this),
-    )
-
-    this.fullProcess = compose(this.process, this.paginate.bind(this))
 
     this.init()
   }
@@ -32,7 +23,9 @@ class StaticProcessor extends DataProcessor {
         { data: this.fullData, total: this.total }
       )
     })
-      .then(this.fullProcess)
+      .then(res => this.filter(res))
+      .then(data => this.sort(data))
+      .then(data => this.paginate(data))
   }
 
   sendRequestAll() {
@@ -43,7 +36,8 @@ class StaticProcessor extends DataProcessor {
         { data: this.fullData, total: this.total }
       )
     })
-      .then(this.process)
+      .then(res => this.filter(res))
+      .then(data => this.sort(data))
   }
 
   filter(response) {
