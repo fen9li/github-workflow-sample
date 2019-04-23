@@ -264,7 +264,7 @@ export default {
         >
           <div :class="$style.rulesTitle">
             <div :class="$style.rulesIcon">
-              <img src="~/assets/images/credit_card_icon.png">
+              <img src="@assets/images/credit_card_icon.png">
             </div>
             <span :class="$style.rulesName">
               Credit / Debit Cards
@@ -313,7 +313,7 @@ export default {
 
           <div :class="$style.rulesTitle">
             <div :class="$style.rulesIcon">
-              <img src="~/assets/images/credit_card_icon.png">
+              <img src="@assets/images/credit_card_icon.png">
             </div>
             <span :class="$style.rulesName">
               Bank Accounts

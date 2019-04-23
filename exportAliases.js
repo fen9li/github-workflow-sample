@@ -1,10 +1,10 @@
 const { resolve } = require('path')
 
-function resolveSrc(_path) {
-  return resolve(__dirname, _path)
-}
+module.exports = function exportAliases(aliases, dirname) {
+  function resolveSrc(_path) {
+    return resolve(dirname, _path)
+  }
 
-module.exports = function exportAliases(aliases) {
   const aliasesMap = {
     webpack: {},
     jest: {},
@@ -24,4 +24,6 @@ module.exports = function exportAliases(aliases) {
       : `<rootDir>/${aliasTo}/index.js`
     aliasesMap.jest[`^${alias}/(.*)$`] = `<rootDir>/${aliasTo}/$1`
   }
+
+  return aliasesMap
 }

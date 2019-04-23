@@ -64,7 +64,7 @@ export default {
       return this.dataQuery.sort
     },
     showHeader() {
-      return !!get(this.processor, 'data.length', false)
+      return !this.tableHeader || !!get(this.processor, 'data.length', false)
     },
   },
   watch: {
