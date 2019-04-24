@@ -32,7 +32,7 @@ export default {
       class="app-header__logo"
     >
       <img
-        src="@assets/logo.png"
+        src="@/assets/logo.png"
         alt=""
       >
       <span>{{ title }}</span>
