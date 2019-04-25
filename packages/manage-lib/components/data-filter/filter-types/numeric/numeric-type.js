@@ -1,5 +1,5 @@
 import FilterType from '../constructor'
-import formatDollar from '@lib/utils/format-dollar'
+import formatDollar from '../../../../utils/format-dollar'
 
 export default class NumericColumn extends FilterType {
   get name() {

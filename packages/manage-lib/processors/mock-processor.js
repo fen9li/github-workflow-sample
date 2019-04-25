@@ -1,4 +1,4 @@
-import StaticProcessor from '@lib/processors/static-processor'
+import StaticProcessor from './static-processor'
 
 const jsFileRE = /\.js$/
 

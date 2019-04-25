@@ -3,7 +3,6 @@ module.exports = {
     'eslint --fix',
     'prettier --write',
     'git add',
-    'yarn unit --passWithNoTests --bail --colors --findRelatedTests',
   ],
   '{!(package)*.json,*.code-snippets,!.(npmrc)*rc}': [
     'prettier --parser json',
@@ -15,7 +14,6 @@ module.exports = {
     'stylelint **/*.vue --fix',
     'prettier --write',
     'git add',
-    'yarn unit --passWithNoTests --bail --colors --findRelatedTests',
   ],
   '*.scss': ['stylelint **/*.scss --fix', 'prettier --write', 'git add'],
   '*.md': ['markdownlint', 'prettier --write', 'git add'],

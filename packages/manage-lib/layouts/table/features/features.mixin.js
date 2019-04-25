@@ -1,4 +1,4 @@
-import DataProcessor from '@lib/processors/data-processor'
+import DataProcessor from '../../../processors/data-processor'
 
 export default {
   inheritAttrs: false,

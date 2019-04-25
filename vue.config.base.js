@@ -1,3 +1,5 @@
+const _ = require('lodash')
+const path = require('path')
 const merge = require('merge-deep')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
@@ -9,7 +11,9 @@ const DEFAULT_CONFIG = {
   },
   configureWebpack: {
     resolve: {
-      alias: require('./aliases.config').webpack,
+      alias: _.transform(require('./aliases.config'), (result, value, key) => {
+        result[key] = path.resolve(process.cwd(), value)
+      }),
       symlinks: false,
     },
     name: process.env.VUE_APP_TITLE,

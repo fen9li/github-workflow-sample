@@ -1,6 +1,6 @@
 <script>
 import AppProfile from '../profile/app-profile'
-import applications from '@lib/applications.json'
+import applications from '../../../applications.json'
 
 export default {
   components: {

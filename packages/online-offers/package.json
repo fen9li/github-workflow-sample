@@ -2,7 +2,6 @@
   "name": "manage-online-offers",
   "private": true,
   "version": "0.0.1",
-  "main": "./library.js",
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",

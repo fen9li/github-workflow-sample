@@ -13,7 +13,8 @@
     "publish-packages": "lerna publish --yes",
     "lint": "eslint --ext .js,.vue --fix . && stylelint --fix \"packages/**/*.vue\" \"packages/**/*.scss\" && prettier --list-different --write \"**/*.{json,css,scss,md}\" && markdownlint *.md",
     "list-package": "lerna ls -l",
-    "unit": "vue-cli-service test:unit"
+    "unit": "vue-cli-service test:unit",
+    "unit:watch": "yarn unit --watch --notify --notifyMode change"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
