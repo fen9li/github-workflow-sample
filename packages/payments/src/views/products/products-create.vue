@@ -2,7 +2,6 @@
 import appConfig from '~/app.config'
 import ProductsSubscriptionForm from './forms/products-subscription-form.vue'
 import ProductsSingleForm from './forms/products-single-form.vue'
-import cloneDeep from 'lodash/cloneDeep'
 import capitalize from 'lodash/capitalize'
 
 export default {
@@ -21,13 +20,13 @@ export default {
       product: {
         type: 'subscription',
         details: {
-          productName: '',
-          productCode: '',
-          effectiveStartDate: '',
-          endDate: '',
+          name: '',
+          code: '',
+          start_on: '',
+          end_on: '',
           billingCycle: 'pro-rata',
           anchorDate: '',
-          amount: '10.00',
+          price: '10.00',
           currency: 'aud',
           image: '',
         },
@@ -35,32 +34,41 @@ export default {
     }
   },
   methods: {
-    createProduct() {
-      const newProduct = cloneDeep(this.product)
-      const { details } = newProduct
+    async createProduct() {
+      const { details, type } = this.product
 
-      if (newProduct.type === 'subscription') {
-        delete details.amount
-        delete details.currency
-        delete details.image
-      } else {
-        delete details.billingCycle
-        delete details.anchorDate
-        delete newProduct.pricingPlans
-      }
       if (!this.validateAll().some(item => item === false)) {
-        const { type } = this.product
         const productType = `${capitalize(type)} Product`
+        let requestData
 
-        this.$notify({
-          type: 'success',
-          title: 'Success',
-          message: `${productType} created.`,
-        })
+        if (type === 'single') {
+          requestData = {
+            name: details.name,
+            price: +details.price,
+            // Temporary fixed id value
+            id: 'PROD_999',
+            start_on: details.start_on,
+          }
 
-        this.$emit('update:visible', false)
-        this.$router.push(
-          { name: `products-${type}-details`, params: { id: 1 } })
+          const [error, response] = await this.$api.post('/single-products', requestData )
+
+          if (response) {
+            this.$notify({
+              type: 'success',
+              title: 'Success',
+              message: `${productType} created.`,
+            })
+            this.$emit('update:visible', false)
+            this.$router.push(
+              { name: `products-${type}-details`, params: { id: response.id } })
+          } else if (error) {
+            this.$notify({
+              type: 'error',
+              title: 'Error',
+              message: error.message,
+            })
+          }
+        }
       }
     },
     updateDetailsValue({ fieldName, newVal }) {
@@ -68,13 +76,13 @@ export default {
     },
     clearDetails() {
       this.product.details = {
-        productName: '',
-        productCode: '',
-        effectiveStartDate: '',
-        endDate: '',
+        name: '',
+        code: '',
+        start_on: '',
+        end_on: '',
         billingCycle: 'anniversary',
         anchorDate: '',
-        amount: '10.00',
+        price: '10.00',
         currency: 'aud',
         image: '',
       }
@@ -99,7 +107,10 @@ export default {
     v-on="$listeners"
   >
     <div :class="$style.types">
-      <el-radio-group v-model="product.type">
+      <el-radio-group
+        v-model="product.type"
+        @change="clearDetails"
+      >
         <el-radio
           label="subscription"
           border

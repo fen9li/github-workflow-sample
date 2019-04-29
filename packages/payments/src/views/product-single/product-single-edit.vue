@@ -1,6 +1,5 @@
 <script>
 import ProductsSingleForm from '../products/forms/products-single-form.vue'
-import cloneDeep from 'lodash/cloneDeep'
 
 export default {
   name: 'ProductSingleEdit',
@@ -17,33 +16,57 @@ export default {
   data() {
     return {
       formData: {
-        productName: '',
-        productCode: '',
-        effectiveStartDate: '',
-        endDate: '',
-        amount: '',
+        name: '',
+        code: '',
+        start_on: '',
+        end_on: '',
+        price: '',
         currency: 'aud',
         image: '',
         active: null,
+        id: null,
       },
     }
   },
-  mounted() {
-    this.formData = cloneDeep(this.currentProduct)
+  watch: {
+    currentProduct(newVal) {
+      this.adjustFormData(newVal)
+    },
+  },
+  created() {
+    this.adjustFormData(this.currentProduct)
   },
   methods: {
     updateDetailsValue({ fieldName, newVal }) {
       this.formData[fieldName] = newVal
     },
-    onSubmit() {
+    async onSubmit() {
+      const { formData } = this
       if (!this.validateAll().some(item => item === false)) {
-        this.$notify({
-          type: 'success',
-          title: 'Success',
-          message: 'Changes saved successfully.',
-        })
+        const requestData = {
+          name: formData.name,
+          price: formData.price,
+          start_on: formData.start_on,
+          end_on: formData.end_on,
+        }
 
-        this.$emit('update:visible', false)
+        const [error, response] = await this.$api.put(`/single-products/${formData.id}`, requestData)
+
+        if (response) {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: 'Changes saved successfully.',
+          })
+          this.$emit('update:visible', false)
+          this.$emit('updated')
+        } else if (error) {
+          this.$notify({
+            type: 'error',
+            title: 'Error',
+            message: error.message,
+          })
+        }
       }
     },
     validateAll() {
@@ -52,6 +75,13 @@ export default {
         result.push(valid)
       })
       return result
+    },
+    adjustFormData(newVal) {
+      this.formData = {
+        ...newVal,
+        price: parseFloat(newVal.price, 10).toFixed(2),
+        currency: newVal.currency || 'aud',
+      }
     },
   },
 }

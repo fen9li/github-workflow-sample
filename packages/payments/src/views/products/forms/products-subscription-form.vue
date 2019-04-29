@@ -23,14 +23,14 @@ export default {
   data() {
     return {
       rules: {
-        productName: [
+        name: [
           {
             required: true,
             message: 'This field is required',
             trigger: 'blur',
           },
         ],
-        effectiveStartDate: [
+        start_on: [
           {
             required: true,
             message: 'This field is required',
@@ -80,11 +80,11 @@ export default {
     >
       <el-form-item
         label="Product Name"
-        prop="productName"
+        prop="name"
       >
         <el-input
-          :value="data.productName"
-          @input="changeValue('productName', $event)"
+          :value="data.name"
+          @input="changeValue('name', $event)"
         />
       </el-form-item>
 
@@ -92,23 +92,23 @@ export default {
         label="Product Code"
       >
         <el-input
-          :value="data.productCode"
-          @input="changeValue('productCode', $event)"
+          :value="data.code"
+          @input="changeValue('code', $event)"
         />
       </el-form-item>
 
       <el-form-item
         label="Effective Start Date"
-        :prop="edit ? '': 'effectiveStartDate'"
+        :prop="edit ? '': 'start_on'"
         :class="{[$style.disabled]: edit}"
       >
         <el-date-picker
-          :value="data.effectiveStartDate"
+          :value="data.start_on"
           type="datetime"
           placeholder="DD/MM/YYYY"
           :editable="false"
           :disabled="edit"
-          @input="changeValue('effectiveStartDate', $event)"
+          @input="changeValue('start_on', $event)"
         />
         <el-tooltip
           v-if="!edit"
@@ -130,11 +130,11 @@ export default {
         label="End Date"
       >
         <el-date-picker
-          :value="data.endDate"
+          :value="data.end_on"
           type="datetime"
           placeholder="DD/MM/YYYY"
           :editable="false"
-          @input="changeValue('endDate', $event)"
+          @input="changeValue('end_on', $event)"
         />
         <el-tooltip
           v-if="!edit"

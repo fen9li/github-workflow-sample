@@ -19,21 +19,21 @@ export default {
   data() {
     return {
       rules: {
-        productName: [
+        name: [
           {
             required: true,
             message: 'This field is required',
             trigger: 'blur',
           },
         ],
-        effectiveStartDate: [
+        start_on: [
           {
             required: true,
             message: 'This field is required',
             trigger: 'blur',
           },
         ],
-        amount: [
+        price: [
           {
             required: true,
             message: 'This field is required',
@@ -93,11 +93,11 @@ export default {
     >
       <el-form-item
         label="Product Name"
-        prop="productName"
+        prop="name"
       >
         <el-input
-          :value="data.productName"
-          @input="changeValue('productName', $event)"
+          :value="data.name"
+          @input="changeValue('name', $event)"
         />
       </el-form-item>
 
@@ -106,44 +106,44 @@ export default {
         label="Product Code"
       >
         <el-input
-          :value="data.productCode"
-          @input="changeValue('productCode', $event)"
+          :value="data.code"
+          @input="changeValue('code', $event)"
         />
       </el-form-item>
 
       <el-form-item
         label="Effective Start Date"
-        prop="effectiveStartDate"
+        prop="start_on"
       >
         <el-date-picker
-          :value="data.effectiveStartDate"
+          :value="data.start_on"
           type="datetime"
           placeholder="DD/MM/YYYY"
           :editable="false"
-          @input="changeValue('effectiveStartDate', $event)"
+          @input="changeValue('start_on', $event)"
         />
       </el-form-item>
 
       <el-form-item label="End Date">
         <el-date-picker
-          :value="data.endDate"
+          :value="data.end_on"
           type="datetime"
           placeholder="DD/MM/YYYY"
           :editable="false"
-          @input="changeValue('endDate', $event)"
+          @input="changeValue('end_on', $event)"
         />
       </el-form-item>
 
       <el-form-item
         label="Amount"
-        prop="amount"
+        prop="price"
       >
         <div
           prop="amount"
           class="amount-form-item"
         >
           <el-form-item
-            prop="amount"
+            prop="price"
           >
             <el-input
               v-mask="[
@@ -153,9 +153,9 @@ export default {
                 '####.##',
                 '#####.##'
               ]"
-              :value="data.amount"
+              :value="data.price"
               placeholder="$0.00"
-              @input="changeValue('amount', $event)"
+              @input="changeValue('price', $event)"
             >
               <template #prepend>
                 $
@@ -208,11 +208,13 @@ export default {
         v-if="edit"
         :class="$style.active"
       >
-        <span :class="{[$style.inactive]: !data.active }">
+        <span :class="{[$style.inactive]: data.active === 'inactive' }">
           Active
         </span>
         <el-switch
           active-color="#13ce66"
+          active-value="active"
+          inactive-value="inactive"
           :value="data.active"
           @input="changeValue('active', $event)"
         />

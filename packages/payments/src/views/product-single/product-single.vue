@@ -1,31 +1,56 @@
 <script>
 import appConfig from '~/app.config'
-import productDetails from '@tests/__fixtures__/single-product-details'
 import formatDollar from '@lib/utils/format-dollar'
 import ProductSingleEdit from './product-single-edit.vue'
 
 export default {
   name: 'ProductSingle',
+  components: {
+    ProductSingleEdit,
+  },
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+  },
   page: {
     title: 'Single Product',
     meta: [{ name: 'description', content: appConfig.description }],
   },
-  components: {
-    ProductSingleEdit,
-  },
   data() {
     return {
-      productDetails,
+      productDetails: {
+        id: '',
+        name: '',
+        code: '',
+        active: '',
+        end_on: '',
+        price: '',
+        start_on: '',
+      },
       modal: {
         singleEdit: false,
       },
     }
   },
+  created() {
+    this.getProductDetails()
+  },
   methods: {
     formatDollar(value) {
       return formatDollar(value)
     },
+    async getProductDetails() {
+      // TODO: Delete Temporary || 'PROD_1' until api is fully ready
+      const [error, response] = await this.$api.get(`/single-products/${this.id || 'PROD_1'}`)
+      if (response) {
+        this.productDetails = { ...this.productDetails, ...response }
+      }
+      console.warn(error, response)
+    },
   },
+
 }
 </script>
 
@@ -50,23 +75,27 @@ export default {
           :visible.sync="modal.singleEdit"
           :edit="true"
           :current-product="productDetails"
+          @updated="getProductDetails"
         />
       </div>
-      <dl class="datalist">
+      <dl
+        v-if="productDetails"
+        class="datalist"
+      >
         <dt>Name</dt>
-        <dd>{{ productDetails.productName }}</dd>
+        <dd>{{ productDetails.name }}</dd>
 
         <dt>Product Code</dt>
-        <dd>{{ productDetails.productCode }}</dd>
+        <dd>{{ productDetails.code }}</dd>
 
         <dt>Effective Start Date</dt>
-        <dd>{{ productDetails.effectiveStartDate }}</dd>
+        <dd>{{ productDetails.start_on }}</dd>
 
         <dt>End Date</dt>
-        <dd>{{ productDetails.endDate }}</dd>
+        <dd>{{ productDetails.end_on }}</dd>
 
         <dt>Amount</dt>
-        <dd>{{ formatDollar(productDetails.amount) }}</dd>
+        <dd>{{ formatDollar(productDetails.price) }}</dd>
 
         <dt>Image</dt>
         <dd>

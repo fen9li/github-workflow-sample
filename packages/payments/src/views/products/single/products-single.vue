@@ -11,7 +11,7 @@ export default {
     return {
       processor: new ElasticProcessor({
         component: this,
-        index: 'subscription-product-pricing-plans',
+        index: 'single-products',
       }),
       columns: tableConfig.columns,
       filters: tableConfig.filters,
@@ -21,7 +21,7 @@ export default {
     onRowClick(row) {
       this.$router.push({
         name: 'products-single-details',
-        params: { id: row.externalId },
+        params: { id: row.id },
       })
     },
   },

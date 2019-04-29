@@ -31,7 +31,7 @@ const TABLE_FILTERS = [
 
 const TABLE_COLUMNS = [
   {
-    name: 'created',
+    name: 'createdAt',
     label: 'Date created',
     icon: 'el-icon-document',
     format: 'dateTime',
@@ -47,7 +47,7 @@ const TABLE_COLUMNS = [
     format: 'dollar',
   },
   {
-    name: 'startDate',
+    name: 'startOn',
     label: 'Effective Start Date',
     format: 'dateTime',
   },
