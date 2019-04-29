@@ -35,6 +35,16 @@ export default {
       ]
     },
   },
+  created() {
+    this.getInformation()
+  },
+  methods: {
+    async getInformation() {
+      const [, response] = await this.$api.get(`/customers/${this.id}`)
+
+      console.warn(response)
+    },
+  },
 }
 </script>
 

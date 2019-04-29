@@ -28,7 +28,7 @@ export default {
     onRowClick(row) {
       this.$router.push({
         name: 'customer-details',
-        params: { id: 'unknown' },
+        params: { id: row.id },
       })
     },
   },

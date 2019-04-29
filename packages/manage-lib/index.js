@@ -9,6 +9,8 @@ import Components from './components'
 import Router from './router'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
+import utils from './utils'
+import { ApiHelper } from './api'
 
 dayjs.extend(utc)
 
@@ -22,6 +24,11 @@ export default {
     Vue.use(Layouts, options)
     Vue.use(Auth, options)
     Vue.use(Router, options)
+    Vue.use(utils, options)
+
+    Vue.prototype.$api = new ApiHelper({
+      baseURL: process.env.VUE_APP_API_URL,
+    })
 
     Vue.config.productionTip = process.env.NODE_ENV === 'production'
   },
