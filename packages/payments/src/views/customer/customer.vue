@@ -14,6 +14,20 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      customerDetails: {
+        address: '',
+        created_at: '',
+        email: '',
+        enabled: '',
+        first_name: '',
+        id: '',
+        last_name: '',
+        mobile: '',
+      },
+    }
+  },
   computed: {
     subscription() {
       return MockData.information
@@ -42,7 +56,7 @@ export default {
     async getInformation() {
       const [, response] = await this.$api.get(`/customers/${this.id}`)
 
-      console.warn(response)
+      this.customerDetails = { ...this.customerDetails, ...response }
     },
   },
 }
@@ -75,7 +89,7 @@ export default {
         </small>
       </div>
     </div>
-    <router-view />
+    <router-view :customer-details="customerDetails" />
   </main-layout>
 </template>
 

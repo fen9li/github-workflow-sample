@@ -1,13 +1,11 @@
-const dateFormat = 'DD/MM/YYYY hh:mm A'
-
 const TABLE_FILTERS = [
   {
-    attribute: 'created',
+    attribute: 'createdAt',
     icon: 'el-icon-date',
     type: 'date',
   },
   {
-    attribute: 'externalId',
+    attribute: 'id',
     type: 'string',
     label: 'Customer ID',
     icon: 'el-icon-document',
@@ -56,46 +54,56 @@ const TABLE_FILTERS = [
 
 const TABLE_COLUMNS = [
   {
-    name: 'created',
-    label: 'Date created',
+    name: 'createdAt',
+    label: 'Сreated',
     icon: 'el-icon-document',
     format: {
-      name: 'date',
-      params: [dateFormat],
+      name: 'dayMonthYear',
     },
+    width: 90,
   },
   {
-    name: 'externalId',
+    name: 'id',
     label: 'Customer ID',
     type: 'string',
+    width: 90,
   },
   {
     name: 'firstName',
     type: 'string',
+    width: 100,
   },
   {
     name: 'lastName',
     type: 'string',
+    width: 100,
   },
   {
     name: 'email',
     type: 'string',
+    width: 130,
   },
   {
     name: 'mobile',
     type: 'string',
+    width: 100,
   },
   {
     name: 'address',
     type: 'string',
+    width: 160,
   },
   {
     name: 'status',
     label: 'Status',
+    format: {
+      name: 'capital',
+    },
     icon: 'el-icon-document',
     component: {
       is: 'cell-activity',
     },
+    width: 50,
   },
 ]
 

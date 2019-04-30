@@ -23,6 +23,10 @@ export default {
       type: String,
       required: true,
     },
+    customerDetails: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
@@ -45,7 +49,7 @@ export default {
     <el-card class="card-no-padding">
       <information
         class="card-inline"
-        :customer="customer"
+        :customer="customerDetails"
       />
 
       <hr :class="['divider-primary', $style.divider]">
@@ -58,7 +62,7 @@ export default {
 
     <subscriptions
       :class="$style.subscriptions"
-      :customer="customer"
+      :customer-id="id"
     />
 
     <products :customer="customer" />

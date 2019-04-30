@@ -7,11 +7,26 @@ export default {
   page: {
     title: 'Customer Transactions',
   },
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       processor: new ElasticProcessor({
         index: 'transactions',
         component: this,
+        staticQuery: {
+          filters: [
+            {
+              attribute: 'customerId',
+              comparison: 'eq',
+              value: this.id,
+            },
+          ],
+        },
       }),
       filters: tableConfig.filters,
       columns: tableConfig.columns,

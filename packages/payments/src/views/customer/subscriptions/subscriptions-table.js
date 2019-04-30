@@ -1,15 +1,14 @@
 import CustomerInformationCharge from './customer-charge.vue'
 
-const dateFormat = 'DD/MM/YYYY hh:mm A'
-
 const TABLE_FILTERS = [
   {
-    attribute: 'startDate',
+    attribute: 'startAt',
+    label: 'Start Date',
     icon: 'el-icon-date',
     type: 'date',
   },
   {
-    attribute: 'endDate',
+    attribute: 'endAt',
     icon: 'el-icon-date',
     type: 'date',
   },
@@ -78,81 +77,77 @@ const TABLE_FILTERS = [
 
 const TABLE_COLUMNS = [
   {
-    name: 'startDate',
+    name: 'startAt',
     icon: 'el-icon-document',
+    label: 'Start Date',
     format: {
-      name: 'date',
-      params: [dateFormat],
+      name: 'dayMonthYear',
     },
+    width: 120,
   },
   {
-    name: 'endDate',
+    name: 'endAt',
+    label: 'End Date',
     icon: 'el-icon-document',
     format: {
-      name: 'date',
-      params: [dateFormat],
+      name: 'dayMonthYear',
     },
+    width: 120,
   },
   {
     name: 'productName',
+    label: 'Subscription Product Name',
     icon: 'el-icon-document',
   },
   {
     name: 'currentAmount',
-    label: 'Plan',
+    label: 'Pricing Plan Amount',
     icon: 'el-icon-document',
     format: 'dollar',
+    width: 160,
   },
   {
     name: 'currentInterval',
-    label: 'Billing Interval',
+    label: 'Pricing Plan Billing Interval',
     icon: 'el-icon-document',
+    width: 190,
   },
   {
-    name: 'nextBillingDate',
+    name: 'nextBilledAt',
+    label: 'Next Billing Date',
     icon: 'el-icon-document',
     format: {
-      name: 'date',
-      params: [dateFormat],
+      name: 'dayMonthYear',
     },
+    width: 120,
   },
   {
     name: 'outstandingBalance',
-    label: 'Amount Owing',
+    label: 'Balance',
     overflowTooltip: false,
     component: (_, __, { row }) => ({
       is: CustomerInformationCharge,
       props: { row },
     }),
+    width: 140,
   },
   {
     name: 'status',
     label: 'Status',
     icon: 'el-icon-document',
-    component: {
-      props: {
-        styleObj(val) {
-          switch (val) {
-            case 'Active': return { color: '#29d737' }
-            case 'Inactive': return { color: '#bbb' }
-            default: return {}
-          }
-        },
-        badge(val) {
-          switch (val) {
-            case 'Active': return {
-              name: 'el-icon-success',
-              pos: 'left',
-            }
-            case 'Inactive': return {
-              name: 'el-icon-error',
-              pos: 'left',
-            }
-            default: return {}
-          }
-        },
-      },
+    width: 100,
+    format: {
+      name: 'capital',
     },
+    component: {
+      is: 'cell-activity',
+    },
+  },
+  {
+    name: 'couponName',
+    label: 'Coupon',
+    icon: 'el-icon-document',
+    width: 100,
   },
 ]
 

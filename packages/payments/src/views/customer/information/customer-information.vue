@@ -55,31 +55,31 @@ export default {
 
     <dl class="datalist">
       <dt>Date Created</dt>
-      <dd>{{ customer.dateCreated | dateTime }}</dd>
+      <dd>{{ customer.created_at | dateTime }}</dd>
 
       <dt>Customer ID</dt>
-      <dd>{{ customer.customerId }}</dd>
+      <dd>{{ customer.id }}</dd>
 
       <dt>Company Name</dt>
-      <dd>{{ customer.companyName }}</dd>
+      <dd>{{ customer.companyName || '-' }}</dd>
 
       <dt>Company ABN</dt>
-      <dd>{{ customer.companyAbn }}</dd>
+      <dd>{{ customer.companyAbn || '-' }}</dd>
 
       <dt>First Name</dt>
-      <dd>{{ customer.firstName }}</dd>
+      <dd>{{ customer.first_name }}</dd>
 
       <dt>Last Name</dt>
-      <dd>{{ customer.lastName }}</dd>
+      <dd>{{ customer.last_name }}</dd>
 
       <dt>Email</dt>
       <dd>{{ customer.email }}</dd>
 
       <dt>Telephone</dt>
-      <dd>{{ customer.telephone }}</dd>
+      <dd>{{ customer.mobile }}</dd>
 
       <dt>Address</dt>
-      <dd>{{ customer.address }}</dd>
+      <dd>{{ customer.address || '-' }}</dd>
     </dl>
 
     <edit-modal

@@ -1,20 +1,33 @@
 <script>
-import StaticProcessor from '@lib/processors/static-processor'
+import ElasticProcessor from '@lib/processors/elastic-processor'
 import tableConfig from './subscriptions-table'
 import addSubscription from './subscription-add'
-
-const subscriptionsMock = require('@tests/__fixtures__/customer-subscriptions')
 
 export default {
   name: 'CustomerSubscriptions',
   components: {
     addSubscription,
   },
+  props: {
+    customerId: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
-      processor: new StaticProcessor({
+      processor: new ElasticProcessor({
+        index: 'subscriptions',
         component: this,
-        data: subscriptionsMock.table,
+        staticQuery: {
+          filters: [
+            {
+              attribute: 'customerId',
+              comparison: 'eq',
+              value: this.customerId,
+            },
+          ],
+        },
       }),
       columns: tableConfig.columns,
       modal: {

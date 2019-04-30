@@ -119,6 +119,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  overflow: hidden;
   white-space: nowrap;
 }
 </style>
