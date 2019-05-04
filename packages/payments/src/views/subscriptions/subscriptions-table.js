@@ -2,28 +2,26 @@ const dateFormat = 'DD/MM/YYYY hh:mm A'
 
 const TABLE_FILTERS = [
   {
-    attribute: 'startDate',
-    icon: 'el-icon-date',
+    attribute: 'startAt',
+    label: 'Start Date',
     type: 'date',
+    icon: 'el-icon-date',
   },
   {
-    attribute: 'endDate',
-    icon: 'el-icon-date',
+    attribute: 'endAt',
+    label: 'End Date',
     type: 'date',
+    icon: 'el-icon-date',
   },
   {
     attribute: 'productName',
+    label: 'Subscription Product',
     type: 'string',
     icon: 'el-icon-document',
   },
   {
-    attribute: 'currentAmount',
-    label: 'Plan',
-    type: 'numeric',
-    icon: 'el-icon-tickets',
-  },
-  {
     attribute: 'currentInterval',
+    label: 'Pricing Plan Billing Interval',
     type: 'select',
     icon: 'el-icon-document',
     values: [
@@ -42,7 +40,8 @@ const TABLE_FILTERS = [
     ],
   },
   {
-    attribute: 'nextBillingDate',
+    attribute: 'nextBilledAt',
+    label: 'Next Billing Date',
     icon: 'el-icon-date',
     type: 'date',
   },
@@ -50,13 +49,14 @@ const TABLE_FILTERS = [
     attribute: 'outstandingBalance',
     label: 'Balance',
     type: 'numeric',
-    icon: 'el-icon-tickets',
+    icon: 'el-icon-money',
   },
-  // {
-  //   attribute: 'coupon',
-  //   type: 'string',
-  //   icon: 'el-icon-document',
-  // },
+  {
+    attribute: 'couponName',
+    label: 'Coupon',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
   {
     attribute: 'status',
     type: 'select',
@@ -72,20 +72,34 @@ const TABLE_FILTERS = [
       },
     ],
   },
+  {
+    attribute: 'customerId',
+    label: 'Customer ID',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'customerEmailAddress',
+    label: 'Customer Email Address',
+    type: 'string',
+    icon: 'el-icon-message',
+  },
 ]
 
 const TABLE_COLUMNS = [
   {
-    name: 'startDate',
-    icon: 'el-icon-document',
+    name: 'startAt',
+    label: 'Start Date',
+    icon: 'el-icon-date',
     format: {
       name: 'date',
       params: [dateFormat],
     },
   },
   {
-    name: 'endDate',
-    icon: 'el-icon-document',
+    name: 'endAt',
+    label: 'End Date',
+    icon: 'el-icon-date',
     format: {
       name: 'date',
       params: [dateFormat],
@@ -93,22 +107,18 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'productName',
+    label: 'Subscription Product',
     icon: 'el-icon-document',
-  },
-  {
-    name: 'currentAmount',
-    label: 'Plan',
-    icon: 'el-icon-document',
-    format: 'dollar',
   },
   {
     name: 'currentInterval',
-    label: 'Billing Interval',
+    label: 'Pricing Plan Billing Interval',
     icon: 'el-icon-document',
   },
   {
-    name: 'nextBillingDate',
-    icon: 'el-icon-document',
+    name: 'nextBilledAt',
+    label: 'Next Billing Date',
+    icon: 'el-icon-date',
     format: {
       name: 'date',
       params: [dateFormat],
@@ -117,33 +127,35 @@ const TABLE_COLUMNS = [
   {
     name: 'outstandingBalance',
     label: 'Balance',
-    icon: 'el-icon-document',
+    icon: 'el-icon-money',
     format: 'dollar',
   },
   {
-    name: 'coupon',
+    name: 'couponName',
+    label: 'Coupon',
     icon: 'el-icon-document',
   },
   {
     name: 'status',
     label: 'Status',
     icon: 'el-icon-document',
+    format: 'capital',
     component: {
       props: {
         styleObj(val) {
           switch (val) {
-            case 'Active': return { color: '#29d737' }
-            case 'Inactive': return { color: '#bbb' }
+            case 'active': return { color: '#29d737' }
+            case 'inactive': return { color: '#bbb' }
             default: return {}
           }
         },
         badge(val) {
           switch (val) {
-            case 'Active': return {
+            case 'active': return {
               name: 'el-icon-success',
               pos: 'left',
             }
-            case 'Inactive': return {
+            case 'inactive': return {
               name: 'el-icon-error',
               pos: 'left',
             }
@@ -152,6 +164,16 @@ const TABLE_COLUMNS = [
         },
       },
     },
+  },
+  {
+    name: 'customerId',
+    label: 'Customer ID',
+    icon: 'el-icon-document',
+  },
+  {
+    name: 'customerEmailAddress',
+    label: 'Customer Email Address',
+    icon: 'el-icon-message',
   },
 ]
 

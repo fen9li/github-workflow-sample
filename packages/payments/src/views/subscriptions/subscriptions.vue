@@ -21,7 +21,7 @@ export default {
     onRowClick(row) {
       this.$router.push({
         name: 'subscription-details',
-        params: { id: row.externalId },
+        params: { id: row.id },
       })
     },
   },

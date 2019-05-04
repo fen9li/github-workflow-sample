@@ -186,9 +186,9 @@ Describes each column in the table.
 | `icon` | `String` | icon class name from Element UI. Is used only in the **columns-hider** component | - |
 | `format` | `FormatDescriptor` | **(optional)** formatter that will be applied to each value in the current column | `{}` |
 | `component` | `CellComponent` | **(optional)** describe a component that will be used for cells rendering in the current column | `{}` |
-| sortable | `String` | **(optional)** use `Boolean` `false` to disable sorting for this column | `'custom'` |
-| overflowTooltip | `String` | **(optional)** determine whether to show a tooltip for values that doesn't fit in their cells | `true` |
-| width | `Number` | **(optional)** column width in pixels | `180` |
+| `sortable` | `String` | **(optional)** use `Boolean` `false` to disable sorting for this column | `'custom'` |
+| `overflowTooltip` | `String` | **(optional)** determine whether to show a tooltip for values that doesn't fit in their cells | `true` |
+| `width` | `Number` | **(optional)** column width in pixels | `180` |
 
 #### Example
 
