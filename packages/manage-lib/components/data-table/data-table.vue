@@ -5,6 +5,7 @@ import DataProcessor from '../../processors/data-processor'
 import CellWrap from './cells/cell-wrap'
 
 const SORT_ORDERS = ['asc', 'desc', '']
+const noop = () => {}
 
 export default {
   name: 'DataTable',
@@ -64,7 +65,7 @@ export default {
       return this.dataQuery.sort
     },
     showHeader() {
-      return !this.tableHeader || !!get(this.processor, 'data.length', false)
+      return Boolean(get(this.processor, 'data.length', false))
     },
   },
   watch: {
@@ -77,7 +78,8 @@ export default {
       const tableHeader = get(this.$refs, 'table.$refs.tableHeader')
 
       tableHeader.handleHeaderClick = this.onSortClick
-      tableHeader.handleSortClick = () => {}
+      tableHeader.handleSortClick = noop
+
       this.tableHeader = tableHeader
     })
   },
@@ -111,24 +113,6 @@ export default {
     onRowClick(row) {
       this.$emit('row-click', row)
     },
-    getRowColor({ row }) {
-      // const { rowColor } = this.config
-
-      // Finish this
-      // if (false) {
-      //   const { field, condition } = rowColor
-      //   let color = ''
-
-      //   if (field && condition) {
-      //     const column = this.transformedColumns[field]
-      //     color = column.type.getColor(row[field], condition)
-      //   }
-
-      //   return { color }
-      // }
-
-      return {}
-    },
     showOverflowTooltip(column) {
       return column.hasOwnProperty('overflowTooltip') ?
         column.overflowTooltip : true
@@ -149,8 +133,7 @@ export default {
       :data="processor.data"
       header-cell-class-name="table-header-cell"
       :row-class-name="showRowLink ? 'clickable-row' : ''"
-      :row-style="getRowColor"
-      :show-header="showHeader"
+      :class="{'hidden-header': !showHeader}"
       @row-click="onRowClick"
     >
       <el-table-column
@@ -240,7 +223,7 @@ export default {
       font-family: element-icons, Arial, sans-serif !important;
       font-size: 14px;
       color: #909399;
-      content: '\e60b';
+      content: '\e790';
     }
 
     .sort-caret {
@@ -268,6 +251,12 @@ export default {
 
 .clickable-row {
   cursor: pointer;
+}
+
+.el-table.hidden-header {
+  .el-table__header-wrapper {
+    display: none;
+  }
 }
 
 .el-table__empty-block {
