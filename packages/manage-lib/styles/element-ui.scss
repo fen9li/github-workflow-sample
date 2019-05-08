@@ -56,6 +56,10 @@ $size-card-spacing: var(--size-card-spacing);
   color: #2f3033 !important;
 }
 
+.el-table__empty-block {
+  width: 100% !important;
+}
+
 .el-dialog {
   max-width: 32rem !important;
   font-weight: initial;

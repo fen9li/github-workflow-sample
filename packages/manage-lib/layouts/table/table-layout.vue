@@ -52,7 +52,9 @@ export default {
     >
       <div :class="$style.filter">
         <data-filter
-          v-bind="$attrs"
+          v-if="$attrs.filters"
+          :processor="$attrs.processor"
+          :filters="$attrs.filters"
           v-on="$listeners"
         />
       </div>
@@ -73,7 +75,8 @@ export default {
     </div>
     <div :class="$style.tableWrapper">
       <data-table
-        v-bind="$attrs"
+        :columns="$attrs.columns"
+        :processor="$attrs.processor"
         v-on="$listeners"
       >
         <slot slot="columns" />

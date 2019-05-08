@@ -125,15 +125,16 @@ export default {
 </script>
 
 <template>
-  <div :class="[$style.table, 'table-view']">
+  <div class="data-table">
     <el-table
       ref="table"
       v-loading="processor.loading"
-      v-bind="$attrs"
       :data="processor.data"
       header-cell-class-name="table-header-cell"
-      :row-class-name="showRowLink ? 'clickable-row' : ''"
-      :class="{'hidden-header': !showHeader}"
+      :row-class-name="showRowLink ? $style.rowActive : ''"
+      :class="[
+        !showHeader && $style.headerHidden,
+      ]"
       @row-click="onRowClick"
     >
       <el-table-column
@@ -184,12 +185,6 @@ export default {
 
 <style lang="scss" module>
 
-.table {
-  .el-table:before {
-    display: none;
-  }
-}
-
 .tablePagination {
   width: 100%;
   margin: 40px auto;
@@ -199,11 +194,27 @@ export default {
 .cellMore {
   color: var(--color-primary);
 }
+
+.rowActive {
+  cursor: pointer;
+}
+
+.headerHidden {
+
+  &:before {
+    content: none;
+  }
+
+  :global(.el-table__header-wrapper) {
+    display: none;
+  }
+}
 </style>
 
 <style lang="scss">
 
 .table-header-cell {
+
   .cell {
     overflow: visible !important;
     font-weight: normal !important;
@@ -247,19 +258,5 @@ export default {
       }
     }
   }
-}
-
-.clickable-row {
-  cursor: pointer;
-}
-
-.el-table.hidden-header {
-  .el-table__header-wrapper {
-    display: none;
-  }
-}
-
-.el-table__empty-block {
-  width: 100% !important;
 }
 </style>
