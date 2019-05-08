@@ -73,6 +73,10 @@ export default {
               title: 'Log History',
               path: '/settings/history',
             },
+            {
+              title: 'Events',
+              path: '/settings/events',
+            },
           ],
         },
       ]
