@@ -18,6 +18,7 @@ const utcOffset = () => {
 
 const filterTypes = {
   eq: 'term',
+  not_eq: 'term',
   gt: 'range',
   lt: 'range',
   starts: 'wildcard',
@@ -77,7 +78,10 @@ function buildBody(queryObj) {
       const filterType = getFilterType(p)
 
       if (filterType) {
-        body.query(filterType, p.attribute, getFilterValue(p))
+        p.comparison === 'not_eq' ?
+          body.notQuery(filterType, p.attribute, getFilterValue(p))
+          :
+          body.query(filterType, p.attribute, getFilterValue(p))
       }
     })
   } else {

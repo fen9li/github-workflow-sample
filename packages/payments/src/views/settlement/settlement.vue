@@ -4,8 +4,9 @@ import settlementInfo from './settlement-info'
 import settlementDetailsMock from
   '@tests/__fixtures__/settlement-details-mock.js'
 import StaticProcessor from '@lib/processors/static-processor'
+import ElasticProcessor from '@lib/processors/elastic-processor'
 import summaryTableConfig from './settlement-summary-table.js'
-import detailsTableConfig from './settlement-table.js'
+import transactionsTableConfig from './settlement-transactions-table.js'
 import formatDollar from '@lib/utils/format-dollar.js'
 
 export default {
@@ -19,17 +20,27 @@ export default {
   },
   data() {
     return {
-      detailsProcessor: new StaticProcessor({
-        component: this,
-        data: settlementDetailsMock.detailsTable,
-      }),
       summaryProcessor: new StaticProcessor({
         component: this,
         data: settlementDetailsMock.summaryTable,
       }),
+      transactionsProcessor: new ElasticProcessor({
+        component: this,
+        index: 'transactions',
+        staticQuery: {
+          filters: [
+            {
+              attribute: 'type',
+              comparison: 'eq',
+              value: 'settlement',
+            },
+          ],
+          sort: { 'createdAt': 'desc' },
+        },
+      }),
       settlementDetailsMock,
-      detailsColumns: detailsTableConfig.columns,
       summaryColumns: summaryTableConfig.columns,
+      transactionsColumns: transactionsTableConfig.columns,
     }
   },
   methods: {
@@ -53,6 +64,12 @@ export default {
       })
 
       return sums
+    },
+    onTransactionsRowClick(row) {
+      this.$router.push({
+        name: 'payment-transaction-details',
+        params: { id: row.id },
+      })
     },
   },
 }
@@ -82,9 +99,10 @@ export default {
     <table-layout
       title="Settlement - Transaction Log"
       table-name="settlementTransactionLog"
-      :columns="detailsColumns"
-      :processor="detailsProcessor"
       :table-controls="false"
+      :processor="transactionsProcessor"
+      :columns="transactionsColumns"
+      @row-click="onTransactionsRowClick"
     />
   </main-layout>
 </template>

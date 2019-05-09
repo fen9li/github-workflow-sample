@@ -16,6 +16,15 @@ export default {
       processor: new ElasticProcessor({
         component: this,
         index: 'transactions',
+        staticQuery: {
+          filters: [
+            {
+              attribute: 'type',
+              comparison: 'not_eq',
+              value: 'settlement',
+            },
+          ],
+        },
       }),
       filters: tableConfig.filters,
       columns: tableConfig.columns,
