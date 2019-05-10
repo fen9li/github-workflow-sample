@@ -1,9 +1,7 @@
 <script>
-import StaticProcessor from '@lib/processors/static-processor'
+import ElasticProcessor from '@lib/processors/elastic-processor'
 import tableConfig from './user-access-table'
 import UserAccessAdd from './user-access-add.vue'
-
-const userAccessMock = require('@tests/__fixtures__/user-access')
 
 export default {
   name: 'UserAccess',
@@ -15,10 +13,11 @@ export default {
   },
   data() {
     return {
-      processor: new StaticProcessor({
+      processor: new ElasticProcessor({
         component: this,
-        data: userAccessMock.table,
+        index: 'users',
       }),
+
       filters: tableConfig.filters,
       columns: tableConfig.columns,
     }

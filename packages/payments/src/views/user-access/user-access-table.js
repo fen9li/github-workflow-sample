@@ -4,12 +4,12 @@ import UserAccessDelete from './user-access-delete.vue'
 
 const TABLE_FILTERS = [
   {
-    attribute: 'created',
+    attribute: 'createdAt',
     type: 'date',
     icon: 'el-icon-document',
   },
   {
-    attribute: 'externalId',
+    attribute: 'id',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -37,13 +37,13 @@ const TABLE_FILTERS = [
 
 const TABLE_COLUMNS = [
   {
-    name: 'created',
+    name: 'createdAt',
     label: 'Created',
     icon: 'el-icon-document',
     format: 'dateTime',
   },
   {
-    name: 'externalId',
+    name: 'id',
     label: 'User ID',
     icon: 'el-icon-document',
   },
