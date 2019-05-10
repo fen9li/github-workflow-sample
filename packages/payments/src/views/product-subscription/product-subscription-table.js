@@ -1,16 +1,16 @@
 const TABLE_FILTERS = [
   {
-    attribute: 'dateCreated',
+    attribute: 'createdAt',
     icon: 'el-icon-date',
     type: 'date',
   },
   {
-    attribute: 'plan',
+    attribute: 'name',
     type: 'string',
     label: 'Pricing Plan Name',
   },
   {
-    attribute: 'startDate',
+    attribute: 'startOn',
     type: 'date',
   },
   {
@@ -55,17 +55,17 @@ const TABLE_FILTERS = [
 
 const TABLE_COLUMNS = [
   {
-    name: 'dateCreated',
+    name: 'createdAt',
     icon: 'el-icon-document',
     format: 'dateTime',
   },
   {
-    name: 'plan',
+    name: 'name',
     label: 'Pricing Plan Name',
     icon: 'el-icon-document',
   },
   {
-    name: 'startDate',
+    name: 'startOn',
     icon: 'el-icon-document',
     format: 'dateTime',
   },

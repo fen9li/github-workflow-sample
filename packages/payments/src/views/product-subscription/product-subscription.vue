@@ -1,9 +1,10 @@
 <script>
 import appConfig from '~/app.config'
-import StaticProcessor from '@lib/processors/static-processor'
+import ElasticProcessor from '@lib/processors/elastic-processor'
 import tableConfig from './product-subscription-table'
-import subscriptionProductMock
-  from '@tests/__fixtures__/subscription-product-details'
+
+import subscriptionProductMock from '@tests/__fixtures__/subscription-product-details'
+
 import ProductSubscriptionAddPlan from './product-subscription-add-plan'
 import ProductSubscriptionDeletePlan from './product-subscription-delete-plan'
 import ProductSubscriptionEdit from './product-subscription-edit'
@@ -23,10 +24,13 @@ export default {
   data() {
     return {
       details: subscriptionProductMock.details,
-      processor: new StaticProcessor({
-        data: subscriptionProductMock.table,
-        component: this }),
+      processor: new ElasticProcessor({
+        component: this,
+        index: 'subscription-product-pricing-plans',
+      }),
+      filters: tableConfig.filters,
       columns: tableConfig.columns,
+
       modal: {
         delete: false,
         edit: false,
