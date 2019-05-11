@@ -1,23 +1,37 @@
 const TABLE_FILTERS = [
   {
-    attribute: 'created',
-    icon: 'el-icon-date',
+    attribute: 'createdAt',
+    label: 'Date',
     type: 'date',
+    icon: 'el-icon-date',
+  },
+  {
+    attribute: 'action',
+    label: 'Type',
+    type: 'string',
+    icon: 'el-icon-document',
   },
   {
     attribute: 'amount',
     type: 'numeric',
-    icon: 'el-icon-star-off',
+    icon: 'el-icon-document',
   },
   {
-    attribute: 'fee',
+    attribute: 'feeAmount',
+    label: 'Fee',
     type: 'numeric',
-    icon: 'el-icon-tickets',
+    icon: 'el-icon-document',
   },
   {
     attribute: 'netAmount',
+    label: 'NET',
     type: 'numeric',
-    icon: 'el-icon-tickets',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'statementDescriptor',
+    type: 'string',
+    icon: 'el-icon-document',
   },
   {
     attribute: 'orderId',
@@ -48,7 +62,8 @@ const TABLE_FILTERS = [
     ],
   },
   {
-    attribute: 'dateFinalised',
+    attribute: 'completedAt',
+    label: 'Date Finalised',
     type: 'date',
     icon: 'el-icon-document',
   },
@@ -57,19 +72,20 @@ const TABLE_FILTERS = [
     type: 'string',
     icon: 'el-icon-document',
   },
-  {
-    attribute: 'customerEmailAddress',
-    type: 'string',
-    icon: 'el-icon-document',
-  },
 ]
 
 const TABLE_COLUMNS = [
   {
-    name: 'created',
-    label: 'Date created',
+    name: 'createdAt',
+    label: 'Date',
     icon: 'el-icon-document',
-    format: 'dateTime',
+    format: 'dayMonthYear',
+  },
+  {
+    name: 'action',
+    label: 'Type',
+    icon: 'el-icon-document',
+    format: 'capital',
   },
   {
     name: 'amount',
@@ -90,7 +106,7 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'fee',
+    name: 'feeAmount',
     label: 'Fee',
     icon: 'el-icon-document',
     format: 'dollar',
@@ -98,10 +114,15 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'netAmount',
-    label: 'Net',
+    label: 'NET',
     icon: 'el-icon-document',
     format: 'dollar',
     width: 100,
+  },
+  {
+    name: 'statementDescriptor',
+    label: 'Statement Descriptor',
+    icon: 'el-icon-document',
   },
   {
     name: 'orderId',
@@ -112,32 +133,33 @@ const TABLE_COLUMNS = [
     name: 'status',
     label: 'Status',
     icon: 'el-icon-document',
+    format: 'capital',
     component: {
       props: {
         styleObj(val) {
           switch (val) {
-            case 'Pending': return { color: '#fbb241' }
-            case 'Finalised': return { color: '#29d737' }
-            case 'Failed': return { color: '#fc7168' }
-            case 'Refunded': return { color: '#fc7168' }
+            case 'pending': return { color: '#fbb241' }
+            case 'finalised': return { color: '#29d737' }
+            case 'failed': return { color: '#fc7168' }
+            case 'refunded': return { color: '#fc7168' }
             default: return {}
           }
         },
         badge(val) {
           switch (val) {
-            case 'Pending': return {
+            case 'pending': return {
               name: 'el-icon-time',
               pos: 'left',
             }
-            case 'Finalised': return {
+            case 'finalised': return {
               name: 'el-icon-check',
               pos: 'left',
             }
-            case 'Failed': return {
+            case 'failed': return {
               name: 'el-icon-close',
               pos: 'left',
             }
-            case 'Refunded': return {
+            case 'refunded': return {
               name: 'el-icon-refresh',
               pos: 'left',
             }
@@ -148,26 +170,26 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'dateFinalised',
+    name: 'completedAt',
     label: 'Date Finalised',
     icon: 'el-icon-document',
-    format: 'dateTime',
+    format: 'dayMonthYear',
   },
   {
     name: 'paymentSource',
     label: 'Payment Source',
     icon: 'el-icon-document',
   },
-  {
-    name: 'customerIntegrationId',
-    label: 'Customer ID',
-    icon: 'el-icon-document',
-  },
-  {
-    name: 'customerEmailAddress',
-    label: 'Customer Email',
-    icon: 'el-icon-document',
-  },
+  // {
+  //   name: 'customerId',
+  //   label: 'Customer ID',
+  //   icon: 'el-icon-document',
+  // },
+  // {
+  //   name: 'customerEmailAddress',
+  //   label: 'Customer Email',
+  //   icon: 'el-icon-document',
+  // },
 ]
 
 export default {

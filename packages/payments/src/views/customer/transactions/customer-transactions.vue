@@ -22,7 +22,6 @@ export default {
           filters: [
             {
               attribute: 'customerId',
-              comparison: 'eq',
               value: this.id,
             },
           ],
@@ -31,6 +30,14 @@ export default {
       filters: tableConfig.filters,
       columns: tableConfig.columns,
     }
+  },
+  methods: {
+    onRowClick(row) {
+      this.$router.push({
+        name: 'payment-transaction-details',
+        params: { id: row.id || 'unknown' },
+      })
+    },
   },
 }
 </script>
@@ -41,5 +48,6 @@ export default {
     :processor="processor"
     :filters="filters"
     :columns="columns"
+    @row-click="onRowClick"
   />
 </template>
