@@ -57,6 +57,11 @@ const router = new Router({
       component: () => lazy(import('./views/feed-status')),
     },
     {
+      path: '/settings/log-history',
+      name: 'settings-log-history',
+      component: () => lazy(import('~/views/log-history')),
+    },
+    {
       path: '*',
       redirect: '/',
     },
