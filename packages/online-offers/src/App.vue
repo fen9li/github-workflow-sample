@@ -15,14 +15,14 @@ export default {
           icon: 'menu',
         },
         {
-          title: 'Offers',
-          path: '/offers',
-          icon: 'goods',
-        },
-        {
           title: 'Clients',
           path: '/clients',
           icon: 'user',
+        },
+        {
+          title: 'Merchants',
+          path: '/merchants',
+          icon: 'goods',
         },
       ]
     },
