@@ -5,14 +5,18 @@ export default {
       type: Array,
       default: () => {
         return [
-          25, 50, 100,
+          25, 50, 100, 200,
         ]
       },
+    },
+    defaultValue: {
+      type: Number,
+      default: 50,
     },
   },
   data() {
     return {
-      activeCount: 50,
+      activeCount: this.defaultValue,
     }
   },
 }
