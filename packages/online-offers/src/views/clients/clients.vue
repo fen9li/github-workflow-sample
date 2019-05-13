@@ -1,11 +1,15 @@
 <script>
 import ApiProcessor from '@lib/processors/api-processor'
 import tableConfig from './clients-table'
+import AddClientModal from './client-add'
 
 export default {
   name: 'Clients',
   page: {
     title: 'Clients',
+  },
+  components: {
+    AddClientModal,
   },
   data() {
     return {
@@ -49,5 +53,11 @@ export default {
     >
       Add Client
     </el-button>
+
+    <add-client-modal
+      v-if="modal.add"
+      slot="header"
+      :visible.sync="modal.add"
+    />
   </main-layout>
 </template>
