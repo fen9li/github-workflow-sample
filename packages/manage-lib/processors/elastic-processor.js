@@ -110,7 +110,7 @@ export default class ElasticAdapter extends DataProcessor {
 
     this.index = params.index
     /*
-     * dataQuery created in DataProcessor super
+     * dataQuery is created in DataProcessor super
      */
 
     this.init()

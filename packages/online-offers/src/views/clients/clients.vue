@@ -15,9 +15,7 @@ export default {
     return {
       processor: new ApiProcessor({
         component: this,
-        index: 'clients',
-        url: '',
-        headers: {},
+        path: 'clients',
       }),
       columns: tableConfig.columns,
       filters: tableConfig.filters,

@@ -1,89 +1,65 @@
 import DataProcessor from './data-processor'
-import get from 'lodash/get'
-import { Client } from 'elasticsearch'
-import * as bodybuilder from 'bodybuilder'
+import axios from 'axios'
 
-const filterValues = {}
-const filterTypes = {}
-
-function getFilterType({ comparison }) {
-  return filterTypes[comparison] || 'match'
-}
-
-function getFilterValue({ value, comparison }) {
-  return filterValues[comparison] ? filterValues[comparison](value) : value
-}
-
-function buildBody(queryObj) {
-  const { filters, sort } = queryObj
-  const body = bodybuilder()
-
-  if (filters.length) {
-    filters.forEach(p => {
-      const filterType = getFilterType(p)
-
-      if (filterType) {
-        body.query(filterType, p.attribute, getFilterValue(p))
-      }
-    })
-  } else {
-    body.query('match_all')
-  }
-
-  if (Object.keys(sort).length) {
-    const preparedSort = []
-
-    for (const key in sort) {
-      if (sort.hasOwnProperty(key)) {
-        preparedSort.push({ [key]: sort[key] })
-      }
-    }
-
-    body.sort(preparedSort)
-  }
-
-  return body.build()
-}
-
-const client = new Client({
-  host: process.env.VUE_APP_ELASTIC_HOST,
-  apiVersion: '6.6',
+export const API = axios.create({
+  baseURL: process.env.VUE_APP_API_URL,
+  headers: { Authorization: `Bearer ${process.env.VUE_APP_API_TOKEN}` },
 })
 
-export default class ApiProcessor extends DataProcessor {
-  constructor(params) {
+class ApiProcessor extends DataProcessor {
+  constructor(params = {}) {
+    const { path } = params
     super(params)
 
-    this.index = params.index
+    if (
+      typeof path !== 'string' ||
+      path.length === 0
+    ) {
+      throw Error('api-processor requires "path" key')
+    }
+
+    this.path = path
 
     this.init()
   }
 
-  async sendRequest(dataQuery) {
-    const response = await client.search({
-      index: this.index,
-      body: buildBody(dataQuery),
-      from: dataQuery.pageSize * (dataQuery.page - 1),
-      size: dataQuery.pageSize,
-    })
+  sendRequest(query) {
+    // const { page, pageSize } = query
 
-    return {
-      data: get(response, 'hits.hits', []).map(i => i._source),
-      total: get(response, 'hits.total', 0),
-    }
+    return API
+      .get(
+        this.path,
+        {
+          // params: {},
+        }
+      )
+      .then(({ data }) => {
+        const { items, pagination } = data
+
+        return {
+          data: items,
+          total: pagination.total_items,
+        }
+      })
   }
 
-  async sendRequestAll(dataQuery) {
-    const response = await client.search({
-      index: this.index,
-      body: buildBody(dataQuery),
-      from: 0,
-      size: 10000, /* @todo need to implement new interface for larger values */
-    })
+  sendRequestAll(/* query */) {
+    return API
+      .get(
+        this.path,
+        {
+          // params: {},
+        }
+      )
+      .then(({ data }) => {
+        const { items, pagination } = data
 
-    return {
-      data: get(response, 'hits.hits', []).map(i => i._source),
-      total: get(response, 'hits.total', 0),
-    }
+        return {
+          data: items,
+          total: pagination.total_items,
+        }
+      })
   }
 }
+
+export default ApiProcessor
