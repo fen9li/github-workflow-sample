@@ -19,6 +19,11 @@ export default {
           path: '/offers',
           icon: 'goods',
         },
+        {
+          title: 'Clients',
+          path: '/clients',
+          icon: 'user',
+        },
       ]
     },
   },

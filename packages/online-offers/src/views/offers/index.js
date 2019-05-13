@@ -1,1 +1,1 @@
-export { default } from './offers.vue'
+export { default } from './offers'

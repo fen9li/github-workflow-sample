@@ -19,6 +19,11 @@ const router = new Router({
       component: () => lazy(import('./views/offers')),
     },
     {
+      path: '/clients',
+      name: 'clients',
+      component: () => lazy(import('./views/clients')),
+    },
+    {
       path: '*',
       redirect: '/',
     },
