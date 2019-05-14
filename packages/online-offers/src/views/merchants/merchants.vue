@@ -18,6 +18,9 @@ export default {
         params: { slug: row.merchantName || 'unknown' },
       })
     },
+    viewOffers(e) {
+      console.warn(e)
+    },
   },
 }
 </script>
@@ -38,7 +41,7 @@ export default {
         <el-button
           type="text"
           :class="$style.viewOffers"
-          @row-click="onRowClick"
+          @click.stop="viewOffers"
         >
           View Offers
         </el-button>
