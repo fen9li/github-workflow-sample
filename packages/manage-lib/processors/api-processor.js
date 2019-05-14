@@ -24,13 +24,16 @@ class ApiProcessor extends DataProcessor {
   }
 
   sendRequest(query) {
-    // const { page, pageSize } = query
+    const { page, pageSize } = query
 
     return API
       .get(
         this.path,
         {
-          // params: {},
+          params: {
+            page,
+            perPage: pageSize,
+          },
         }
       )
       .then(({ data }) => {
@@ -43,12 +46,15 @@ class ApiProcessor extends DataProcessor {
       })
   }
 
-  sendRequestAll(/* query */) {
+  sendRequestAll() {
     return API
       .get(
         this.path,
         {
-          // params: {},
+          params: {
+            page: 1,
+            perPage: 1e9,
+          },
         }
       )
       .then(({ data }) => {
