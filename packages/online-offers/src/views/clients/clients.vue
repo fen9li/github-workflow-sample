@@ -36,12 +36,12 @@ export default {
   <main-layout title="Clients">
     <table-layout
       table-name="clients"
-      :quantity="true"
-      :fragments="false"
-      :hider="false"
       :processor="processor"
       :filters="filters"
       :columns="columns"
+      :fragments="false"
+      :hider="false"
+      quantity
       @row-click="onRowClick"
     />
     <el-button

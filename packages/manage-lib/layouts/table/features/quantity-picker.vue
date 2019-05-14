@@ -1,23 +1,36 @@
 <script>
+import FeaturesMixin from './features.mixin.js'
+
 export default {
+  name: 'QuantityPicker',
+  mixins: [FeaturesMixin],
   props: {
     options: {
       type: Array,
-      default: () => {
-        return [
-          25, 50, 100, 200,
-        ]
-      },
-    },
-    defaultValue: {
-      type: Number,
-      default: 50,
+      default: () => [15, 20, 25, 50, 100],
     },
   },
   data() {
     return {
-      activeCount: this.defaultValue,
+      activeCount: -1,
     }
+  },
+  watch: {
+    'processor.dataQuery.pageSize': {
+      handler(newCount) {
+        if (this.activeCount !== newCount) {
+          this.activeCount = newCount
+        }
+      },
+      immediate: true,
+    },
+  },
+  methods: {
+    onCountChange(newCount) {
+      this.activeCount = newCount
+
+      this.processor.updatePageSize(newCount)
+    },
   },
 }
 </script>
@@ -29,8 +42,9 @@ export default {
     </div>
     <div :class="$style.select">
       <el-select
-        v-model="activeCount"
+        :value="activeCount"
         size="small"
+        @input="onCountChange"
       >
         <el-option
           v-for="item in options"

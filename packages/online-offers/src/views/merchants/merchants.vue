@@ -32,6 +32,9 @@ export default {
       :processor="table.processor"
       :filters="table.filters"
       :columns="table.columns"
+      :fragments="false"
+      :hider="false"
+      quantity
       @row-click="onRowClick"
     >
       <el-table-column

@@ -183,6 +183,7 @@ export default class DataProcessor {
 
   applyFilter(filter, index) {
     this.filters.splice(index, 1, filter)
+    this.dataQuery.page = 1
 
     return this.getData({ shouldUpdateURL: true })
   }
@@ -197,6 +198,15 @@ export default class DataProcessor {
     const { dataQuery } = this
 
     dataQuery.page = page
+
+    return this.getData({ shouldUpdateURL: true })
+  }
+
+  updatePageSize(pageSize) {
+    const { dataQuery } = this
+
+    dataQuery.pageSize = pageSize
+    dataQuery.page = 1
 
     return this.getData({ shouldUpdateURL: true })
   }

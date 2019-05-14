@@ -2,7 +2,7 @@
 import FragmentsManager from './features/fragments-manager.vue'
 import ColumnsHider from './features/columns-hider.vue'
 import DataExporter from './features/data-exporter/data-exporter.vue'
-import QuantityShowing from './features/quantity-showing.vue'
+import QuantityPicker from './features/quantity-picker.vue'
 
 export default {
   name: 'TableLayout',
@@ -10,7 +10,7 @@ export default {
     FragmentsManager,
     ColumnsHider,
     DataExporter,
-    QuantityShowing,
+    QuantityPicker,
   },
   inheritAttrs: false,
   props: {
@@ -73,7 +73,7 @@ export default {
           v-if="hider"
           v-bind="$attrs"
         />
-        <quantity-showing
+        <quantity-picker
           v-if="quantity"
           v-bind="$attrs"
         />
