@@ -6,6 +6,7 @@ module.exports = {
       merchantOffers: 3,
       feed: 'Commision Factory',
       lastUpdated: '2018-10-15T12:40:31.965Z',
+      id: 'BNSO231',
     },
     {
       status: 'inactive',
@@ -13,6 +14,7 @@ module.exports = {
       merchantOffers: 1,
       feed: 'Commision Factory',
       lastUpdated: '2018-09-12T11:21:31.965Z',
+      id: 'BNSO111',
     },
   ],
 }

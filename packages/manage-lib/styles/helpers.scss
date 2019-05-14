@@ -36,6 +36,23 @@
       width: 100%;
     }
   }
+
+  &__online-offers {
+    dt {
+      min-width: 12rem;
+    }
+
+    dd {
+      font-weight: 400;
+    }
+
+    dt,
+    dd {
+      &:not(:first-of-type) {
+        padding-top: 1.6rem;
+      }
+    }
+  }
 }
 
 .flat-icon-button {

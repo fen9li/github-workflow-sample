@@ -2,6 +2,7 @@
 import Static from '@lib/processors/static-processor'
 import tableMock from '@tests/__fixtures__/merchants'
 import cellToggle from '~/components/cells/cell-toggle.vue'
+import cellRoute from '~/components/cells/cell-route.vue'
 
 const TABLE_FILTERS = [
   {
@@ -68,6 +69,18 @@ const TABLE_COLUMNS = [
     name: 'lastUpdated',
     icon: 'el-icon-document',
     format: 'dateTime',
+  },
+  {
+    sortable: false,
+    width: 80,
+    component: {
+      is: cellRoute,
+      props: {
+        text: 'View Offers',
+        pathName: 'merchant-offers',
+        identifier: 'id',
+      },
+    },
   },
 ]
 

@@ -17,7 +17,7 @@ export default {
 
 <template>
   <main-layout
-    title="PLACEHOLDER Offers"
+    title="Boden New British Offers"
     back
   >
     <table-layout
@@ -25,6 +25,9 @@ export default {
       :processor="table.processor"
       :filters="table.filters"
       :columns="table.columns"
+      :fragments="false"
+      :hider="false"
+      quantity
       @row-click="onRowClick"
     />
   </main-layout>
