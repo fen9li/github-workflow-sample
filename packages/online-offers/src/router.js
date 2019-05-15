@@ -19,6 +19,11 @@ const router = new Router({
       component: () => lazy(import('./views/clients')),
     },
     {
+      path: '/client/:id',
+      name: 'client-details',
+      component: () => lazy(import('./views/client')),
+    },
+    {
       path: '/merchants',
       name: 'merchants',
       component: () => lazy(import('./views/merchants')),
