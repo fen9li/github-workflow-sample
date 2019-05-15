@@ -1,46 +1,47 @@
 <script>
-// import
+import details from '@tests/__fixtures__/merchant-offer'
+import offerDetails from './details/merchant-offer-details'
+import editOffer from './edit/merchant-offer-edit'
+
 export default {
   name: 'MerchantOffer',
+  components: {
+    offerDetails,
+    editOffer,
+  },
   data() {
     return {
+      details,
+      edit: false,
     }
   },
-  methods: {
-
+  computed: {
+    showEdit() {
+      return this.details.status === 'active' || this.edit
+    },
+    title() {
+      const { details, showEdit } = this
+      return `${details.merchantName} ${details.name} ${showEdit ? 'Edit Offers Details' : '' }`
+    },
   },
 }
 </script>
 
 <template>
   <main-layout
-    title="Offers"
+    :title="title"
     back
   >
     <el-card>
-      <div :class="$style.wrapper">
-        <div>
-          10 % Off
-        </div>
-
-        <div :class="$style.controls">
-          <el-button
-            type="success"
-            class="wide-button"
-          >
-            Activate Offer
-          </el-button>
-
-          <div>
-            <el-button
-              type="primary"
-              class="wide-button"
-            >
-              Edit Offer Details
-            </el-button>
-          </div>
-        </div>
-      </div>
+      <edit-offer
+        v-if="showEdit"
+        :details="details"
+      />
+      <offer-details
+        v-else
+        :details="details"
+        @editOffer="edit = true"
+      />
     </el-card>
   </main-layout>
 </template>
@@ -51,4 +52,21 @@ export default {
   justify-content: space-between
 }
 
+.grey {
+  color: gray;
+}
+
+.title {
+  display: block;
+  margin-bottom: 1.8rem;
+  font-size: 1.5rem;
+}
+
+.dataList {
+  max-width: 80%;
+}
+
+.editBtn {
+  margin-top: 2rem;
+}
 </style>

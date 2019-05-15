@@ -10,6 +10,10 @@ export default {
   },
   methods: {
     onRowClick(row) {
+      this.$router.push({
+        name: 'merchant-offer',
+        params: { offerId: row.id },
+      })
     },
   },
 }

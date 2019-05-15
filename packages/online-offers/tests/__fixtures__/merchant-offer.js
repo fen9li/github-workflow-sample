@@ -1,0 +1,17 @@
+module.exports = {
+  feed: 'Commission Factory',
+  id: 'BNS1111',
+  extId: 'BNS11',
+  created: '2018/10/14',
+  updated: '2018/10/10',
+  updatedBy: 'Julian Gregov',
+  name: '10% Off first purchase',
+  coupon: 'HB2819',
+  offerStarts: '2018/11/15',
+  offerEnds: '2019/12/22',
+  description: 'Some text description',
+  terms: 'Some text terms',
+  url: 'www.boden.com.au/first_purchase',
+  merchantName: 'Boden New British',
+  status: 'inactive',
+}
