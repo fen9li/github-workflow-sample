@@ -24,6 +24,11 @@ export default {
           path: '/merchants',
           icon: 'goods',
         },
+        {
+          title: 'Feed Updates',
+          path: '/feed-updates',
+          icon: 'refresh-right',
+        },
       ]
     },
   },
