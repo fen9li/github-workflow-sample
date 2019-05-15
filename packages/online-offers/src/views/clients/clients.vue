@@ -1,6 +1,5 @@
 <script>
-import ApiProcessor from '@lib/processors/api-processor'
-import tableConfig from './clients-table'
+import table from './clients.table'
 import AddClientModal from './client-add'
 
 export default {
@@ -13,12 +12,7 @@ export default {
   },
   data() {
     return {
-      processor: new ApiProcessor({
-        component: this,
-        path: 'clients',
-      }),
-      columns: tableConfig.columns,
-      filters: tableConfig.filters,
+      table: table(this),
       modal: {
         add: false,
       },
@@ -26,7 +20,12 @@ export default {
   },
   methods: {
     onRowClick(row) {
-      //
+      this.$router.push({
+        name: 'client-details',
+        params: {
+          id: 1,
+        },
+      })
     },
   },
 }
@@ -36,14 +35,27 @@ export default {
   <main-layout title="Clients">
     <table-layout
       table-name="clients"
-      :processor="processor"
-      :filters="filters"
-      :columns="columns"
       :fragments="false"
       :hider="false"
       quantity
+      :processor="table.processor"
+      :filters="table.filters"
+      :columns="table.columns"
       @row-click="onRowClick"
-    />
+    >
+      <el-table-column
+        label="Logo"
+        fixed="left"
+        width="250"
+      >
+        <template slot-scope="scope">
+          <img
+            :src="scope.row.clientLogo"
+            :alt="scope.row.clientName"
+          >
+        </template>
+      </el-table-column>
+    </table-layout>
     <el-button
       slot="header"
       type="primary"
