@@ -41,7 +41,10 @@ export default {
             :class="$style['logo-image']"
             :src="form.clientLogo"
           >
-          <div :class="$style['logo-change']">
+          <div
+            v-if="isEdit"
+            :class="$style['logo-change']"
+          >
             <el-button
               type="text"
               :class="$style['logo-change-btn']"
