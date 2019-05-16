@@ -1,4 +1,6 @@
 <script>
+import table from './merchants.table'
+
 export default {
   name: 'Clients',
   page: {
@@ -6,6 +8,7 @@ export default {
   },
   data() {
     return {
+      table: table(this),
       isEdit: false,
       form: {
         clientName: 'Suncorp',
@@ -15,6 +18,12 @@ export default {
     }
   },
   methods: {
+    onRowClick(row) {
+      this.$router.push({
+        name: 'merchant-details',
+        params: { slug: row.merchantName || 'unknown' },
+      })
+    },
     handleFormTrigger() {
       if (this.isEdit) {
         // send form
@@ -146,6 +155,30 @@ export default {
         </div>
       </div>
     </el-card>
+
+    <table-layout
+      table-name="merchants"
+      :quantity="true"
+      :fragments="false"
+      :hider="false"
+      :processor="table.processor"
+      :filters="table.filters"
+      :columns="table.columns"
+      @row-click="onRowClick"
+    >
+      <el-table-column
+        v-if="false"
+        fixed="right"
+        width="120"
+      >
+        <el-button
+          type="text"
+          :class="$style['view-details-btn']"
+        >
+          View details
+        </el-button>
+      </el-table-column>
+    </table-layout>
   </main-layout>
 </template>
 
@@ -241,5 +274,9 @@ export default {
         }
       }
     }
+  }
+
+  .view-details-btn {
+    font-weight: 600;
   }
 </style>
