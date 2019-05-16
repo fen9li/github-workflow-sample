@@ -18,6 +18,7 @@
   - [styleObj definition](#type-styleobj)
   - [badge definition](#type-badge)
   - [badgeDescriptor definition](#object-badgedescriptor)
+  - [allowEmpty definition](#type-allowempty)
 - [Filters config](#filters-config)
   - [FilterDescriptor definition](#object-filterdescriptor)
   - [SelectItemsList definition](#array-selectitemslist)
@@ -243,7 +244,7 @@ Must be one of the following types:
 
 **Important note #1**: developers can pass any props except these four: `attribute`, `row`, `value`, `formattedValue`. They will be passed by **cell-wrap** component.
 
-**Important note #2**: if the column component uses **_cell.mixin.js_** then developers can pass two props with a special name: `styleObj` and `badge`. Their schemas:
+**Important note #2**: if the column component uses **_cell.mixin.js_** then developers can pass three props with a special name: `styleObj`, `badge` and `allowEmpty`. Their schemas:
 
 ### Type `styleObj`
 
@@ -290,6 +291,10 @@ Describes icon for the cell. It must be one of the following types:
   pos: 'right'
 }
 ```
+
+### Type `allowEmpty`
+
+`false` by default. `true` value allows to display an empty string instead of `—` symbol.
 
 ### Columns config example
 

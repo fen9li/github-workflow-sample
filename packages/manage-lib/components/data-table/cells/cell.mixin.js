@@ -26,6 +26,10 @@ export default {
       type: [Function, Object],
       default: () => ({}),
     },
+    allowEmpty: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     computedStyle() {
@@ -53,7 +57,15 @@ export default {
   },
   methods: {
     checkEmptyValue(value) {
-      return emptyRE.test(value) ? '—' : value
+      if (emptyRE.test(value)) {
+        if (this.allowEmpty) {
+          return ''
+        }
+
+        return '—'
+      }
+
+      return value
     },
   },
 }
