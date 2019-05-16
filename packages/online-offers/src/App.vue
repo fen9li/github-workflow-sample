@@ -29,6 +29,11 @@ export default {
           path: '/feed-updates',
           icon: 'refresh-right',
         },
+        {
+          title: 'Feed Status',
+          path: '/feed-status',
+          icon: 's-marketing',
+        },
       ]
     },
   },
