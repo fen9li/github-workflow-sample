@@ -21,6 +21,12 @@ export default {
   },
   methods: {
     onRowClick(row) {
+      this.$router.push({
+        name: 'log-details',
+        params: {
+          id: row.id || 'unknown',
+        },
+      })
     },
   },
 }
