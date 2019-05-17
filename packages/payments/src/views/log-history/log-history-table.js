@@ -5,12 +5,12 @@ const TABLE_FILTERS = [
     icon: 'el-icon-date',
   },
   {
-    attribute: 'method',
+    attribute: 'description',
     type: 'string',
     icon: 'el-icon-document',
   },
   {
-    attribute: 'url',
+    attribute: 'status',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -18,25 +18,21 @@ const TABLE_FILTERS = [
 
 const TABLE_COLUMNS = [
   {
-    name: 'id',
-    label: 'ID',
-    icon: 'el-icon-document',
-  },
-  {
     name: 'createdAt',
     label: 'Date',
     icon: 'el-icon-document',
     format: 'dateTime',
   },
   {
-    name: 'method',
-    label: 'Method',
+    name: 'description',
+    label: 'Description',
     icon: 'el-icon-document',
   },
   {
-    name: 'url',
-    label: 'Endpoint',
+    name: 'status',
+    label: 'Status',
     icon: 'el-icon-document',
+    align: 'right',
   },
 ]
 

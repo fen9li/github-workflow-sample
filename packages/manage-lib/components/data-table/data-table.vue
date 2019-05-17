@@ -139,6 +139,7 @@ export default {
     >
       <el-table-column
         v-for="column in readyColumns"
+        :align="column.align || 'left'"
         :key="column.key"
         :label="column.label"
         :column-key="column.key"

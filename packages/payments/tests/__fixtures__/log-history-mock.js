@@ -1,12 +1,13 @@
 module.exports = {
   table: [
     {
-      name: 'POST/v1/point1',
       id: 'log0',
       createdAt: '2019-04-15T12:40:31.965Z',
+      description: 'POST/v1/point1',
+      name: 'POST/v1/point1',
+      status: '200',
       method: 'POST',
       url: '/v1/point1',
-      status: '200',
       ipAddress: '111.111.42.150',
       version: '0.0.1',
       source: 'Dashboard - pavel@loyaltycorp.com.au',
@@ -55,12 +56,13 @@ module.exports = {
       }`,
     },
     {
-      name: 'POST/v1/point2',
       id: 'log1',
       createdAt: '2019-04-16T12:35:31.965Z',
+      description: 'POST/v1/point2',
+      name: 'POST/v1/point2',
       method: 'GET',
       url: '/v1/point2',
-      status: '200',
+      status: '400',
       ipAddress: '111.111.42.150',
       version: '0.0.1',
       source: 'Dashboard - pavel@loyaltycorp.com.au',

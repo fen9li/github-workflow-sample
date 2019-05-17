@@ -4,8 +4,6 @@ import tableConfig from './log-history-table'
 
 const logHistoryMock = require('@tests/__fixtures__/log-history-mock')
 
-console.log(logHistoryMock)
-
 export default {
   name: 'LogHistory',
   page: {

@@ -102,6 +102,11 @@ export default {
 
       return baseProps
     },
+    alignClass() {
+      const { $style, column: { align } } = this
+      const result = align === 'right' ? $style.alignRight : align === 'center' ? $style.alignCenter : null
+      return result
+    },
   },
 }
 </script>
@@ -110,18 +115,24 @@ export default {
   <component
     :is="cellComp"
     v-bind="cellCompProps"
-    :class="$style.cell"
+    :class="[$style.cell, alignClass]"
   />
 </template>
 
 <style lang="scss" module>
-.cell {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  overflow: hidden;
-  white-space: nowrap;
-}
+  .alignRight {
+    justify-content: flex-end !important;
+  }
+  .alignCenter {
+    justify-content: center !important;
+  }
+  .cell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 </style>
 
 <style lang="scss">
