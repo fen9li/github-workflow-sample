@@ -1,6 +1,11 @@
 <script>
+import uploadcare from 'uploadcare-vue'
+
 export default {
   name: 'AddClientModal',
+  components: {
+    uploadcare,
+  },
   data() {
     return {
       form: {
@@ -8,6 +13,7 @@ export default {
         clientLogo: null,
         feeds: [],
       },
+      clientLogoName: null,
       rules: {
         clientName: [
           {
@@ -36,12 +42,16 @@ export default {
   },
   computed: {
     uploaderPlaceholder() {
-      return this.form.clientLogo || '160px - 60px'
+      return this.clientLogoName || '160px - 60px'
+    },
+    uploadcareKey() {
+      return process.env.VUE_APP_UPLOADCARE_PUBLIC_KEY
     },
   },
   methods: {
-    clientLogoUpload() {
-      // upload image and update {form.clientLogo}
+    onSuccessUploading(img) {
+      this.form.clientLogo = img.originalUrl
+      this.clientLogoName = img.name
     },
     onSubmit() {
       // submit form
@@ -78,26 +88,26 @@ export default {
             label="Client logo"
             prop="clientLogo"
           >
-            <el-upload
-              action=""
-              :class="$style.uploader"
-              :file-list="form.clientLogo"
-              :show-file-list="false"
-              :on-success="clientLogoUpload"
-            >
-              <el-button
-                type="primary"
-                plain
+            <div :class="$style.uploader">
+              <uploadcare
+                :public-key="uploadcareKey"
+                crop="160x60"
+                @success="onSuccessUploading"
               >
-                Select File
-              </el-button>
+                <el-button
+                  type="primary"
+                  plain
+                >
+                  Select File
+                </el-button>
+              </uploadcare>
               <div
                 slot="tip"
                 :class="$style['form-uploader-tip']"
               >
                 {{ uploaderPlaceholder }}
               </div>
-            </el-upload>
+            </div>
           </el-form-item>
 
           <el-form-item

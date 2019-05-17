@@ -105,5 +105,8 @@
   },
   "publishConfig": {
     "access": "restricted"
+  },
+  "dependencies": {
+    "uploadcare-vue": "^1.0.0"
   }
 }
