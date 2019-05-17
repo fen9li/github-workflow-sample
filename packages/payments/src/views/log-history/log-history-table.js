@@ -1,41 +1,41 @@
-const dateFormat = 'DD/MM/YYYY hh:mm A'
-
 const TABLE_FILTERS = [
   {
-    attribute: 'logDate',
+    attribute: 'createdAt',
     type: 'date',
     icon: 'el-icon-date',
   },
   {
-    attribute: 'logDescription',
+    attribute: 'method',
     type: 'string',
     icon: 'el-icon-document',
   },
   {
-    attribute: 'logStatus',
+    attribute: 'url',
     type: 'string',
-    icon: 'el-icon-star-off',
+    icon: 'el-icon-document',
   },
 ]
 
 const TABLE_COLUMNS = [
   {
-    name: 'logDate',
-    label: 'Date',
-    icon: 'el-icon-date',
-    format: {
-      name: 'date',
-      params: [dateFormat],
-    },
-  },
-  {
-    name: 'logDescription',
-    label: 'Description',
+    name: 'id',
+    label: 'ID',
     icon: 'el-icon-document',
   },
   {
-    name: 'logStatus',
-    label: 'Status',
+    name: 'createdAt',
+    label: 'Date',
+    icon: 'el-icon-document',
+    format: 'dateTime',
+  },
+  {
+    name: 'method',
+    label: 'Method',
+    icon: 'el-icon-document',
+  },
+  {
+    name: 'url',
+    label: 'Endpoint',
     icon: 'el-icon-document',
   },
 ]

@@ -178,8 +178,8 @@ const router = new VueRouter({
       component: () => lazy(import('~/views/settings-templates')),
     },
     {
-      path: '/settings/history',
-      name: 'settings-history',
+      path: '/settings/log-history',
+      name: 'settings-log-history',
       component: () => lazy(import('~/views/log-history')),
     },
     {

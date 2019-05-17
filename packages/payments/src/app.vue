@@ -71,7 +71,7 @@ export default {
             },
             {
               title: 'Log History',
-              path: '/settings/history',
+              path: '/settings/log-history',
             },
             {
               title: 'Events',

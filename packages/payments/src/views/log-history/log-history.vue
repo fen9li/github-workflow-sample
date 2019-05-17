@@ -1,20 +1,21 @@
 <script>
-import appConfig from '~/app.config'
-import ElasticProcessor from '@lib/processors/elastic-processor'
+import StaticProcessor from '@lib/processors/static-processor'
 import tableConfig from './log-history-table'
 
+const logHistoryMock = require('@tests/__fixtures__/log-history-mock')
+
+console.log(logHistoryMock)
 
 export default {
   name: 'LogHistory',
   page: {
     title: 'Log History',
-    meta: [{ name: 'description', content: appConfig.description }],
   },
   data() {
     return {
-      processor: new ElasticProcessor({
+      processor: new StaticProcessor({
         component: this,
-        index: 'logHistory', // TODO: Set correct index value
+        data: logHistoryMock.table,
       }),
       filters: tableConfig.filters,
       columns: tableConfig.columns,
@@ -22,11 +23,6 @@ export default {
   },
   methods: {
     onRowClick(row) {
-      // TODO: Uncomment after details page ready
-      // this.$router.push({
-      //   name: 'history-log-details',
-      //   params: { id: row.orderId.value || 'unknown' },
-      // })
     },
   },
 }
