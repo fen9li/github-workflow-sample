@@ -1,10 +1,14 @@
 <script>
 import table from './merchants.table'
+import uploadcare from 'uploadcare-vue'
 
 export default {
   name: 'Clients',
   page: {
     title: 'Clients',
+  },
+  components: {
+    uploadcare,
   },
   data() {
     return {
@@ -17,6 +21,11 @@ export default {
       },
     }
   },
+  computed: {
+    uploadcareKey() {
+      return process.env.VUE_APP_UPLOADCARE_PUBLIC_KEY
+    },
+  },
   methods: {
     onRowClick(row) {
       this.$router.push({
@@ -24,7 +33,10 @@ export default {
         params: { slug: row.merchantName || 'unknown' },
       })
     },
-    handleFormTrigger() {
+    onSuccessUploading(img) {
+      this.form.clientLogo = img.cdnUrl
+    },
+    onSubmit() {
       if (this.isEdit) {
         // send form
         this.isEdit = false
@@ -54,12 +66,18 @@ export default {
             v-if="isEdit"
             :class="$style['logo-change']"
           >
-            <el-button
-              type="text"
-              :class="$style['logo-change-btn']"
+            <uploadcare
+              :public-key="uploadcareKey"
+              crop="160x60"
+              @success="onSuccessUploading"
             >
-              Change Image
-            </el-button>
+              <el-button
+                type="text"
+                :class="$style['logo-change-btn']"
+              >
+                Change Image
+              </el-button>
+            </uploadcare>
           </div>
         </div>
 
@@ -146,7 +164,7 @@ export default {
             <div :class="$style['form-inner-right']">
               <el-button
                 type="primary"
-                @click="handleFormTrigger"
+                @click="onSubmit"
               >
                 {{ isEdit ? 'Save Changes' : 'Edit Client' }}
               </el-button>
