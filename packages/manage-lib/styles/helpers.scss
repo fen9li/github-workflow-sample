@@ -209,6 +209,11 @@
       margin-bottom: 0;
     }
   }
+
+  .no-divider {
+    margin-bottom: 0;
+    border-bottom: none;
+  }
 }
 
 .form-collapse {
@@ -244,6 +249,60 @@
 
     label {
       margin: 0.4rem 0;
+    }
+  }
+}
+
+.online-offers__edit {
+  :global {
+    .el-checkbox__label,
+    .el-radio__label {
+      padding-left: 1rem;
+    }
+  }
+
+  .el-form-item__label,
+  .el-checkbox__label {
+    font-size: 0.875rem;
+  }
+
+  .current-title {
+    width: 100%;
+    padding: 0.75rem 0 2rem 0;
+    margin-bottom: 1.4rem;
+    font-size: 0.875rem;
+    color: #606266;
+    text-align: center;
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  &-controls {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 2rem;
+
+    .save-block {
+      display: flex;
+
+      .save-button {
+        margin-left: 2rem;
+      }
+    }
+  }
+
+  &-notice {
+    display: flex;
+    align-items: center;
+    min-height: 2.5rem;
+    padding: 0 1rem;
+    color: #8f8f8f;
+    background-color: #f2f2f2;
+    border-radius: 0.25rem;
+
+    .noticeIcon {
+      padding-right: 0.5rem;
+      font-size: 1.2rem;
+      color: var(--color-primary);
     }
   }
 }

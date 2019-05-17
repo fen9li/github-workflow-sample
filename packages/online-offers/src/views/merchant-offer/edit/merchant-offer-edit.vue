@@ -86,7 +86,7 @@ export default {
         @valueChange="applyNewValue"
       />
     </div>
-    <div :class="$style.controls">
+    <div class="online-offers__edit-controls">
       <el-button
         type="danger"
         class="wide-button"
@@ -94,14 +94,14 @@ export default {
       >
         Remove Offer
       </el-button>
-      <div :class="$style.save">
-        <div :class="$style.notice">
-          <i :class="['el-icon-info', $style.noticeIcon]" />
+      <div class="save-block">
+        <div class="online-offers__edit-notice">
+          <i class="el-icon-info noticeIcon" />
           This changes will be made for all clients that have this Merchant available
         </div>
         <el-button
           type="primary"
-          class="wide-button"
+          class="wide-button save-button"
           @click="saveChanges"
         >
           Save Changes
@@ -114,37 +114,5 @@ export default {
 <style lang="scss" module>
 .editBlocks {
   display: flex;
-}
-
-.controls {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 2rem;
-}
-
-.save {
-  display: flex;
-}
-
-.notice {
-  display: flex;
-  align-items: center;
-  padding: 0 1rem;
-  margin-right: 2rem;
-  color: #606266;
-  background-color: #F2F2F2;
-  border-radius: .25rem;
-}
-
-.noticeIcon {
-  padding-right: .5rem;
-  font-size: 1.2rem;
-  color: var(--color-primary);
-}
-
-.divider {
-  height: 1px;
-  background-color: var(--color-divider);
-  border: none;
 }
 </style>

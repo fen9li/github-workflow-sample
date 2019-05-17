@@ -73,14 +73,14 @@ export default {
   <div :class="$style.editBlock">
     <el-form
       ref="form"
-      :class="['form-divided-items', $style.form, {[$style.hiddenLabels]: !currentItem}]"
+      :class="['form-divided-items', 'online-offers__edit', $style.form, {[$style.hiddenLabels]: !currentItem}]"
       :label-width="bindings.labelWidth"
       label-position="left"
       :model="formData"
     >
       <div
         v-if="currentItem"
-        :class="$style.formTitle"
+        class="current-title"
       >
         Current Details
       </div>
@@ -175,23 +175,6 @@ export default {
 </template>
 
 <style lang="scss" module>
-.formTitle {
-  width: 100%;
-  padding: .75rem 0 2rem 0;
-  margin-bottom: 1.4rem;
-  color: #606266;
-  text-align: center;
-  border-bottom: 1px solid var(--color-divider);
-}
-
-.form {
-  :global {
-    .el-form-item__content {
-      max-width: 65%;
-    }
-  }
-}
-
 .hiddenLabels {
   :global{
     .el-form-item__label {
