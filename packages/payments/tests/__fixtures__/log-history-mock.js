@@ -62,7 +62,7 @@ module.exports = {
       name: 'POST/v1/point2',
       method: 'GET',
       url: '/v1/point2',
-      status: '400',
+      status: '401',
       ipAddress: '111.111.42.150',
       version: '0.0.1',
       source: 'Dashboard - pavel@loyaltycorp.com.au',

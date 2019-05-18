@@ -11,6 +11,7 @@ const dollar = v => v ? formatDollar(v) : ''
 const uppercase = v => v? v.toUpperCase() : ''
 const account = v => v ? formatAccount(v) : ''
 const capital = v => capitalize(v)
+const httpStatus = v => Number(v[0]) < 4 ? `${v} OK` : `${v} ERR`
 
 export default {
   date: (v, format = 'DD/MM/YYYY') => formatDate(v, format),
@@ -21,4 +22,5 @@ export default {
   account,
   dayMonthYear,
   capital,
+  httpStatus,
 }

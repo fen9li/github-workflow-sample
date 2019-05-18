@@ -31,8 +31,14 @@ const TABLE_COLUMNS = [
   {
     name: 'status',
     label: 'Status',
+    format: {
+      name: 'httpStatus',
+    },
     icon: 'el-icon-document',
     align: 'right',
+    component: {
+      is: 'cell-http-status',
+    },
   },
 ]
 
