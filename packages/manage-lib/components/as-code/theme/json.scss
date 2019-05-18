@@ -1,0 +1,37 @@
+.root {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  :global {
+    .CodeMirror {
+      height: auto;
+      color: lightgray;
+      background: rgba(247, 247, 247, 0.5);
+      .CodeMirror-gutters {
+        background-color: inherit;
+        border-right: none;
+      }
+      .CodeMirror-lines {
+        padding: 1rem 0;
+      }
+      .CodeMirror-linenumber {
+        padding-left: 0.5rem;
+        color: inherit;
+      }
+      .CodeMirror-line {
+        padding-left: 0.5rem;
+        .cm-string {
+          color: rgba(17, 102, 68, 0.8);
+          &.cm-property {
+            color: rgba(139, 69, 19, 0.8);
+          }
+        }
+        .cm-number {
+          color: rgba(255, 0, 0, 0.71);
+        }
+        .cm-atom {
+          color: rgba(0, 0, 255, 0.71);
+        }
+      }
+    }
+  }
+}
