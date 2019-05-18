@@ -1,5 +1,6 @@
 <script>
 import table from './merchants.table'
+import md5 from 'md5'
 import uploadcare from 'uploadcare-vue'
 
 export default {
@@ -19,11 +20,16 @@ export default {
         clientLogo: 'https://s.gravatar.com/avatar/a56e2a3d9b332f51a59e59d5e6516835?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fit.png',
         feeds: ['Rakuten'],
       },
+      uploadcare: {
+        expire: new Date(new Date + 60 * 60 * 12).getTime(),
+        publicKey: process.env.VUE_APP_UPLOADCARE_PUBLIC_KEY,
+        secretKey: process.env.VUE_APP_UPLOADCARE_SECRET_KEY,
+      },
     }
   },
   computed: {
-    uploadcareKey() {
-      return process.env.VUE_APP_UPLOADCARE_PUBLIC_KEY
+    uploadcareSignature() {
+      return md5(this.uploadcare.secretKey + this.uploadcare.expire)
     },
   },
   methods: {
@@ -67,7 +73,9 @@ export default {
             :class="$style['logo-change']"
           >
             <uploadcare
-              :public-key="uploadcareKey"
+              :public-key="uploadcare.publicKey"
+              :secure-signature="uploadcareSignature"
+              :secure-expire="uploadcare.expire"
               crop="160x60"
               @success="onSuccessUploading"
             >

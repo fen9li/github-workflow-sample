@@ -1,4 +1,5 @@
 <script>
+import md5 from 'md5'
 import uploadcare from 'uploadcare-vue'
 
 export default {
@@ -38,14 +39,19 @@ export default {
           },
         ],
       },
+      uploadcare: {
+        expire: new Date(new Date + 60 * 60 * 12).getTime(),
+        publicKey: process.env.VUE_APP_UPLOADCARE_PUBLIC_KEY,
+        secretKey: process.env.VUE_APP_UPLOADCARE_SECRET_KEY,
+      },
     }
   },
   computed: {
     uploaderPlaceholder() {
       return this.clientLogoName || '160px - 60px'
     },
-    uploadcareKey() {
-      return process.env.VUE_APP_UPLOADCARE_PUBLIC_KEY
+    uploadcareSignature() {
+      return md5(this.uploadcare.secretKey + this.uploadcare.expire)
     },
   },
   methods: {
@@ -90,7 +96,9 @@ export default {
           >
             <div :class="$style.uploader">
               <uploadcare
-                :public-key="uploadcareKey"
+                :public-key="uploadcare.publicKey"
+                :secure-signature="uploadcareSignature"
+                :secure-expire="uploadcare.expire"
                 crop="160x60"
                 @success="onSuccessUploading"
               >

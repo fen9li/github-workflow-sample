@@ -107,6 +107,7 @@
     "access": "restricted"
   },
   "dependencies": {
+    "md5": "^2.2.1",
     "uploadcare-vue": "^1.0.0"
   }
 }
