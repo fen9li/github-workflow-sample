@@ -183,6 +183,12 @@ const router = new VueRouter({
       component: () => lazy(import('~/views/log-history')),
     },
     {
+      path: '/settings/log-details/:id',
+      name: 'log-details',
+      component: () => lazy(import('~/views/log-details')),
+      props: true,
+    },
+    {
       path: '/settings/events',
       name: 'settings-events',
       component: () => lazy(import('~/views/events')),
