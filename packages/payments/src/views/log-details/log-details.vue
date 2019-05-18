@@ -9,8 +9,8 @@ export default {
   data() {
     const { id } = this.$route.params
     const { table } = logHistoryMock
-    const entry = table.find(entry => entry.id === id)
-    const { requestBody, responseBody, ...rest } = entry
+    const entry = table.find(entry => entry.id === id) || {}
+    const { requestBody = '{}', responseBody = '{}', ...rest } = entry
     return {
       requestBody: JSON.stringify(JSON.parse(requestBody), null, '\t'),
       responseBody: JSON.stringify(JSON.parse(responseBody), null, '\t'),
