@@ -1,19 +1,30 @@
 <script>
 import table from './feed-updates.table.js'
+import merchantUpdateModal from '../merchant-update'
 
 export default {
   name: 'FeedUpdates',
   page: {
     title: 'Feed Updates',
   },
+  components: {
+    merchantUpdateModal,
+  },
   data() {
     return {
       table: table(this),
+      activeItemId: null,
+      modal: {
+        merchantUpdate: false,
+      },
     }
   },
   methods: {
     onRowClick(row) {
-      //
+      if (row.update === 'Merchant update') {
+        this.activeItemId = row.id || 'fakeId'
+        this.modal.merchantUpdate = true
+      }
     },
   },
 }
@@ -30,6 +41,11 @@ export default {
       :hider="false"
       quantity
       @row-click="onRowClick"
+    />
+    <merchant-update-modal
+      v-if="modal.merchantUpdate"
+      :id="activeItemId"
+      :visible.sync="modal.merchantUpdate"
     />
   </main-layout>
 </template>
