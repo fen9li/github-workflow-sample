@@ -89,7 +89,11 @@ export default {
       type="text"
       :class="$style.addFilter"
     >
-      + Add Filter
+      <i
+        class="el-icon-search"
+        :class="$style.addFilterIcon"
+      />
+      Search or Add Filter
     </el-button>
   </el-popover>
 </template>
@@ -137,5 +141,9 @@ export default {
 
 .addFilter {
   font-size: 1rem !important;
+}
+
+.addFilterIcon {
+  margin-right: 0.2rem;
 }
 </style>

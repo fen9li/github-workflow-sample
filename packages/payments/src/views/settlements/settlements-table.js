@@ -24,8 +24,8 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
     values: [
       {
-        label: 'Finalised',
-        value: 'Finalised',
+        label: 'Successfull',
+        value: 'Successfull',
       },
       {
         label: 'Pending',
@@ -51,12 +51,12 @@ const TABLE_FILTERS = [
 const TABLE_COLUMNS = [
   {
     name: 'created',
-    label: 'Date created',
+    label: 'Date Created',
     icon: 'el-icon-document',
     width: 100,
     format: {
       name: 'date',
-      params: ['DD/MM/YYYY'],
+      params: [dateFormat],
     },
   },
   {
@@ -64,6 +64,7 @@ const TABLE_COLUMNS = [
     label: 'NET',
     icon: 'el-icon-document',
     format: 'dollar',
+    width: 70,
     component: {
       props: {
         styleObj(val) {
@@ -83,6 +84,12 @@ const TABLE_COLUMNS = [
     format: 'account',
   },
   {
+    name: 'orderId',
+    label: 'Order ID',
+    width: 70,
+    type: 'string',
+  },
+  {
     name: 'status',
     label: 'Status',
     icon: 'el-icon-document',
@@ -92,7 +99,7 @@ const TABLE_COLUMNS = [
         styleObj(val) {
           switch (val) {
             case 'Pending': return { color: '#fbb241' }
-            case 'Finalised': return { color: '#29d737' }
+            case 'Successfull': return { color: '#29d737' }
             case 'Failed': return { color: '#fc7168' }
             case 'Refunded': return { color: '#fc7168' }
             default: return {}
@@ -104,7 +111,7 @@ const TABLE_COLUMNS = [
               name: 'el-icon-time',
               pos: 'left',
             }
-            case 'Finalised': return {
+            case 'Successfull': return {
               name: 'el-icon-check',
               pos: 'left',
             }

@@ -106,19 +106,21 @@ export default {
 .subheader {
   display: flex;
   align-items: flex-start;
-  background: #f5f5f5;
+  padding: 0.5rem 3rem;
+  background: #f9fafc;
 }
 
 .layout {
   margin-bottom: 2rem;
   overflow: visible;
+  box-shadow: 0 2px 12px 0 rgba(black, 0.05) !important;
 
   :global(.el-card__body) {
     padding: 0;
   }
 }
 
-.tableWrapper, .tableNote, .subheader {
+.tableWrapper, .tableNote {
   padding: 1rem 3rem;
 }
 

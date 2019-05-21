@@ -1,0 +1,40 @@
+module.exports = {
+  table: [
+    {
+      created: '2019-02-12T15:18:31.965Z',
+      netAmount: 390.00,
+      accountTransferred: '2458972452384',
+      orderId: '555',
+      lastUpdated: '2019-02-12T15:18:31.965Z',
+      status: 'Successfull',
+      dateFinalised: '2019-02-12T15:18:31.965Z',
+    },
+    {
+      created: '2019-02-12T15:18:31.965Z',
+      netAmount: 390.00,
+      accountTransferred: '2458972452384',
+      orderId: '555',
+      lastUpdated: '2019-02-12T15:18:31.965Z',
+      status: 'Pending',
+      dateFinalised: '2019-02-12T15:18:31.965Z',
+    },
+    {
+      created: '2019-02-12T15:18:31.965Z',
+      netAmount: 390.00,
+      accountTransferred: '2458972452384',
+      orderId: '555',
+      lastUpdated: '2019-02-12T15:18:31.965Z',
+      status: 'Refunded',
+      dateFinalised: '2019-02-12T15:18:31.965Z',
+    },
+    {
+      created: '2019-02-12T15:18:31.965Z',
+      netAmount: 390.00,
+      accountTransferred: '2458972452384',
+      orderId: '555',
+      lastUpdated: '2019-02-12T15:18:31.965Z',
+      status: 'Failed',
+      dateFinalised: '2019-02-12T15:18:31.965Z',
+    },
+  ],
+}
