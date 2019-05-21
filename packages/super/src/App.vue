@@ -14,6 +14,11 @@ export default {
           path: '/',
           icon: 'news',
         },
+        {
+          title: 'User management',
+          path: '/',
+          icon: 'user',
+        },
       ]
     },
   },
