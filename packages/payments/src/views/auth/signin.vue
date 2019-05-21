@@ -6,9 +6,25 @@ export default {
   data() {
     return {
       form: {
-        username: '',
-        password: '',
+        email: null,
+        password: null,
         remember: true,
+      },
+      rules: {
+        email: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+        password: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
       },
       authError: null,
       tryingToLogIn: false,
@@ -24,7 +40,7 @@ export default {
       // Reset the authError if it existed.
       this.authError = null
       return this.logIn({
-        username: this.form.username,
+        email: this.form.email,
         password: this.form.password,
       })
         .then(token => {
@@ -38,61 +54,97 @@ export default {
           this.authError = error
         })
     },
+    toHome() {
+      this.$router.push({
+        name: 'home',
+      })
+    },
   },
 }
 </script>
 
 <template>
   <div class="signin">
-    <el-form
-      ref="form"
-      class="signin__form"
-      :model="form"
-      label-width="100px"
-      @submit.prevent="tryToLogIn"
-    >
-      <div class="signin__logo">
-        <img
-          src="/img/logo.jpg"
-          alt="Logo EONX"
-        >
+    <div class="signin__inner">
+      <div class="signin__inner-left" />
+      <div class="signin__inner-right">
+        <div class="signin__content">
+          <div class="signin__logo">
+            <img
+              class="signin__logo-img"
+              src="@/assets/logo.png"
+              alt="Logo EONX"
+            >
+          </div>
+
+          <el-form
+            ref="form"
+            class="signin__form"
+            :model="form"
+            :rules="rules"
+            label-position="top"
+            label-width="100px"
+          >
+            <el-form-item
+              label="Email"
+              prop="email"
+            >
+              <el-input
+                v-model="form.email"
+                name="email"
+                type="email"
+                placeholder="example@email.com"
+              />
+            </el-form-item>
+            <el-form-item
+              label="Password"
+              prop="password"
+            >
+              <el-input
+                v-model="form.password"
+                type="password"
+                placeholder="************"
+                autocomplete="off"
+              />
+            </el-form-item>
+            <div class="signin__links">
+              <el-checkbox v-model="checked">
+                Remember me
+              </el-checkbox>
+              <el-button type="text">
+                Forgot Password
+              </el-button>
+            </div>
+            <el-button
+              class="signin__submit"
+              type="primary"
+              :disabled="tryingToLogIn"
+              @click="toHome"
+            >
+              Login
+            </el-button>
+            <p v-if="authError">
+              There was an error logging in to your account.
+            </p>
+          </el-form>
+
+          <div class="signin__footer">
+            <div class="signin__footer-row">
+              2019 All Rights Reserved. EonX Ltd.
+            </div>
+            <div class="signin__footer-row">
+              <router-link
+                :to="{path: '/'}"
+                class="signin__footer-link"
+              >
+                Privacy & Terms.
+              </router-link>
+            </div>
+          </div>
+        </div>
       </div>
-      <el-form-item label="Email">
-        <el-input
-          v-model="form.username"
-          name="username"
-          type="email"
-          placeholder="example@email.com"
-        />
-      </el-form-item>
-      <el-form-item label="Password">
-        <el-input
-          v-model="form.password"
-          type="password"
-          placeholder="******"
-          autocomplete="off"
-        />
-      </el-form-item>
-      <div class="signin__links">
-        <el-checkbox v-model="checked">
-          Remember me
-        </el-checkbox>
-        <el-button type="text">
-          Forgot Password
-        </el-button>
-      </div>
-      <el-button
-        class="signin__submit"
-        type="primary"
-        :disabled="tryingToLogIn"
-      >
-        Login
-      </el-button>
-      <p v-if="authError">
-        There was an error logging in to your account.
-      </p>
-    </el-form>
+    </div>
   </div>
 </template>
 
-<style lang="scss" src="./signin.scss" />
+<style lang="scss" src="./signin.scss"/>

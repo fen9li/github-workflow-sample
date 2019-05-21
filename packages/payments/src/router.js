@@ -15,6 +15,11 @@ const router = new VueRouter({
   base: process.env.VUE_APP_BASE_URL,
   routes: [
     {
+      path: '/signin',
+      name: 'signin',
+      component: () => lazy(import('~/views/auth/signin')),
+    },
+    {
       path: '/',
       name: 'home',
       component: () => lazy(import('~/views/home/home')),
