@@ -24,7 +24,7 @@ export default {
         <app-header v-bind="$attrs" />
       </el-header>
       <el-container :class="$style.main">
-        <el-aside width="260px">
+        <el-aside width="300px">
           <app-sidebar v-bind="$attrs" />
         </el-aside>
         <el-main>

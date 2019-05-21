@@ -59,11 +59,11 @@ export default {
 /* stylelint-disable no-descending-specificity */
 
 .app-sidebar {
-  width: 260px;
+  width: 300px;
   height: 100%;
-  padding: 1rem 0;
+  padding: 1.6rem 0;
   overflow-y: auto;
-  background: var(--color-aside-bg);
+  background: linear-gradient(to bottom, #1681ee, #47a1f7);
   border: none;
 
   .el-menu {
@@ -76,6 +76,9 @@ export default {
     }
 
     &-item {
+      height: 2.4rem;
+      margin-bottom: 1rem;
+      line-height: 2.4rem;
       color: var(--color-primary-text) !important;
 
       &:hover,
@@ -96,8 +99,10 @@ export default {
   .el-menu-item, .el-submenu__title {
     display: flex;
     align-items: center;
+    height: 2.4rem;
+    margin-bottom: 1rem;
     font-size: 1rem;
-    font-weight: 300;
+    line-height: 2.4rem;
   }
 
   .el-submenu {
@@ -114,6 +119,7 @@ export default {
 
     .el-menu-item {
       padding-left: 75px !important;
+      margin-bottom: 0;
     }
   }
 }

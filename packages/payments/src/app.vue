@@ -9,9 +9,9 @@ export default {
     menu() {
       return [
         {
-          title: 'Home',
+          title: 'Dashboard',
           path: '/',
-          icon: 'news',
+          icon: 'odometer',
         },
         {
           title: 'Transactions',
