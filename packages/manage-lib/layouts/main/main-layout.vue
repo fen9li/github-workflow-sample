@@ -15,6 +15,14 @@ export default {
       type: Array,
       default: null,
     },
+    header: {
+      type: Boolean,
+      default: true,
+    },
+    fixedWidth: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     activeTabKey() {
@@ -30,8 +38,11 @@ export default {
 </script>
 
 <template>
-  <div :class="$style.layout">
-    <div :class="$style.header">
+  <div :class="[$style.layout, {[$style.fixedWidth] : fixedWidth}]">
+    <div
+      v-if="header"
+      :class="$style.header"
+    >
       <div :class="$style.headerTop">
         <el-button
           v-if="back"
@@ -73,16 +84,19 @@ export default {
         <slot name="subheader" />
       </div>
     </div>
-    <div :class="$style.body">
+    <div :class="[$style.body, {[$style.noHeader] : !header}]">
       <slot />
     </div>
   </div>
 </template>
 
 <style lang="scss" module>
-
 .layout {
   width: 100%;
+}
+
+.fixedWidth {
+  min-width: 740px;
 }
 
 .header,
@@ -134,6 +148,10 @@ export default {
 .headerBottom {
   width: 100%;
   padding: 0 3rem;
+}
+
+.noHeader {
+  padding-top: 2rem;
 }
 
 .tabs {

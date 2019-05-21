@@ -9,6 +9,13 @@ const DEFAULT_CONFIG = {
     disableHostCheck: true,
     public: process.env.VUE_APP_DEV_PUBLIC,
   },
+  css: {
+    loaderOptions: {
+      sass: {
+        data: '@import "@lib/styles/sass-mq.scss";',
+      },
+    },
+  },
   configureWebpack: {
     resolve: {
       alias: _.transform(require('./aliases.config'), (result, value, key) => {

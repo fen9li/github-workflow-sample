@@ -42,7 +42,6 @@ export default {
 <style lang="scss" module>
 
 .root {
-  min-width: 1000px;
   height: 100vh;
   overflow: hidden;
 }

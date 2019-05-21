@@ -8,6 +8,7 @@
 @import './theme.scss';
 @import './helpers.scss';
 @import './element-ui';
+@import './sass-mq.scss';
 
 #nprogress .bar {
   background: var(--color-link-text);

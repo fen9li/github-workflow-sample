@@ -1,0 +1,16 @@
+$mq-responsive: true;
+
+$mq-breakpoints: (
+  xxs: 360px,
+  xs: 576px,
+  sm: 768px,
+  md: 1025px,
+  lg: 1180px,
+  xl: 1367px,
+  phone: 320px,
+  xxl: 1600px,
+);
+
+$mq-show-breakpoints: (phone, xl, lg, md, sm, xs, xxs);
+
+@import '~sass-mq';
