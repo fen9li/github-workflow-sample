@@ -123,6 +123,10 @@ export default {
   align-items: flex-start;
   padding: 0.5rem 3rem;
   background: #f9fafc;
+
+  @include mq($until: md) {
+    padding: 0.5rem;
+  }
 }
 
 .layout {
@@ -137,6 +141,10 @@ export default {
 
 .tableWrapper, .tableNote {
   padding: 1rem 3rem;
+
+  @include mq($until: md) {
+    padding: 1rem 0.5rem;
+  }
 }
 
 .tableNote {
