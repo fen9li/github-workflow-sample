@@ -14,8 +14,6 @@ export default {
   },
   data() {
     return {
-      activeCollapse: ['1'],
-      tab: 'card',
       form: {
         card: {
           amount: '',
@@ -24,27 +22,11 @@ export default {
           number: '',
           expiry: '',
           cvv: '',
-          description: '',
-        },
-        account: {
-          name: '',
-          bsb: '',
-          number: '',
-        },
-        additional: {
-          companyName: '',
-          firstName: '',
-          lastName: '',
-          phone: '',
-          emailReceipt: '',
+          email: '',
         },
       },
       disableSubmit: true,
       rules: {},
-      error: {
-        type: 'Transaction Failed',
-        msg: 'Insufficient_Funds',
-      },
     }
   },
   methods: {
@@ -59,280 +41,201 @@ export default {
   <el-dialog
     title="Virtual POS"
     :visible="visible"
+    :class="$style.modal"
     @update:visible="$emit('update:visible', $event)"
   >
-    <div :class="$style.tabs">
-      <el-tabs
-        v-model="tab"
-        stretch
+    <el-form
+      :model="form.card"
+      :rules="rules"
+      label-position="top"
+      label-width="200px"
+      class="modal-form"
+    >
+      <el-form-item
+        label="Amount"
+        prop="amount"
+        required
       >
-        <el-tab-pane
-          label="Credit/Debit Card"
-          name="card"
+        <div
+          prop="amount"
+          class="amount-form-item"
         >
-          <el-form
-            :model="form.card"
-            :rules="rules"
-            class="card-form"
+          <el-form-item
+            prop="amount"
           >
-            <el-form-item
-              label="Amount"
-              prop="amount"
-              required
+            <el-input
+              v-model="form.card.amount"
+              v-mask="[
+                '#.##',
+                '##.##',
+                '###.##',
+                '####.##',
+                '#####.##'
+              ]"
+              placeholder="0.00"
             >
-              <div
-                prop="amount"
-                class="amount-form-item"
-              >
-                <el-form-item
-                  prop="amount"
-                >
-                  <el-input
-                    v-model="form.card.amount"
-                    v-mask="[
-                      '#.##',
-                      '##.##',
-                      '###.##',
-                      '####.##',
-                      '#####.##'
-                    ]"
-                    placeholder="$0.00"
-                  >
-                    <template #prepend>
-                      $
-                    </template>
-                  </el-input>
-                </el-form-item>
-                <el-select
-                  v-model="form.card.currency"
-                >
-                  <el-option
-                    label="AUD"
-                    value="aud"
-                  />
-                  <el-option
-                    label="USD"
-                    value="usd"
-                  />
-                </el-select>
-              </div>
-            </el-form-item>
-            <el-form-item
-              label="Card Holder Name"
-              required
-            >
-              <el-input
-                v-model="form.card.holderName"
-              />
-            </el-form-item>
-            <el-form-item
-              label="Card No"
-              required
-            >
-              <el-input
-                v-model="form.card.number"
-                :class="$style.short"
-              />
-              <div :class="$style.cardLogos">
-                <div>
-                  <img
-                    src="/img/visa_logo.png"
-                    alt="visa"
-                  >
-                </div>
-                <div>
-                  <img
-                    src="/img/mastercard_logo.png"
-                    alt="mastercard"
-                  >
-                </div>
-                <div>
-                  <img
-                    src="/img/amex_logo.png"
-                    alt="amex"
-                  >
-                </div>
-              </div>
-            </el-form-item>
-            <el-form-item
-              label="Expiry"
-              required
-            >
-              <el-input
-                v-model="form.card.expiry"
-                v-mask="'##/##'"
-                :class="$style.short"
-              />
-            </el-form-item>
-            <el-form-item
-              label="CVV"
-              required
-            >
-              <el-input
-                v-model="form.card.cvv"
-                v-mask="'###'"
-                :class="$style.short"
-              />
-            </el-form-item>
-            <el-form-item
-              label="Description"
-              required
-            >
-              <el-input
-                v-model="form.card.description"
-                placeholder="Reason for Charge"
-              />
-            </el-form-item>
-          </el-form>
-        </el-tab-pane>
-        <el-tab-pane
-          label="Bank Account"
-          name="account"
-        >
-          <el-form
-            :model="form.account"
-            :rules="rules"
-            class="card-form"
+              <template #prepend>
+                $
+              </template>
+            </el-input>
+          </el-form-item>
+          <el-select
+            v-model="form.card.currency"
           >
-            <el-form-item
-              label="Account Name"
-              required
-            >
-              <el-input
-                v-model="form.account.name"
-              />
-            </el-form-item>
-            <el-form-item
-              label="BSB"
-              required
-            >
-              <el-input
-                v-model="form.account.bsb"
-              />
-            </el-form-item>
-            <el-form-item
-              label="Account No"
-              required
-            >
-              <el-input
-                v-model="form.account.number"
-              />
-            </el-form-item>
-          </el-form>
-        </el-tab-pane>
-      </el-tabs>
-      <el-collapse
-        v-model="activeCollapse"
-        class="form-collapse"
+            <el-option
+              label="AUD"
+              value="aud"
+            />
+            <el-option
+              label="USD"
+              value="usd"
+            />
+          </el-select>
+        </div>
+      </el-form-item>
+      <el-form-item
+        label="Card Holder Name"
+        required
       >
-        <el-collapse-item
-          title="Add more information"
-          name="1"
+        <el-input
+          v-model="form.card.holderName"
+        />
+      </el-form-item>
+      <el-form-item
+        label="Card No."
+        :class="$style.cardNumber"
+      >
+        <el-input
+          v-model="form.card.number"
+          v-mask="'#### #### #### ####'"
+          placeholder="---- ---- ---- ----"
+          :class="$style.short"
+        />
+        <div :class="$style.cardLogos">
+          <div :class="$style.logoWrapper">
+            <img
+              src="/img/visa_logo.png"
+              alt="visa"
+              :class="$style.logo"
+            >
+          </div>
+          <div :class="$style.logoWrapper">
+            <img
+              src="/img/mastercard_logo.png"
+              alt="mastercard"
+              :class="$style.logo"
+            >
+          </div>
+          <div :class="$style.logoWrapper">
+            <img
+              src="/img/amex_logo.png"
+              alt="amex"
+              :class="$style.logo"
+            >
+          </div>
+        </div>
+      </el-form-item>
+      <div :class="$style.unitedField">
+        <el-form-item
+          label="Expiry"
+          required
         >
-          <el-form
-            :model="form.additional"
-            :rules="rules"
-            :class="['card-form', $style.additionalForm]"
-          >
-            <el-form-item
-              label="Company Name"
-            >
-              <el-input
-                v-model="form.additional.companyName"
-              />
-            </el-form-item>
-            <el-form-item
-              label="First Name"
-            >
-              <el-input
-                v-model="form.additional.firstName"
-              />
-            </el-form-item>
-            <el-form-item
-              label="Last Name"
-            >
-              <el-input
-                v-model="form.additional.lastName"
-              />
-            </el-form-item>
-            <el-form-item
-              label="Telephone"
-            >
-              <el-input
-                v-model="form.additional.phone"
-              />
-            </el-form-item>
-            <el-form-item
-              label="Email Receipt"
-            >
-              <el-input
-                v-model="form.additional.emailReceipt"
-              />
-            </el-form-item>
-          </el-form>
-        </el-collapse-item>
-      </el-collapse>
-
-      <div :class="$style.error">
-        <span>{{ error.type }}: <b>{{ error.msg }}</b> </span>
+          <el-input
+            v-model="form.card.expiry"
+            v-mask="'##/##'"
+            :class="$style.short"
+          />
+        </el-form-item>
+        <el-form-item
+          label="CVV"
+          required
+        >
+          <el-input
+            v-model="form.card.cvv"
+            v-mask="'###'"
+            :class="$style.short"
+          />
+        </el-form-item>
       </div>
-
-      <div
-        class="modal__footer"
+      <el-form-item
+        label="Email"
       >
+        <el-input
+          v-model="form.card.email"
+        />
+      </el-form-item>
+      <div :class="$style.moreInfo">
         <el-button
-          :disabled="disableSubmit"
-          class="wide-button"
-          :type="disableSubmit ? 'info' : 'primary'"
-          @click="onSubmit"
+          type="text"
+          :class="$style.moreBtn"
         >
-          Process Charge
+          + Add more information
         </el-button>
       </div>
+    </el-form>
+    <div
+      class="modal__footer"
+    >
+      <el-button
+        :disabled="disableSubmit"
+        class="wide-button"
+        :type="disableSubmit ? 'info' : 'primary'"
+        @click="onSubmit"
+      >
+        Process Charge
+      </el-button>
     </div>
   </el-dialog>
 </template>
 
 <style lang="scss" module>
-
-
-.short {
-  width: 55%;
-}
-
-.tabs {
+.modal {
   :global {
-    .el-tabs__content {
-      margin-top: 2.5rem;
+    .el-dialog {
+      max-width: 35rem !important
+    }
+  }
+}
+.unitedField {
+  display: flex;
+  justify-content: space-between;
+
+  :global {
+    .el-form-item {
+      flex-basis: 47% !important;
     }
   }
 }
 
-.additionalForm {
-  margin-top: 1rem;
-}
+// .cardNumber {
+//   position: relative;
+// }
 
 .cardLogos {
+  position: absolute;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 45%;
-
-  div {
-    width: 1.5rem;
-
-    img {
-      width: 100%;
-    }
-  }
+  padding-right: 1rem;
 }
 
-.error {
+.logoWrapper {
+  width: 1.9rem;
+  margin-left: 0.4rem;
+}
+
+.logo {
   width: 100%;
-  padding: .6rem 1.5rem;
-  margin-top: 1rem;
+}
+
+.moreInfo {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.moreBtn {
+  padding-bottom: 0;
   font-size: 1rem;
-  background-color: #FFF1F1;
-  border-radius: .4rem;
 }
 </style>

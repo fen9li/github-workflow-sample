@@ -147,6 +147,13 @@
   }
 }
 
+.modal-form {
+  .el-form-item__label {
+    padding: 0 !important;
+    line-height: 1.9rem;
+  }
+}
+
 .card-no-padding {
   > .el-card__body {
     padding: 0 !important;
@@ -184,7 +191,7 @@
   .el-input-group--prepend {
     .el-input-group__prepend {
       padding: 0 0.8rem;
-      background-color: transparent;
+      // background-color: #F5F7FA;
     }
 
     .el-input__inner {
@@ -208,6 +215,7 @@
     }
 
     .el-input__inner {
+      background-color: #f5f7fa;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
@@ -254,7 +262,7 @@
   &__footer {
     display: flex;
     justify-content: center;
-    margin-top: 40px;
+    margin-top: 2rem;
   }
 
   &__radios {

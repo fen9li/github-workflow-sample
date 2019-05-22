@@ -56,6 +56,7 @@ export default {
     <el-button
       slot="header"
       type="primary"
+      class="wide-button"
       @click="modal.pos = true"
     >
       Virtual POS
