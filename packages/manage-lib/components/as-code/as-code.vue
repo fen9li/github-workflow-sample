@@ -1,4 +1,4 @@
-<style lang="scss" module src="./theme/json.scss"/>
+<style lang="scss" module src="./theme/json.scss"></style>
 
 <script>
 import VueCodemirror from 'vue-codemirror'
@@ -39,4 +39,3 @@ export default {
   },
 }
 </script>
-

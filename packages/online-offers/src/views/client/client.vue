@@ -59,11 +59,9 @@ export default {
     title="Suncorp"
     back
   >
-    <el-card
-      body-style="width: 100%"
-    >
+    <el-card :class="$style.card">
       <div :class="$style.header">
-        <div :class="$style['logo']">
+        <div :class="$style.logo">
           <img
             :class="$style['logo-image']"
             :src="form.clientLogo"
@@ -213,13 +211,18 @@ export default {
     display: flex;
   }
 
+  .card {
+    width: 100%;
+    margin: 0 0 1.25rem;
+  }
+
   .logo {
     margin-right: 70px;
   }
 
   .logo-image {
-    width: 280px;
-    height: 95px;
+    max-width: 95px;
+    height: auto;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     object-fit: contain;
   }
@@ -268,7 +271,7 @@ export default {
     display: flex;
     align-items: center;
     width: 100%;
-    height: 40px;
+    min-height: 40px;
 
     &:not(:last-child) {
       margin-bottom: 10px;
@@ -276,8 +279,12 @@ export default {
   }
 
   .form-row-label {
+    display: flex;
     flex-shrink: 0;
+    align-items: center;
+    align-self: flex-start;
     width: 130px;
+    height: 40px;
   }
 
   .form-row-value, .form-row-field {
@@ -290,10 +297,11 @@ export default {
 
   .form-feeds {
     display: flex;
+    flex-wrap: wrap;
 
     :global {
       .el-checkbox {
-        margin-right: 0;
+        margin: 0 10px 10px 0 !important;
 
         &__label {
           padding-left: 0.5rem;
