@@ -2,7 +2,7 @@ const dateFormat = 'DD/MM/YYYY hh:mm A'
 
 const TABLE_FILTERS = [
   {
-    attribute: 'created',
+    attribute: 'createdAt',
     icon: 'el-icon-date',
     type: 'date',
   },
@@ -14,7 +14,7 @@ const TABLE_FILTERS = [
   },
   {
     attribute: 'accountTransferred',
-    label: 'Settlment Account',
+    label: 'Settlement Account',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -50,10 +50,10 @@ const TABLE_FILTERS = [
 
 const TABLE_COLUMNS = [
   {
-    name: 'created',
+    name: 'createdAt',
     label: 'Date Created',
     icon: 'el-icon-document',
-    width: 100,
+    width: 140,
     format: {
       name: 'date',
       params: [dateFormat],
@@ -79,7 +79,7 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'accountTransferred',
-    label: 'Settlment Account',
+    label: 'Settlement Account',
     width: 100,
     format: 'account',
   },
