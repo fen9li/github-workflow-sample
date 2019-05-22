@@ -3,7 +3,9 @@ import axios from 'axios'
 
 export const API = axios.create({
   baseURL: process.env.VUE_APP_API_URL,
-  headers: { Authorization: `Bearer ${process.env.VUE_APP_API_TOKEN}` },
+  headers: {
+    Authorization: process.env.VUE_APP_API_AUTH,
+  },
 })
 
 class ApiProcessor extends DataProcessor {

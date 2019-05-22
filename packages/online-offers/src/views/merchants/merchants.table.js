@@ -1,6 +1,4 @@
-// import Elastic from '@lib/processors/elastic-processor'
-import Static from '@lib/processors/static-processor'
-import tableMock from '@tests/__fixtures__/merchants'
+import ApiProcessor from '@lib/processors/api-processor'
 import cellToggle from '~/components/cells/cell-toggle.vue'
 import cellRoute from '~/components/cells/cell-route.vue'
 
@@ -86,13 +84,9 @@ const TABLE_COLUMNS = [
 
 export default function(component) {
   return {
-    // processor: new Elastic({
-    //   component,
-    //   index: 'merchants',
-    // }),
-    processor: new Static({
+    processor: new ApiProcessor({
       component,
-      data: tableMock.table,
+      path: 'merchants',
     }),
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,
