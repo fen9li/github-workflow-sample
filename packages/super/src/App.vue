@@ -15,8 +15,8 @@ export default {
           icon: 'news',
         },
         {
-          title: 'User management',
-          path: '/',
+          title: 'Users',
+          path: '/users',
           icon: 'user',
         },
       ]

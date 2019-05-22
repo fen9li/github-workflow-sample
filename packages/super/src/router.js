@@ -14,6 +14,11 @@ const router = new Router({
       component: () => lazy(import('./views/home')),
     },
     {
+      path: '/users',
+      name: 'users',
+      component: () => lazy(import('./views/users')),
+    },
+    {
       path: '*',
       redirect: '/',
     },

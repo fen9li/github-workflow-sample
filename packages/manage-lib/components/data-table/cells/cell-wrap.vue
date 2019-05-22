@@ -5,10 +5,19 @@ import CellLink from './cell-link'
 import CellButton from './cell-button'
 import CellActivity from './cell-activity'
 import CellHttpStatus from './cell-http-status'
+import CellUserAvatar from './cell-user-avatar'
+
 
 export default {
   name: 'CellWrap',
-  components: { CellDefault, CellLink, CellButton, CellActivity, CellHttpStatus },
+  components: {
+    CellDefault,
+    CellLink,
+    CellButton,
+    CellActivity,
+    CellHttpStatus,
+    CellUserAvatar,
+  },
   props: {
     attribute: {
       type: String,
