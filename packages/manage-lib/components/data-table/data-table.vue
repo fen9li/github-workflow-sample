@@ -22,6 +22,10 @@ export default {
       type: DataProcessor,
       default: null,
     },
+    summaryMethod: {
+      type: Function,
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -135,12 +139,14 @@ export default {
       :class="[
         !showHeader && $style.headerHidden,
       ]"
+      :summary-method="summaryMethod"
+      show-summary
       @row-click="onRowClick"
     >
       <el-table-column
         v-for="column in readyColumns"
-        :align="column.align || 'left'"
         :key="column.key"
+        :align="column.align || 'left'"
         :label="column.label"
         :column-key="column.key"
         :prop="column.key"
@@ -213,6 +219,17 @@ export default {
 </style>
 
 <style lang="scss">
+
+.data-table {
+  .el-table__footer-wrapper tbody td {
+    font-size: 0.9rem;
+    background-color: white;
+  }
+
+  .cell.el-tooltip {
+    font-size: 0.9rem;
+  }
+}
 
 .table-header-cell {
 

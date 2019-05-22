@@ -147,16 +147,16 @@ export default {
 
 <style lang="scss">
 .cell-badge {
-  font-size: 16px;
+  font-size: 1rem;
 
   &_left {
     order: 0;
-    margin-right: 8px;
+    margin-right: 0.5rem;
   }
 
   &_right {
     order: 1;
-    margin-left: 8px;
+    margin-left: 0.5rem;
   }
 }
 </style>

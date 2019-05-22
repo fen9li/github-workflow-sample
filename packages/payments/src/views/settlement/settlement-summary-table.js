@@ -3,32 +3,25 @@ const TABLE_COLUMNS = [
     name: 'name',
     label: '',
     sortable: false,
-    component: {
-      props: {
-        styleObj() {
-          return { fontSize: '1.125rem' }
-        },
-      },
-    },
-  },
-  {
-    name: 'type',
-    label: 'Type',
   },
   {
     name: 'amount',
     label: 'Amount',
     format: 'dollar',
+    align: 'right',
   },
   {
     name: 'fee',
     label: 'Fee',
     format: 'dollar',
+    align: 'right',
+    width: '150rem',
   },
   {
     name: 'net',
     label: 'NET',
     format: 'dollar',
+    align: 'right',
   },
 ]
 

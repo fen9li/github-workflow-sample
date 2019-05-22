@@ -58,7 +58,7 @@ export default {
           const total = data
             .map(item => Number(item[column.property]))
             .reduce((total, value) => total += value)
-          sums[index] = `Total ${formatDollar(total)}`
+          sums[index] = formatDollar(total)
           return
         }
       })

@@ -42,6 +42,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    summaryMethod: {
+      type: Function,
+      default: () => {},
+    },
   },
 }
 </script>
@@ -97,6 +101,7 @@ export default {
       <data-table
         :columns="$attrs.columns"
         :processor="$attrs.processor"
+        :summary-method="summaryMethod"
         v-on="$listeners"
       >
         <slot slot="columns" />
@@ -136,7 +141,7 @@ export default {
 
 .tableNote {
   padding-bottom: 2rem;
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #909399;
 }

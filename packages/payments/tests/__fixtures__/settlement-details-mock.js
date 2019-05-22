@@ -29,4 +29,18 @@ module.exports = {
       net: 179.5,
     },
   ],
+  transactionLog: [
+    {
+      createdAt: '12/12/2018 12:32',
+      action: 'Refund',
+      amount: 80.00,
+      customerId: 92810,
+      firstName: 'Amy',
+      lastName: 'Colon',
+      description: 'Earning less than $35,000',
+      crn: 8149124124,
+      orderId: 92810,
+      status: 'successfull',
+    },
+  ],
 }

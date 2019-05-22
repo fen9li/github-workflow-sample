@@ -19,7 +19,7 @@ export default {
         },
         paid: {
           icon: 'el-icon-check',
-          value: 'Paid',
+          value: 'Successfull',
           color: '#29d737',
         },
         failed: {
@@ -47,12 +47,21 @@ export default {
     <div
       slot="header"
       :class="$style.header"
+    >
+      <div>
+        General Information
+      </div>
+    </div>
+    <div
+      :class="$style.status"
       :style="{ color: settlementStatus.color }"
     >
-      <span>{{ `${formatDollar(settlementDetails.amount)} AUD` }}</span>
+      <span :class="$style.statusSum">
+        {{ `${formatDollar(settlementDetails.amount)} AUD` }}
+      </span>
       <div
         v-if="settlementStatus"
-        :class="$style.headerStatus"
+        :class="$style.statusValue"
       >
         <i
           :class="[
@@ -101,17 +110,18 @@ export default {
   margin-bottom: 2rem;
 }
 
-.header {
+.status {
   display: flex;
-
-  span {
-    width: 15rem;
-    font-size: 1.5rem;
-  }
+  align-items: center;
+  margin-bottom: 1.5rem;
 }
 
-.headerStatus {
+.statusSum {
+  width: 15rem;
+  font-size: 1.5rem;
+}
+
+.statusValue {
   font-size: 1rem;
-  font-weight: 400;
 }
 </style>

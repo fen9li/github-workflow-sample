@@ -1,12 +1,17 @@
 const TABLE_COLUMNS = [
   {
     name: 'createdAt',
-    label: 'Date',
-    format: 'dayMonthYear',
+    label: 'Date Created',
+    format: {
+      name: 'date',
+      params: ['DD/MM/YYYY hh:mm A'],
+    },
+    width: 160,
   },
   {
     name: 'action',
     label: 'Type',
+    width: 100,
     component: {
       props: {
         styleObj(val) {
@@ -23,6 +28,7 @@ const TABLE_COLUMNS = [
     name: 'amount',
     label: 'Amount',
     format: 'dollar',
+    width: 100,
     component: {
       props: {
         styleObj(val) {
@@ -35,6 +41,81 @@ const TABLE_COLUMNS = [
       },
     },
   },
+  {
+    name: 'customerId',
+    label: 'Customer ID',
+    width: 120,
+  },
+  {
+    name: 'firstName',
+    label: 'First Name',
+    width: 100,
+  },
+  {
+    name: 'lastName',
+    label: 'Last Name',
+    width: 100,
+  },
+  {
+    name: 'description',
+    label: 'Description',
+    width: 160,
+  },
+  {
+    name: 'crn',
+    label: 'CRN',
+    width: 100,
+  },
+  {
+    name: 'orderId',
+    label: 'Order ID',
+    width: 100,
+  },
+  {
+    name: 'status',
+    label: 'Status',
+    width: 120,
+    component: {
+      props: {
+        styleObj(val) {
+          switch (val) {
+            case 'pending':
+              return { color: '#fbb241' }
+            case 'successfull':
+              return { color: '#29d737' }
+            case 'failed':
+              return { color: '#fc7168' }
+            default:
+              return {}
+          }
+        },
+        badge(val) {
+          switch (val) {
+            case 'pending':
+              return {
+                name: 'el-icon-time',
+                pos: 'left',
+              }
+            case 'successfull':
+              return {
+                name: 'el-icon-check',
+                pos: 'left',
+              }
+            case 'failed':
+              return {
+                name: 'el-icon-close',
+                pos: 'left',
+              }
+            default:
+              return {}
+          }
+        },
+      },
+    },
+  },
+
+  /* old fields
+  // remove when API will work
   {
     name: 'feeAmount',
     label: 'Fee',
@@ -50,43 +131,6 @@ const TABLE_COLUMNS = [
     label: 'Statement Descriptor',
   },
   {
-    name: 'orderId',
-    label: 'Order ID',
-  },
-  {
-    name: 'status',
-    label: 'Status',
-    component: {
-      props: {
-        styleObj(val) {
-          switch (val) {
-            case 'pending': return { color: '#fbb241' }
-            case 'finalised': return { color: '#29d737' }
-            case 'failed': return { color: '#fc7168' }
-            default: return {}
-          }
-        },
-        badge(val) {
-          switch (val) {
-            case 'pending': return {
-              name: 'el-icon-time',
-              pos: 'left',
-            }
-            case 'finalised': return {
-              name: 'el-icon-check',
-              pos: 'left',
-            }
-            case 'failed': return {
-              name: 'el-icon-close',
-              pos: 'left',
-            }
-            default: return {}
-          }
-        },
-      },
-    },
-  },
-  {
     name: 'completedAt',
     label: 'Date Finalised',
     format: 'dayMonthYear',
@@ -96,13 +140,10 @@ const TABLE_COLUMNS = [
     label: 'Payment Source',
   },
   {
-    name: 'customerId',
-    label: 'Customer ID',
-  },
-  {
     name: 'customerEmailAddress',
     label: 'Customer Email Address',
   },
+  */
 ]
 
 export default {
