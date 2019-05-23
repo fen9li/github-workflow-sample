@@ -222,7 +222,7 @@ export default {
   }
 
   .logo {
-    margin-right: 70px;
+    margin-right: 5rem;
   }
 
   .table {
@@ -232,9 +232,9 @@ export default {
 
   .logo-image {
     width: auto;
-    max-width: 300px;
+    max-width: 20rem;
     height: auto;
-    max-height: 100px;
+    max-height: 7rem;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     object-fit: contain;
   }
@@ -253,7 +253,7 @@ export default {
     display: inline-flex;
 
     &:not(:last-child) {
-      margin-right: 4px;
+      margin-right: .25rem;
       &:after {
         content: ',';
       }
@@ -271,12 +271,12 @@ export default {
   }
 
   .form-inner-left {
-    width: calc(100% - 150px);
+    width: calc(100% - 10rem);
   }
 
   .form-inner-right {
     flex-shrink: 0;
-    width: 150px;
+    width: 10rem;
     text-align: right;
   }
 
@@ -284,7 +284,7 @@ export default {
     display: flex;
     align-items: center;
     width: 100%;
-    min-height: 40px;
+    min-height: 2.5rem;
   }
 
   .form-row-label {
@@ -292,12 +292,12 @@ export default {
     flex-shrink: 0;
     align-items: center;
     align-self: flex-start;
-    width: 130px;
-    height: 40px;
+    width: 8rem;
+    height: 2.5rem;
   }
 
   .form-row-value, .form-row-field {
-    width: calc(100% - 130px);
+    width: calc(100% - 8rem);
   }
 
   .form-row-value {
@@ -307,14 +307,14 @@ export default {
   .form-feeds {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 10px;
+    margin-top: .6rem;
 
     :global {
       .el-checkbox {
-        margin: 0 10px 10px 0 !important;
+        margin: 0 .6rem .6rem 0 !important;
 
         &__label {
-          padding-left: 0.5rem;
+          padding-left: .5rem;
         }
       }
     }
