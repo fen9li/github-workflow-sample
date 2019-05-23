@@ -2,37 +2,46 @@ const dateFormat = 'DD/MM/YYYY hh:mm A'
 
 const TABLE_FILTERS = [
   {
-    attribute: 'created',
+    attribute: 'createdAt',
+    label: 'Date Created',
     icon: 'el-icon-date',
     type: 'date',
   },
-  // {
-  //   attribute: 'type',
-  //   type: 'string',
-  //   icon: 'el-icon-document',
-  // },
+  {
+    attribute: 'type',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
   {
     attribute: 'amount',
     type: 'numeric',
     icon: 'el-icon-star-off',
   },
   {
-    attribute: 'fee',
-    type: 'numeric',
-    icon: 'el-icon-tickets',
+    attribute: 'customerId',
+    label: 'Customer ID',
+    type: 'string',
+    icon: 'el-icon-document',
   },
   {
-    attribute: 'netAmount',
-    type: 'numeric',
+    attribute: 'firstName',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'lastName',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'statementDescriptor',
+    label: 'Description',
+    type: 'string',
     icon: 'el-icon-tickets',
   },
-  // {
-  //   attribute: 'statementDescriptor',
-  //   type: 'string',
-  //   icon: 'el-icon-tickets',
-  // },
   {
     attribute: 'orderId',
+    label: 'Customer ID',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -42,44 +51,29 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
     values: [
       {
-        label: 'Finalised',
-        value: 'Finalised',
+        label: 'Settled',
+        value: 'settled',
       },
       {
         label: 'Pending',
-        value: 'Pending',
+        value: 'pending',
       },
       {
         label: 'Refunded',
-        value: 'Refunded',
+        value: 'refunded',
       },
       {
         label: 'Failed',
-        value: 'Failed',
+        value: 'failed',
       },
     ],
-  },
-  {
-    attribute: 'dateFinalised',
-    type: 'date',
-    icon: 'el-icon-document',
-  },
-  {
-    attribute: 'paymentSource',
-    type: 'string',
-    icon: 'el-icon-document',
-  },
-  {
-    attribute: 'customerEmailAddress',
-    type: 'string',
-    icon: 'el-icon-document',
   },
 ]
 
 const TABLE_COLUMNS = [
   {
-    name: 'created',
-    label: 'Date created',
+    name: 'createdAt',
+    label: 'Date Created',
     icon: 'el-icon-document',
     format: {
       name: 'date',
@@ -90,6 +84,8 @@ const TABLE_COLUMNS = [
     name: 'type',
     label: 'Type',
     icon: 'el-icon-document',
+    format: 'capital',
+    width: 120,
     component: {
       props: {
         styleObj(val) {
@@ -107,6 +103,7 @@ const TABLE_COLUMNS = [
     label: 'Amount',
     icon: 'el-icon-document',
     format: 'dollar',
+    width: 120,
     component: {
       props: {
         styleObj(val) {
@@ -120,57 +117,75 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'fee',
-    label: 'Fee',
+    name: 'customerId',
+    label: 'Customer ID',
     icon: 'el-icon-document',
-    format: 'dollar',
+    width: 120,
   },
   {
-    name: 'netAmount',
-    label: 'Net',
+    name: 'firstName',
     icon: 'el-icon-document',
-    format: 'dollar',
+    width: 120,
+    component: {
+      props: {
+        allowEmpty: true,
+      },
+    },
+  },
+  {
+    name: 'lastName',
+    icon: 'el-icon-document',
+    width: 120,
+    component: {
+      props: {
+        allowEmpty: true,
+      },
+    },
   },
   {
     name: 'statementDescriptor',
-    label: 'Statement Descriptor',
+    label: 'Description',
     icon: 'el-icon-document',
+    width: 200,
   },
   {
     name: 'orderId',
     label: 'Order ID',
     icon: 'el-icon-document',
+    width: 200,
   },
   {
     name: 'status',
     label: 'Status',
     icon: 'el-icon-document',
+    format: 'capital',
+    width: 120,
     component: {
       props: {
         styleObj(val) {
           switch (val) {
-            case 'Pending': return { color: '#fbb241' }
-            case 'Finalised': return { color: '#29d737' }
-            case 'Failed': return { color: '#fc7168' }
-            case 'Refunded': return { color: '#fc7168' }
+            case 'pending': return { color: '#fbb241' }
+            case 'settled': return { color: '#29d737' }
+            case 'failed': return { color: '#fc7168' }
+            case 'refunded': return { color: '#fc7168' }
             default: return {}
           }
         },
         badge(val) {
           switch (val) {
-            case 'Pending': return {
+            case 'pending': return {
               name: 'el-icon-time',
               pos: 'left',
             }
-            case 'Finalised': return {
+            case 'settled': return {
               name: 'el-icon-check',
               pos: 'left',
             }
-            case 'Failed': return {
+            case 'failed': return {
               name: 'el-icon-close',
               pos: 'left',
             }
-            case 'Refunded': return {
+            case 'refunded': return {
               name: 'el-icon-refresh',
               pos: 'left',
             }
@@ -179,30 +194,6 @@ const TABLE_COLUMNS = [
         },
       },
     },
-  },
-  {
-    name: 'dateFinalised',
-    label: 'Date Finalised',
-    icon: 'el-icon-document',
-    format: {
-      name: 'date',
-      params: [dateFormat],
-    },
-  },
-  {
-    name: 'paymentSource',
-    label: 'Payment Source',
-    icon: 'el-icon-document',
-  },
-  {
-    name: 'customerIntegrationId',
-    label: 'Customer ID',
-    icon: 'el-icon-document',
-  },
-  {
-    name: 'customerEmailAddress',
-    label: 'Customer Email',
-    icon: 'el-icon-document',
   },
 ]
 
