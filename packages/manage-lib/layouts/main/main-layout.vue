@@ -51,6 +51,9 @@ export default {
           icon="el-icon-arrow-left"
           @click="onBackClick"
         />
+        <div>
+          <slot name="beforeTitle" />
+        </div>
         <h1 :class="$style.headerTitle">
           {{ title }}
         </h1>

@@ -15,9 +15,9 @@ export default {
           icon: 'news',
         },
         {
-          title: 'Settings',
+          title: 'System',
           path: '/settings',
-          icon: 'setting',
+          icon: 'cpu',
           children: [
             {
               title: 'Users',

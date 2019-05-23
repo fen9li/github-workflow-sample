@@ -37,7 +37,8 @@ const TABLE_COLUMNS = [
   {
     name: 'picture',
     icon: 'el-icon-document',
-    label: '',
+    label: '#',
+    align: 'center',
     sortable: false,
     width: 10,
     component: {

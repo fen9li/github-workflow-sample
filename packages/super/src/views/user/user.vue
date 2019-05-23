@@ -1,5 +1,6 @@
 <script>
 // import appConfig from '~/app.config'
+// fixme temporary, use this.$api in production
 import { API } from '@loyalty-corp/manage-lib/processors/temp/auth0-api-processor'
 
 export default {
@@ -58,37 +59,28 @@ export default {
 
 <template>
   <main-layout
-    title="User"
+    :title="userData.name"
     :tabs="tabs"
     back
   >
+    <div
+      slot="beforeTitle"
+      :class="$style.caption"
+    >
+      <img
+        :class="$style.ava"
+        :src="userData.picture"
+      >
+    </div>
     <router-view :user-data="userData" />
   </main-layout>
 </template>
 
 <style lang="scss" module>
-
-
-.balance {
-  display: flex;
-}
-
-.total {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  /*justify-content: center;*/
-  /*margin-top: 2rem;*/
-  /*margin-left: 5rem;*/
-  /*text-align: right;*/
-}
-
-.owing {
-  color: var(--color-error);
-}
-
-.balanceCount {
-  margin-bottom: .5rem;
-  font-size: 1.5rem;
-}
+  .ava {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
 </style>
