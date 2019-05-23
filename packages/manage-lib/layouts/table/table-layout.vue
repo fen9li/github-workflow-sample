@@ -18,6 +18,10 @@ export default {
       type: String,
       default: '',
     },
+    shadow: {
+      type: String,
+      default: 'always',
+    },
     quantity: {
       type: Boolean,
       default: false,
@@ -43,7 +47,10 @@ export default {
 </script>
 
 <template>
-  <el-card :class="$style.layout">
+  <el-card
+    :class="$style.layout"
+    :shadow="shadow"
+  >
     <slot
       slot="header"
       name="header"
@@ -112,7 +119,7 @@ export default {
 
 .layout {
   margin-bottom: 2rem;
-  overflow: visible;
+  overflow: visible !important;
   box-shadow: 0 2px 12px 0 rgba(black, 0.05) !important;
 
   :global(.el-card__body) {

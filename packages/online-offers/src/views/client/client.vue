@@ -59,7 +59,10 @@ export default {
     title="Suncorp"
     back
   >
-    <el-card :class="$style.card">
+    <el-card
+      :class="$style.card"
+      body-style="padding: 0"
+    >
       <div :class="$style.header">
         <div :class="$style.logo">
           <img
@@ -178,37 +181,39 @@ export default {
           </div>
         </div>
       </div>
-    </el-card>
-
-    <table-layout
-      table-name="merchants"
-      :quantity="true"
-      :fragments="false"
-      :hider="false"
-      :processor="table.processor"
-      :filters="table.filters"
-      :columns="table.columns"
-      @row-click="onRowClick"
-    >
-      <el-table-column
-        v-if="false"
-        fixed="right"
-        width="120"
+      <table-layout
+        :class="$style.table"
+        shadow="never"
+        table-name="merchants"
+        :quantity="true"
+        :fragments="false"
+        :hider="false"
+        :processor="table.processor"
+        :filters="table.filters"
+        :columns="table.columns"
+        @row-click="onRowClick"
       >
-        <el-button
-          type="text"
-          :class="$style['view-details-btn']"
+        <el-table-column
+          v-if="false"
+          fixed="right"
+          width="120"
         >
-          View details
-        </el-button>
-      </el-table-column>
-    </table-layout>
+          <el-button
+            type="text"
+            :class="$style['view-details-btn']"
+          >
+            View details
+          </el-button>
+        </el-table-column>
+      </table-layout>
+    </el-card>
   </main-layout>
 </template>
 
 <style lang="scss" module>
   .header {
     display: flex;
+    padding: var(--size-card-spacing);
   }
 
   .card {
@@ -220,19 +225,27 @@ export default {
     margin-right: 70px;
   }
 
+  .table {
+    padding: 0;
+    border: none;
+  }
+
   .logo-image {
-    max-width: 95px;
+    width: auto;
+    max-width: 300px;
     height: auto;
+    max-height: 100px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     object-fit: contain;
   }
 
   .logo-change {
-    margin-top: 15px;
+    margin: 1.5rem 0 -1rem;
     text-align: center;
   }
 
   .logo-change-btn {
+    padding: 0;
     font-size: 1rem;
   }
 
@@ -272,10 +285,6 @@ export default {
     align-items: center;
     width: 100%;
     min-height: 40px;
-
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
   }
 
   .form-row-label {
@@ -298,6 +307,7 @@ export default {
   .form-feeds {
     display: flex;
     flex-wrap: wrap;
+    margin-top: 10px;
 
     :global {
       .el-checkbox {
