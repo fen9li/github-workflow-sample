@@ -18,8 +18,9 @@ export default {
     return {
       form: {
         reason: '',
-        amount: null,
+        amount: '100.00',
         currency: 'aud',
+        refundTo: 'account',
       },
       rules: {
         reason: [
@@ -68,6 +69,12 @@ export default {
       ],
     }
   },
+  computed: {
+    accountInfo() {
+      const { transaction } = this
+      return `${transaction.customerName}, BSB ${transaction.bankAccount.bsb}, ACC ${transaction.bankAccount.acc}`
+    },
+  },
   methods: {
     onSubmit() {
       this.$refs.form.validate(valid => {
@@ -86,20 +93,50 @@ export default {
   <el-dialog
     title="Refund Payment"
     :visible="visible"
+    :class="$style.modal"
     @update:visible="$emit('update:visible', $event)"
   >
     <el-form
       ref="form"
       :model="form"
       :rules="rules"
-      label-width="180px"
-      label-position="left"
+      class="modal-form"
+      label-width="200px"
+      label-position="top"
     >
       <el-form-item
-        label="Refund Amount"
-        prop="amount"
+        label="Refund to"
+        :class="$style.refundWrapper"
+        label-width="50px"
+        required
       >
-        <div :class="$style.amount">
+        <div :class="$style.radioGroup">
+          <div :class="$style.account">
+            <el-radio
+              v-model="form.refundTo"
+              label="account"
+            >
+              Customer's Bank Account
+            </el-radio>
+            <span :class="$style.accountInfo">{{ accountInfo }}</span>
+          </div>
+          <el-radio
+            v-model="form.refundTo"
+            label="ewallet"
+          >
+            Customer's eWallet
+          </el-radio>
+        </div>
+      </el-form-item>
+      <el-form-item
+        label="Amount"
+        prop="amount"
+        required
+      >
+        <div
+          prop="amount"
+          class="amount-form-item"
+        >
           <el-form-item
             prop="amount"
           >
@@ -110,37 +147,27 @@ export default {
                 '##.##',
                 '###.##',
                 '####.##',
-                '#####.##',
-                '######.##',
+                '#####.##'
               ]"
               placeholder="0.00"
             >
-              <span
-                slot="prepend"
-                :class="$style.amountPrepend"
-              >
+              <template #prepend>
                 $
-              </span>
+              </template>
             </el-input>
           </el-form-item>
-          <el-form-item
-            prop="currency"
+          <el-select
+            v-model="form.currency"
           >
-            <el-select v-model="form.currency">
-              <el-option
-                label="AUD"
-                value="aud"
-              />
-              <el-option
-                label="EUR"
-                value="eur"
-              />
-              <el-option
-                label="USD"
-                value="usd"
-              />
-            </el-select>
-          </el-form-item>
+            <el-option
+              label="AUD"
+              value="aud"
+            />
+            <el-option
+              label="USD"
+              value="usd"
+            />
+          </el-select>
         </div>
       </el-form-item>
       <el-form-item
@@ -149,7 +176,7 @@ export default {
       >
         <el-select
           v-model="form.reason"
-          placeholder="Select a reason"
+          placeholder="Please select"
         >
           <el-option
             v-for="item in reasons"
@@ -177,42 +204,65 @@ export default {
 </template>
 
 <style lang="scss" module>
+.note {
+  padding: .5rem;
+  color: var(--color-text-light);
+  background-color: #F4F4F5;
+}
 
+.noteIco {
+  padding-right: .5rem;
+  font-size: 1rem;
+}
 
-  .note {
-    color: var(--color-text-light);
-  }
+.amount {
+  display: flex;
 
-  .noteIco {
-    padding-right: .5rem;
-    font-size: 1rem;
-    color: var(--color-primary-light);
-  }
+  :global {
+    .el-input-group__prepend,
+    .el-input-group__append {
+      background-color: inherit !important;
+    }
 
-  .amount {
-    display: flex;
-
-    :global {
-      .el-input-group__prepend,
-      .el-input-group__append {
-        background-color: inherit !important;
+    .el-input-group {
+      .el-input__inner {
+        border-right: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
       }
+    }
 
-      .el-input-group {
-        .el-input__inner {
-          border-right: 0;
-          border-top-right-radius: 0;
-          border-bottom-right-radius: 0;
-        }
-      }
-
-      .el-input--suffix {
-        .el-input__inner {
-          border-top-left-radius: 0;
-          border-bottom-left-radius: 0;
-        }
+    .el-input--suffix {
+      .el-input__inner {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
       }
     }
   }
+}
+.refundWrapper {
+  display: flex;
+  margin-bottom: 0.8rem;
+}
 
+.radioGroup {
+  margin-left: 4rem;
+  :global {
+    .el-radio__label {
+      font-size: 1rem;
+    }
+  }
+}
+
+.account {
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.3rem;
+}
+
+.accountInfo {
+  padding-left: 1.7rem;
+  line-height: 1.7rem;
+  color: #BCBEC1;
+}
 </style>

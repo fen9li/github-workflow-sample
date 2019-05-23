@@ -6,24 +6,24 @@ import formatDollar from '@lib/utils/format-dollar'
 import { formatDate } from '@lib/utils/format-date'
 
 const availableStatuses = {
-  Pending: {
+  pending: {
     icon: 'el-icon-time',
     color: '#fbb241',
     label: 'Pending',
   },
-  Finalised: {
+  settled: {
     icon: 'el-icon-check',
     color: '#29d737',
     label: 'Successful',
   },
-  Refund: {
+  refund: {
     icon: 'el-icon-close',
-    color: '#fc7168',
+    color: 'var(--color-error)',
     label: 'Refund',
   },
-  Failed: {
+  failed: {
     icon: 'el-icon-close',
-    color: '#fc7168',
+    color: 'var(--color-error)',
     label: 'Failed',
   },
 }
@@ -66,6 +66,18 @@ export default {
 
       return ''
     },
+    paymentSys() {
+      return this.transactionDetails.paymentDetails.paymentSystem
+    },
+    paymentSysLogo() {
+      return `/img/${this.paymentSys}_logo.png`
+    },
+    productDetails() {
+      return {
+        type: this.transactionDetails.productType,
+        ...this.transactionDetails.productDetails,
+      }
+    },
   },
   methods: {
     formatDollar(value) {
@@ -74,13 +86,20 @@ export default {
     formatDate(value) {
       return formatDate(value, 'DD/MM/YYYY hh:mm A')
     },
-    goToCustomerDetails() {
-      if (!this.transactionDetails) return
+    goToDetails(name) {
+      if (name === 'customer') {
+        if (!this.transactionDetails) return
 
-      this.$router.push({
-        name: 'customer-details',
-        params: { id: this.transactionDetails.customerIntegrationId },
-      })
+        this.$router.push({
+          name: 'customer-details',
+          params: { id: this.transactionDetails.customerIntegrationId },
+        })
+      } else if (name === 'subscription') {
+        this.$router.push({
+          name: 'subscription-details',
+          params: { id: this.transactionDetails.productDetails.productCode },
+        })
+      }
     },
   },
 }
@@ -97,7 +116,7 @@ export default {
       :transaction="transactionDetails"
     />
     <el-button
-      v-if="status === 'Finalised'"
+      v-if="status === 'settled'"
       slot="header"
       type="primary"
       class="wide-button"
@@ -109,69 +128,39 @@ export default {
       v-if="transactionDetails"
       :class="$style.detailsBlock"
     >
-      <div
-        slot="header"
-        :class="$style.header"
-      >
+      <div :class="$style.wrap">
+        <span :class="$style.wrapTitle">
+          General Information
+        </span>
         <div
-          :class="$style.headerData"
-          :style="{ color: transactionStatus.color }"
+          :class="$style.header"
         >
-          <div :class="$style.amount">
-            <span v-if="status === 'Refund'">
-              (
-            </span>
-            <span>{{ `${formatDollar(transactionDetails.amount)} AUD` }}</span>
-            <span v-if="status === 'Refund'">
-              )
-            </span>
+          <div
+            :class="$style.headerData"
+            :style="{ color: transactionStatus.color }"
+          >
+            <div :class="$style.amount">
+              <span>{{ `${formatDollar(transactionDetails.amount)} AUD` }}</span>
+            </div>
+
+            <div
+              v-if="status && status !== 'refund'"
+              :class="$style.headerStatus"
+            >
+              <i :class="[transactionStatus.icon, $style.statusIcon]" />
+              {{ transactionStatus.label }}
+            </div>
           </div>
           <div
-            v-if="status === 'Refund'"
+            v-if="status === 'refund'"
             :class="$style.refund"
           >
             Refund
           </div>
-          <div
-            v-else-if="transactionStatus"
-            :class="$style.headerStatus"
-          >
-            <i :class="transactionStatus.icon" />
-            {{ transactionStatus.label }}
-          </div>
         </div>
-        <el-button
-          type="primary"
-          @click="goToCustomerDetails"
-        >
-          View Customer Details
-        </el-button>
-      </div>
-      <div :class="$style.wrap">
         <dl :class="['datalist', $style.list]">
           <dt>Date Created</dt>
           <dd>{{ formatDate(transactionDetails.created) }}</dd>
-
-          <dt>Customer ID</dt>
-          <dd>{{ transactionDetails.customerIntegrationId }}</dd>
-
-          <dt>Customer Name</dt>
-          <dd>{{ transactionDetails.customerName }}</dd>
-
-          <dt>Customer Email</dt>
-          <dd>{{ transactionDetails.customerEmailAddress }}</dd>
-
-          <dt>Payment Method</dt>
-          <dd>{{ transactionDetails.paymentSource }}</dd>
-
-          <dt>Token</dt>
-          <dd>{{ transactionDetails.token }}</dd>
-
-          <dt>Transaction ID</dt>
-          <dd>{{ transactionDetails.transactionId }}</dd>
-
-          <dt>Order ID</dt>
-          <dd>{{ transactionDetails.orderId }}</dd>
 
           <dt>Description</dt>
           <dd>{{ transactionDetails.description }}</dd>
@@ -185,23 +174,163 @@ export default {
           <dt>Net</dt>
           <dd>{{ formatDollar(transactionDetails.netAmount) }}</dd>
 
+          <dt>Transaction ID</dt>
+          <dd>{{ transactionDetails.transactionId }}</dd>
+
           <dt>Date Finalised</dt>
           <dd>{{ formatDate(transactionDetails.dateFinalised) }}</dd>
         </dl>
+      </div>
+      <hr :class="['divider-primary', $style.divider]">
+
+      <div :class="$style.flexWrap">
+        <div :class="$style.wrap">
+          <span :class="$style.wrapTitle">
+            Customer Details
+          </span>
+
+          <dl
+            v-if="transactionDetails.customerIntegrationId"
+            :class="['datalist', $style.list, $style.flexList]"
+          >
+            <dt>Customer ID</dt>
+            <dd>{{ transactionDetails.customerIntegrationId }}</dd>
+
+            <dt>Customer Name</dt>
+            <dd>{{ transactionDetails.customerName }}</dd>
+
+            <dt>Customer Email</dt>
+            <dd>{{ transactionDetails.customerEmailAddress }}</dd>
+          </dl>
+
+          <span
+            v-else
+            :class="$style.noInfo"
+          >
+            No information provided
+          </span>
+        </div>
+
         <div
-          v-if="status === 'Failed'"
-          :class="$style.warn"
+          v-if="transactionDetails.customerIntegrationId"
+          :class="$style.viewBtn"
         >
-          Payment declined by customer’s bank due to
-          <div :class="$style.warnMeta">
-            Insufficient_funds
+          <el-button
+            type="primary"
+            @click="goToDetails('customer')"
+          >
+            View Customer Details
+          </el-button>
+        </div>
+      </div>
+      <hr :class="['divider-primary', $style.divider]">
+
+      <div v-if="productDetails.type === 'subscription'">
+        <div
+          :class="$style.flexWrap"
+        >
+          <div :class="$style.wrap">
+            <span :class="$style.wrapTitle">
+              Subscription Details
+            </span>
+
+            <dl
+              v-if="transactionDetails.customerIntegrationId"
+              :class="['datalist', $style.list, $style.flexList]"
+            >
+              <dt>Start Date</dt>
+              <dd>{{ `${formatDate(productDetails.startDate)}` }}</dd>
+
+              <dt>End Date</dt>
+              <dd>{{ `${formatDate(productDetails.endDate)}` }}</dd>
+
+              <dt>Product Name</dt>
+              <dd>{{ productDetails.productName }}</dd>
+
+              <dt>Product Code</dt>
+              <dd>{{ productDetails.productCode }}</dd>
+
+              <dt>Billing Cycle</dt>
+              <dd>{{ productDetails.billingCycle }}</dd>
+
+              <dt>Amount</dt>
+              <dd>{{ `${formatDollar(productDetails.pricingPlan)}` }}</dd>
+
+              <dt>Frequency</dt>
+              <dd>{{ productDetails.billingInterval }}</dd>
+
+              <dt>Next Billing Date</dt>
+              <dd>{{ `${formatDate(productDetails.nextBillingDate)}` }}</dd>
+
+              <dt>Coupon</dt>
+              <dd>{{ productDetails.coupon }}</dd>
+
+              <dt>Valid Until</dt>
+              <dd>{{ `${formatDate(productDetails.validUntil)}` }}</dd>
+            </dl>
+
+            <span
+              v-else
+              :class="$style.noInfo"
+            >
+              No information provided
+            </span>
           </div>
-          <div :class="$style.warnDescription">
-            Please note that failed payment messages originate
-            from the issuing bank.
-            For any queries please contact the issuing
-            bank to seek more information.
+
+          <div
+            v-if="transactionDetails.customerIntegrationId"
+            :class="$style.viewBtn"
+          >
+            <el-button
+              type="primary"
+              @click="goToDetails('subscription')"
+            >
+              View Subscription Details
+            </el-button>
           </div>
+        </div>
+        <hr :class="['divider-primary', $style.divider]">
+      </div>
+
+      <div :class="$style.wrap">
+        <span :class="$style.wrapTitle">
+          Payment Details
+        </span>
+        <dl :class="['datalist', $style.list]">
+          <dt>Card Holder Name</dt>
+          <dd>{{ transactionDetails.paymentDetails.cardHolderName }}</dd>
+
+          <dt>Payment Method</dt>
+          <dd>
+            <div :class="$style.paymentMethod">
+              {{ transactionDetails.paymentDetails.paymentMethod }}
+              <div :class="$style.paySysLogo">
+                <img
+                  :src="paymentSysLogo"
+                  :alt="paymentSys"
+                  :class="$style.logoImg"
+                >
+              </div>
+            </div>
+          </dd>
+
+          <dt>Token</dt>
+          <dd>{{ transactionDetails.token }}</dd>
+        </dl>
+      </div>
+      <div
+        v-if="status === 'failed'"
+        :class="$style.warn"
+      >
+        Payment declined by customer’s bank due to
+        <div :class="$style.warnMeta">
+          Insufficient_funds
+        </div>
+        <div :class="$style.warnDescription">
+          Please note that failed payment messages originate
+          from the issuing bank.
+          For any queries please contact the issuing
+          bank to seek more information.
         </div>
       </div>
     </el-card>
@@ -209,73 +338,116 @@ export default {
 </template>
 
 <style lang="scss" module>
+.wrap {
+  display: flex;
+  flex-direction: column;
+}
 
+.flexWrap {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 
-  .wrap {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+.wrapTitle {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.warn {
+  max-width: 25rem;
+  padding: 1.3rem;
+  text-align: right;
+  background: #fff1f1;
+  border-radius: 0.7rem;
+}
+
+.warnMeta {
+  font-weight: bold;
+}
+
+.warnDescription {
+  margin-top: 1rem;
+  font-size: .7rem;
+}
+
+.detailsBlock {
+  margin-bottom: 2rem;
+}
+
+.header {
+  padding-top: 1.2rem;
+}
+
+.headerData {
+  display: flex;
+}
+
+.amount {
+  width: 15rem;
+  font-size: 1.5rem;
+}
+
+.headerStatus {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.statusIcon {
+  margin-right: .5rem;
+}
+
+.refund {
+  margin-top: 0.3rem;
+  font-size: 1rem;
+  color: var(--color-error);
+}
+
+.list {
+  flex: 1 0 50%;
+  margin-top: 1.8rem;
+
+  dt {
+    color: black;
+  }
+}
+
+.flexList {
+  dd {
+    width: 55%
   }
 
-  .warn {
-    max-width: 25rem;
-    padding: 1.3rem;
-    text-align: right;
-    background: #fff1f1;
-    border-radius: 0.7rem;
-  }
-
-  .warnMeta {
-    font-weight: bold;
-  }
-
-  .warnDescription {
-    margin-top: 1rem;
-    font-size: .7rem;
-  }
-
-  .detailsBlock {
-    margin-bottom: 2rem;
-  }
-
-  .header {
-    display: flex;
-    justify-content: space-between
-  }
-
-  .headerData {
-    display: flex;
-  }
-
-  .amount {
-    width: 15rem;
-    font-size: 1.5rem;
-  }
-
-  .headerStatus {
-    font-size: 1rem;
-    font-weight: bold;
-  }
-
-  .refund {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: .1rem 2rem;
-    margin-bottom: .8rem;
-    font-size: 1rem;
-    font-weight: bold;
-    color: var(--color-body-bg);
-    background: var(--color-error);
-    border-radius: 0.7rem;
-  }
-
-  .list {
-    flex: 1 0 50%;
-
-    dt {
-      color: black;
+  @include mq($until: lg) {
+    dd {
+      width: 37%
     }
   }
+}
 
+.noInfo {
+  padding-top: 1.8rem;
+}
+
+.divider {
+  margin: 2.5rem 0;
+}
+
+.paymentMethod {
+  display: flex;
+  align-items: center;
+}
+
+.paySysLogo {
+  width: 2rem;
+}
+
+.logoImg {
+  width: 100%;
+}
+
+.viewBtn {
+  margin-left: auto;
+}
 </style>

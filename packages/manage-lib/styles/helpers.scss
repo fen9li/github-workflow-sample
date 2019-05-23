@@ -150,6 +150,7 @@
 .modal-form {
   .el-form-item__label {
     padding: 0 !important;
+    font-size: 0.9rem;
     line-height: 1.9rem;
   }
 }
@@ -190,8 +191,7 @@
 
   .el-input-group--prepend {
     .el-input-group__prepend {
-      padding: 0 0.8rem;
-      // background-color: #F5F7FA;
+      padding: 0 0.9rem;
     }
 
     .el-input__inner {
