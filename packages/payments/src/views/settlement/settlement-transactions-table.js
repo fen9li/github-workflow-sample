@@ -50,11 +50,21 @@ const TABLE_COLUMNS = [
     name: 'firstName',
     label: 'First Name',
     width: 100,
+    component: {
+      props: {
+        allowEmpty: true,
+      },
+    },
   },
   {
     name: 'lastName',
     label: 'Last Name',
     width: 100,
+    component: {
+      props: {
+        allowEmpty: true,
+      },
+    },
   },
   {
     name: 'description',
@@ -113,37 +123,6 @@ const TABLE_COLUMNS = [
       },
     },
   },
-
-  /* old fields
-  // remove when API will work
-  {
-    name: 'feeAmount',
-    label: 'Fee',
-    format: 'dollar',
-  },
-  {
-    name: 'netAmount',
-    label: 'NET',
-    format: 'dollar',
-  },
-  {
-    name: 'statementDescriptor',
-    label: 'Statement Descriptor',
-  },
-  {
-    name: 'completedAt',
-    label: 'Date Finalised',
-    format: 'dayMonthYear',
-  },
-  {
-    name: 'paymentSource',
-    label: 'Payment Source',
-  },
-  {
-    name: 'customerEmailAddress',
-    label: 'Customer Email Address',
-  },
-  */
 ]
 
 export default {
