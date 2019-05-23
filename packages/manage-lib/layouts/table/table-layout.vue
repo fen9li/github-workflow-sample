@@ -63,6 +63,9 @@ export default {
       v-if="tableControls"
       :class="$style.subheader"
     >
+      <div :class="$style.actions">
+        <slot name="actions" />
+      </div>
       <div :class="$style.filter">
         <data-filter
           v-if="$attrs.filters"
@@ -149,4 +152,14 @@ export default {
   justify-content: space-between;
   height: 3.375rem;
 }
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  height: 3.375rem;
+  padding-right: 1rem;
+}
+
 </style>

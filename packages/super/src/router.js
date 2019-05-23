@@ -14,9 +14,32 @@ const router = new Router({
       component: () => lazy(import('./views/home')),
     },
     {
-      path: '/users',
+      path: '/settings/users',
       name: 'users',
       component: () => lazy(import('./views/users')),
+    },
+    {
+      path: '/settings/users/:id',
+      name: 'user',
+      redirect: {
+        name: 'user-info',
+      },
+      component: () => lazy(import('~/views/user')),
+      props: true,
+      children: [
+        {
+          path: 'info',
+          name: 'user-info',
+          component: () => lazy(import('~/views/user/info')),
+          props: true,
+        },
+        {
+          path: 'permissions',
+          name: 'user-permissions',
+          component: () => lazy(import('~/views/user/permissions')),
+          props: true,
+        },
+      ],
     },
     {
       path: '*',

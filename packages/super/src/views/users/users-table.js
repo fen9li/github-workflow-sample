@@ -1,26 +1,3 @@
-const TABLE_FILTERS = [
-  {
-    attribute: 'name',
-    type: 'string',
-    icon: 'el-icon-document',
-  },
-  {
-    attribute: 'email',
-    type: 'string',
-    icon: 'el-icon-document',
-  },
-  // {
-  //   attribute: 'role',
-  //   type: 'string',
-  //   icon: 'el-icon-document',
-  // },
-  // {
-  //   attribute: 'status',
-  //   type: 'string',
-  //   icon: 'el-icon-document',
-  // },
-]
-
 // {
 //   "email_verified": true,
 //   "email": "iteam4u@ya.ru",
@@ -43,13 +20,18 @@ const TABLE_FILTERS = [
 //   "logins_count": 99
 // },
 
-
-
-
-
-
-
-
+const TABLE_FILTERS = [
+  {
+    attribute: 'name',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'email',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+]
 
 const TABLE_COLUMNS = [
   {
@@ -58,10 +40,15 @@ const TABLE_COLUMNS = [
     label: '',
     sortable: false,
     width: 10,
-    fixed: true,
     component: {
       is: 'cell-user-avatar',
     },
+  },
+  {
+    name: 'user_id',
+    label: 'ID',
+    icon: 'el-icon-document',
+    width: 50,
   },
   {
     name: 'name',

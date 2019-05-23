@@ -12,6 +12,12 @@ export default {
   data() {
     return {
       processor: new Auth0ApiProcessor({
+        disableQueryString: true,
+        query: {
+          hide: [
+            'user_id',
+          ],
+        },
         component: this,
         path: `https://${VUE_APP_AUTH0_DOMAIN}/api/v2/users`,
       }),
@@ -22,9 +28,9 @@ export default {
   methods: {
     onRowClick(row) {
       this.$router.push({
-        name: 'log-details',
+        name: 'user',
         params: {
-          id: row.id || 'unknown',
+          id: row.user_id || 'unknown',
         },
       })
     },

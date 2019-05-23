@@ -15,10 +15,49 @@ export default {
           icon: 'news',
         },
         {
-          title: 'Users',
-          path: '/users',
-          icon: 'user',
+          title: 'Settings',
+          path: '/settings',
+          icon: 'setting',
+          children: [
+            {
+              title: 'Users',
+              path: '/settings/users',
+              icon: 'user',
+            },
+            {
+              title: 'Roles and permissions',
+              path: '/settings/roles',
+              icon: 'user',
+            },
+            // {
+            //   title: 'Payment Settings',
+            //   path: '/settings/payment',
+            // },
+            // {
+            //   title: 'Notification Settings',
+            //   path: '/settings/notification',
+            // },
+            // {
+            //   title: 'User Access',
+            //   path: '/settings/user-access',
+            // },
+            // {
+            //   title: 'Templates',
+            //   path: '/settings/templates',
+            // },
+            // {
+            //   title: 'Log History',
+            //   path: '/settings/log-history',
+            // },
+            // {
+            //   title: 'Events',
+            //   path: '/settings/events',
+            // },
+          ],
         },
+
+
+
       ]
     },
   },
