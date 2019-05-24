@@ -12,7 +12,7 @@ export default {
       return {
         ...this.$attrs,
         styleObj(val) {
-          switch (val) {
+          switch (val.toLowerCase()) {
             case 'active': return { color: '#29d737' }
             case 'inactive': return { color: '#bbb' }
             default: return {}

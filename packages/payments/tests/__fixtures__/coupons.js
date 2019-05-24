@@ -20,7 +20,7 @@ module.exports = {
       validityPeriod: '2 Months',
       noInUse: 110,
       amount: '20%',
-      status: 'Active',
+      status: 'Inactive',
     },
   ],
 }

@@ -153,6 +153,12 @@ const router = new VueRouter({
       component: () => lazy(import('~/views/coupons')),
     },
     {
+      path: '/coupons/:id',
+      name: 'coupon-details',
+      component: () => lazy(import('~/views/coupon')),
+      props: true,
+    },
+    {
       path: '/coupons/new',
       name: 'coupon-new',
       component: () => lazy(import('~/views/coupons/coupon-new')),

@@ -1,12 +1,6 @@
-
 <script>
-import StaticProcessor from '@lib/processors/static-processor'
 import CouponsCreateModal from './coupons-create'
-import CouponsEditModal from './coupons-edit'
-import CouponsDeleteModal from './coupons-delete'
-import tableConfig from './coupons-table'
-
-const couponsMock = require('@tests/__fixtures__/coupons')
+import table from './coupons-table'
 
 export default {
   name: 'Coupons',
@@ -15,23 +9,24 @@ export default {
   },
   components: {
     CouponsCreateModal,
-    CouponsEditModal,
-    CouponsDeleteModal,
   },
   data() {
     return {
+      table: table(this),
       modal: {
         edit: false,
         delete: false,
         create: false,
       },
-      processor: new StaticProcessor({
-        component: this,
-        data: couponsMock.table,
-      }),
-      filters: tableConfig.filters,
-      columns: tableConfig.columns,
     }
+  },
+  methods: {
+    onRowClick(row) {
+      this.$router.push({
+        name: 'coupon-details',
+        params: { id: row.id },
+      })
+    },
   },
 }
 </script>
@@ -40,34 +35,12 @@ export default {
   <main-layout title="Coupons">
     <table-layout
       table-name="coupons"
-      :processor="processor"
-      :filters="filters"
-      :columns="columns"
-    >
-      <el-table-column
-        class-name="fixed-column"
-        fixed="right"
-        width="90"
-      >
-        <el-button
-          class="flat-icon-button"
-          type="primary"
-          icon="el-icon-edit"
-          plain
-          @click="modal.edit = true"
-        />
-        <el-button
-          :class="[
-            'flat-icon-button',
-            $style.deleteButton,
-          ]"
-          type="danger"
-          icon="el-icon-delete"
-          plain
-          @click="modal.delete = true"
-        />
-      </el-table-column>
-    </table-layout>
+      :processor="table.processor"
+      :filters="table.filters"
+      :columns="table.columns"
+      :fragments="false"
+      @row-click="onRowClick"
+    />
 
     <el-button
       slot="header"
@@ -79,14 +52,6 @@ export default {
     <coupons-create-modal
       v-if="modal.create"
       :visible.sync="modal.create"
-    />
-    <coupons-delete-modal
-      v-if="modal.delete"
-      :visible.sync="modal.delete"
-    />
-    <coupons-edit-modal
-      v-if="modal.edit"
-      :visible.sync="modal.edit"
     />
   </main-layout>
 </template>

@@ -1,3 +1,6 @@
+import StaticProcessor from '@lib/processors/static-processor'
+import couponsMock from '@tests/__fixtures__/coupons'
+
 const TABLE_FILTERS = [
   {
     attribute: 'dateCreated',
@@ -49,7 +52,7 @@ const TABLE_FILTERS = [
 const TABLE_COLUMNS = [
   {
     name: 'dateCreated',
-    label: 'Date created',
+    label: 'Date Created',
     icon: 'el-icon-document',
     format: 'dateTime',
   },
@@ -100,7 +103,13 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default {
-  filters: TABLE_FILTERS,
-  columns: TABLE_COLUMNS,
+export default function(component) {
+  return {
+    processor: new StaticProcessor({
+      component,
+      data: couponsMock.table,
+    }),
+    filters: TABLE_FILTERS,
+    columns: TABLE_COLUMNS,
+  }
 }
