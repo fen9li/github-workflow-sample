@@ -1,3 +1,5 @@
+import ElasticProcessor from '@lib/processors/elastic-processor'
+
 const TABLE_FILTERS = [
   {
     attribute: 'createdAt',
@@ -55,10 +57,11 @@ const TABLE_FILTERS = [
 const TABLE_COLUMNS = [
   {
     name: 'createdAt',
-    label: 'Сreated',
+    label: 'Date Сreated',
     icon: 'el-icon-document',
     format: {
-      name: 'dayMonthYear',
+      name: 'date',
+      params: ['DD/MM/YYYY hh:mm A'],
     },
     width: 90,
   },
@@ -89,11 +92,6 @@ const TABLE_COLUMNS = [
     width: 100,
   },
   {
-    name: 'address',
-    type: 'string',
-    width: 160,
-  },
-  {
     name: 'status',
     label: 'Status',
     format: {
@@ -107,7 +105,13 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default {
-  filters: TABLE_FILTERS,
-  columns: TABLE_COLUMNS,
+export default function(component) {
+  return {
+    processor: new ElasticProcessor({
+      component,
+      index: 'customers',
+    }),
+    filters: TABLE_FILTERS,
+    columns: TABLE_COLUMNS,
+  }
 }

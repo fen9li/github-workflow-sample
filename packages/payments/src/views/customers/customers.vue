@@ -1,24 +1,14 @@
 <script>
-import ElasticProcessor from '@lib/processors/elastic-processor'
-import tableConfig from './customers-table'
-import AddCustomerModal from './customer-add'
+import table from './customers-table'
 
 export default {
   name: 'Customers',
   page: {
     title: 'Customers',
   },
-  components: {
-    AddCustomerModal,
-  },
   data() {
     return {
-      processor: new ElasticProcessor({
-        component: this,
-        index: 'customers',
-      }),
-      filters: tableConfig.filters,
-      columns: tableConfig.columns,
+      table: table(this),
       modal: {
         add: false,
       },
@@ -39,23 +29,11 @@ export default {
   <main-layout title="Customers">
     <table-layout
       table-name="customers"
-      :processor="processor"
-      :filters="filters"
-      :columns="columns"
+      :processor="table.processor"
+      :filters="table.filters"
+      :columns="table.columns"
+      :fragments="false"
       @row-click="onRowClick"
-    />
-    <el-button
-      slot="header"
-      type="primary"
-      @click="modal.add = true"
-    >
-      Add customer
-    </el-button>
-
-    <add-customer-modal
-      v-if="modal.add"
-      slot="header"
-      :visible.sync="modal.add"
     />
   </main-layout>
 </template>
