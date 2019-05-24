@@ -15,6 +15,9 @@
     &-left {
       width: calc(100% - 600px);
       background-color: rgba(blue, 0.8);
+      background-image: url('~@/assets/images/signin_background.jpg');
+      background-position: top left;
+      background-size: cover;
     }
     &-right {
       display: flex;
@@ -36,6 +39,10 @@
         padding-bottom: 0.5rem;
         font-size: 0.8rem;
         line-height: 1;
+      }
+
+      &.is-required:not(.is-no-asterisk) > .el-form-item__label:after {
+        color: #606266;
       }
     }
 
