@@ -17,6 +17,7 @@ module.exports = {
     {
       name: 'Charges',
       type: 56,
+      count: 1,
       amount: 8980,
       fee: 20,
       net: 8960,
@@ -24,6 +25,7 @@ module.exports = {
     {
       name: 'Refunds',
       type: 2,
+      count: 2,
       amount: 180,
       fee: 0.50,
       net: 179.5,

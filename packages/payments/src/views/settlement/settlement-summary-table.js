@@ -5,6 +5,12 @@ const TABLE_COLUMNS = [
     sortable: false,
   },
   {
+    name: 'count',
+    label: 'Count',
+    align: 'right',
+    remWidth: 6,
+  },
+  {
     name: 'amount',
     label: 'Amount',
     format: 'dollar',
