@@ -1,11 +1,9 @@
 <script>
-// import appConfig from '~/app.config'
 
 export default {
   name: 'UserInfo',
   page: {
     title: 'User Information',
-    // meta: [{ name: 'description', content: appConfig.description }],
   },
   components: {
   },
@@ -38,9 +36,9 @@ export default {
       <dd>{{ userData.name }}</dd>
       <dt>Nick</dt>
       <dd>{{ userData.nickname }}</dd>
-      <dt>EMAIL</dt>
+      <dt>Email</dt>
       <dd>{{ userData.email }}</dd>
-      <dt>EMAIL verified</dt>
+      <dt>Email verified</dt>
       <dd>{{ userData.email_verified }}</dd>
       <dt>Date Created</dt>
       <dd>{{ userData.created_at | dateTime }}</dd>

@@ -1,15 +1,10 @@
 const TABLE_FILTERS = [
   {
-    attribute: 'resource_server_identifier',
-    label: 'resource id',
+    attribute: 'resource_server_name',
+    label: 'resource name',
     type: 'string',
     icon: 'el-icon-document',
   },
-  // {
-  //   attribute: 'email',
-  //   type: 'string',
-  //   icon: 'el-icon-document',
-  // },
 ]
 
 const TABLE_COLUMNS = [

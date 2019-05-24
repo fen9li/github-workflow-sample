@@ -1,43 +1,31 @@
 const TABLE_FILTERS = [
   {
     attribute: 'name',
-    type: 'string',
-    icon: 'el-icon-document',
-  },
-  {
-    attribute: 'email',
+    label: 'name',
     type: 'string',
     icon: 'el-icon-document',
   },
 ]
 
+
+// "id": "rol_lMToSV56ClT65sCg",
+//   "name": "super-admin",
+//   "description": "Super admin role - GOD mode"
+
 const TABLE_COLUMNS = [
   {
-    name: 'picture',
-    icon: 'el-icon-document',
-    label: '#',
-    align: 'center',
-    sortable: false,
-    width: 10,
-    component: {
-      is: 'cell-user-avatar',
-    },
-  },
-  {
-    name: 'user_id',
+    name: 'id',
     label: 'ID',
     icon: 'el-icon-document',
-    width: 50,
   },
   {
     name: 'name',
     label: 'Name',
     icon: 'el-icon-document',
-    width: 50,
   },
   {
-    name: 'email',
-    label: 'email',
+    name: 'description',
+    label: 'Description',
     icon: 'el-icon-document',
   },
 ]

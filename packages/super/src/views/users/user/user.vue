@@ -1,5 +1,4 @@
 <script>
-// import appConfig from '~/app.config'
 // fixme temporary, use this.$api in production
 import { API } from '@loyalty-corp/manage-lib/processors/temp/auth0-api-processor'
 
@@ -7,7 +6,6 @@ export default {
   name: 'UserProfile',
   page: {
     title: 'User Profile',
-    // meta: [{ name: 'description', content: appConfig.description }],
   },
   props: {
     id: {
@@ -34,6 +32,12 @@ export default {
           label: 'Permissions',
           route: {
             name: 'user-permissions',
+          },
+        },
+        {
+          label: 'Roles',
+          route: {
+            name: 'user-roles',
           },
         },
       ]

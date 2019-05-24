@@ -1,5 +1,4 @@
 <script>
-// import appConfig from '~/app.config'
 // fixme temporary, use default api processor in production
 import Auth0ApiProcessor from '@loyalty-corp/manage-lib/processors/temp/auth0-api-processor'
 import tableConfig from './permissions-table'
@@ -10,7 +9,6 @@ export default {
   name: 'UserInfo',
   page: {
     title: 'User Information',
-    // meta: [{ name: 'description', content: appConfig.description }],
   },
   components: {
   },
@@ -25,11 +23,6 @@ export default {
       resourceServers: [],
       processor: new Auth0ApiProcessor({
         disableQueryString: true,
-        // query: {
-        //   hide: [
-        //     'user_id',
-        //   ],
-        // },
         component: this,
         path: `https://${VUE_APP_AUTH0_DOMAIN}/api/v2/users/${this.id}/permissions`,
       }),
