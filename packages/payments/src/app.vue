@@ -50,32 +50,20 @@ export default {
           icon: 'setting',
           children: [
             {
-              title: 'Business Details',
-              path: '/settings/business',
-            },
-            {
               title: 'Payment Settings',
               path: '/settings/payment',
             },
             {
-              title: 'Notification Settings',
-              path: '/settings/notification',
-            },
-            {
-              title: 'User Access',
-              path: '/settings/user-access',
-            },
-            {
-              title: 'Templates',
-              path: '/settings/templates',
-            },
-            {
-              title: 'Log History',
-              path: '/settings/log-history',
+              title: 'Webhooks',
+              path: '/settings/webhooks',
             },
             {
               title: 'Events',
               path: '/settings/events',
+            },
+            {
+              title: 'Log History',
+              path: '/settings/log-history',
             },
           ],
         },

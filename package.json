@@ -108,6 +108,7 @@
   },
   "dependencies": {
     "md5": "^2.2.1",
+    "sass-mq": "^5.0.0",
     "uploadcare-vue": "^1.0.0"
   }
 }
