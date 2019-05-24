@@ -1,5 +1,5 @@
 module.exports = {
-  settlementDetails: {
+  details: {
     status: 'paid',
     date_created: '05/05/2019 09:28',
     customer_id: 'PA1729',
@@ -13,7 +13,7 @@ module.exports = {
     net: 1819,
     date_finalised: '12/12/2018 09:29',
   },
-  summaryTable: [
+  table: [
     {
       name: 'Charges',
       type: 56,
@@ -29,44 +29,6 @@ module.exports = {
       amount: 180,
       fee: 0.50,
       net: 179.5,
-    },
-  ],
-  transactionLog: [
-    {
-      createdAt: '12/12/2018 12:32',
-      action: 'Charge',
-      amount: 80.00,
-      customerId: 92810,
-      firstName: 'Amy',
-      lastName: 'Colon',
-      description: 'Earning less than $35,000',
-      crn: 8149124124,
-      orderId: 92810,
-      status: 'successfull',
-    },
-    {
-      createdAt: '12/12/2018 12:32',
-      action: 'Refund',
-      amount: 80.00,
-      customerId: 92810,
-      firstName: 'Amy',
-      lastName: 'Colon',
-      description: 'Earning less than $35,000',
-      crn: 8149124124,
-      orderId: 92810,
-      status: 'successfull',
-    },
-    {
-      createdAt: '12/12/2018 12:32',
-      action: 'Charge',
-      amount: 80.00,
-      customerId: 92810,
-      firstName: null,
-      lastName: null,
-      description: 'Earning less than $35,000',
-      crn: 8149124124,
-      orderId: 92810,
-      status: 'successfull',
     },
   ],
 }

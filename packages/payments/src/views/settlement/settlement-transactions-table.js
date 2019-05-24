@@ -1,3 +1,7 @@
+import StaticProcessor from '@lib/processors/static-processor'
+import tableMock from '@tests/__fixtures__/settlements-transactions-mock.js'
+// import ElasticProcessor from '@lib/processors/elastic-processor'
+
 const TABLE_COLUMNS = [
   {
     name: 'createdAt',
@@ -125,6 +129,27 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default {
-  columns: TABLE_COLUMNS,
+
+export default function(component) {
+  return {
+    // processor: new ElasticProcessor({
+    //   component,
+    //   index: 'transactions',
+    //   staticQuery: {
+    //     filters: [
+    //       {
+    //         attribute: 'type',
+    //         comparison: 'eq',
+    //         value: 'settlement',
+    //       },
+    //     ],
+    //     sort: { 'createdAt': 'desc' },
+    //   },
+    // }),
+    processor: new StaticProcessor({
+      component,
+      data: tableMock.table,
+    }),
+    columns: TABLE_COLUMNS,
+  }
 }

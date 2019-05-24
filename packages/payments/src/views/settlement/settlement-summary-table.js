@@ -1,3 +1,9 @@
+import StaticProcessor from '@lib/processors/static-processor'
+import {
+  details,
+  table,
+} from '@tests/__fixtures__/settlement-details-mock.js'
+
 const TABLE_COLUMNS = [
   {
     name: 'name',
@@ -32,6 +38,13 @@ const TABLE_COLUMNS = [
 ]
 
 
-export default {
-  columns: TABLE_COLUMNS,
+export default function(component) {
+  return {
+    details,
+    processor: new StaticProcessor({
+      component,
+      data: table,
+    }),
+    columns: TABLE_COLUMNS,
+  }
 }

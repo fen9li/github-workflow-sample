@@ -1,12 +1,8 @@
 <script>
 import appConfig from '~/app.config'
 import settlementInfo from './settlement-info'
-import settlementDetailsMock from
-  '@tests/__fixtures__/settlement-details-mock.js'
-import StaticProcessor from '@lib/processors/static-processor'
-import ElasticProcessor from '@lib/processors/elastic-processor'
-import summaryTableConfig from './settlement-summary-table.js'
-import transactionsTableConfig from './settlement-transactions-table.js'
+import summaryTable from './settlement-summary-table.js'
+import transactionsTable from './settlement-transactions-table.js'
 import formatDollar from '@lib/utils/format-dollar.js'
 
 export default {
@@ -20,27 +16,8 @@ export default {
   },
   data() {
     return {
-      summaryProcessor: new StaticProcessor({
-        component: this,
-        data: settlementDetailsMock.summaryTable,
-      }),
-      transactionsProcessor: new ElasticProcessor({
-        component: this,
-        index: 'transactions',
-        staticQuery: {
-          filters: [
-            {
-              attribute: 'type',
-              comparison: 'eq',
-              value: 'settlement',
-            },
-          ],
-          sort: { 'createdAt': 'desc' },
-        },
-      }),
-      settlementDetailsMock,
-      summaryColumns: summaryTableConfig.columns,
-      transactionsColumns: transactionsTableConfig.columns,
+      summaryTable: summaryTable(this),
+      transactionsTable: transactionsTable(this),
     }
   },
   methods: {
@@ -81,13 +58,13 @@ export default {
     back
   >
     <settlement-info
-      :settlement-details="settlementDetailsMock.settlementDetails"
+      :settlement-details="summaryTable.details"
     />
     <table-layout
       title="Summary"
       table-name="settlementSummary"
-      :columns="summaryColumns"
-      :processor="summaryProcessor"
+      :processor="summaryTable.processor"
+      :columns="summaryTable.columns"
       :summary-method="getSummary"
       :table-controls="false"
       show-summary
@@ -100,8 +77,8 @@ export default {
       title="Settlement - Transaction Log"
       table-name="settlementTransactionLog"
       :table-controls="false"
-      :processor="transactionsProcessor"
-      :columns="transactionsColumns"
+      :processor="transactionsTable.processor"
+      :columns="transactionsTable.columns"
       @row-click="onTransactionsRowClick"
     />
   </main-layout>
