@@ -11,8 +11,16 @@ export default {
 
 <template>
   <el-image
-    style="width: 2rem; height: 2rem; border-radius: 50%; opacity: 0.8"
+    :class="$style.root"
     :src="value"
-  >
-  </el-image>
+    :fit="'contain'"
+  />
 </template>
+
+<style lang="scss" module>
+  .root {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+  }
+</style>
