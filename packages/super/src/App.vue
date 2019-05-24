@@ -20,13 +20,12 @@ export default {
           icon: 'lock',
           children: [
             {
-              title: 'Users',
-              path: '/auth/users',
+              title: 'API Endpoints',
+              path: '/auth/api-endpoints',
             },
             {
-              title: 'Roles and permissions',
-              path: '/settings/roles',
-              icon: 'user',
+              title: 'Users',
+              path: '/auth/users',
             },
           ],
         },

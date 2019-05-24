@@ -28,6 +28,12 @@ class Auth0ApiProcessor extends DataProcessor {
         this.path,
       )
       .then(({ data }) => {
+        data = data.scopes ?
+          data.scopes.map(item => ({
+            permission_name: item.value,
+            description: item.description,
+          }))
+          : data
         return {
           data,
           total: data.length,

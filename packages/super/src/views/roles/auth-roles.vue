@@ -1,7 +1,7 @@
 <script>
 // fixme temporary, use default api processor in production
 import Auth0ApiProcessor from '@loyalty-corp/manage-lib/processors/temp/auth0-api-processor'
-import tableConfig from './user-roles-table'
+import tableConfig from './roles-table'
 
 const { VUE_APP_AUTH0_DOMAIN } = process.env
 
@@ -29,7 +29,15 @@ export default {
           ],
         },
         component: this,
-        path: `https://${VUE_APP_AUTH0_DOMAIN}/api/v2/users/${this.id}/roles`,
+        path:
+          (() => {
+            const { $route: { name } = {} } = this
+            if ( name === 'user-roles') {
+              return `https://${VUE_APP_AUTH0_DOMAIN}/api/v2/users/${this.id}/roles`
+            } else {
+              return `https://${VUE_APP_AUTH0_DOMAIN}/api/v2/roles`
+            }
+          })(),
       }),
       filters: tableConfig.filters,
       columns: tableConfig.columns,

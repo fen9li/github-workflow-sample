@@ -24,7 +24,14 @@ export default {
       processor: new Auth0ApiProcessor({
         disableQueryString: true,
         component: this,
-        path: `https://${VUE_APP_AUTH0_DOMAIN}/api/v2/users/${this.id}/permissions`,
+        path: (() => {
+          const { $route: { name } = {} } = this
+          if ( name === 'user-permissions') {
+            return `https://${VUE_APP_AUTH0_DOMAIN}/api/v2/users/${this.id}/permissions`
+          } else {
+            return `https://${VUE_APP_AUTH0_DOMAIN}/api/v2/resource-servers/${this.id}`
+          }
+        })(),
       }),
       filters: tableConfig.filters,
       columns: tableConfig.columns,

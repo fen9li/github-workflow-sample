@@ -1,1 +1,1 @@
-export { default } from './user-permissions'
+export { default } from './auth-permissions'

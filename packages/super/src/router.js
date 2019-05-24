@@ -14,6 +14,48 @@ const router = new Router({
       component: () => lazy(import('./views/home')),
     },
     {
+      path: '/auth/api-endpoints',
+      name: 'api-endpoints',
+      component: () => lazy(import('./views/api-endpoints')),
+    },
+    {
+      path: '/auth/api-endpoints/:id',
+      name: 'api-endpoint',
+      redirect: {
+        name: 'endpoint-info',
+      },
+      component: () => lazy(import(
+        '~/views/api-endpoints/api-endpoint'
+      )),
+      props: true,
+      children: [
+        {
+          path: 'info',
+          name: 'endpoint-info',
+          component: () => lazy(import(
+            '~/views/api-endpoints/api-endpoint/info'
+          )),
+          props: true,
+        },
+        {
+          path: 'permissions',
+          name: 'endpoint-permissions',
+          component: () => lazy(import(
+            '~/views/permissions'
+          )),
+          props: true,
+        },
+        {
+          path: 'roles',
+          name: 'endpoint-roles',
+          component: () => lazy(import(
+            '~/views/roles'
+          )),
+          props: true,
+        },
+      ],
+    },
+    {
       path: '/auth/users',
       name: 'users',
       component: () => lazy(import('./views/users')),
