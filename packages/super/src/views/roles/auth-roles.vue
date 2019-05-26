@@ -70,6 +70,3 @@ export default {
     />
   </table-layout>
 </template>
-
-<style lang="scss" module>
-</style>

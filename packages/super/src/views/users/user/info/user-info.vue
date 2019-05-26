@@ -28,10 +28,7 @@ export default {
 
 <template>
   <el-card>
-    <dl
-      class="datalist"
-      style="color: #8f8f8f "
-    >
+    <dl class="datalist">
       <dt>Name</dt>
       <dd>{{ userData.name }}</dd>
       <dt>Nick</dt>
@@ -51,6 +48,3 @@ export default {
     </dl>
   </el-card>
 </template>
-
-<style lang="scss" module>
-</style>

@@ -54,7 +54,7 @@ export default {
         const { data } = await API.get(`https://${VUE_APP_AUTH0_DOMAIN}/api/v2/resource-servers/${id}`)
         this.endpointData = data
       } catch (exception) {
-        console.log(exception)
+        // console.log(exception)
       }
     },
   },
@@ -75,7 +75,7 @@ export default {
   .ava {
     width: 3rem;
     height: 3rem;
-    border-radius: 50%;
     margin-right: 0.5rem;
+    border-radius: 50%;
   }
 </style>

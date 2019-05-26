@@ -49,7 +49,6 @@ export default {
       :columns="columns"
       :filters="filters"
       @row-click="onRowClick"
-    >
-    </table-layout>
+    />
   </main-layout>
 </template>
