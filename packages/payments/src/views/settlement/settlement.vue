@@ -1,9 +1,9 @@
 <script>
 import appConfig from '~/app.config'
 import settlementInfo from './settlement-info'
-import summaryTable from './settlement-summary-table.js'
-import transactionsTable from './settlement-transactions-table.js'
-import formatDollar from '@lib/utils/format-dollar.js'
+import summaryTable from './settlement-summary.table'
+import transactionsTable from './settlement-transactions.table'
+import formatDollar from '@lib/utils/format-dollar'
 
 export default {
   name: 'SettlementDetails',

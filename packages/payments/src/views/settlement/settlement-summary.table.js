@@ -14,7 +14,6 @@ const TABLE_COLUMNS = [
     name: 'count',
     label: 'Count',
     align: 'right',
-    remWidth: 6,
   },
   {
     name: 'amount',
@@ -27,7 +26,6 @@ const TABLE_COLUMNS = [
     label: 'Fee',
     format: 'dollar',
     align: 'right',
-    width: '150rem',
   },
   {
     name: 'net',
