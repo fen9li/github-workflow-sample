@@ -76,9 +76,6 @@ export default {
     }
 
     &-item {
-      height: 2.4rem;
-      margin-bottom: 1rem;
-      line-height: 2.4rem;
       color: var(--color-primary-text) !important;
 
       &:hover,
@@ -99,10 +96,7 @@ export default {
   .el-menu-item, .el-submenu__title {
     display: flex;
     align-items: center;
-    height: 2.4rem;
-    margin-bottom: 1rem;
     font-size: 1rem;
-    line-height: 2.4rem;
   }
 
   .el-submenu {
