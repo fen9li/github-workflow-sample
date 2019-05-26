@@ -25,6 +25,10 @@
     "vue-the-mask": "^0.11.1",
     "vuex": "^3.1.0"
   },
+  "devDependencies": {
+    "sass-mq": "^5.0.0",
+    "sass-rem": "^2.0.1"
+  },
   "engines": {
     "node": ">=8.9.0",
     "yarn": ">=1.0.0"

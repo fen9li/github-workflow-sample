@@ -4,11 +4,11 @@
 // Style loading bar between pages.
 // https://github.com/rstacruz/nprogress
 @import '~nprogress/nprogress.css';
+@import './functions.scss';
 @import './global.scss';
 @import './theme.scss';
 @import './helpers.scss';
 @import './element-ui';
-@import './sass-mq.scss';
 
 #nprogress .bar {
   background: var(--color-link-text);

@@ -107,8 +107,6 @@
     "access": "restricted"
   },
   "dependencies": {
-    "md5": "^2.2.1",
-    "sass-mq": "^5.0.0",
-    "uploadcare-vue": "^1.0.0"
+    "md5": "^2.2.1"
   }
 }

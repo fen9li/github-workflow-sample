@@ -12,7 +12,7 @@ const DEFAULT_CONFIG = {
   css: {
     loaderOptions: {
       sass: {
-        data: '@import "@lib/styles/sass-mq.scss";',
+        data: '@import "@lib/styles/functions.scss";',
       },
     },
   },
