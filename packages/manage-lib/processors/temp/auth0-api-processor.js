@@ -2,7 +2,10 @@
 import DataProcessor from '../data-processor'
 import axios from 'axios'
 
-const { VUE_APP_AUTH0_MANAGEMENT_API_TOKEN } = process.env
+const {
+  VUE_APP_AUTH0_MANAGEMENT_API_TOKEN,
+  VUE_APP_AUTH0_DOMAIN,
+} = process.env
 
 export const API = axios.create({
   headers: { Authorization: `Bearer ${VUE_APP_AUTH0_MANAGEMENT_API_TOKEN}` },
@@ -28,12 +31,16 @@ class Auth0ApiProcessor extends DataProcessor {
         this.path,
       )
       .then(({ data }) => {
-        data = data.scopes ?
-          data.scopes.map(item => ({
+        const { path = '' } = this
+        if (path.endsWith('resource-servers')) {
+          data = data.filter(resource => !resource.identifier.includes(VUE_APP_AUTH0_DOMAIN))
+        }
+        if (data.scopes) {
+          data = data.scopes.map(item => ({
             permission_name: item.value,
             description: item.description,
           }))
-          : data
+        }
         return {
           data,
           total: data.length,
