@@ -1,38 +1,64 @@
 const TABLE_FILTERS = [
   {
-    attribute: 'created',
+    attribute: 'createdAt',
     icon: 'el-icon-date',
     type: 'date',
   },
   {
-    attribute: 'code',
+    attribute: 'externalId',
+    icon: 'el-icon-document',
     type: 'string',
   },
   {
     attribute: 'name',
     label: 'Product Name',
+    icon: 'el-icon-document',
     type: 'string',
   },
   {
-    attribute: 'prorataAnchor',
-    label: 'Effective Start Date',
+    attribute: 'billingType',
+    label: 'Billing Cycle',
+    icon: 'el-icon-document',
+    type: 'string',
+  },
+  {
+    attribute: 'anchorOn',
+    label: 'Anchor Date',
+    icon: 'el-icon-date',
     type: 'date',
   },
   {
-    attribute: 'endDate',
+    attribute: 'endAt',
     label: 'End Date',
+    icon: 'el-icon-date',
     type: 'date',
   },
   {
-    attribute: 'plans',
+    attribute: 'productCount',
+    icon: 'el-icon-document',
     type: 'numeric',
+  },
+  {
+    attribute: 'status',
+    type: 'select',
+    icon: 'el-icon-document',
+    values: [
+      {
+        label: 'active',
+        value: 'Active',
+      },
+      {
+        label: 'inactive',
+        value: 'Inactive',
+      },
+    ],
   },
 ]
 
 const TABLE_COLUMNS = [
   {
-    name: 'created',
-    label: 'Date created',
+    name: 'createdAt',
+    label: 'Date Created',
     icon: 'el-icon-document',
     format: 'dateTime',
   },
@@ -48,22 +74,32 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'billingType',
-    label: 'Class',
+    label: 'Billing Cycle',
+    format: 'capital',
   },
   {
-    name: 'prorataAnchor',
-    label: 'Effective Start Date',
-    format: 'dateTime',
+    name: 'anchorOn',
+    label: 'Anchor Date',
+    format: 'dayMonth',
   },
   {
     name: 'endDate',
     label: 'End Date',
-    format: 'dateTime',
+    format: 'date',
   },
   {
     name: 'productCount',
     label: 'Plans',
     width: 80,
+  },
+  {
+    name: 'status',
+    label: 'Status',
+    icon: 'el-icon-document',
+    format: 'capital',
+    component: {
+      is: 'cell-activity',
+    },
   },
 ]
 

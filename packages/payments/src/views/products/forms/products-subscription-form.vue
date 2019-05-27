@@ -44,7 +44,7 @@ export default {
             trigger: 'blur',
           },
         ],
-        anchorDate: [
+        end_on: [
           {
             required: true,
             message: 'This field is required',
@@ -64,19 +64,12 @@ export default {
 
 <template>
   <div :class="$style.root">
-    <div
-      v-if="!edit"
-      :class="$style.desc"
-    >
-      <span>Charges customers on a recurring basis.</span><br>
-      <span>For example, a membership service.</span>
-    </div>
-
     <el-form
       ref="form"
       :model="data"
       :rules="rules"
-      :class="['card-form', $style.form]"
+      label-position="top"
+      :class="['modal-form', $style.form]"
     >
       <el-form-item
         label="Product Name"
@@ -97,66 +90,40 @@ export default {
         />
       </el-form-item>
 
-      <el-form-item
-        label="Effective Start Date"
-        :prop="edit ? '': 'start_on'"
-        :class="{[$style.disabled]: edit}"
-      >
-        <el-date-picker
-          :value="data.start_on"
-          type="datetime"
-          placeholder="DD/MM/YYYY"
-          :editable="false"
-          :disabled="edit"
-          @input="changeValue('start_on', $event)"
-        />
-        <el-tooltip
-          v-if="!edit"
-          placement="right"
+      <div class="united-field">
+        <el-form-item
+          label="End Date"
+          prop="end_on"
         >
-          <div slot="content">
-            <span>
-              <b>Effective Start Date</b><br>
-              Date when the product becomes active. From this date
-              the platform will charge the customers who are assigned
-              the product in the subscription.
-            </span>
-          </div>
-          <i class="el-icon-warning" />
-        </el-tooltip>
-      </el-form-item>
+          <el-date-picker
+            :value="data.end_on"
+            type="datetime"
+            placeholder="DD/MM/YYYY"
+            :editable="false"
+            @input="changeValue('end_on', $event)"
+          />
+        </el-form-item>
 
-      <el-form-item
-        label="End Date"
-      >
-        <el-date-picker
-          :value="data.end_on"
-          type="datetime"
-          placeholder="DD/MM/YYYY"
-          :editable="false"
-          @input="changeValue('end_on', $event)"
-        />
-        <el-tooltip
-          v-if="!edit"
-          placement="right"
+        <el-form-item
+          label="Anchor Date"
+          :prop="edit ? '': 'start_on'"
+          :class="{[$style.disabled]: edit}"
         >
-          <div slot="content">
-            <span>
-              <b>End Date</b><br>
-              Date when the product becomes inactive.
-              The product can no longer be assigned to another customers.
-              Existing customers will continue being charged for the product
-              until the end of their subscription.
-            </span>
-          </div>
-          <i class="el-icon-warning" />
-        </el-tooltip>
-      </el-form-item>
+          <el-date-picker
+            :value="data.start_on"
+            type="datetime"
+            placeholder="DD/MM/YYYY"
+            :editable="false"
+            :disabled="edit"
+            @input="changeValue('start_on', $event)"
+          />
+        </el-form-item>
+      </div>
 
       <el-form-item
         label="Billing Cycle"
         :prop="edit ? '': 'billingCycle'"
-        :class="{[$style.disabled]: edit}"
+        :class="[$style.billing, {[$style.disabled]: edit}]"
       >
         <el-radio-group
           :value="data.billingCycle"
@@ -170,53 +137,6 @@ export default {
             Pro-Rata
           </el-radio>
         </el-radio-group>
-        <el-tooltip
-          v-if="!edit"
-          placement="right"
-        >
-          <div slot="content">
-            <span>
-              <strong>An anniversary billing cycle</strong>
-              is based on the start date of the subscription.
-            </span><br>
-            <span>
-              <strong>A Pro-rata billing cycle</strong>
-              is based on an anchor date - the customer's first bill
-              is prorated from the start date of their subscription to the
-              anchor date.
-            </span>
-          </div>
-          <i class="el-icon-warning" />
-        </el-tooltip>
-      </el-form-item>
-
-      <el-form-item
-        v-if="data.billingCycle === 'pro-rata'"
-        label="Anchor Date"
-        :prop=" edit ? '' : 'anchorDate'"
-        :class="[$style.lastItem, {[$style.disabled]: edit}]"
-      >
-        <el-date-picker
-          :value="data.anchorDate"
-          type="date"
-          placeholder="DD/MM"
-          :editable="false"
-          :disabled="edit"
-          @input="changeValue('anchorDate', $event)"
-        />
-        <el-tooltip
-          v-if="!edit"
-          placement="right"
-        >
-          <div slot="content">
-            <span>
-              <b>Anchor date</b><br>
-              A customer's first bill will be prorated from the
-              start date of their subscription to the anchor date.
-            </span>
-          </div>
-          <i class="el-icon-warning" />
-        </el-tooltip>
       </el-form-item>
     </el-form>
     <products-anchor-dates
@@ -234,11 +154,6 @@ export default {
   flex-direction: column;
 }
 
-.desc {
-  margin-bottom: 2rem;
-  font-size: 1rem;
-}
-
 .lastItem {
   margin-bottom: 1rem;
 }
@@ -246,6 +161,16 @@ export default {
 .disabled {
   label {
     color: #C0C4CC !important;
+  }
+}
+
+.billing {
+  display: flex;
+
+  :global {
+    .el-form-item__content {
+      padding-left: 3rem;
+    }
   }
 }
 

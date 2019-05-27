@@ -33,6 +33,14 @@ export default {
             trigger: 'blur',
           },
         ],
+
+        end_on: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
         price: [
           {
             required: true,
@@ -44,29 +52,6 @@ export default {
     }
   },
   methods: {
-    handleImageSuccess(res, file) {
-      this.changeValue('image', URL.createObjectURL(file.raw) )
-    },
-    beforeImageUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$notify({
-          type: 'warning',
-          title: 'Error',
-          message: 'Avatar picture must be JPG format!',
-        })
-      }
-      if (!isLt2M) {
-        this.$notify({
-          type: 'warning',
-          title: 'Error',
-          message: 'Avatar picture size can not exceed 2MB!',
-        })
-      }
-      return isJPG && isLt2M
-    },
     changeValue(fieldName, newVal) {
       this.$emit('changeValue', { fieldName, newVal })
     },
@@ -76,20 +61,12 @@ export default {
 
 <template>
   <div :class="$style.root">
-    <div
-      v-if="!edit"
-      :class="$style.desc"
-    >
-      <span>A product offered to a customer on a per-order basis.</span><br>
-      <span>For example, tangible single sale items.</span>
-    </div>
-
     <el-form
       ref="form"
       :model="data"
       :rules="rules"
-      label-position="left"
-      class="card-form"
+      label-position="top"
+      class="modal-form"
     >
       <el-form-item
         label="Product Name"
@@ -111,28 +88,33 @@ export default {
         />
       </el-form-item>
 
-      <el-form-item
-        label="Effective Start Date"
-        prop="start_on"
-      >
-        <el-date-picker
-          :value="data.start_on"
-          type="datetime"
-          placeholder="DD/MM/YYYY"
-          :editable="false"
-          @input="changeValue('start_on', $event)"
-        />
-      </el-form-item>
+      <div class="united-field">
+        <el-form-item
+          label="End Date"
+          prop="end_on"
+        >
+          <el-date-picker
+            :value="data.end_on"
+            type="datetime"
+            placeholder="DD/MM/YYYY"
+            :editable="false"
+            @input="changeValue('end_on', $event)"
+          />
+        </el-form-item>
 
-      <el-form-item label="End Date">
-        <el-date-picker
-          :value="data.end_on"
-          type="datetime"
-          placeholder="DD/MM/YYYY"
-          :editable="false"
-          @input="changeValue('end_on', $event)"
-        />
-      </el-form-item>
+        <el-form-item
+          label="Anchor Date"
+          prop="start_on"
+        >
+          <el-date-picker
+            :value="data.start_on"
+            type="datetime"
+            placeholder="DD/MM/YYYY"
+            :editable="false"
+            @input="changeValue('start_on', $event)"
+          />
+        </el-form-item>
+      </div>
 
       <el-form-item
         label="Amount"
@@ -179,32 +161,6 @@ export default {
       </el-form-item>
 
       <el-form-item
-        :value="data.image"
-        label="Image (optional)"
-      >
-        <el-upload
-          :class="$style.imageUploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :show-file-list="false"
-          :on-success="handleImageSuccess"
-          :before-upload="beforeImageUpload"
-        >
-          <img
-            v-if="data.image"
-            :src="data.image"
-          >
-          <el-button
-            v-else
-            slot="trigger"
-            type="primary"
-            plain
-          >
-            Select File
-          </el-button>
-        </el-upload>
-      </el-form-item>
-
-      <el-form-item
         v-if="edit"
         :class="$style.active"
       >
@@ -231,29 +187,9 @@ export default {
   margin-bottom: -1rem;
 }
 
-.desc {
-  margin-bottom: 2rem;
-  font-size: 1rem;
-}
-
-.imageUploader {
-    width: 100%;
-    min-height: 40px;
-    border: 1px solid #DCDFE6;
-    border-radius: 5px;
-
-    div {
-      display: block;
-      text-align: left;
-    }
-
-    button {
-      border-color:#409EFF !important;
-    }
-
-    img {
-      width: 100%;
-  }
+.unitedField {
+  display: flex;
+  justify-content: space-between;
 }
 
 .active {

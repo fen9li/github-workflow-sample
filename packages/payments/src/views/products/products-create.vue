@@ -25,10 +25,8 @@ export default {
           start_on: '',
           end_on: '',
           billingCycle: 'pro-rata',
-          anchorDate: '',
           price: '10.00',
           currency: 'aud',
-          image: '',
         },
       },
     }
@@ -115,13 +113,33 @@ export default {
           label="subscription"
           border
         >
-          Subscription product
+          <div :class="$style.radioWrap">
+            <span :class="$style.radioTitle">
+              Subscription product
+            </span>
+            <span :class="$style.radioText">
+              Charges customers on a <br>
+              recurring basis. For <br>
+              example, a membership <br>
+              service.
+            </span>
+          </div>
         </el-radio>
         <el-radio
           label="single"
           border
         >
-          Single Product
+          <div :class="$style.radioWrap">
+            <span :class="$style.radioTitle">
+              Single Product
+            </span>
+            <span :class="$style.radioText">
+              A product offered to a <br>
+              customer on a per-order <br>
+              basis. For example, <br>
+              tangible single sale items.
+            </span>
+          </div>
         </el-radio>
       </el-radio-group>
     </div>
@@ -157,29 +175,45 @@ export default {
 
 
 .wrapper {
-  max-width: 37rem !important;
+  width: 36rem;
+  max-width: 36rem !important;
 }
 
 .types {
-  width: 30rem;
   margin-bottom: 2rem;
 
   :global {
     .el-radio-group {
       display: flex;
       justify-content: space-between;
-      width: 100%;
     }
     .el-radio {
-      width: 48%;
+      display: flex;
+      width: 47%;
       height: auto;
       padding: 1rem;
       margin: 0;
+      white-space: normal;
     }
     .el-radio__label {
       font-size: 1rem;
-      font-weight: 700;
     }
   }
+}
+
+.radioWrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.radioTitle {
+  color: var(--color-text) !important;
+  // font-size: 1rem;
+}
+
+.radioText {
+  padding-top: .5rem;
+  font-size: .9rem;
+  color: #6A6C70 !important;
 }
 </style>

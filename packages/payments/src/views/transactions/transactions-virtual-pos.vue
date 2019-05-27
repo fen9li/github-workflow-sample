@@ -135,7 +135,7 @@ export default {
           </div>
         </div>
       </el-form-item>
-      <div :class="$style.unitedField">
+      <div class="united-field">
         <el-form-item
           label="Expiry"
           required
@@ -196,20 +196,6 @@ export default {
     }
   }
 }
-.unitedField {
-  display: flex;
-  justify-content: space-between;
-
-  :global {
-    .el-form-item {
-      flex-basis: 47% !important;
-    }
-  }
-}
-
-// .cardNumber {
-//   position: relative;
-// }
 
 .cardLogos {
   position: absolute;

@@ -19,7 +19,7 @@ export default {
               {
                 attribute: 'billingType',
                 comparison: 'eq',
-                value: 'pro-rata',
+                value: 'prorata',
               },
             ],
           },
@@ -40,7 +40,7 @@ export default {
               {
                 attribute: 'billingType',
                 comparison: 'eq',
-                value: 'Anniversary',
+                value: 'anniversary',
               },
             ],
           },
@@ -66,16 +66,26 @@ export default {
 
 <template>
   <div>
+    <div :class="$style.tableTitle">
+      <span :class="$style.title">
+        Pro-Rata Subscriptions
+      </span>
+      <i :class="[$style.icon, 'el-icon-info']" />
+    </div>
     <table-layout
-      title="Pro-Rata Subscriptions"
       table-name="proRataSubs"
       :processor="pro.processor"
       :filters="pro.filters"
       :columns="pro.columns"
       @row-click="onRowClick"
     />
+    <div :class="$style.tableTitle">
+      <span :class="$style.title">
+        Anniversary Subscriptions
+      </span>
+      <i :class="[$style.icon, 'el-icon-info']" />
+    </div>
     <table-layout
-      title="Anniversary Subscriptions"
       table-name="anniversarySubscriptions"
       :processor="anniversary.processor"
       :columns="anniversary.columns"
@@ -84,3 +94,20 @@ export default {
     />
   </div>
 </template>
+
+<style lang="scss" module>
+.tableTitle {
+  padding: 0 0 2rem 3rem;
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.icon {
+  padding-left: 2rem;
+  font-size: 1.6rem;
+  color: var(--color-primary);
+}
+</style>
