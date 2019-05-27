@@ -45,14 +45,6 @@ const router = new Router({
           )),
           props: true,
         },
-        {
-          path: 'roles',
-          name: 'endpoint-roles',
-          component: () => lazy(import(
-            '~/views/roles'
-          )),
-          props: true,
-        },
       ],
     },
     {
@@ -96,6 +88,11 @@ const router = new Router({
           props: true,
         },
       ],
+    },
+    {
+      path: '/auth/roles',
+      name: 'roles',
+      component: () => lazy(import('./views/roles')),
     },
     {
       path: '*',

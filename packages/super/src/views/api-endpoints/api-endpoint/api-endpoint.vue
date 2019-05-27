@@ -34,12 +34,6 @@ export default {
             name: 'endpoint-permissions',
           },
         },
-        {
-          label: 'Roles',
-          route: {
-            name: 'endpoint-roles',
-          },
-        },
       ]
     },
   },

@@ -54,11 +54,32 @@ export default {
 </script>
 
 <template>
+  <main-layout
+    v-if="$route.name === 'roles'"
+    title="Manage roles"
+  >
+    <table-layout
+      :fragments="false"
+      :hider="false"
+      :exporter="false"
+      table-name="RolesList"
+      :processor="processor"
+      :columns="columns"
+      :filters="filters"
+    >
+      <el-button
+        slot="actions"
+        icon="el-icon-plus"
+        circle
+      />
+    </table-layout>
+  </main-layout>
   <table-layout
+    v-else
     :fragments="false"
     :hider="false"
     :exporter="false"
-    table-name="userList"
+    table-name="RolesList"
     :processor="processor"
     :columns="columns"
     :filters="filters"

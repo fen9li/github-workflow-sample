@@ -27,6 +27,10 @@ export default {
               title: 'Users',
               path: '/auth/users',
             },
+            {
+              title: 'Roles',
+              path: '/auth/roles',
+            },
           ],
         },
 
