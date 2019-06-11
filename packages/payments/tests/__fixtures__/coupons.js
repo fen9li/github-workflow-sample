@@ -1,6 +1,7 @@
 module.exports = {
   table: [
     {
+      id: 1,
       dateCreated: '2018-10-15T12:40:31.965Z',
       couponName: '10% Off Monthly',
       couponCode: 'FH9210',
@@ -12,6 +13,7 @@ module.exports = {
       status: 'Active',
     },
     {
+      id: 2,
       dateCreated: '2018-10-20T11:42:31.965Z',
       couponName: '20% Off First Purchase',
       couponCode: 'FH9030',
