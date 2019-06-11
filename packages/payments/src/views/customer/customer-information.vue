@@ -2,8 +2,6 @@
 import appConfig from '~/app.config'
 import MockData from '@tests/__fixtures__/customer'
 import Information from './information/customer-information'
-import Subscriptions from './subscriptions/customer-subscriptions'
-import Products from './products/customer-products'
 import PaymentMethods from './payment-methods/customer-methods'
 
 export default {
@@ -14,8 +12,6 @@ export default {
   },
   components: {
     Information,
-    Subscriptions,
-    Products,
     PaymentMethods,
   },
   props: {
@@ -59,19 +55,10 @@ export default {
         :customer="customer"
       />
     </el-card>
-
-    <subscriptions
-      :class="$style.subscriptions"
-      :customer-id="id"
-    />
-
-    <products :customer="customer" />
   </div>
 </template>
 
 <style lang="scss" module>
-
-
 .subscriptions {
   margin: 1rem 0;
 }

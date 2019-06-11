@@ -66,36 +66,51 @@ export default {
     >
       <el-form
         ref="form"
+        label-position="top"
         :model="subscriptionForm"
         :rules="rules"
-        :class="['card-form', $style.form]"
+        :class="[$style.form]"
       >
         <el-form-item
-          label="Customer Name"
+          label="Customer"
         >
-          <span :class="$style.customerName">
-            {{ subscriptionForm.customerName }}
-          </span>
-        </el-form-item>
-
-        <el-form-item
-          label="Start Date"
-          required
-        >
-          <el-date-picker
-            v-model="subscriptionForm.startDate"
-            type="datetime"
-            placeholder="DD/MM/YYYY"
+          <el-input
+            v-model="subscriptionForm.customerName"
+            :disabled="true"
           />
         </el-form-item>
 
-        <el-form-item label="End Date">
-          <el-date-picker
-            v-model="subscriptionForm.endDate"
-            type="datetime"
-            placeholder="DD/MM/YYYY"
-          />
-        </el-form-item>
+
+        <el-col :span="11">
+          <el-form-item
+            label="Start Date"
+            required
+          >
+            <el-date-picker
+              v-model="subscriptionForm.startDate"
+              type="date"
+              placeholder="Enter Date"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col
+          class="line"
+          :span="2"
+        >
+          &nbsp;
+        </el-col>
+        <el-col :span="11">
+          <el-form-item
+            label="End Date"
+            required
+          >
+            <el-date-picker
+              v-model="subscriptionForm.endDate"
+              type="date"
+              placeholder="Enter Date"
+            />
+          </el-form-item>
+        </el-col>
 
         <el-form-item
           label="Subscription Product"
@@ -153,7 +168,7 @@ export default {
           </el-select>
         </el-form-item>
 
-        <hr class="divider-primary">
+        <hr :class="['divider-primary', $style.divider]">
 
         <payment-form-item
           :selected-method="subscriptionForm.selectedMethod"
@@ -176,8 +191,6 @@ export default {
 </template>
 
 <style lang="scss" module>
-
-
 .customerName {
   font-size: 1rem;
 }
@@ -185,5 +198,9 @@ export default {
 .save {
   display: block;
   margin: 0 auto;
+}
+
+.divider {
+  margin: 2rem 0;
 }
 </style>

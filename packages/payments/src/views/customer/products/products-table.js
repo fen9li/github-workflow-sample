@@ -1,5 +1,14 @@
 const dateFormat = 'DD/MM/YYYY hh:mm A'
 
+const TABLE_FILTERS = [
+  {
+    attribute: 'startDate',
+    label: 'Start Date',
+    icon: 'el-icon-date',
+    type: 'date',
+  },
+]
+
 const TABLE_COLUMNS = [
   {
     name: 'startDate',
@@ -27,4 +36,5 @@ const TABLE_COLUMNS = [
 
 export default {
   columns: TABLE_COLUMNS,
+  filters: TABLE_FILTERS,
 }

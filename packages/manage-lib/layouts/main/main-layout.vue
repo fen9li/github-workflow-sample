@@ -11,6 +11,10 @@ export default {
       type: String,
       default: '',
     },
+    subtitle: {
+      type: String,
+      default: '',
+    },
     tabs: {
       type: Array,
       default: null,
@@ -43,7 +47,12 @@ export default {
       v-if="header"
       :class="$style.header"
     >
-      <div :class="$style.headerTop">
+      <div
+        :class="[
+          $style.headerTop,
+          {[$style.headerSubtitled]: subtitle}
+        ]"
+      >
         <el-button
           v-if="back"
           :class="$style.backButton"
@@ -54,9 +63,25 @@ export default {
         <div>
           <slot name="beforeTitle" />
         </div>
-        <h1 :class="$style.headerTitle">
+
+        <div
+          v-if="subtitle"
+          :class="$style.headerTitles"
+        >
+          <h1 :class="$style.headerTitle">
+            {{ title }}
+          </h1>
+          <h2 :class="$style.headerSubtitle">
+            {{ subtitle }}
+          </h2>
+        </div>
+        <h1
+          v-else
+          :class="$style.headerTitle"
+        >
           {{ title }}
         </h1>
+
         <div style="flex-grow: 1" />
         <div :class="$style.headerSlot">
           <slot name="header" />
@@ -115,6 +140,10 @@ export default {
   flex-wrap: wrap;
 }
 
+.headerSubtitled {
+  margin-bottom: 1rem;
+}
+
 .headerTop {
   position: relative;
   display: flex;
@@ -140,6 +169,18 @@ export default {
 .headerTitle {
   margin: 0;
   font-size: 1.5rem;
+  font-weight: var(--heading-font-weight);
+}
+
+.headerTitles {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: var(--heading-font-weight);
+}
+
+.headerSubtitle {
+  margin: 0.5rem 0 -1.5rem;
+  font-size: 1.125rem;
   font-weight: var(--heading-font-weight);
 }
 

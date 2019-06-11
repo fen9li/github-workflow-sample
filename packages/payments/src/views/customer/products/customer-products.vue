@@ -1,12 +1,14 @@
 <script>
 import ElasticProcessor from '@lib/processors/elastic-processor'
 import tableConfig from './products-table'
-import addProduct from './product-add'
 
 export default {
   name: 'CustomerProducts',
-  components: {
-    addProduct,
+  props: {
+    customerDetails: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
@@ -16,6 +18,7 @@ export default {
         disableQueryString: true,
       }),
       columns: tableConfig.columns,
+      filters: tableConfig.filters,
       modal: {
         add: false,
       },
@@ -33,33 +36,11 @@ export default {
 </script>
 
 <template>
-  <el-card>
-    <el-row
-      slot="header"
-      type="flex"
-      justify="space-between"
-      align="middle"
-    >
-      <span>Products</span>
-      <el-button
-        type="primary"
-        size="small"
-        class="wide-button"
-        @click="modal.add = true"
-      >
-        Add
-      </el-button>
-      <add-product
-        v-if="modal.add"
-        :visible.sync="modal.add"
-      />
-    </el-row>
-
-    <data-table
-      title="Subscriptions"
-      :processor="processor"
-      :columns="columns"
-      @row-click="onRowClick"
-    />
-  </el-card>
+  <table-layout
+    table-name="products"
+    :processor="processor"
+    :filters="filters"
+    :columns="columns"
+    @row-click="onRowClick"
+  />
 </template>

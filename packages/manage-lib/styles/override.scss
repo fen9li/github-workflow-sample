@@ -1,0 +1,16 @@
+// labels in inputs form
+.el-form-item {
+  &__label {
+    padding-bottom: 0.15rem !important;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    color: var(--color-text);
+  }
+}
+
+// dialog
+.el-dialog {
+  &__body {
+    padding: 1.5rem 2.5rem 2.5rem;
+  }
+}

@@ -39,7 +39,6 @@ export default {
         <el-form
           :model="form.card"
           :rules="rules"
-          class="card-form"
         >
           <el-form-item
             label="Card Holder Name"
@@ -93,7 +92,6 @@ export default {
         <el-form
           :model="form.account"
           :rules="rules"
-          class="card-form"
         >
           <el-form-item
             label="Account Name"

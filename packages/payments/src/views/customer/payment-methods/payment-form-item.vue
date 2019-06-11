@@ -105,9 +105,8 @@ export default {
 </template>
 
 <style lang="scss" module>
-
-
 .methodsElem {
+  position: relative;
   margin-top: 0.5rem;
 }
 
@@ -118,7 +117,10 @@ export default {
 }
 
 .newMethod {
-  margin: 0 0 .5rem auto;
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  padding-bottom: 0.4rem;
   transition: none;
 }
 

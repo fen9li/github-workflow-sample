@@ -1,6 +1,5 @@
 <script>
-import ElasticProcessor from '@lib/processors/elastic-processor'
-import tableConfig from './transactions-table'
+import table from './transactions-table'
 
 export default {
   name: 'CustomerTransactions',
@@ -8,28 +7,20 @@ export default {
     title: 'Customer Transactions',
   },
   props: {
-    id: {
-      type: String,
+    customerDetails: {
+      type: Object,
       required: true,
     },
   },
   data() {
     return {
-      processor: new ElasticProcessor({
-        index: 'transactions',
-        component: this,
-        staticQuery: {
-          filters: [
-            {
-              attribute: 'customerId',
-              value: this.id,
-            },
-          ],
-        },
-      }),
-      filters: tableConfig.filters,
-      columns: tableConfig.columns,
+      table: table(this),
     }
+  },
+  computed: {
+    customerId() {
+      return this.customerDetails.id
+    },
   },
   methods: {
     onRowClick(row) {
@@ -45,9 +36,10 @@ export default {
 <template>
   <table-layout
     table-name="customerTransactions"
-    :processor="processor"
-    :filters="filters"
-    :columns="columns"
+    :processor="table.processor"
+    :filters="table.filters"
+    :columns="table.columns"
+    :fragments="false"
     @row-click="onRowClick"
   />
 </template>

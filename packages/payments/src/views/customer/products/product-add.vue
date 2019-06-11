@@ -69,18 +69,20 @@ export default {
         ref="form"
         :model="productForm"
         :rules="rules"
-        :class="['card-form', $style.form]"
+        label-position="top"
+        :class="[$style.form]"
       >
         <el-form-item
-          label="Customer Name"
+          label="Customer"
         >
-          <span :class="$style.customerName">
-            {{ productForm.customerName }}
-          </span>
+          <el-input
+            v-model="productForm.customerName"
+            :disabled="true"
+          />
         </el-form-item>
 
         <el-form-item
-          label="Subscription Product"
+          label="Single Product"
           required
         >
           <el-select
@@ -112,23 +114,24 @@ export default {
             <template #prepend>
               $
             </template>
+            <el-select
+              slot="append"
+              v-model="productForm.currency"
+              :class="$style.amountSelect"
+            >
+              <el-option
+                label="AUD"
+                value="aud"
+              />
+              <el-option
+                label="USD"
+                value="usd"
+              />
+            </el-select>
           </el-input>
-          <el-select
-            v-model="productForm.currency"
-            :class="$style.amountSelect"
-          >
-            <el-option
-              label="AUD"
-              value="aud"
-            />
-            <el-option
-              label="USD"
-              value="usd"
-            />
-          </el-select>
         </el-form-item>
 
-        <hr class="divider-primary">
+        <hr :class="['divider-primary', $style.divider]">
 
         <payment-form-item
           :selected-method="productForm.selectedMethod"
@@ -144,15 +147,13 @@ export default {
         :class="[$style.save, 'wide-button']"
         @click="onSubmit"
       >
-        Pay Now
+        Save
       </el-button>
     </el-dialog>
   </div>
 </template>
 
 <style lang="scss" module>
-
-
 .customerName {
   font-size: 1rem;
 }
@@ -163,26 +164,19 @@ export default {
 }
 
 .amountValue {
-  width: 75%;
-
-  :global(.el-input__inner) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
+  //
 }
 
 .amountSelect {
   width: 6rem;
-
-  :global(.el-input__inner) {
-    border-left: none;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
 }
 
 .save {
   display: block;
   margin: 0 auto;
+}
+
+.divider {
+  margin: 2rem 0;
 }
 </style>

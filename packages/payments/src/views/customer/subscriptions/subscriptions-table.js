@@ -1,3 +1,4 @@
+import ElasticProcessor from '@lib/processors/elastic-processor'
 import CustomerInformationCharge from './customer-charge.vue'
 
 const TABLE_FILTERS = [
@@ -25,6 +26,7 @@ const TABLE_FILTERS = [
   },
   {
     attribute: 'currentInterval',
+    label: 'Frequency',
     type: 'select',
     icon: 'el-icon-document',
     values: [
@@ -53,11 +55,6 @@ const TABLE_FILTERS = [
     type: 'numeric',
     icon: 'el-icon-tickets',
   },
-  // {
-  //   attribute: 'coupon',
-  //   type: 'string',
-  //   icon: 'el-icon-document',
-  // },
   {
     attribute: 'status',
     type: 'select',
@@ -96,19 +93,12 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'productName',
-    label: 'Subscription Product Name',
+    label: 'Product Name',
     icon: 'el-icon-document',
-  },
-  {
-    name: 'currentAmount',
-    label: 'Pricing Plan Amount',
-    icon: 'el-icon-document',
-    format: 'dollar',
-    width: 160,
   },
   {
     name: 'currentInterval',
-    label: 'Pricing Plan Billing Interval',
+    label: 'Frequency',
     icon: 'el-icon-document',
     width: 190,
   },
@@ -123,7 +113,7 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'outstandingBalance',
-    label: 'Balance',
+    label: 'Amount Owing',
     overflowTooltip: false,
     component: (_, __, { row }) => ({
       is: CustomerInformationCharge,
@@ -143,15 +133,24 @@ const TABLE_COLUMNS = [
       is: 'cell-activity',
     },
   },
-  {
-    name: 'couponName',
-    label: 'Coupon',
-    icon: 'el-icon-document',
-    width: 100,
-  },
 ]
 
-export default {
-  filters: TABLE_FILTERS,
-  columns: TABLE_COLUMNS,
+export default function(component) {
+  return {
+    processor: new ElasticProcessor({
+      component,
+      index: 'subscriptions',
+      staticQuery: {
+        filters: [
+          {
+            attribute: 'customerId',
+            comparison: 'eq',
+            value: component.customerId,
+          },
+        ],
+      },
+    }),
+    filters: TABLE_FILTERS,
+    columns: TABLE_COLUMNS,
+  }
 }

@@ -34,23 +34,6 @@ export default {
       align="middle"
     >
       <span>Information</span>
-
-      <el-row type="flex">
-        <el-button
-          type="primary"
-          size="small"
-          icon="el-icon-edit"
-          circle
-          @click="modal.edit = true"
-        />
-        <el-button
-          type="danger"
-          icon="el-icon-delete"
-          size="small"
-          circle
-          @click="modal.delete = true"
-        />
-      </el-row>
     </el-row>
 
     <dl class="datalist">

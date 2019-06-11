@@ -1,3 +1,5 @@
+import ElasticProcessor from '@lib/processors/elastic-processor'
+
 const TABLE_FILTERS = [
   {
     attribute: 'createdAt',
@@ -17,19 +19,8 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'feeAmount',
-    label: 'Fee',
-    type: 'numeric',
-    icon: 'el-icon-document',
-  },
-  {
-    attribute: 'netAmount',
-    label: 'NET',
-    type: 'numeric',
-    icon: 'el-icon-document',
-  },
-  {
     attribute: 'statementDescriptor',
+    label: 'Statement Description',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -61,17 +52,6 @@ const TABLE_FILTERS = [
       },
     ],
   },
-  {
-    attribute: 'completedAt',
-    label: 'Date Finalised',
-    type: 'date',
-    icon: 'el-icon-document',
-  },
-  {
-    attribute: 'paymentSource',
-    type: 'string',
-    icon: 'el-icon-document',
-  },
 ]
 
 const TABLE_COLUMNS = [
@@ -99,29 +79,14 @@ const TABLE_COLUMNS = [
           if (val < 0) {
             return { color: '#fc7168' }
           }
-
           return {}
         },
       },
     },
   },
   {
-    name: 'feeAmount',
-    label: 'Fee',
-    icon: 'el-icon-document',
-    format: 'dollar',
-    width: 100,
-  },
-  {
-    name: 'netAmount',
-    label: 'NET',
-    icon: 'el-icon-document',
-    format: 'dollar',
-    width: 100,
-  },
-  {
     name: 'statementDescriptor',
-    label: 'Statement Descriptor',
+    label: 'Description',
     icon: 'el-icon-document',
   },
   {
@@ -138,61 +103,64 @@ const TABLE_COLUMNS = [
       props: {
         styleObj(val) {
           switch (val) {
-            case 'pending': return { color: '#fbb241' }
-            case 'finalised': return { color: '#29d737' }
-            case 'failed': return { color: '#fc7168' }
-            case 'refunded': return { color: '#fc7168' }
-            default: return {}
+            case 'pending':
+              return { color: '#fbb241' }
+            case 'finalised':
+              return { color: '#29d737' }
+            case 'failed':
+              return { color: '#fc7168' }
+            case 'refunded':
+              return { color: '#fc7168' }
+            default:
+              return {}
           }
         },
         badge(val) {
           switch (val) {
-            case 'pending': return {
-              name: 'el-icon-time',
-              pos: 'left',
-            }
-            case 'finalised': return {
-              name: 'el-icon-check',
-              pos: 'left',
-            }
-            case 'failed': return {
-              name: 'el-icon-close',
-              pos: 'left',
-            }
-            case 'refunded': return {
-              name: 'el-icon-refresh',
-              pos: 'left',
-            }
-            default: return {}
+            case 'pending':
+              return {
+                name: 'el-icon-time',
+                pos: 'left',
+              }
+            case 'finalised':
+              return {
+                name: 'el-icon-check',
+                pos: 'left',
+              }
+            case 'failed':
+              return {
+                name: 'el-icon-close',
+                pos: 'left',
+              }
+            case 'refunded':
+              return {
+                name: 'el-icon-refresh',
+                pos: 'left',
+              }
+            default:
+              return {}
           }
         },
       },
     },
   },
-  {
-    name: 'completedAt',
-    label: 'Date Finalised',
-    icon: 'el-icon-document',
-    format: 'dayMonthYear',
-  },
-  {
-    name: 'paymentSource',
-    label: 'Payment Source',
-    icon: 'el-icon-document',
-  },
-  // {
-  //   name: 'customerId',
-  //   label: 'Customer ID',
-  //   icon: 'el-icon-document',
-  // },
-  // {
-  //   name: 'customerEmailAddress',
-  //   label: 'Customer Email',
-  //   icon: 'el-icon-document',
-  // },
 ]
 
-export default {
-  filters: TABLE_FILTERS,
-  columns: TABLE_COLUMNS,
+export default function(component) {
+  return {
+    processor: new ElasticProcessor({
+      component,
+      index: 'transactions',
+      staticQuery: {
+        filters: [
+          {
+            attribute: 'customerId',
+            value: component.customerId,
+          },
+        ],
+      },
+    }),
+    filters: TABLE_FILTERS,
+    columns: TABLE_COLUMNS,
+  }
 }
