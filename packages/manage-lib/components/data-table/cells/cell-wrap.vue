@@ -98,10 +98,11 @@ export default {
     },
     cellCompProps() {
       const { cell: { row }, attribute, formattedValue, cellData } = this
+      const value = this.sanitizeValue(row[attribute])
       const baseProps = {
         attribute,
         row,
-        value: row[attribute] || '',
+        value,
         formattedValue,
       }
       const { props } = cellData
@@ -116,6 +117,14 @@ export default {
       const { $style, column: { align } } = this
       const result = align === 'right' ? $style.alignRight : align === 'center' ? $style.alignCenter : null
       return result
+    },
+  },
+  methods: {
+    sanitizeValue(value = '') {
+      if (Array.isArray(value)) {
+        return value.toString()
+      }
+      return value
     },
   },
 }

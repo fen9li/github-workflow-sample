@@ -21,7 +21,7 @@ const DEFAULT_CONFIG = {
       alias: _.transform(require('./aliases.config'), (result, value, key) => {
         result[key] = path.resolve(process.cwd(), value)
       }),
-      symlinks: false,
+      symlinks: true,
     },
     name: process.env.VUE_APP_TITLE,
     plugins: [

@@ -1,14 +1,15 @@
-import Static from '@lib/processors/static-processor'
-import tableMock from '@tests/__fixtures__/clients'
+import ApiProcessor from '@lib/processors/api-processor'
 
 const TABLE_FILTERS = [
   {
-    attribute: 'clientName',
+    attribute: 'name',
+    label: 'Client',
     type: 'string',
     icon: 'el-icon-document',
   },
   {
-    attribute: 'lastUpdated',
+    attribute: 'updated_at',
+    label: 'Last updated',
     icon: 'el-icon-date',
     type: 'date',
   },
@@ -16,34 +17,37 @@ const TABLE_FILTERS = [
 
 const TABLE_COLUMNS = [
   {
-    name: 'clientName',
+    name: 'name',
     label: 'Client',
-    type: 'string',
+    sortable: false,
     icon: 'el-icon-document',
   },
   {
-    name: 'feed',
-    label: 'Feed',
-    type: 'string',
+    name: 'feeds',
+    label: 'Feeds',
+    sortable: false,
+    type: 'array',
     icon: 'el-icon-document',
-  },
-  {
-    name: 'lastUpdated',
-    label: 'Last Updated',
     format: {
-      name: 'dateTime',
+      name: 'join',
+      params: ['name'],
     },
+  },
+  {
+    name: 'updated_at',
+    label: 'Last Updated',
+    format: 'dateTime',
+    sortable: false,
   },
 ]
 
 export default function(component) {
   return {
-    processor: new Static({
+    processor: new ApiProcessor({
       component,
-      data: tableMock.table,
+      path: 'catalogues',
     }),
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,
   }
 }
-

@@ -23,7 +23,7 @@ export default {
       this.$router.push({
         name: 'client-details',
         params: {
-          id: 1,
+          id: row.id,
         },
       })
     },
@@ -50,8 +50,8 @@ export default {
       >
         <template slot-scope="scope">
           <img
-            :src="scope.row.clientLogo"
-            :alt="scope.row.clientName"
+            :src="scope.row.logo ? scope.row.logo : null"
+            :alt="scope.row.name"
           >
         </template>
       </el-table-column>

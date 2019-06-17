@@ -12,9 +12,11 @@ const uppercase = v => v? v.toUpperCase() : ''
 const account = v => v ? formatAccount(v) : ''
 const capital = v => capitalize(v)
 const httpStatus = v => Number(v[0]) < 4 ? `${v} OK` : `${v} ERR`
+const getArray = (v, key) => v.map(i => i[key])
 
 export default {
   date: (v, format = 'DD/MM/YYYY') => formatDate(v, format),
+  join: (v, key) => getArray(v, key).join(', '),
   dateTime,
   dollar,
   uppercase,
