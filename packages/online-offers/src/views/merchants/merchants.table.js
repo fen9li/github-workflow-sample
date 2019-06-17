@@ -1,5 +1,4 @@
 import ApiProcessor from '@lib/processors/api-processor'
-import cellToggle from '~/components/cells/cell-toggle.vue'
 import cellRoute from '~/components/cells/cell-route.vue'
 
 const TABLE_FILTERS = [
@@ -9,12 +8,12 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
     values: [
       {
-        label: 'Active',
-        value: 'active',
+        label: 'Enabled',
+        value: true,
       },
       {
-        label: 'Inactive',
-        value: 'inactive',
+        label: 'Disabled',
+        value: false,
       },
     ],
   },
@@ -43,19 +42,19 @@ const TABLE_FILTERS = [
 
 const TABLE_COLUMNS = [
   {
-    name: 'status',
+    name: 'enabled',
     icon: 'el-icon-document',
     component: {
-      is: cellToggle,
+      is: 'cell-toggle',
     },
   },
   {
-    name: 'merchantName',
+    name: 'name',
     label: 'Merchant',
     icon: 'el-icon-document',
   },
   {
-    name: 'merchantOffers',
+    name: 'total_offers',
     label: 'Offers',
     icon: 'el-icon-document',
   },
@@ -64,7 +63,8 @@ const TABLE_COLUMNS = [
     icon: 'el-icon-document',
   },
   {
-    name: 'lastUpdated',
+    name: 'updated_at',
+    label: 'Last Updated',
     icon: 'el-icon-document',
     format: 'dateTime',
   },

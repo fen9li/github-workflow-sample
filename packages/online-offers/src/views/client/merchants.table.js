@@ -1,7 +1,7 @@
 // import Elastic from '@lib/processors/elastic-processor'
 import Static from '@lib/processors/static-processor'
 import tableMock from '@tests/__fixtures__/merchants'
-import cellToggle from '~/components/cells/cell-toggle'
+// import cellToggle from '~/components/cells/cell-toggle'
 
 const TABLE_FILTERS = [
   {
@@ -47,7 +47,7 @@ const TABLE_COLUMNS = [
     name: 'status',
     icon: 'el-icon-document',
     component: {
-      is: cellToggle,
+      is: 'cell-toggle',
     },
   },
   {

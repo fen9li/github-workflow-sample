@@ -10,17 +10,12 @@ export default {
     menu() {
       return [
         {
-          title: 'Dashboard',
-          path: '/',
-          icon: 'menu',
-        },
-        {
           title: 'Clients',
           path: '/clients',
           icon: 'user',
         },
         {
-          title: 'Merchants',
+          title: 'Global Merchants',
           path: '/merchants',
           icon: 'goods',
         },

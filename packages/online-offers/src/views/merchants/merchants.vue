@@ -26,7 +26,7 @@ export default {
 </script>
 
 <template>
-  <main-layout title="Merchants">
+  <main-layout title="Global Merchants">
     <table-layout
       table-name="merchants"
       :processor="table.processor"

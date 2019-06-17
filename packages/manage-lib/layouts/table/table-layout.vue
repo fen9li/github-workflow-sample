@@ -63,7 +63,10 @@ export default {
       v-if="tableControls"
       :class="$style.subheader"
     >
-      <div :class="$style.actions">
+      <div
+        v-if="$slots.actions"
+        :class="$style.actions"
+      >
         <slot name="actions" />
       </div>
       <div :class="$style.filter">
@@ -168,7 +171,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   height: 3.375rem;
-  padding-right: 1rem;
+  margin-right: 1rem;
 }
 
 </style>

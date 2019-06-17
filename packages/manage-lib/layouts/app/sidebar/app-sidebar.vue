@@ -99,6 +99,10 @@ export default {
     font-size: 1rem;
   }
 
+  .el-menu-item.is-active {
+    background-color: rgba(255,255,255,.1);
+  }
+
   .el-submenu {
 
     &__title {
