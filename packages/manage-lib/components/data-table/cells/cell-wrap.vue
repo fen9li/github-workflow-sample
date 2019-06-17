@@ -6,7 +6,7 @@ import CellButton from './cell-button'
 import CellActivity from './cell-activity'
 import CellHttpStatus from './cell-http-status'
 import CellUserAvatar from './cell-user-avatar'
-
+import CellToggle from './cell-toggle'
 
 export default {
   name: 'CellWrap',
@@ -17,6 +17,7 @@ export default {
     CellActivity,
     CellHttpStatus,
     CellUserAvatar,
+    CellToggle,
   },
   props: {
     attribute: {
