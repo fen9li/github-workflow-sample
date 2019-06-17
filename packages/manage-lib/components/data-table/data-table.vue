@@ -24,7 +24,7 @@ export default {
     },
     summaryMethod: {
       type: Function,
-      default: () => {},
+      default: () => [],
     },
   },
   data() {
@@ -70,6 +70,9 @@ export default {
     },
     showHeader() {
       return Boolean(get(this.processor, 'data.length', false))
+    },
+    showSummary() {
+      return get(this.summaryMethod(), 'length', 0) > 0
     },
   },
   watch: {
@@ -140,7 +143,7 @@ export default {
         !showHeader && $style.headerHidden,
       ]"
       :summary-method="summaryMethod"
-      show-summary
+      :show-summary="showSummary"
       @row-click="onRowClick"
     >
       <el-table-column

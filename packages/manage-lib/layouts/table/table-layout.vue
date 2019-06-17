@@ -42,10 +42,6 @@ export default {
       type: Boolean,
       default: true,
     },
-    summaryMethod: {
-      type: Function,
-      default: () => {},
-    },
   },
 }
 </script>
@@ -101,7 +97,7 @@ export default {
       <data-table
         :columns="$attrs.columns"
         :processor="$attrs.processor"
-        :summary-method="summaryMethod"
+        :summary-method="$attrs.summaryMethod"
         v-on="$listeners"
       >
         <slot slot="columns" />
