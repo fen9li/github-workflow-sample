@@ -1,4 +1,5 @@
 <script>
+import get from 'lodash/get'
 import formatters from './formatters'
 import CellDefault from './cell-default'
 import CellLink from './cell-link'
@@ -7,7 +8,6 @@ import CellActivity from './cell-activity'
 import CellHttpStatus from './cell-http-status'
 import CellUserAvatar from './cell-user-avatar'
 import CellToggle from './cell-toggle'
-import get from 'lodash/get'
 
 export default {
   name: 'CellWrap',
@@ -107,7 +107,7 @@ export default {
     },
     cellCompProps() {
       const { cell: { row }, attribute, formattedValue, cellData } = this
-      const value = this.sanitizeValue(row[attribute])
+      const value = this.sanitizeValue(get(row, attribute))
       const baseProps = {
         attribute,
         row,

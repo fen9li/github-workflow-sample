@@ -143,14 +143,13 @@ export default class DataProcessor {
 
     try {
       const { data, total } = await this.sendRequest(query)
-
       this.data = data
       this.total = total
     } catch (error) {
       console.error('Error while requesting data', error)
+    } finally {
+      this.loading = false
     }
-
-    this.loading = false
   }
 
   async getAllData() {

@@ -1,5 +1,3 @@
-import ApiProcessor from '@lib/processors/api-processor'
-
 const TABLE_FILTERS = [
   {
     attribute: 'update',
@@ -29,7 +27,7 @@ const TABLE_FILTERS = [
     ],
   },
   {
-    attribute: 'merchant',
+    attribute: 'merchant.name',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -70,7 +68,7 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'merchant',
+    name: 'merchant.name',
     icon: 'el-icon-document',
   },
   {
@@ -85,14 +83,8 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default function(component) {
-  return {
-    processor: new ApiProcessor({
-      component,
-      path: 'feedmerchants',
-      merchantFeed: component.$route.params.slug,
-    }),
-    filters: TABLE_FILTERS,
-    columns: TABLE_COLUMNS,
-  }
+export default {
+  filters: TABLE_FILTERS,
+  columns: TABLE_COLUMNS,
+  processor: null,
 }

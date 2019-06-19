@@ -14,5 +14,8 @@ Vue.use(ManageLib, {
 new Vue({
   router,
   store,
+  created() {
+    this.$store.dispatch('feeds/getFeeds')
+  },
   render: h => h(App),
 }).$mount('#app')

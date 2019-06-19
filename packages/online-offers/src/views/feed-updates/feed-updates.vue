@@ -1,6 +1,7 @@
 <script>
 import table from './feed-updates.table.js'
 import merchantUpdateModal from '../merchant-update'
+import ApiProcessor from '@lib/processors/api-processor'
 
 export default {
   name: 'FeedUpdates',
@@ -12,7 +13,7 @@ export default {
   },
   data() {
     return {
-      table: table(this),
+      table,
       activeItemId: null,
       modal: {
         merchantUpdate: false,
@@ -24,10 +25,21 @@ export default {
       return this.$route.params.slug
     },
   },
+  watch: {
+    '$route'() {
+      this.getFeeds()
+    },
+  },
   created() {
-    // this.table.processor.setFeedMerchantFilter(this.slug)
+    this.getFeeds()
   },
   methods: {
+    getFeeds() {
+      this.table.processor = new ApiProcessor({
+        component: this,
+        path: `feedmerchants?filter[feeds]=${this.slug}`,
+      })
+    },
     onRowClick(row) {
       if (row.update === 'Merchant update') {
         this.activeItemId = row.id || 'fakeId'
@@ -39,7 +51,10 @@ export default {
 </script>
 
 <template>
-  <main-layout title="Feed Updates">
+  <main-layout
+    v-if="table.processor"
+    title="Feed Updates"
+  >
     <table-layout
       table-name="feed-updates"
       :processor="table.processor"
