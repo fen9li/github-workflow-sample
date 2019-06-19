@@ -7,7 +7,7 @@ const createEmptyQuery = () => {
     filters: [],
     sort: {},
     page: 1,
-    pageSize: 20,
+    pageSize: 15,
     hide: [],
   }
 }

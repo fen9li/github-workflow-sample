@@ -107,7 +107,7 @@ export default {
       })
     },
     onSortClick(e, column) {
-      if (!column.columnKey) {
+      if (!column.sortable) {
         return
       }
 
