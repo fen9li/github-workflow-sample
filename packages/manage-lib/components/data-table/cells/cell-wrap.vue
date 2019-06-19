@@ -7,6 +7,7 @@ import CellActivity from './cell-activity'
 import CellHttpStatus from './cell-http-status'
 import CellUserAvatar from './cell-user-avatar'
 import CellToggle from './cell-toggle'
+import get from 'lodash/get'
 
 export default {
   name: 'CellWrap',
@@ -36,7 +37,7 @@ export default {
   computed: {
     cellData() {
       const { attribute, cell, column } = this
-      const value = cell.row[attribute]
+      const value = get(cell.row, attribute)
       const { component } = column
 
       if (typeof component === 'function') {
@@ -49,7 +50,7 @@ export default {
     },
     formattedValue() {
       const { attribute, cell, column } = this
-      const value = cell.row[attribute]
+      const value = get(cell.row, attribute)
 
       if (!column.hasOwnProperty('format')) {
         return value || ''
@@ -79,7 +80,14 @@ export default {
 
         if (formatter) {
           // eslint-disable-next-line
-          return formatter.apply(null, params)
+          let formatted = formatter.apply(null, params)
+
+          const propsFormatter = get(this.cellData, 'props.format')
+
+          if (propsFormatter) {
+            return propsFormatter(formatted, this.cell.row)
+          }
+          return formatted
         } else {
           throw Error(`There is no such predefined formatter: ${format}`)
         }
@@ -125,7 +133,7 @@ export default {
       if (Array.isArray(value)) {
         return value.toString()
       }
-      return value
+      return value || ''
     },
   },
 }

@@ -30,6 +30,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    format: {
+      type: Function,
+      default: () => ({}),
+    },
   },
   computed: {
     computedStyle() {

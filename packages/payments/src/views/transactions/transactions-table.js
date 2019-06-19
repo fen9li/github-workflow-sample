@@ -24,12 +24,14 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'firstName',
+    attribute: 'customerFirstName',
+    label: 'First Name',
     type: 'string',
     icon: 'el-icon-document',
   },
   {
-    attribute: 'lastName',
+    attribute: 'customerLastName',
+    label: 'Last Name',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -89,7 +91,7 @@ const TABLE_COLUMNS = [
     component: {
       props: {
         styleObj(val) {
-          if (val === 'Refund') {
+          if (val === 'refund') {
             return { color: '#fc7168' }
           }
 
@@ -99,19 +101,22 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'amount',
+    name: 'amount.total',
     label: 'Amount',
     icon: 'el-icon-document',
     format: 'dollar',
     width: 120,
     component: {
       props: {
-        styleObj(val) {
-          if (val < 0) {
+        styleObj(val, row) {
+          if (val < 0 || row.type === 'refund') {
             return { color: '#fc7168' }
           }
 
           return {}
+        },
+        format(value, row) {
+          return row.type === 'refund' ? `(${value})` : value
         },
       },
     },
@@ -123,7 +128,8 @@ const TABLE_COLUMNS = [
     width: 120,
   },
   {
-    name: 'firstName',
+    name: 'customerFirstName',
+    label: 'First Name',
     icon: 'el-icon-document',
     width: 120,
     component: {
@@ -133,7 +139,8 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'lastName',
+    name: 'customerLastName',
+    label: 'Last Name',
     icon: 'el-icon-document',
     width: 120,
     component: {
@@ -152,7 +159,7 @@ const TABLE_COLUMNS = [
     name: 'orderId',
     label: 'Order ID',
     icon: 'el-icon-document',
-    width: 200,
+    width: 120,
   },
   {
     name: 'status',
@@ -165,7 +172,7 @@ const TABLE_COLUMNS = [
         styleObj(val) {
           switch (val) {
             case 'pending': return { color: '#fbb241' }
-            case 'settled': return { color: '#29d737' }
+            case 'completed': return { color: '#29d737' }
             case 'failed': return { color: '#fc7168' }
             case 'refunded': return { color: '#fc7168' }
             default: return {}
@@ -177,7 +184,7 @@ const TABLE_COLUMNS = [
               name: 'el-icon-time',
               pos: 'left',
             }
-            case 'settled': return {
+            case 'completed': return {
               name: 'el-icon-check',
               pos: 'left',
             }
