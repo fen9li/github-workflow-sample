@@ -51,6 +51,13 @@ export default {
             trigger: 'blur',
           },
         ],
+        start_on: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
       },
     }
   },
@@ -102,6 +109,7 @@ export default {
         <el-input
           :value="data.id"
           :class="$style.tooltipField"
+          :disabled="edit"
           @input="changeValue('id', $event)"
         />
         <el-tooltip
@@ -139,12 +147,16 @@ export default {
       </el-form-item>
 
       <div class="united-field">
-        <el-form-item label="Start Date">
+        <el-form-item
+          label="Start Date"
+          :prop="data.billing_type === 'anniversary' && !edit ? 'start_on' : ''"
+        >
           <el-date-picker
             :value="data.start_on"
             type="datetime"
             placeholder="Enter Date"
             :editable="false"
+            :disabled="edit"
             @input="changeValue('start_on', $event)"
           />
         </el-form-item>

@@ -1,7 +1,6 @@
 <script>
 import ProductsSubscriptionForm from
   '../products/forms/products-subscription-form.vue'
-import cloneDeep from 'lodash/cloneDeep'
 
 export default {
   name: 'ProductSubscriptionEdit',
@@ -18,31 +17,44 @@ export default {
   data() {
     return {
       formData: {
-        productName: '',
-        productCode: '',
-        effectiveStartDate: '',
-        endDate: '',
-        billingCycle: 'pro-rata',
-        anchorDate: '',
+        name: '',
+        billing_type: '',
+        id: '',
+        start_on: '',
       },
     }
   },
-  mounted() {
-    this.formData = cloneDeep(this.currentProduct)
+  watch: {
+    currentProduct() {
+      this.formatData()
+    },
+  },
+  created() {
+    this.formatData()
   },
   methods: {
     updateDetailsValue({ fieldName, newVal }) {
       this.formData[fieldName] = newVal
     },
-    onSubmit() {
+    async onSubmit() {
       if (!this.validateAll().some(item => item === false)) {
-        this.$notify({
-          type: 'success',
-          title: 'Success',
-          message: 'Changes saved successfully.',
-        })
+        const [error, response] = await this.$api.put(`/products/${this.currentProduct.id}`, { name: this.formData.name })
+        if (response) {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: 'Changes saved successfully.',
+          })
 
-        this.$emit('update:visible', false)
+          this.$emit('update:visible', false)
+          this.$emit('edited')
+        } else if (error) {
+          this.$notify({
+            type: 'error',
+            title: 'Error',
+            message: error.message,
+          })
+        }
       }
     },
     validateAll() {
@@ -51,6 +63,14 @@ export default {
         result.push(valid)
       })
       return result
+    },
+    formatData() {
+      // Formatting temporary while API subscription product works only with groups
+      const { formData, currentProduct } = this
+      formData.name = currentProduct.name
+      formData.billing_type = currentProduct.group.billing_type
+      formData.id = currentProduct.id
+      formData.start_on = currentProduct.start_on
     },
   },
 }

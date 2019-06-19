@@ -158,8 +158,8 @@
     display: flex;
     justify-content: space-between;
 
-    .el-form-item {
-      flex-basis: 47% !important;
+    > .el-form-item {
+      width: 47% !important;
     }
   }
 }

@@ -7,13 +7,20 @@ export default {
     ProductsPricingForm,
   },
   inheritAttrs: false,
+  props: {
+    productId: {
+      type: [String, Number],
+      required: true,
+    },
+  },
   data() {
     return {
       planDetails: {
         name: '',
-        billingInterval: '',
-        startDate: '',
-        amount: '10.00',
+        id: '',
+        frequency: '',
+        start_on: '',
+        amount: '',
         currency: 'aud',
       },
     }
@@ -22,9 +29,18 @@ export default {
     updateValue({ fieldName, newVal }) {
       this.planDetails[fieldName] = newVal
     },
-    savePlan() {
+    validateAll() {
+      const result = []
       this.$refs.addPlanForm.$children[0].validate( valid => {
-        if (valid) {
+        result.push(valid)
+      })
+      return result
+    },
+    async savePlan() {
+      if (!this.validateAll().some(item => item === false)) {
+        const [error, response] = await this.$api.post(`/products/${this.productId}/plans`, this.planDetails)
+
+        if (response) {
           this.$notify({
             type: 'success',
             title: 'Success',
@@ -32,8 +48,15 @@ export default {
           })
 
           this.$emit('update:visible', false)
+        } else if (error) {
+          const firstError = error.violations[Object.keys(error.violations)[0]][0]
+          this.$notify({
+            type: 'error',
+            title: 'Error',
+            message: firstError,
+          })
         }
-      })
+      }
     },
   },
 }
@@ -64,8 +87,6 @@ export default {
 </template>
 
 <style lang="scss" module>
-
-
 .save {
   display: flex;
   justify-content: center;
