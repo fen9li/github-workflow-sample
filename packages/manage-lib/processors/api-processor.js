@@ -10,7 +10,7 @@ export const API = axios.create({
 
 class ApiProcessor extends DataProcessor {
   constructor(params = {}) {
-    const { path } = params
+    const { path, merchantFeed } = params
     super(params)
 
     if (
@@ -21,6 +21,7 @@ class ApiProcessor extends DataProcessor {
     }
 
     this.path = path
+    this.merchantFeed = merchantFeed
 
     this.init()
   }
@@ -28,14 +29,20 @@ class ApiProcessor extends DataProcessor {
   sendRequest(query) {
     const { page, pageSize } = query
 
+    const params = {
+      page,
+      perPage: pageSize,
+    }
+
+    if (this.merchantFeed) {
+      params['filters[feeds]'] = this.merchantFeed
+    }
+
     return API
       .get(
         this.path,
         {
-          params: {
-            page,
-            perPage: pageSize,
-          },
+          params,
         }
       )
       .then(({ data }) => {

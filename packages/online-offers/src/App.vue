@@ -1,12 +1,34 @@
 <script>
 import { mapGetters } from 'vuex'
+import get from 'lodash/get'
+import axios from 'axios' // Just as idea. Better to move request somewhere
+
+export const API = axios.create({
+  baseURL: process.env.VUE_APP_API_URL,
+  auth: {
+    username: process.env.VUE_APP_API_AUTH,
+  },
+})
 
 export default {
   name: 'SuperApp',
+  data() {
+    return {
+      feedsData: [],
+    }
+  },
   computed: {
     ...mapGetters('auth', [
       'loggedIn',
     ]),
+    feeds() {
+      return get(this.feedsData, 'data.items', []).map(item => {
+        return {
+          title: item.name,
+          path: `/feed-updates/${item.slug}`,
+        }
+      })
+    },
     menu() {
       return [
         {
@@ -23,6 +45,7 @@ export default {
           title: 'Feed Updates',
           path: '/feed-updates',
           icon: 'refresh-right',
+          children: this.feeds,
         },
         {
           title: 'Feed Status',
@@ -31,6 +54,9 @@ export default {
         },
       ]
     },
+  },
+  async created() {
+    this.feedsData = await API.get('/feeds')
   },
 }
 </script>

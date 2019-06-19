@@ -19,6 +19,14 @@ export default {
       },
     }
   },
+  computed: {
+    slug() {
+      return this.$route.params.slug
+    },
+  },
+  created() {
+    // this.table.processor.setFeedMerchantFilter(this.slug)
+  },
   methods: {
     onRowClick(row) {
       if (row.update === 'Merchant update') {
@@ -39,7 +47,6 @@ export default {
       :columns="table.columns"
       :fragments="false"
       :hider="false"
-      quantity
       @row-click="onRowClick"
     />
     <merchant-update-modal

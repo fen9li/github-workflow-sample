@@ -46,10 +46,16 @@ const router = new Router({
       component: () => lazy(import('./views/merchant-offer')),
       props: true,
     },
+    // {
+    //   path: '/feed-updates',
+    //   name: 'feed-updates',
+    //   component: () => lazy(import('./views/feed-updates')),
+    // },
     {
-      path: '/feed-updates',
+      path: '/feed-updates/:slug',
       name: 'feed-updates',
       component: () => lazy(import('./views/feed-updates')),
+      props: true,
     },
     {
       path: '/feed-status',

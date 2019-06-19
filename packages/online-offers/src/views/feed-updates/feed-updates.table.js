@@ -1,5 +1,4 @@
-import StaticProcessor from '@lib/processors/static-processor'
-import tableMock from '@tests/__fixtures__/feed-updates'
+import ApiProcessor from '@lib/processors/api-processor'
 
 const TABLE_FILTERS = [
   {
@@ -75,26 +74,23 @@ const TABLE_COLUMNS = [
     icon: 'el-icon-document',
   },
   {
-    name: 'feed',
-    icon: 'el-icon-document',
-  },
-  {
     name: 'created_at',
     label: 'Date created',
     icon: 'el-icon-date',
     format: 'date',
   },
+  {
+    name: 'feed',
+    icon: 'el-icon-document',
+  },
 ]
 
 export default function(component) {
   return {
-    // processor: new Elastic({
-    //   component,
-    //   index: 'merchants',
-    // }),
-    processor: new StaticProcessor({
+    processor: new ApiProcessor({
       component,
-      data: tableMock.table,
+      path: 'feedmerchants',
+      merchantFeed: component.$route.params.slug,
     }),
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,
