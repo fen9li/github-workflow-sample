@@ -13,6 +13,8 @@ const account = v => v ? formatAccount(v) : ''
 const capital = v => capitalize(v)
 const httpStatus = v => Number(v[0]) < 4 ? `${v} OK` : `${v} ERR`
 const getArray = (v, key) => v.map(i => i[key])
+const dayMonthShort = v => v ? formatDate(v, 'DD/MMM') : ''
+
 
 export default {
   date: (v, format = 'DD/MM/YYYY') => formatDate(v, format),
@@ -25,4 +27,5 @@ export default {
   dayMonthYear,
   capital,
   httpStatus,
+  dayMonthShort,
 }

@@ -1,8 +1,6 @@
 <script>
 import tableConfig from './products-anchor-dates-table.js'
-import createProductAnchorMock from
-  '@tests/__fixtures__/create-product-anchor-dates'
-import StaticProcessor from '@lib/processors/static-processor'
+import ElasticProcessor from '@lib/processors/elastic-processor'
 
 export default {
   name: 'ProductsAnchorDates',
@@ -11,9 +9,9 @@ export default {
       dialogVisible: false,
       activeNames: [1],
       columns: tableConfig.columns,
-      processor: new StaticProcessor({
+      processor: new ElasticProcessor({
         component: this,
-        data: createProductAnchorMock.table,
+        index: 'subscription-product-groups',
       }),
     }
   },
@@ -26,17 +24,9 @@ export default {
     class="form-collapse"
   >
     <el-collapse-item
-      title="View Your Product Anchor Dates"
+      title="View Product Anchor Dates"
       name="1"
     >
-      <div :class="$style.anchorDates">
-        <div :class="$style.subheader">
-          <span>
-            Products with same Billing Cycle and Anchor Date
-            <b>allow customers to be switched between products</b>
-          </span>
-        </div>
-      </div>
       <data-table
         :columns="columns"
         :processor="processor"
@@ -44,18 +34,3 @@ export default {
     </el-collapse-item>
   </el-collapse>
 </template>
-
-<style lang="scss" module>
-
-
-.anchorDates {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.subheader {
-  margin-bottom: 1rem;
-  font-size: initial;
-}
-</style>

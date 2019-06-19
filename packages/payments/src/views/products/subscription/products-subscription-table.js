@@ -80,7 +80,7 @@ const TABLE_COLUMNS = [
   {
     name: 'anchorOn',
     label: 'Anchor Date',
-    format: 'dayMonth',
+    format: 'dayMonthShort',
   },
   {
     name: 'endDate',
@@ -90,7 +90,6 @@ const TABLE_COLUMNS = [
   {
     name: 'productCount',
     label: 'Plans',
-    width: 80,
   },
   {
     name: 'status',

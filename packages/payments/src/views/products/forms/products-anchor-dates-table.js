@@ -1,18 +1,19 @@
 const TABLE_COLUMNS = [
   {
-    name: 'code',
+    name: 'id',
+    label: 'Code',
     icon: 'el-icon-document',
-    width: 90,
+    width: 130,
   },
   {
-    name: 'productName',
+    name: 'name',
     icon: 'el-icon-document',
-    width: 250,
   },
   {
-    name: 'anchorDate',
+    name: 'anchorOn',
     icon: 'el-icon-document',
     width: 90,
+    format: 'dayMonthShort',
   },
 ]
 

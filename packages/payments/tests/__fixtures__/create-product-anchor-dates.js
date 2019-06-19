@@ -3,17 +3,17 @@ module.exports = {
     {
       code: 'HD876',
       productName: 'Earning less than $35.000 p.a. *',
-      anchorDate: '30/05',
+      anchorDate: '05/16',
     },
     {
       code: 'JW846',
       productName: 'Earning less than $25.000 p.a. *',
-      anchorDate: '21/05',
+      anchorDate: '05/21',
     },
     {
       code: 'HD876',
       productName: 'Another kind of product',
-      anchorDate: '31/01',
+      anchorDate: '01/12',
     },
     {
       code: 'HA488',
@@ -23,7 +23,7 @@ module.exports = {
     {
       code: 'II999',
       productName: 'Nothing here',
-      anchorDate: '30/05',
+      anchorDate: '08/20',
     },
   ],
 }

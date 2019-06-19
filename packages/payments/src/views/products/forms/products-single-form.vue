@@ -26,6 +26,13 @@ export default {
             trigger: 'blur',
           },
         ],
+        id: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
         start_on: [
           {
             required: true,
@@ -81,37 +88,35 @@ export default {
 
       <el-form-item
         label="Product Code"
+        prop="id"
       >
         <el-input
-          :value="data.code"
-          @input="changeValue('code', $event)"
+          :value="data.id"
+          @input="changeValue('id', $event)"
         />
       </el-form-item>
 
       <div class="united-field">
         <el-form-item
-          label="End Date"
-          prop="end_on"
-        >
-          <el-date-picker
-            :value="data.end_on"
-            type="datetime"
-            placeholder="DD/MM/YYYY"
-            :editable="false"
-            @input="changeValue('end_on', $event)"
-          />
-        </el-form-item>
-
-        <el-form-item
-          label="Anchor Date"
+          label="Effective Start Date"
           prop="start_on"
         >
           <el-date-picker
             :value="data.start_on"
             type="datetime"
-            placeholder="DD/MM/YYYY"
+            placeholder="Enter Date"
             :editable="false"
             @input="changeValue('start_on', $event)"
+          />
+        </el-form-item>
+
+        <el-form-item label="End Date">
+          <el-date-picker
+            :value="data.end_on"
+            type="datetime"
+            placeholder="Enter Date"
+            :editable="false"
+            @input="changeValue('end_on', $event)"
           />
         </el-form-item>
       </div>
@@ -146,6 +151,7 @@ export default {
           </el-form-item>
           <el-select
             :value="data.currency"
+            disabled
             @input="changeValue('currency', $event)"
           >
             <el-option

@@ -30,21 +30,21 @@ export default {
             trigger: 'blur',
           },
         ],
-        start_on: [
+        id: [
           {
             required: true,
             message: 'This field is required',
             trigger: 'blur',
           },
         ],
-        billingCycle: [
+        billing_type: [
           {
             required: true,
             message: 'This field is required',
             trigger: 'blur',
           },
         ],
-        end_on: [
+        anchor_on: [
           {
             required: true,
             message: 'This field is required',
@@ -77,70 +77,110 @@ export default {
       >
         <el-input
           :value="data.name"
+          :class="$style.tooltipField"
           @input="changeValue('name', $event)"
         />
+        <el-tooltip
+          placement="right"
+          :class="$style.tooltip"
+        >
+          <div slot="content">
+            <span>
+              <b>Anchor date</b><br>
+              A customer's first bill will be prorated from the
+              start date of their subscription to the anchor date.
+            </span>
+          </div>
+          <i class="el-icon-warning" />
+        </el-tooltip>
       </el-form-item>
 
       <el-form-item
         label="Product Code"
+        prop="id"
       >
         <el-input
-          :value="data.code"
-          @input="changeValue('code', $event)"
+          :value="data.id"
+          :class="$style.tooltipField"
+          @input="changeValue('id', $event)"
         />
+        <el-tooltip
+          placement="right"
+          :class="$style.tooltip"
+        >
+          <div slot="content">
+            <span>
+              <b>Anchor date</b><br>
+              A customer's first bill will be prorated from the
+              start date of their subscription to the anchor date.
+            </span>
+          </div>
+          <i class="el-icon-warning" />
+        </el-tooltip>
       </el-form-item>
-
-      <div class="united-field">
-        <el-form-item
-          label="End Date"
-          prop="end_on"
-        >
-          <el-date-picker
-            :value="data.end_on"
-            type="datetime"
-            placeholder="DD/MM/YYYY"
-            :editable="false"
-            @input="changeValue('end_on', $event)"
-          />
-        </el-form-item>
-
-        <el-form-item
-          label="Anchor Date"
-          :prop="edit ? '': 'start_on'"
-          :class="{[$style.disabled]: edit}"
-        >
-          <el-date-picker
-            :value="data.start_on"
-            type="datetime"
-            placeholder="DD/MM/YYYY"
-            :editable="false"
-            :disabled="edit"
-            @input="changeValue('start_on', $event)"
-          />
-        </el-form-item>
-      </div>
 
       <el-form-item
         label="Billing Cycle"
-        :prop="edit ? '': 'billingCycle'"
+        :prop="edit ? '': 'billing_type'"
         :class="[$style.billing, {[$style.disabled]: edit}]"
       >
         <el-radio-group
-          :value="data.billingCycle"
+          :value="data.billing_type"
           :disabled="edit"
-          @input="changeValue('billingCycle', $event)"
+          @input="changeValue('billing_type', $event)"
         >
           <el-radio label="anniversary">
             Anniversary
           </el-radio>
-          <el-radio label="pro-rata">
-            Pro-Rata
+          <el-radio label="prorata">
+            Pro rata
           </el-radio>
         </el-radio-group>
       </el-form-item>
+
+      <div class="united-field">
+        <el-form-item label="Start Date">
+          <el-date-picker
+            :value="data.start_on"
+            type="datetime"
+            placeholder="Enter Date"
+            :editable="false"
+            @input="changeValue('start_on', $event)"
+          />
+        </el-form-item>
+
+        <el-form-item
+          v-if="data.billing_type === 'prorata'"
+          label="Anchor Date"
+          :prop="edit ? '': 'anchor_on'"
+          :class="{[$style.disabled]: edit}"
+        >
+          <el-date-picker
+            :value="data.anchor_on"
+            type="datetime"
+            placeholder="Enter Date"
+            :editable="false"
+            :disabled="edit"
+            @input="changeValue('anchor_on', $event)"
+          />
+          <el-tooltip
+            placement="right"
+            :class="$style.tooltip"
+          >
+            <div slot="content">
+              <span>
+                <b>Anchor date</b><br>
+                A customer's first bill will be prorated from the
+                start date of their subscription to the anchor date.
+              </span>
+            </div>
+            <i class="el-icon-warning" />
+          </el-tooltip>
+        </el-form-item>
+      </div>
     </el-form>
     <products-anchor-dates
-      v-if="!edit"
+      v-if="!edit && data.billing_type === 'prorata'"
       :class="$style.anchor"
     />
   </div>
@@ -176,5 +216,19 @@ export default {
 
 .anchor {
   margin-bottom: -1rem;
+}
+
+.tooltipField {
+  :global {
+    .el-input__inner {
+      padding-right: 2rem !important;
+    }
+  }
+}
+
+.tooltip {
+  position: absolute;
+  right: .5rem;
+  color: #909399 !important;
 }
 </style>

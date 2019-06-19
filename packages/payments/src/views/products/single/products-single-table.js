@@ -59,7 +59,7 @@ const TABLE_COLUMNS = [
     width: 300,
   },
   {
-    name: 'price',
+    name: 'price.total',
     label: 'Amount',
     format: 'dollar',
   },

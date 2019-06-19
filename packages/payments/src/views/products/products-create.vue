@@ -21,11 +21,11 @@ export default {
         type: 'subscription',
         details: {
           name: '',
-          code: '',
+          id: '',
           start_on: '',
-          end_on: '',
-          billingCycle: 'pro-rata',
-          price: '10.00',
+          anchor_on: '',
+          billing_type: 'anniversary',
+          price: '0.00',
           currency: 'aud',
         },
       },
@@ -38,34 +38,44 @@ export default {
       if (!this.validateAll().some(item => item === false)) {
         const productType = `${capitalize(type)} Product`
         let requestData
+        const requestUrl = type === 'single' ? '/single-products' : '/products'
 
         if (type === 'single') {
           requestData = {
             name: details.name,
-            price: +details.price,
-            // Temporary fixed id value
-            id: 'PROD_999',
+            price: details.price,
+            id: details.id,
+            start_on: details.start_on,
+            active: true,
+          }
+        } else {
+          requestData = {
+            group: {
+              id: details.billing_type === 'anniversary' ? 'DEMO_GROUP_ONE' : 'DEMO_GROUP_THREE',
+            },
+            name: details.name,
+            id: details.id,
+            billing_type: details.billing_type,
+            anchor_on: details.anchor_on,
             start_on: details.start_on,
           }
+        }
 
-          const [error, response] = await this.$api.post('/single-products', requestData )
+        const [error, response] = await this.$api.post(requestUrl, requestData )
 
-          if (response) {
-            this.$notify({
-              type: 'success',
-              title: 'Success',
-              message: `${productType} created.`,
-            })
-            this.$emit('update:visible', false)
-            this.$router.push(
-              { name: `products-${type}-details`, params: { id: response.id } })
-          } else if (error) {
-            this.$notify({
-              type: 'error',
-              title: 'Error',
-              message: error.message,
-            })
-          }
+        if (response) {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: `${productType} created.`,
+          })
+          this.$emit('update:visible', false)
+        } else if (error) {
+          this.$notify({
+            type: 'error',
+            title: 'Error',
+            message: error.message,
+          })
         }
       }
     },
@@ -75,14 +85,12 @@ export default {
     clearDetails() {
       this.product.details = {
         name: '',
-        code: '',
+        id: '',
         start_on: '',
         end_on: '',
-        billingCycle: 'anniversary',
-        anchorDate: '',
-        price: '10.00',
+        billing_type: 'anniversary',
+        price: '0.00',
         currency: 'aud',
-        image: '',
       }
     },
     validateAll() {
