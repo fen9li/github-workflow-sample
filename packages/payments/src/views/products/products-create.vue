@@ -3,6 +3,7 @@ import appConfig from '~/app.config'
 import ProductsSubscriptionForm from './forms/products-subscription-form.vue'
 import ProductsSingleForm from './forms/products-single-form.vue'
 import capitalize from 'lodash/capitalize'
+import set from 'lodash/set'
 
 export default {
   name: 'ProductsCreate',
@@ -23,10 +24,13 @@ export default {
           name: '',
           id: '',
           start_on: '',
+          end_on: '',
           anchor_on: '',
           billing_type: 'anniversary',
-          price: '0.00',
-          currency: 'aud',
+          price: {
+            total: '',
+            currency: 'aud',
+          },
         },
       },
     }
@@ -43,7 +47,7 @@ export default {
         if (type === 'single') {
           requestData = {
             name: details.name,
-            price: details.price,
+            price: details.price.total,
             id: details.id,
             start_on: details.start_on,
             active: true,
@@ -71,16 +75,17 @@ export default {
           })
           this.$emit('update:visible', false)
         } else if (error) {
+          const firstError = error.violations[Object.keys(error.violations)[0]][0]
           this.$notify({
             type: 'error',
             title: 'Error',
-            message: error.message,
+            message: firstError,
           })
         }
       }
     },
     updateDetailsValue({ fieldName, newVal }) {
-      this.product.details[fieldName] = newVal
+      set(this.product.details, fieldName, newVal )
     },
     clearDetails() {
       this.product.details = {
@@ -89,8 +94,11 @@ export default {
         start_on: '',
         end_on: '',
         billing_type: 'anniversary',
-        price: '0.00',
-        currency: 'aud',
+        anchor_on: '',
+        price: {
+          total: '',
+          currency: 'aud',
+        },
       }
     },
     validateAll() {

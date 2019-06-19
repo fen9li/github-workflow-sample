@@ -49,10 +49,11 @@ export default {
           this.$emit('update:visible', false)
           this.$emit('edited')
         } else if (error) {
+          const firstError = error.violations[Object.keys(error.violations)[0]][0]
           this.$notify({
             type: 'error',
             title: 'Error',
-            message: error.message,
+            message: firstError,
           })
         }
       }

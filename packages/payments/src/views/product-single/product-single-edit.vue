@@ -1,5 +1,6 @@
 <script>
 import ProductsSingleForm from '../products/forms/products-single-form.vue'
+import set from 'lodash/set'
 
 export default {
   name: 'ProductSingleEdit',
@@ -17,12 +18,12 @@ export default {
     return {
       formData: {
         name: '',
-        code: '',
         start_on: '',
         end_on: '',
-        price: '',
-        currency: 'aud',
-        image: '',
+        price: {
+          total: '',
+          currency: 'aud',
+        },
         active: null,
         id: null,
       },
@@ -30,24 +31,26 @@ export default {
   },
   watch: {
     currentProduct(newVal) {
-      this.adjustFormData(newVal)
+      this.formData = { ...newVal }
     },
   },
   created() {
-    this.adjustFormData(this.currentProduct)
+    this.formData = { ...this.currentProduct }
   },
   methods: {
     updateDetailsValue({ fieldName, newVal }) {
-      this.formData[fieldName] = newVal
+      set(this.formData, fieldName, newVal)
     },
     async onSubmit() {
       const { formData } = this
       if (!this.validateAll().some(item => item === false)) {
         const requestData = {
           name: formData.name,
-          price: formData.price,
+          price: formData.price.total,
           start_on: formData.start_on,
           end_on: formData.end_on,
+          // Temporary transform to Boolean value for current API requirements
+          active: formData.active === 'active',
         }
 
         const [error, response] = await this.$api.put(`/single-products/${formData.id}`, requestData)
@@ -61,10 +64,11 @@ export default {
           this.$emit('update:visible', false)
           this.$emit('updated')
         } else if (error) {
+          const firstError = error.violations[Object.keys(error.violations)[0]][0]
           this.$notify({
             type: 'error',
             title: 'Error',
-            message: error.message,
+            message: firstError,
           })
         }
       }
@@ -76,13 +80,6 @@ export default {
       })
       return result
     },
-    adjustFormData(newVal) {
-      this.formData = {
-        ...newVal,
-        price: parseFloat(newVal.price, 10).toFixed(2),
-        currency: newVal.currency || 'aud',
-      }
-    },
   },
 }
 </script>
@@ -90,6 +87,7 @@ export default {
 <template>
   <el-dialog
     title="Edit Single Product"
+    :custom-class="$style.wrapper"
     v-bind="$attrs"
     v-on="$listeners"
   >
@@ -115,7 +113,10 @@ export default {
 </template>
 
 <style lang="scss" module>
-
+.wrapper {
+  width: 36rem;
+  max-width: 36rem !important;
+}
 
 .form {
   margin-bottom: -1rem;

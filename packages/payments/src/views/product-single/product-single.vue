@@ -1,7 +1,9 @@
 <script>
 import appConfig from '~/app.config'
 import formatDollar from '@lib/utils/format-dollar'
+import { formatDate } from '@lib/utils/format-date'
 import ProductSingleEdit from './product-single-edit.vue'
+
 
 export default {
   name: 'ProductSingle',
@@ -23,7 +25,6 @@ export default {
       productDetails: {
         id: '',
         name: '',
-        code: '',
         active: '',
         end_on: '',
         price: '',
@@ -41,9 +42,11 @@ export default {
     formatDollar(value) {
       return formatDollar(value)
     },
+    formatDate(value, format) {
+      return formatDate(value, format || 'DD/MM/YYYY')
+    },
     async getProductDetails() {
-      // TODO: Delete Temporary || 'PROD_1' until api is fully ready
-      const [error, response] = await this.$api.get(`/single-products/${this.id || 'PROD_1'}`)
+      const [error, response] = await this.$api.get(`/single-products/${this.id}`)
       if (response) {
         this.productDetails = { ...this.productDetails, ...response }
       }
@@ -86,34 +89,16 @@ export default {
         <dd>{{ productDetails.name }}</dd>
 
         <dt>Product Code</dt>
-        <dd>{{ productDetails.code }}</dd>
+        <dd>{{ productDetails.id }}</dd>
 
         <dt>Effective Start Date</dt>
-        <dd>{{ productDetails.start_on }}</dd>
+        <dd>{{ formatDate(productDetails.start_on) }}</dd>
 
         <dt>End Date</dt>
-        <dd>{{ productDetails.end_on }}</dd>
+        <dd>{{ formatDate(productDetails.end_on) }}</dd>
 
         <dt>Amount</dt>
-        <dd>{{ formatDollar(productDetails.price) }}</dd>
-
-        <dt>Image</dt>
-        <dd>
-          <div
-            v-if="productDetails.image"
-            class="datalist__image"
-          >
-            <img
-              :src="productDetails.image"
-              alt="Product image"
-            >
-          </div>
-          <span
-            v-else
-          >
-            No image attached
-          </span>
-        </dd>
+        <dd>{{ formatDollar(productDetails.price.total) }}</dd>
       </dl>
     </el-card>
   </main-layout>

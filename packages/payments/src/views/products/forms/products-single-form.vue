@@ -92,6 +92,7 @@ export default {
       >
         <el-input
           :value="data.id"
+          :disabled="edit"
           @input="changeValue('id', $event)"
         />
       </el-form-item>
@@ -140,9 +141,9 @@ export default {
                 '####.##',
                 '#####.##'
               ]"
-              :value="data.price"
+              :value="data.price.total"
               placeholder="$0.00"
-              @input="changeValue('price', $event)"
+              @input="changeValue('price.total', $event)"
             >
               <template #prepend>
                 $
@@ -150,9 +151,9 @@ export default {
             </el-input>
           </el-form-item>
           <el-select
-            :value="data.currency"
+            :value="data.price.currency"
             disabled
-            @input="changeValue('currency', $event)"
+            @input="changeValue('price.currency', $event)"
           >
             <el-option
               label="AUD"
