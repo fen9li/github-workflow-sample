@@ -18,6 +18,7 @@ $size-card-spacing: var(--size-card-spacing);
 
 .el-main {
   padding: 0;
+  overflow-x: hidden;
 }
 
 .el-header {

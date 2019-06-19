@@ -1,38 +1,10 @@
-const TABLE_FILTERS = [
+import MerchantDialog from './feed-merchant-dialog-container.vue'
+import OfferActivate from './feed-offer-activate.vue'
+
+const TABLE_FILTERS_MERCHANTS = [
   {
-    attribute: 'update',
-    type: 'select',
-    icon: 'el-icon-document',
-    values: [
-      {
-        label: 'New offer',
-        value: 'New offer',
-      },
-      {
-        label: 'New merchant',
-        value: 'New merchant',
-      },
-      {
-        label: 'Deleted merchant',
-        value: 'Deleted merchant',
-      },
-      {
-        label: 'Offer update',
-        value: 'Offer update',
-      },
-      {
-        label: 'Merchant update',
-        value: 'Merchant update',
-      },
-    ],
-  },
-  {
-    attribute: 'merchant.name',
-    type: 'string',
-    icon: 'el-icon-document',
-  },
-  {
-    attribute: 'feed',
+    attribute: 'name',
+    label: 'Merchant',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -44,32 +16,64 @@ const TABLE_FILTERS = [
   },
 ]
 
-const TABLE_COLUMNS = [
+const TABLE_FILTERS_OFFERS = [
   {
-    name: 'update',
+    attribute: 'name',
+    label: 'Merchant',
+    type: 'string',
     icon: 'el-icon-document',
-    component: {
-      props: {
-        styleObj(val) {
-          switch (val) {
-            case 'New offer': return { color: '#2885b7' }
-            case 'New merchant': return { color: '#40d2bc' }
-            case 'Deleted merchant': return { color: '#fc1c1e' }
-            case 'Offer update': return { color: '#9ac200' }
-            case 'Merchant update': return { color: '#b807ca' }
-            default: return {}
-          }
-        },
-        badge: {
-          name: 'el-icon-info',
-          pos: 'left',
-        },
-      },
-    },
   },
   {
-    name: 'merchant.name',
+    attribute: 'enabled',
+    label: 'Enabled',
+    type: 'string',
     icon: 'el-icon-document',
+  },
+  {
+    attribute: 'created_at',
+    label: 'Date created',
+    type: 'date',
+    icon: 'el-icon-date',
+  },
+]
+
+const TABLE_COLUMNS_MERCHANTS = [
+  {
+    name: 'name',
+    label: 'Merchant Name',
+    icon: 'el-icon-document',
+    width: 300,
+  },
+  {
+    name: 'created_at',
+    label: 'Date created',
+    icon: 'el-icon-date',
+    format: 'date',
+    width: 300,
+  },
+  {
+    sortable: false,
+    overflowTooltip: false,
+    width: 180,
+    component: (_, __, { row }) => ({
+      is: MerchantDialog,
+      props: { row },
+    }),
+  },
+]
+
+const TABLE_COLUMNS_OFFERS = [
+  {
+    name: 'name',
+    label: 'Merchant Name',
+    icon: 'el-icon-document',
+    width: 300,
+  },
+  {
+    name: 'payload.offerdescription',
+    label: 'Offer description',
+    icon: 'el-icon-document',
+    width: 300,
   },
   {
     name: 'created_at',
@@ -78,13 +82,24 @@ const TABLE_COLUMNS = [
     format: 'date',
   },
   {
-    name: 'feed',
-    icon: 'el-icon-document',
+    sortable: false,
+    overflowTooltip: false,
+    width: 180,
+    component: (_, __, { row }) => ({
+      is: OfferActivate,
+      props: { row },
+    }),
   },
 ]
 
 export default {
-  filters: TABLE_FILTERS,
-  columns: TABLE_COLUMNS,
+  merchants: {
+    filters: TABLE_FILTERS_MERCHANTS,
+    columns: TABLE_COLUMNS_MERCHANTS,
+  },
+  offers: {
+    filters: TABLE_FILTERS_OFFERS,
+    columns: TABLE_COLUMNS_OFFERS,
+  },
   processor: null,
 }
