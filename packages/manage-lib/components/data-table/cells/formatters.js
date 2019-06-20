@@ -13,7 +13,7 @@ const account = v => v ? formatAccount(v) : ''
 const capital = v => capitalize(v)
 const httpStatus = v => Number(v[0]) < 4 ? `${v} OK` : `${v} ERR`
 const getArray = (v, key) => v.map(i => i[key])
-const dayMonthShort = v => v ? formatDate(v, 'DD/MMM') : ''
+const dayMonthShort = v => v ? formatDate(v, 'DD/MMM', false) : ''
 
 
 export default {

@@ -151,7 +151,7 @@ export default {
         >
           <el-date-picker
             :value="data.start_on"
-            type="datetime"
+            type="date"
             placeholder="Enter Date"
             :editable="false"
             :disabled="edit"
@@ -167,7 +167,7 @@ export default {
         >
           <el-date-picker
             :value="data.anchor_on"
-            type="datetime"
+            type="date"
             placeholder="Enter Date"
             :editable="false"
             :disabled="edit"
@@ -192,6 +192,7 @@ export default {
     <products-anchor-dates
       v-if="!edit && data.billing_type === 'prorata'"
       :class="$style.anchor"
+      :selected-anchor-date="data.anchor_on"
     />
   </div>
 </template>

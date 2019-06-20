@@ -26,6 +26,10 @@ export default {
       type: Function,
       default: () => [],
     },
+    highlightRow: {
+      type: Function,
+      default: () => false,
+    },
   },
   data() {
     return {
@@ -130,6 +134,10 @@ export default {
     sortType(column) {
       return column.hasOwnProperty('sortable') ? column.sortable : 'custom'
     },
+    rowClassName({ row, rowIndex }) {
+      const { showRowLink, $style, highlightRow } = this
+      return `${showRowLink ? $style.rowActive : ''} ${highlightRow(row) ? $style.rowHighlighten : ''}`
+    },
   },
 }
 </script>
@@ -141,7 +149,7 @@ export default {
       v-loading="processor.loading"
       :data="processor.data"
       header-cell-class-name="table-header-cell"
-      :row-class-name="showRowLink ? $style.rowActive : ''"
+      :row-class-name="rowClassName"
       :class="[
         !showHeader && $style.headerHidden,
       ]"
@@ -222,6 +230,10 @@ export default {
   :global(.el-table__header-wrapper) {
     display: none;
   }
+}
+
+.rowHighlighten {
+  background-color: #F2F9FF !important;
 }
 </style>
 

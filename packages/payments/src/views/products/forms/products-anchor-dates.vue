@@ -1,9 +1,17 @@
 <script>
 import tableConfig from './products-anchor-dates-table.js'
 import ElasticProcessor from '@lib/processors/elastic-processor'
+import { formatDate } from '@lib/utils/format-date'
+
 
 export default {
   name: 'ProductsAnchorDates',
+  props: {
+    selectedAnchorDate: {
+      type: [Date, String],
+      default: '',
+    },
+  },
   data() {
     return {
       dialogVisible: false,
@@ -14,6 +22,12 @@ export default {
         index: 'subscription-product-groups',
       }),
     }
+  },
+  methods: {
+    hightlightRow(value, current) {
+      const format = formatDate
+      if (value && current) return format(value, 'DD/MMM') === format(current.anchorOn, 'DD/MMM')
+    },
   },
 }
 </script>
@@ -28,8 +42,10 @@ export default {
       name="1"
     >
       <data-table
+        ref="table"
         :columns="columns"
         :processor="processor"
+        :highlight-row="hightlightRow.bind(null, selectedAnchorDate)"
       />
     </el-collapse-item>
   </el-collapse>

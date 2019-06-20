@@ -104,7 +104,7 @@ export default {
         >
           <el-date-picker
             :value="data.start_on"
-            type="datetime"
+            type="date"
             placeholder="Enter Date"
             :editable="false"
             @input="changeValue('start_on', $event)"
@@ -114,7 +114,7 @@ export default {
         <el-form-item label="End Date">
           <el-date-picker
             :value="data.end_on"
-            type="datetime"
+            type="date"
             placeholder="Enter Date"
             :editable="false"
             @input="changeValue('end_on', $event)"
