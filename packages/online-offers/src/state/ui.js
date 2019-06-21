@@ -30,6 +30,11 @@ const getters = {
         path: '/feed-status',
         icon: 's-marketing',
       },
+      {
+        title: 'Categories',
+        path: '/categories',
+        icon: 'refresh-left',
+      },
     ]
   },
 }

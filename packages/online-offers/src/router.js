@@ -63,6 +63,11 @@ const router = new Router({
       component: () => lazy(import('./views/feed-status')),
     },
     {
+      path: '/categories',
+      name: 'categories',
+      component: () => lazy(import('./views/categories')),
+    },
+    {
       path: '*',
       redirect: '/',
     },
