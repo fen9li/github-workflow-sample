@@ -36,7 +36,7 @@ export default {
   <el-button
     type="text"
     :class="$style.text"
-    @click="goTo"
+    @click.stop="goTo"
   >
     {{ text }}
   </el-button>

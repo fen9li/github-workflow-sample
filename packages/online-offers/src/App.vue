@@ -31,4 +31,8 @@ export default {
   background: var(--color-link);
 }
 
+.el-notification__content {
+  text-align: left;
+}
+
 </style>

@@ -15,6 +15,9 @@ const mutations = {
 }
 
 const actions = {
+  async getMerchants() {
+    return await api.get('/merchants')
+  },
   async searchMerchants({ commit }, search) {
     if (search) {
       return await api.get(`/merchants?search=${search}`)
@@ -36,6 +39,9 @@ const actions = {
   },
   async activateMerchant({ commit }, { merchantId }) {
     await api.put(`/feedmerchants/${merchantId}`, { enabled: true })
+  },
+  async updateMerchant({ commit }, { merchantId, payload }) {
+    return await api.put(`/merchants/${merchantId}`, payload)
   },
 }
 

@@ -152,6 +152,7 @@ export default {
       :row-class-name="rowClassName"
       :class="[
         !showHeader && $style.headerHidden,
+        $style.table
       ]"
       :summary-method="summaryMethod"
       :show-summary="showSummary"
@@ -215,6 +216,12 @@ export default {
 
 .cellMore {
   color: var(--color-primary);
+}
+
+.table {
+  :global(td) {
+    padding: 0;
+  }
 }
 
 .rowActive {

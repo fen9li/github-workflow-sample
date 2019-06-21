@@ -1,4 +1,4 @@
-import ApiProcessor from '@lib/processors/api-processor'
+import merchantsStatus from './merchants-status'
 import cellRoute from '~/components/cells/cell-route.vue'
 
 const TABLE_FILTERS = [
@@ -44,9 +44,10 @@ const TABLE_COLUMNS = [
   {
     name: 'enabled',
     icon: 'el-icon-document',
-    component: {
-      is: 'cell-toggle',
-    },
+    component: (_, __, { row }) => ({
+      is: merchantsStatus,
+      props: { row },
+    }),
   },
   {
     name: 'name',
@@ -82,13 +83,8 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default function(component) {
-  return {
-    processor: new ApiProcessor({
-      component,
-      path: 'merchants',
-    }),
-    filters: TABLE_FILTERS,
-    columns: TABLE_COLUMNS,
-  }
+export default {
+  filters: TABLE_FILTERS,
+  columns: TABLE_COLUMNS,
+  processor: null,
 }

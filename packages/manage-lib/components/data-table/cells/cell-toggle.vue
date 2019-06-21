@@ -1,25 +1,30 @@
 <script>
-import CellMixin from './cell.mixin'
 
 export default {
   name: 'CellToggle',
-  mixins: [CellMixin],
   props: {
     enabled: {
-      type: Function,
-      default: () => false,
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
     switchValue() {
-      return this.enabled(this.value, this.formattedValue) || !!this.value
+      return this.enabled
+    },
+  },
+  methods: {
+    onClick() {
+      this.$emit('click')
     },
   },
 }
 </script>
 
 <template>
-  <el-switch
-    :value="switchValue"
-  />
+  <div @click.stop="onClick">
+    <el-switch
+      :value="switchValue"
+    />
+  </div>
 </template>

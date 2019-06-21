@@ -162,6 +162,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    padding: rem(12px 0);
     overflow: hidden;
     white-space: nowrap;
   }
