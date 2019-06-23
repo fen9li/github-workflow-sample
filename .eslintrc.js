@@ -25,6 +25,7 @@ module.exports = {
       },
     ],
     'max-len': 'off',
+    'vue/no-v-html': 'off',
     'arrow-parens': ['error', 'as-needed'],
     'array-bracket-newline': ["error", "consistent"],
     'guard-for-in': 'off',
