@@ -32,9 +32,6 @@ export default {
       const filter = this.slug ? `?filters[feeds]=${this.slug}` : ''
       return `feed${this.activeTab}${filter}`
     },
-    localStorageKey() {
-      return `feedUpdates-${this.slug}`
-    },
   },
   watch: {
     '$route'() {
@@ -43,14 +40,9 @@ export default {
     tableUpdate() {
       this.getFeeds()
     },
-    activeTab(value) {
-      localStorage[this.localStorageKey] = value
-    },
   },
   mounted() {
-    if (localStorage[this.localStorageKey]) {
-      this.activeTab = localStorage[this.localStorageKey]
-    }
+    this.activeTab = this.$route.params.tab || 'merchants'
   },
   created() {
     this.getFeeds()
@@ -62,9 +54,6 @@ export default {
       updateTable: 'UPDATE_TABLE',
     }),
     ...mapActions('categories', ['getCategories']),
-    getActiveTab() {
-
-    },
     getFeeds() {
       this.updateTable(false)
       this.table.processor = new ApiProcessor({
@@ -92,6 +81,14 @@ export default {
       })
     },
     onTabClick() {
+      this.$router.push({
+        name: 'feed-updates',
+        params: {
+          slug: this.$route.params.slug,
+          tab: this.activeTab === 'merchants' ? null : this.activeTab,
+        },
+        query: {},
+      })
       this.getFeeds()
     },
     onCellClick(row, column, event) {

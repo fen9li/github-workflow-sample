@@ -47,7 +47,8 @@ const router = new Router({
       props: true,
     },
     {
-      path: '/feed-updates/:slug',
+      path: '/feed-updates/:slug/:tab?',
+      name: 'feed-updates',
       component: () => lazy(import('./views/feed-updates')),
       props: true,
     },
