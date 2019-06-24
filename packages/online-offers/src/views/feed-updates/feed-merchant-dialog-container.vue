@@ -1,6 +1,7 @@
 <script>
 import MerchantCreate from './feed-merchant-create.vue'
 import MerchantAssociate from './feed-merchant-associate.vue'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
   components: {
@@ -17,6 +18,7 @@ export default {
     return {
       showAssociate: false,
       showCreate: false,
+      showDetachDialog: false,
     }
   },
   computed: {
@@ -25,16 +27,69 @@ export default {
     },
   },
   methods: {
+    ...mapActions('merchants', [
+      'detachMerchant',
+    ]),
+    ...mapMutations('merchants', {
+      updateTable: 'UPDATE_TABLE',
+    }),
     switchToCreate() {
       this.showAssociate = false
       this.showCreate = true
+    },
+    onDetach() {
+      this.detachMerchant({
+        merchantId: this.merchant.id,
+        feedmerchantId: this.row.id,
+      }).then(() => {
+        this.showDetachDialog = false
+        this.updateTable()
+      })
     },
   },
 }
 </script>
 
 <template>
-  <div v-if="!merchant">
+  <div v-if="merchant">
+    <div
+      :class="$style.link"
+      @click.stop.prevent="showDetachDialog = true"
+    >
+      Detach
+    </div>
+    <state-dialog
+      :visible.sync="showDetachDialog"
+      title="Detach Merchant"
+      modal-append-to-body
+      append-to-body
+    >
+      <el-icon
+        slot="icon"
+        name="warning"
+      />
+      <el-icon
+        slot="subicon"
+        :class="$style.subicon"
+        name="delete"
+      />
+      <div :class="$style.msg">
+        Are you sure you wish to detach<br> <b>{{ row.name }}</b> from <b>{{ merchant.name }}</b>?
+      </div>
+      <div
+        class="modal__footer"
+      >
+        <el-button
+          class="wide-button"
+          type="danger"
+          @click="onDetach"
+        >
+          Detach
+        </el-button>
+      </div>
+    </state-dialog>
+  </div>
+  <div v-else>
     <div
       :class="$style.link"
       @click.stop="showAssociate = true"

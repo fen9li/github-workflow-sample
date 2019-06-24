@@ -45,11 +45,17 @@ const TABLE_COLUMNS_MERCHANTS = [
     width: 300,
   },
   {
+    name: 'merchant.name',
+    label: 'Global Merchant',
+    icon: 'el-icon-document',
+    width: 300,
+  },
+  {
     name: 'created_at',
     label: 'Date created',
     icon: 'el-icon-date',
     format: 'date',
-    width: 300,
+    width: 200,
   },
   {
     sortable: false,
