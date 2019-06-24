@@ -1,24 +1,4 @@
-// import Elastic from '@lib/processors/elastic-processor'
-import Static from '@lib/processors/static-processor'
-import tableMock from '@tests/__fixtures__/merchants'
-// import cellToggle from '~/components/cells/cell-toggle'
-
 const TABLE_FILTERS = [
-  {
-    attribute: 'status',
-    type: 'select',
-    icon: 'el-icon-document',
-    values: [
-      {
-        label: 'Active',
-        value: 'active',
-      },
-      {
-        label: 'Inactive',
-        value: 'inactive',
-      },
-    ],
-  },
   {
     attribute: 'merchant',
     type: 'string',
@@ -44,44 +24,41 @@ const TABLE_FILTERS = [
 
 const TABLE_COLUMNS = [
   {
-    name: 'status',
-    icon: 'el-icon-document',
-    component: {
-      is: 'cell-toggle',
-    },
-  },
-  {
-    name: 'merchantName',
+    name: 'name',
     label: 'Merchant',
     icon: 'el-icon-document',
   },
   {
-    name: 'merchantOffers',
-    label: 'Offers',
+    name: 'total_offers',
+    labels: 'Offers',
     icon: 'el-icon-document',
+    width: 100,
   },
   {
-    name: 'feed',
+    name: 'feeds',
     icon: 'el-icon-document',
+    format: value => {
+      return value.join(', ')
+    },
   },
   {
-    name: 'lastUpdated',
-    icon: 'el-icon-document',
-    format: 'dateTime',
+    name: 'updated_at',
+    label: 'Last updated',
+    icon: 'el-icon-date',
+    format: 'date',
   },
 ]
 
 export default function(component) {
   return {
-    // processor: new Elastic({
-    //   component,
-    //   index: 'client/1/merchants',
-    // }),
-    processor: new Static({
-      component,
-      data: tableMock.table,
-    }),
-    filters: TABLE_FILTERS,
-    columns: TABLE_COLUMNS,
+    processor: null,
+    linked: {
+      filters: TABLE_FILTERS,
+      columns: TABLE_COLUMNS,
+    },
+    unlinked: {
+      filters: TABLE_FILTERS,
+      columns: TABLE_COLUMNS,
+    },
   }
 }

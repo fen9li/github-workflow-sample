@@ -60,9 +60,7 @@ export default {
           icon="el-icon-arrow-left"
           @click="onBackClick"
         />
-        <div>
-          <slot name="beforeTitle" />
-        </div>
+        <slot name="beforeTitle" />
 
         <div
           v-if="subtitle"

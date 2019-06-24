@@ -120,6 +120,9 @@ export default {
     onRowClick(row) {
       this.$emit('row-click', row)
     },
+    handleSelectionChange(value) {
+      this.$emit('selection-change', value)
+    },
     showOverflowTooltip(column) {
       return column.hasOwnProperty('overflowTooltip') ?
         column.overflowTooltip : true
@@ -145,6 +148,7 @@ export default {
       :summary-method="summaryMethod"
       :show-summary="showSummary"
       @row-click="onRowClick"
+      @selection-change="handleSelectionChange"
     >
       <el-table-column
         v-for="column in readyColumns"
