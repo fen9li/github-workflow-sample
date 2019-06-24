@@ -31,6 +31,9 @@ const actions = {
   async associateMerchant({ commit }, { merchantId, feedmerchantId }) {
     await api.post(`/merchants/${merchantId}/feedmerchants/${feedmerchantId}`)
   },
+  async detachMerchant({ commit }, { merchantId, feedmerchantId }) {
+    await api.delete(`/merchants/${merchantId}/feedmerchants/${feedmerchantId}`)
+  },
   async activateMerchant({ commit }, { merchantId }) {
     await api.put(`/feedmerchants/${merchantId}`, { enabled: true })
   },
