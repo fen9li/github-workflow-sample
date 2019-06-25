@@ -50,7 +50,11 @@ export default {
     },
     formattedValue() {
       const { attribute, cell, column } = this
-      const value = get(cell.row, attribute)
+      let value = get(cell.row, attribute) || get(this.cellData, 'props.value')
+
+      if (typeof value === 'function') {
+        value = value(null, cell.row)
+      }
 
       if (!column.hasOwnProperty('format')) {
         return value || ''
@@ -175,6 +179,27 @@ export default {
   &_right {
     order: 1;
     margin-left: 0.5rem;
+  }
+
+  &_active {
+    display: block;
+    width: 5px;
+    height: 5px;
+  }
+}
+
+.cell-status {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+
+  &_active {
+    background-color: #29d737;
+  }
+
+  &_inactive {
+    background-color: #bbb;
   }
 }
 </style>

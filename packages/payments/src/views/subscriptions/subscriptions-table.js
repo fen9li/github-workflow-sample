@@ -141,28 +141,7 @@ const TABLE_COLUMNS = [
     icon: 'el-icon-document',
     format: 'capital',
     component: {
-      props: {
-        styleObj(val) {
-          switch (val) {
-            case 'active': return { color: '#29d737' }
-            case 'inactive': return { color: '#bbb' }
-            default: return {}
-          }
-        },
-        badge(val) {
-          switch (val) {
-            case 'active': return {
-              name: 'el-icon-success',
-              pos: 'left',
-            }
-            case 'inactive': return {
-              name: 'el-icon-error',
-              pos: 'left',
-            }
-            default: return {}
-          }
-        },
-      },
+      is: 'cell-activity',
     },
   },
   {

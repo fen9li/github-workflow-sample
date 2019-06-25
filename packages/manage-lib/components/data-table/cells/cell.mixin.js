@@ -3,7 +3,7 @@ const emptyRE = /undefined|null|^$/
 export default {
   props: {
     value: {
-      type: [String, Number, Boolean],
+      type: [String, Number, Boolean, Function],
       required: true,
     },
     formattedValue: {

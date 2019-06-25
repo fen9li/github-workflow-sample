@@ -11,21 +11,23 @@ export default {
     bindings() {
       return {
         ...this.$attrs,
-        styleObj(val) {
+        styleObj(value, row) {
+          const val = typeof value === 'function'? value(null, row) : value
           switch (val.toLowerCase()) {
             case 'active': return { color: '#29d737' }
             case 'inactive': return { color: '#bbb' }
             default: return {}
           }
         },
-        badge(val) {
-          switch (val) {
+        badge(value, row) {
+          const val = typeof value === 'function'? value(null, row) : value
+          switch (val.toLowerCase()) {
             case 'active': return {
-              name: 'el-icon-success',
+              status: 'cell-status cell-status_active',
               pos: 'left',
             }
             case 'inactive': return {
-              name: 'el-icon-error',
+              status: 'cell-status cell-status_inactive',
               pos: 'left',
             }
             default: return {}

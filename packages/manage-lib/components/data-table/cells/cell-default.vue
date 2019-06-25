@@ -9,12 +9,13 @@ export default {
 
 <template>
   <div :style="computedStyle">
-    <i
-      v-if="computedBadge.name"
+    <div
+      v-if="computedBadge.name || computedBadge.status"
       :class="[
         'cell-badge',
         `cell-badge_${computedBadge.pos}`,
         computedBadge.name,
+        computedBadge.status
       ]"
     />
     <span>{{ checkEmptyValue(formattedValue) }}</span>
