@@ -1,6 +1,9 @@
 <script>
+import ApiProcessor from '@lib/processors/api-processor'
 import table from './clients.table'
-import AddClientModal from './client-add'
+// import AddClientModal from './client-add'
+import AddClientModal from '../client/client-edit-modal.vue'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'Clients',
@@ -18,7 +21,28 @@ export default {
       },
     }
   },
+  computed: {
+    ...mapGetters('catalogues', ['tableUpdate']),
+  },
+  watch: {
+    tableUpdate() {
+      this.getClients()
+    },
+  },
+  created() {
+    this.getClients()
+  },
   methods: {
+    ...mapMutations('catalogues', {
+      updateTable: 'UPDATE_TABLE',
+    }),
+    getClients() {
+      this.updateTable(false)
+      this.table.processor = new ApiProcessor({
+        component: this,
+        path: 'catalogues',
+      })
+    },
     formatImage(image) {
       if (image) {
         return image + '//-/preview/100x30/-/quality/best/'
@@ -74,6 +98,7 @@ export default {
       v-if="modal.add"
       slot="header"
       :visible.sync="modal.add"
+      @catalogues-created="modal.add = false"
     />
   </main-layout>
 </template>

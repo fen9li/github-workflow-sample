@@ -1,29 +1,37 @@
 <script>
 import md5 from 'md5'
 import uploadcare from 'uploadcare-vue'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
+import find from 'lodash/find'
 
 export default {
-  name: 'AddClientModal',
+  name: 'EditClientModal',
   components: {
     uploadcare,
+  },
+  props: {
+    client: {
+      type: Object,
+      default: null,
+    },
   },
   data() {
     return {
       form: {
-        clientName: null,
-        clientLogo: null,
+        name: null,
+        logo: null,
         feeds: [],
       },
-      clientLogoName: null,
+      logoName: null,
       rules: {
-        clientName: [
+        name: [
           {
             required: true,
             message: 'This field is required',
             trigger: 'blur',
           },
         ],
-        clientLogo: [
+        logo: [
           {
             required: true,
             message: 'This field is required',
@@ -47,20 +55,60 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('feeds', ['feeds']),
     uploaderPlaceholder() {
-      return this.clientLogoName || '160px - 60px'
+      return this.logoName || '160px - 60px'
     },
     uploadcareSignature() {
       return md5(this.uploadcare.secretKey + this.uploadcare.expire)
     },
   },
+  watch: {
+    client(client) {
+      if (client) {
+        this.form.name = client.name,
+        this.form.feeds = client.feeds.map(item => {
+          return item.name
+        })
+      }
+    },
+  },
+  mounted() {
+
+  },
   methods: {
+    ...mapActions('catalogues', ['createCatalog', 'updateCatalog']),
+    ...mapMutations('catalogues', {
+      updateTable: 'UPDATE_TABLE',
+    }),
     onSuccessUploading(img) {
-      this.form.clientLogo = img.originalUrl
-      this.clientLogoName = img.name
+      this.form.logo = img.originalUrl
+      this.logoName = img.name
     },
     onSubmit() {
-      // submit form
+      const feeds = this.form.feeds.map(item => {
+        const feed = find(this.feeds, { 'name': item })
+        return feed.slug
+      })
+
+      if (this.client) {
+        this.updateCatalog({
+          ...this.form,
+          feeds,
+          id: this.client.id,
+        }).then(() => {
+          this.updateTable()
+          this.$emit('catalogues-updated')
+        })
+      } else {
+        this.createCatalog({
+          ...this.form,
+          feeds,
+        }).then(() => {
+          this.updateTable()
+          this.$emit('catalogues-created')
+        })
+      }
     },
   },
 }
@@ -69,7 +117,7 @@ export default {
 <template>
   <div :class="$style.wrapper">
     <el-dialog
-      title="New Client Setup"
+      :title="client ? 'Edit Client Details' : 'New Client Setup'"
       v-bind="$attrs"
       v-on="$listeners"
     >
@@ -78,21 +126,21 @@ export default {
           :model="form"
           :rules="rules"
           label-width="180px"
-          label-position="left"
+          label-position="top"
         >
           <el-form-item
             label="Client name"
-            prop="clientName"
+            prop="name"
           >
             <el-input
-              v-model="form.clientName"
+              v-model="form.name"
               placeholder="Name"
             />
           </el-form-item>
 
           <el-form-item
             label="Client logo"
-            prop="clientLogo"
+            prop="logo"
           >
             <div :class="$style.uploader">
               <uploadcare
@@ -100,11 +148,13 @@ export default {
                 :secure-signature="uploadcareSignature"
                 :secure-expire="uploadcare.expire"
                 crop="160x60"
+                :class="$style.uploadcare"
                 @success="onSuccessUploading"
               >
                 <el-button
                   type="primary"
                   plain
+                  :class="$style.uploadButton"
                 >
                   Select File
                 </el-button>
@@ -126,22 +176,20 @@ export default {
           >
             <el-checkbox-group
               v-model="form.feeds"
+              :class="$style['form-feeds']"
             >
-              <div :class="$style['form-feeds']">
-                <el-checkbox
-                  label="Commission Factory"
-                  border
-                />
-                <el-checkbox
-                  label="Rakuten"
-                  border
-                />
-                <el-checkbox
-                  label="APD"
-                  border
-                />
-              </div>
+              <el-checkbox
+                v-for="(feed, index) in feeds"
+                :key="index"
+                :label="feed.name"
+              />
             </el-checkbox-group>
+          </el-form-item>
+          <el-form-item
+            v-if="client"
+            label="Notes"
+          >
+            <el-input type="textarea" />
           </el-form-item>
         </el-form>
 
@@ -153,7 +201,7 @@ export default {
             type="primary"
             @click="onSubmit"
           >
-            Create New Client
+            Save
           </el-button>
         </div>
       </div>
@@ -176,41 +224,49 @@ export default {
     }
   }
 
-  .uploader {
-    display: flex;
-    align-items: center;
-    width: 100%;
-
-    :global {
-      .el-button {
-        flex-shrink: 0;
-      }
-    }
-  }
-
   .form-uploader-tip {
     width: calc(100% + 2px);
     height: 40px;
     padding: 0 1rem;
     margin-left: -2px;
     color: #c0c4cb;
-    border: solid 1px #DCDFE6;
     border-left: none;
     border-radius: 0 4px 4px 0;
   }
 
   .form-feeds {
     display: flex;
-    justify-content: flex-end;
 
     :global {
       .el-checkbox {
-        margin-right: 0;
-
         &__label {
           padding-left: 0.5rem;
         }
       }
+    }
+  }
+
+  .uploader {
+    display: flex;
+    width: 100%;
+    padding-left: rem(15px);
+    border: rem(1px) solid #DCDFE6;
+    border-radius: rem(4px);
+  }
+
+  .uploadcare{
+    order: 2;
+  }
+
+  .uploadButton {
+    height: 100%;
+    background-color: #DCDFE6;
+    border-width: 0 0 0 1px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+
+    &:hover {
+      border-color: #DCDFE6 !important;
     }
   }
 </style>
