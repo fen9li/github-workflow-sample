@@ -30,6 +30,10 @@ export default {
   },
   methods: {
     ...mapActions('catalogues', ['getMerchant']),
+    cataloguesUpdated() {
+      this.$emit('catalogues-updated')
+      this.showEditModal = false
+    },
   },
 }
 </script>
@@ -69,13 +73,7 @@ export default {
                   v-if="!!feeds.length"
                   :class="$style['client-feeds']"
                 >
-                  <span
-                    v-for="feed in feeds"
-                    :key="feed"
-                    :class="$style['client-feeds-item']"
-                  >
-                    {{ feed }}
-                  </span>
+                  {{ feeds.join(', ') }}
                 </div>
 
                 <div
@@ -103,7 +101,7 @@ export default {
             :client="client"
             modal-append-to-body
             append-to-body
-            @catalogues-updated="showEditModal = false"
+            @catalogues-updated="cataloguesUpdated()"
           />
         </div>
       </div>

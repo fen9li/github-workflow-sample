@@ -57,7 +57,7 @@ export default {
   computed: {
     ...mapGetters('feeds', ['feeds']),
     uploaderPlaceholder() {
-      return this.logoName || '160px - 60px'
+      return this.form.logo || '160px - 60px'
     },
     uploadcareSignature() {
       return md5(this.uploadcare.secretKey + this.uploadcare.expire)
@@ -67,6 +67,7 @@ export default {
     client(client) {
       if (client) {
         this.form.name = client.name,
+        this.form.logo = client.logo,
         this.form.feeds = client.feeds.map(item => {
           return item.name
         })
@@ -227,9 +228,12 @@ export default {
   .form-uploader-tip {
     width: calc(100% + 2px);
     height: 40px;
-    padding: 0 1rem;
+    padding: 0 1rem 0 0;
     margin-left: -2px;
+    overflow: hidden;
     color: #c0c4cb;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     border-left: none;
     border-radius: 0 4px 4px 0;
   }

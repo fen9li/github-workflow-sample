@@ -1,6 +1,7 @@
 <script>
 import StaticProcessor from '@lib/processors/static-processor'
 import table from './merchants.table'
+import { mapActions } from 'vuex'
 
 export default {
   props: {
@@ -11,6 +12,10 @@ export default {
     items: {
       type: Array,
       required: true,
+    },
+    id: {
+      type: String,
+      default: null,
     },
     link: {
       type: Boolean,
@@ -32,6 +37,7 @@ export default {
     this.getData()
   },
   methods: {
+    ...mapActions('catalogues', ['attachMerchant', 'detachMerchant']),
     getData() {
       this.table.processor = new StaticProcessor({
         component: this,
@@ -41,6 +47,14 @@ export default {
     onClick() {
       // We haven't endpoint for bulk operation yet
       // For single {{baseUrl}}/catalogues/{{catalogueId}}/merchants/{{merchantId}}
+      this.items.forEach(item => {
+        if (this.link) {
+          this.attachMerchant({
+            catalogueId: this.id,
+            merchantId: item.id,
+          })
+        }
+      })
     },
   },
 }

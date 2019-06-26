@@ -18,7 +18,6 @@ export default {
     return {
       table: table(this),
       isEdit: false,
-      form: {},
       client: {},
       activeTab: 'linked',
       selectedItems: [],
@@ -27,16 +26,20 @@ export default {
   computed: {
     path() {
       const catalogueId = this.$route.params.id
-      return `/catalogues/${catalogueId}/merchants`
+      const linked = this.activeTab === 'linked' ? true : false
+      return `/catalogues/${catalogueId}/merchants?filters[attached]=${linked}`
     },
   },
-  async created() {
+  created() {
     this.activeTab = this.$route.params.tab || 'linked'
     this.getMerchantOffers()
-    this.form = this.client = await this.getMerchant(this.$route.params.id)
+    this.getClient()
   },
   methods: {
     ...mapActions('catalogues', ['getMerchant']),
+    async getClient() {
+      this.client = await this.getMerchant(this.$route.params.id)
+    },
     getMerchantOffers() {
       this.table.processor = new ApiProcessor({
         component: this,
@@ -75,7 +78,7 @@ export default {
 
 <template>
   <main-layout
-    :title="form.name"
+    :title="client.name"
   >
     <el-button
       slot="beforeTitle"
@@ -88,7 +91,10 @@ export default {
       :class="$style.card"
       body-style="padding: 0"
     >
-      <client-header :client="client" />
+      <client-header
+        :client="client"
+        @catalogues-updated="getClient()"
+      />
 
       <el-tabs
         v-model="activeTab"
@@ -115,14 +121,14 @@ export default {
             <el-table-column
               type="selection"
               fixed="left"
-              width="55"
             />
           </table-layout>
 
           <!-- <unlink-dialog :items="selectedItems"/> -->
           <link-modal
+            :id="client.id"
             :items="selectedItems"
-            :name="form.name"
+            :name="client.name"
             :link="false"
           />
         </el-tab-pane>
@@ -150,8 +156,9 @@ export default {
             />
           </table-layout>
           <link-modal
+            :id="client.id"
             :items="selectedItems"
-            :name="form.name"
+            :name="client.name"
             :link="true"
           />
         </el-tab-pane>
@@ -200,14 +207,6 @@ export default {
     :global {
       .el-tabs__header {
         padding: 0 var(--size-card-spacing) calc(var(--size-card-spacing) / 2);
-      }
-    }
-  }
-
-  .checkbox {
-    :global {
-      .el-checkbox__label {
-        display: none;
       }
     }
   }

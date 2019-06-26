@@ -23,14 +23,22 @@ const actions = {
     const [, result] = await api.put(`/catalogues/${payload.id}`, payload)
     return result
   },
-  deleteCatalog() {},
+  deleteCatalog({ commit }, id) {
+    api.delete(`/catalogues/${id}`)
+  },
 
   async getMerchant({ commit }, merchantId) {
     const [, result] = await api.get(`/catalogues/${merchantId}`)
     return result
   },
-  attachMerchant() {},
-  detachMerchant() {},
+  async attachMerchant({ commit }, { catalogueId, merchantId }) {
+    const [, result] = await api.post(`/catalogues/${catalogueId}/merchants/${merchantId}`)
+    return result
+  },
+  async detachMerchant({ commit }, { catalogueId, merchantId }) {
+    const [, result] = await api.delete(`/catalogues/${catalogueId}/merchants/${merchantId}`)
+    return result
+  },
 }
 
 export default {
