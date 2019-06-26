@@ -47,6 +47,16 @@ const router = new Router({
       props: true,
     },
     {
+      path: '/offers',
+      name: 'offers',
+      component: () => lazy(import('./views/offers')),
+    },
+    {
+      path: '/offers/:id',
+      name: 'offer-details',
+      component: () => lazy(import('./views/offer')),
+    },
+    {
       path: '/feed-updates/:slug/:tab?',
       name: 'feed-updates',
       component: () => lazy(import('./views/feed-updates')),

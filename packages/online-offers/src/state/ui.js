@@ -15,6 +15,11 @@ const getters = {
         icon: 'goods',
       },
       {
+        title: 'Global Offers',
+        path: '/offers',
+        icon: 'tickets',
+      },
+      {
         title: 'Feed Updates',
         path: '/feed-updates',
         icon: 'refresh-right',
