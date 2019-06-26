@@ -1,5 +1,3 @@
-const dateFormat = 'DD/MM/YYYY hh:mm A'
-
 const TABLE_FILTERS = [
   {
     attribute: 'startAt',
@@ -14,6 +12,18 @@ const TABLE_FILTERS = [
     icon: 'el-icon-date',
   },
   {
+    attribute: 'customerFirstName',
+    label: 'First Name',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'customerLastName',
+    label: 'Last Name',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
     attribute: 'productName',
     label: 'Subscription Product',
     type: 'string',
@@ -21,7 +31,7 @@ const TABLE_FILTERS = [
   },
   {
     attribute: 'currentInterval',
-    label: 'Pricing Plan Billing Interval',
+    label: 'Frequency',
     type: 'select',
     icon: 'el-icon-document',
     values: [
@@ -40,22 +50,10 @@ const TABLE_FILTERS = [
     ],
   },
   {
-    attribute: 'nextBilledAt',
-    label: 'Next Billing Date',
-    icon: 'el-icon-date',
-    type: 'date',
-  },
-  {
     attribute: 'outstandingBalance',
-    label: 'Balance',
+    label: 'Amount Owing',
     type: 'numeric',
     icon: 'el-icon-money',
-  },
-  {
-    attribute: 'couponName',
-    label: 'Coupon',
-    type: 'string',
-    icon: 'el-icon-document',
   },
   {
     attribute: 'status',
@@ -72,18 +70,6 @@ const TABLE_FILTERS = [
       },
     ],
   },
-  {
-    attribute: 'customerId',
-    label: 'Customer ID',
-    type: 'string',
-    icon: 'el-icon-document',
-  },
-  {
-    attribute: 'customerEmailAddress',
-    label: 'Customer Email Address',
-    type: 'string',
-    icon: 'el-icon-message',
-  },
 ]
 
 const TABLE_COLUMNS = [
@@ -91,49 +77,63 @@ const TABLE_COLUMNS = [
     name: 'startAt',
     label: 'Start Date',
     icon: 'el-icon-date',
-    format: {
-      name: 'date',
-      params: [dateFormat],
-    },
+    format: 'date',
+    width: 130,
   },
   {
     name: 'endAt',
     label: 'End Date',
     icon: 'el-icon-date',
-    format: {
-      name: 'date',
-      params: [dateFormat],
-    },
+    format: 'date',
+    width: 130,
+  },
+  {
+    name: 'customerFirstName',
+    label: 'First Name',
+    icon: 'el-icon-document',
+    width: 140,
+  },
+  {
+    name: 'customerLastName',
+    label: 'Last Name',
+    icon: 'el-icon-document',
+    width: 140,
   },
   {
     name: 'productName',
-    label: 'Subscription Product',
     icon: 'el-icon-document',
+    width: 200,
   },
   {
     name: 'currentInterval',
-    label: 'Pricing Plan Billing Interval',
+    label: 'Frequency',
+    format: 'capital',
     icon: 'el-icon-document',
-  },
-  {
-    name: 'nextBilledAt',
-    label: 'Next Billing Date',
-    icon: 'el-icon-date',
-    format: {
-      name: 'date',
-      params: [dateFormat],
+    component: {
+      props: {
+        format(value) {
+          switch (value) {
+            case 'P1m': return 'Monthly'
+            case 'P3m': return 'Quarterly'
+            case 'P1y': return 'Yearly'
+          }
+        },
+      },
     },
+    width: 130,
   },
   {
     name: 'outstandingBalance.total',
-    label: 'Balance',
+    label: 'Amount Owing',
     icon: 'el-icon-money',
     format: 'dollar',
-  },
-  {
-    name: 'couponName',
-    label: 'Coupon',
-    icon: 'el-icon-document',
+    component: {
+      props: {
+        styleObj(val) {
+          return { color: '#fc7168' }
+        },
+      },
+    },
   },
   {
     name: 'status',
@@ -143,16 +143,7 @@ const TABLE_COLUMNS = [
     component: {
       is: 'cell-activity',
     },
-  },
-  {
-    name: 'customerId',
-    label: 'Customer ID',
-    icon: 'el-icon-document',
-  },
-  {
-    name: 'customerEmailAddress',
-    label: 'Customer Email Address',
-    icon: 'el-icon-message',
+    width: 100,
   },
 ]
 
