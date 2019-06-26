@@ -35,14 +35,16 @@ export default {
     return {
       details: {},
       loading: true,
-      isEdit: false,
-      cost: '',
-      url: '',
+      form: {},
+      submitting: false,
     }
   },
   computed: {
     slug() {
       return this.$route.params.slug
+    },
+    rakuten() {
+      return this.details && this.details.feed === 'rakuten'
     },
   },
   created() {
@@ -51,6 +53,9 @@ export default {
   methods: {
     ...mapActions('merchants', [
       'getMerchant',
+    ]),
+    ...mapActions('feedMerchants', [
+      'updateFeedMerchant',
     ]),
     capitalize,
     dataTransform(item) {
@@ -74,6 +79,22 @@ export default {
     },
     formatDollar(value) {
       return formatDollar(value)
+    },
+    async onSubmit() {
+      this.submitting = true
+      const [error, response] = await this.updateFeedMerchant({ payload: this.form, id: this.details.id })
+      this.submitting = false
+      if (error) {
+        console.error('Error while requesting data', error.message)
+      }
+      if (response) {
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: 'Successfuly updated',
+        })
+        this.getDetails()
+      }
     },
   },
 }
@@ -103,8 +124,10 @@ export default {
             $style.list
           ]"
         >
-          <dt>Merchant Ext ID</dt>
+          <dt>Merchant ID</dt>
           <dd>{{ details.id }}</dd>
+          <dt>Merchant Ext ID</dt>
+          <dd>{{ details.external_id }}</dd>
 
           <dt>Merchant Name</dt>
           <dd>{{ details.name }}</dd>
@@ -126,14 +149,25 @@ export default {
           <dd>{{ details.payload.summary || '—' }}</dd>
 
           <template
-            v-if="!isEdit"
+            v-if="!rakuten"
           >
             <dt>Commission Rate</dt>
             <dd>{{ details.payload.comission ? formatDollar(details.payload.comission.base) : '—' }}</dd>
-          </template>
 
-          <dt>Merchant Tracking URL</dt>
-          <dd>{{ details.payload.TrackingUrl || '—' }}</dd>
+            <dt>Merchant Tracking URL</dt>
+            <dd>{{ details.payload.TrackingUrl || '—' }}</dd>
+          </template>
+          <template v-else>
+            <template v-if="details.metadata && details.metadata.baseline_rate">
+              <dt>Commission Rate</dt>
+              <dd>{{ details.metadata.baseline_rate ? formatDollar(details.metadata.baseline_rate) : '—' }}</dd>
+            </template>
+
+            <template v-if="details.metadata && details.metadata.baseline_url">
+              <dt>Merchant Tracking URL</dt>
+              <dd>{{ details.metadata.baseline_url || '—' }}</dd>
+            </template>
+          </template>
 
           <dt>Merchant Website</dt>
           <dd>{{ details.payload.TargetUrl || '—' }}</dd>
@@ -144,27 +178,56 @@ export default {
             v-html="details.payload.TermsAndConditions"
           />
         </dl>
-        <template
-          v-if="isEdit"
+        <div
+          v-if="rakuten"
+          :class="$style.formWrapper"
         >
           <div :class="$style.wrapTitle">
             Comission Tracking Details
           </div>
-          <el-input
-            v-model="details.payload.comission"
+
+          <el-form
+            :class="$style.form"
+            :model="form"
+            label-width="100%"
+            label-position="top"
           >
-            <template slot="prepend">
-              $
-            </template>
-          </el-input>
-          <el-input
-            v-model="details.payload.TrackingUrl"
-          >
-            <template slot="prepend">
-              http://
-            </template>
-          </el-input>
-        </template>
+            <el-form-item
+              label="Baseline Comission Rate"
+              :class="$style.input"
+            >
+              <el-input
+                v-model="form.baseline_rate"
+                type="number"
+              >
+                <template slot="prepend">
+                  $
+                </template>
+              </el-input>
+            </el-form-item>
+            <el-form-item
+              label="Baseline Tracking URL"
+              :class="$style.input"
+            >
+              <el-input
+                v-model="form.baseline_url"
+              >
+                <template slot="prepend">
+                  http://
+                </template>
+              </el-input>
+            </el-form-item>
+            <div :class="$style.buttonWrapper">
+              <el-button
+                type="primary"
+                :disabled="submitting"
+                @click="onSubmit"
+              >
+                Save changes
+              </el-button>
+            </div>
+          </el-form>
+        </div>
       </div>
     </el-card>
   </main-layout>
@@ -251,6 +314,24 @@ export default {
     margin: 0 0 1rem;
     font-size: 1rem;
   }
+}
+
+.formWrapper {
+  padding-top: rem(36px);
+}
+
+.form {
+  padding-top: rem(24px);
+}
+
+.input {
+  width: 300px;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 }
 
 </style>

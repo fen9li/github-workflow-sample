@@ -53,7 +53,7 @@ const router = new Router({
       props: true,
     },
     {
-      path: '/feed-updates/:slug/:id',
+      path: '/feed-updates/details/:slug/:id',
       name: 'feed-details',
       component: () => lazy(import('./views/feed-updates/details')),
       props: true,
