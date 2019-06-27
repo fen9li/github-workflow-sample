@@ -25,17 +25,21 @@ export default {
     ...mapMutations('offers', {
       updateTable: 'UPDATE_TABLE',
     }),
-    onSubmit() {
-      this.createOffer({
+    async onSubmit() {
+      const [error, response] = await this.createOffer({
         feed_offer: this.row.external_id,
-      }).then(response => {
+      })
+      if (response) {
         this.$notify({
           type: 'success',
           title: 'Success',
           message: 'Successfuly activated',
         })
         this.updateTable()
-      })
+      }
+      if (error) {
+        console.error('Error while requesting data', error)
+      }
     },
   },
 }

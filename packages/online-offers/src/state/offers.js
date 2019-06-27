@@ -15,8 +15,8 @@ const mutations = {
 }
 
 const actions = {
-  createOffer({ commit }, payload) {
-    api.post('/offers', payload)
+  async createOffer({ commit }, payload) {
+    return await api.post('/offers', payload)
   },
 }
 
