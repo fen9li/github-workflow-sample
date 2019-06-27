@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import catalogues from './catalogues'
 import categories from './categories'
 import feedMerchants from './feed-merchants'
 import feeds from './feeds'
@@ -11,6 +12,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
+    catalogues,
     categories,
     feedMerchants,
     feeds,

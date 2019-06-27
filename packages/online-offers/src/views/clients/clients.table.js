@@ -1,5 +1,3 @@
-import ApiProcessor from '@lib/processors/api-processor'
-
 const TABLE_FILTERS = [
   {
     attribute: 'name',
@@ -43,10 +41,7 @@ const TABLE_COLUMNS = [
 
 export default function(component) {
   return {
-    processor: new ApiProcessor({
-      component,
-      path: 'catalogues',
-    }),
+    processor: null,
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,
   }

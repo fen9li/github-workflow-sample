@@ -1,6 +1,9 @@
 <script>
+import ApiProcessor from '@lib/processors/api-processor'
 import table from './clients.table'
-import AddClientModal from './client-add'
+// import AddClientModal from './client-add'
+import AddClientModal from '../client/client-edit-modal.vue'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'Clients',
@@ -18,7 +21,33 @@ export default {
       },
     }
   },
+  computed: {
+    ...mapGetters('catalogues', ['tableUpdate']),
+  },
+  watch: {
+    tableUpdate() {
+      this.getClients()
+    },
+  },
+  created() {
+    this.getClients()
+  },
   methods: {
+    ...mapMutations('catalogues', {
+      updateTable: 'UPDATE_TABLE',
+    }),
+    getClients() {
+      this.updateTable(false)
+      this.table.processor = new ApiProcessor({
+        component: this,
+        path: 'catalogues',
+      })
+    },
+    formatImage(image) {
+      if (image) {
+        return image + '//-/preview/100x30/-/quality/best/'
+      }
+    },
     onRowClick(row) {
       this.$router.push({
         name: 'client-details',
@@ -46,11 +75,12 @@ export default {
       <el-table-column
         label="Logo"
         fixed="left"
-        width="250"
+        width="100"
       >
         <template slot-scope="scope">
           <img
-            :src="scope.row.logo ? scope.row.logo : null"
+            v-if="scope.row.logo"
+            :src="formatImage(scope.row.logo)"
             :alt="scope.row.name"
           >
         </template>
@@ -68,6 +98,7 @@ export default {
       v-if="modal.add"
       slot="header"
       :visible.sync="modal.add"
+      @catalogues-created="modal.add = false"
     />
   </main-layout>
 </template>

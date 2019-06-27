@@ -1,7 +1,9 @@
 <script>
 import table from './merchants.table'
-import md5 from 'md5'
-import uploadcare from 'uploadcare-vue'
+import ApiProcessor from '@lib/processors/api-processor'
+import { mapActions } from 'vuex'
+import ClientHeader from './client-header'
+import LinkModal from './link-modal'
 
 export default {
   name: 'Clients',
@@ -9,203 +11,158 @@ export default {
     title: 'Clients',
   },
   components: {
-    uploadcare,
+    ClientHeader,
+    LinkModal,
   },
   data() {
     return {
       table: table(this),
       isEdit: false,
-      form: {
-        clientName: 'Suncorp',
-        clientLogo: 'https://s.gravatar.com/avatar/a56e2a3d9b332f51a59e59d5e6516835?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fit.png',
-        feeds: ['Rakuten'],
-      },
-      uploadcare: {
-        expire: new Date(new Date + 60 * 60 * 12).getTime(),
-        publicKey: process.env.VUE_APP_UPLOADCARE_PUBLIC_KEY,
-        secretKey: process.env.VUE_APP_UPLOADCARE_SECRET_KEY,
-      },
+      client: {},
+      activeTab: 'linked',
+      selectedItems: [],
     }
   },
   computed: {
-    uploadcareSignature() {
-      return md5(this.uploadcare.secretKey + this.uploadcare.expire)
+    path() {
+      const catalogueId = this.$route.params.id
+      const linked = this.activeTab === 'linked' ? true : false
+      return `/catalogues/${catalogueId}/merchants?filters[attached]=${linked}`
     },
   },
+  created() {
+    this.activeTab = this.$route.params.tab || 'linked'
+    this.getMerchantOffers()
+    this.getClient()
+  },
   methods: {
+    ...mapActions('catalogues', ['getMerchant']),
+    async getClient() {
+      this.client = await this.getMerchant(this.$route.params.id)
+    },
+    getMerchantOffers() {
+      this.table.processor = new ApiProcessor({
+        component: this,
+        path: this.path,
+      })
+    },
+    onBackClick() {
+      this.$router.push({ name: 'clients' })
+    },
     onRowClick(row) {
       this.$router.push({
         name: 'merchant-details',
         params: { slug: row.merchantName || 'unknown' },
       })
     },
-    onSuccessUploading(img) {
-      this.form.clientLogo = img.cdnUrl
+    onTabClick() {
+      this.selectedItems = []
+      this.$router.push({
+        name: 'client-details',
+        params: {
+          id: this.$route.params.id,
+          tab: this.activeTab === 'linked' ? null : this.activeTab,
+        },
+        query: {},
+      })
+      this.getMerchantOffers()
     },
-    onSubmit() {
-      if (this.isEdit) {
-        // send form
-        this.isEdit = false
-      } else {
-        this.isEdit = true
-      }
+    handleSelectionChange(value) {
+      this.selectedItems = value
     },
+    unlink() {},
+    link() {},
   },
 }
 </script>
 
 <template>
   <main-layout
-    title="Suncorp"
-    back
+    :title="client.name"
   >
+    <el-button
+      slot="beforeTitle"
+      :class="$style.backButton"
+      circle
+      icon="el-icon-arrow-left"
+      @click="onBackClick"
+    />
     <el-card
       :class="$style.card"
       body-style="padding: 0"
     >
-      <div :class="$style.header">
-        <div :class="$style.logo">
-          <img
-            :class="$style['logo-image']"
-            :src="form.clientLogo"
-          >
-          <div
-            v-if="isEdit"
-            :class="$style['logo-change']"
-          >
-            <uploadcare
-              :public-key="uploadcare.publicKey"
-              :secure-signature="uploadcareSignature"
-              :secure-expire="uploadcare.expire"
-              crop="160x60"
-              @success="onSuccessUploading"
-            >
-              <el-button
-                type="text"
-                :class="$style['logo-change-btn']"
-              >
-                Change Image
-              </el-button>
-            </uploadcare>
-          </div>
-        </div>
+      <client-header
+        :client="client"
+        @catalogues-updated="getClient()"
+      />
 
-        <div :class="$style.form">
-          <div :class="$style['form-inner']">
-            <div :class="$style['form-inner-left']">
-              <div :class="$style['form-row']">
-                <div :class="$style['form-row-label']">
-                  Client Name
-                </div>
-                <div
-                  v-if="!isEdit"
-                  :class="$style['form-row-value']"
-                >
-                  {{ form.clientName }}
-                </div>
-                <div
-                  v-else
-                  :class="$style['form-row-field']"
-                >
-                  <el-input
-                    v-model="form.clientName"
-                    placeholder="Name"
-                  />
-                </div>
-              </div>
-
-              <div :class="$style['form-row']">
-                <div :class="$style['form-row-label']">
-                  Aggregators
-                </div>
-                <div
-                  v-if="!isEdit"
-                  :class="$style['form-row-value']"
-                >
-                  <div
-                    v-if="!!form.feeds.length"
-                    :class="$style['client-feeds']"
-                  >
-                    <span
-                      v-for="feed in form.feeds"
-                      :key="feed"
-                      :class="$style['client-feeds-item']"
-                    >
-                      {{ feed }}
-                    </span>
-                  </div>
-
-                  <div
-                    v-else
-                    :class="$style['client-feeds']"
-                  >
-                    <span :class="$style['client-feeds-item']">
-                      There are no feeds
-                    </span>
-                  </div>
-                </div>
-                <div
-                  v-else
-                  :class="$style['form-row-field']"
-                >
-                  <el-checkbox-group
-                    v-model="form.feeds"
-                  >
-                    <div :class="$style['form-feeds']">
-                      <el-checkbox
-                        label="Commission Factory"
-                        border
-                      />
-                      <el-checkbox
-                        label="Rakuten"
-                        border
-                      />
-                      <el-checkbox
-                        label="APD"
-                        border
-                      />
-                    </div>
-                  </el-checkbox-group>
-                </div>
-              </div>
-            </div>
-
-            <div :class="$style['form-inner-right']">
-              <el-button
-                type="primary"
-                @click="onSubmit"
-              >
-                {{ isEdit ? 'Save Changes' : 'Edit Client' }}
-              </el-button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <table-layout
-        :class="$style.table"
-        shadow="never"
-        table-name="merchants"
-        :quantity="true"
-        :fragments="false"
-        :hider="false"
-        :processor="table.processor"
-        :filters="table.filters"
-        :columns="table.columns"
-        @row-click="onRowClick"
+      <el-tabs
+        v-model="activeTab"
+        :class="$style.tabs"
+        @tab-click="onTabClick"
       >
-        <el-table-column
-          v-if="false"
-          fixed="right"
-          width="120"
+        <el-tab-pane
+          label="Linked"
+          name="linked"
         >
-          <el-button
-            type="text"
-            :class="$style['view-details-btn']"
+          <table-layout
+            :class="$style.table"
+            shadow="never"
+            table-name="clients-details"
+            :processor="table.processor"
+            :filters="table[activeTab].filters"
+            :columns="table[activeTab].columns"
+            :fragments="false"
+            :hider="false"
+            quantity
+            @row-click="onRowClick"
+            @selection-change="handleSelectionChange"
           >
-            View details
-          </el-button>
-        </el-table-column>
-      </table-layout>
+            <el-table-column
+              type="selection"
+              fixed="left"
+            />
+          </table-layout>
+
+          <!-- <unlink-dialog :items="selectedItems"/> -->
+          <link-modal
+            :id="client.id"
+            :items="selectedItems"
+            :name="client.name"
+            :link="false"
+          />
+        </el-tab-pane>
+        <el-tab-pane
+          label="Unlinked"
+          name="unlinked"
+        >
+          <table-layout
+            :class="$style.table"
+            shadow="never"
+            table-name="clients-details"
+            :processor="table.processor"
+            :filters="table[activeTab].filters"
+            :columns="table[activeTab].columns"
+            :fragments="false"
+            :hider="false"
+            quantity
+            @row-click="onRowClick"
+            @selection-change="handleSelectionChange"
+          >
+            <el-table-column
+              type="selection"
+              fixed="left"
+              width="55"
+            />
+          </table-layout>
+          <link-modal
+            :id="client.id"
+            :items="selectedItems"
+            :name="client.name"
+            :link="true"
+          />
+        </el-tab-pane>
+      </el-tabs>
     </el-card>
   </main-layout>
 </template>
@@ -216,111 +173,49 @@ export default {
     padding: var(--size-card-spacing);
   }
 
+  .backButton {
+    position: absolute;
+    left: 0;
+    padding: .2rem !important;
+    border-color: var(--color-primary);
+    border-width: 2px;
+
+    i {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--color-primary);
+    }
+  }
+
   .card {
     width: 100%;
     margin: 0 0 1.25rem;
   }
 
-  .logo {
-    margin-right: 5rem;
-  }
-
   .table {
     padding: 0;
+    margin-bottom: rem(16px);
     border: none;
-  }
-
-  .logo-image {
-    width: auto;
-    max-width: 20rem;
-    height: auto;
-    max-height: 7rem;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    object-fit: contain;
-  }
-
-  .logo-change {
-    margin: 1.5rem 0 -1rem;
-    text-align: center;
-  }
-
-  .logo-change-btn {
-    padding: 0;
-    font-size: 1rem;
-  }
-
-  .client-feeds-item {
-    display: inline-flex;
-
-    &:not(:last-child) {
-      margin-right: .25rem;
-      &:after {
-        content: ',';
-      }
-    }
-  }
-
-  .form {
-    display: flex;
-    width: 100%;
-  }
-
-  .form-inner {
-    display: flex;
-    width: 100%;
-  }
-
-  .form-inner-left {
-    width: calc(100% - 10rem);
-  }
-
-  .form-inner-right {
-    flex-shrink: 0;
-    width: 10rem;
-    text-align: right;
-  }
-
-  .form-row {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    min-height: 2.5rem;
-  }
-
-  .form-row-label {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    align-self: flex-start;
-    width: 8rem;
-    height: 2.5rem;
-  }
-
-  .form-row-value, .form-row-field {
-    width: calc(100% - 8rem);
-  }
-
-  .form-row-value {
-    padding-left: 75px;
-  }
-
-  .form-feeds {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: .6rem;
-
-    :global {
-      .el-checkbox {
-        margin: 0 .6rem .6rem 0 !important;
-
-        &__label {
-          padding-left: .5rem;
-        }
-      }
-    }
+    box-shadow: none !important;
   }
 
   .view-details-btn {
     font-weight: 600;
   }
+
+  .tabs {
+    :global {
+      .el-tabs__header {
+        padding: 0 var(--size-card-spacing) calc(var(--size-card-spacing) / 2);
+      }
+    }
+  }
+
+  .buttonWrapper {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding: rem(0 48px 16px 0);
+  }
+
 </style>
