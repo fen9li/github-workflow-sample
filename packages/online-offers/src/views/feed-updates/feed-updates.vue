@@ -100,12 +100,14 @@ export default {
       this.getFeeds()
     },
     onCellClick(row, column, event) {
-      this.$router.push({
-        name: 'feed-details',
-        params: {
-          id: row.external_id,
-        },
-      })
+      if (this.activeTab === 'merchants') {
+        this.$router.push({
+          name: 'feed-details',
+          params: {
+            id: row.external_id,
+          },
+        })
+      }
     },
   },
 }

@@ -76,7 +76,7 @@ const TABLE_COLUMNS_OFFERS = [
   },
   {
     name: 'payload.offerdescription',
-    label: 'Offer description',
+    label: 'Offer Name',
     icon: 'el-icon-document',
     width: 200,
   },
