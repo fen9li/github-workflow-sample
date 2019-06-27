@@ -15,27 +15,31 @@ export default {
   },
   computed: {
     activated() {
-      return this.row.enabled
+      return this.row.status === 'active'
     },
   },
   methods: {
-    ...mapActions('merchants', [
-      'activateMerchant',
+    ...mapActions('offers', [
+      'createOffer',
     ]),
-    ...mapMutations('merchants', {
+    ...mapMutations('offers', {
       updateTable: 'UPDATE_TABLE',
     }),
-    onSubmit() {
-      this.activateMerchant({
-        merchantId: this.row.id,
-      }).then(response => {
+    async onSubmit() {
+      const [error, response] = await this.createOffer({
+        feed_offer: this.row.external_id,
+      })
+      if (response) {
         this.$notify({
           type: 'success',
           title: 'Success',
           message: 'Successfuly activated',
         })
         this.updateTable()
-      })
+      }
+      if (error) {
+        console.error('Error while requesting data', error)
+      }
     },
   },
 }
@@ -47,7 +51,7 @@ export default {
       :class="$style.link"
       @click.stop.prevent="onSubmit"
     >
-      Activate
+      Create
     </div>
   </div>
 </template>

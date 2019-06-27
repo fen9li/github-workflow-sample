@@ -24,9 +24,8 @@ const TABLE_FILTERS_OFFERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'enabled',
-    label: 'Enabled',
-    type: 'string',
+    attribute: 'status',
+    type: 'boolean',
     icon: 'el-icon-document',
   },
   {
@@ -73,19 +72,23 @@ const TABLE_COLUMNS_OFFERS = [
     name: 'name',
     label: 'Merchant Name',
     icon: 'el-icon-document',
-    width: 300,
+    width: 200,
   },
   {
     name: 'payload.offerdescription',
-    label: 'Offer description',
+    label: 'Offer Name',
     icon: 'el-icon-document',
-    width: 300,
+    width: 200,
   },
   {
     name: 'created_at',
     label: 'Date created',
     icon: 'el-icon-date',
     format: 'date',
+  },
+  {
+    name: 'status',
+    icon: 'el-icon-document',
   },
   {
     sortable: false,

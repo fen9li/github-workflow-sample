@@ -1,17 +1,21 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import ui from './ui'
+import categories from './categories'
+import feedMerchants from './feed-merchants'
 import feeds from './feeds'
 import merchants from './merchants'
-import categories from './categories'
+import offers from './offers'
+import ui from './ui'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    ui,
+    categories,
+    feedMerchants,
     feeds,
     merchants,
-    categories,
+    offers,
+    ui,
   },
 })

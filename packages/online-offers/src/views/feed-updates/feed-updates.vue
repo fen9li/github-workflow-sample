@@ -25,6 +25,7 @@ export default {
   },
   computed: {
     ...mapGetters('merchants', ['tableUpdate']),
+    ...mapGetters('offers', ['tableOffersUpdate']),
     slug() {
       return this.$route.params.slug
     },
@@ -40,6 +41,9 @@ export default {
     tableUpdate() {
       this.getFeeds()
     },
+    tableOffersUpdate() {
+      this.getFeeds()
+    },
   },
   mounted() {
     this.activeTab = this.$route.params.tab || 'merchants'
@@ -51,11 +55,15 @@ export default {
   methods: {
     capitalize,
     ...mapMutations('merchants', {
-      updateTable: 'UPDATE_TABLE',
+      updateMerchantsTable: 'UPDATE_TABLE',
+    }),
+    ...mapMutations('offers', {
+      updateOffersTable: 'UPDATE_TABLE',
     }),
     ...mapActions('categories', ['getCategories']),
     getFeeds() {
-      this.updateTable(false)
+      this.updateMerchantsTable(false)
+      this.updateOffersTable(false)
       this.table.processor = new ApiProcessor({
         component: this,
         path: this.path,
@@ -92,12 +100,14 @@ export default {
       this.getFeeds()
     },
     onCellClick(row, column, event) {
-      this.$router.push({
-        name: 'feed-details',
-        params: {
-          id: row.external_id,
-        },
-      })
+      if (this.activeTab === 'merchants') {
+        this.$router.push({
+          name: 'feed-details',
+          params: {
+            id: row.external_id,
+          },
+        })
+      }
     },
   },
 }
