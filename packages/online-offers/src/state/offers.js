@@ -15,16 +15,32 @@ const mutations = {
 }
 
 const actions = {
-  async getOffer({ commit }, id) {
+  async getOffer({
+    commit
+  }, id) {
     const [, result] = await api.get(`/offers/${id}`)
     return result
   },
 
-  async createOffer({ commit }, payload) {
+  async createOffer({
+    commit
+  }, payload) {
     return await api.post('/offers', payload)
   },
-  async updateOffer({ commit }, { id, payload }) {
+
+  async updateOffer({
+    commit
+  }, {
+    id,
+    payload
+  }) {
     return await api.put(`/offers/${id}`, payload)
+  },
+
+  async deleteOffer({
+    commit
+  }, id) {
+    return await api.delete(`/offers/${id}`)
   },
 }
 
