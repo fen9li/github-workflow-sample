@@ -7,8 +7,8 @@ export default {
     title: 'Customer Subscriptions',
   },
   props: {
-    customerDetails: {
-      type: Object,
+    id: {
+      type: String,
       required: true,
     },
   },
@@ -19,11 +19,6 @@ export default {
         add: false,
       },
     }
-  },
-  computed: {
-    customerId() {
-      return this.customerDetails.id
-    },
   },
   methods: {
     onRowClick(row) {

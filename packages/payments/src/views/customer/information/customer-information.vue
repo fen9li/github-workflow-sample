@@ -13,6 +13,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    loading: {
+      type: Boolean,
+      required: true,
+    },
   },
   data() {
     return {
@@ -26,7 +30,7 @@ export default {
 </script>
 
 <template>
-  <el-card>
+  <el-card v-loading="loading">
     <el-row
       slot="header"
       type="flex"
@@ -36,18 +40,15 @@ export default {
       <span>Information</span>
     </el-row>
 
-    <dl class="datalist">
+    <dl
+      v-if="customer.id"
+      class="datalist"
+    >
       <dt>Date Created</dt>
       <dd>{{ customer.created_at | dateTime }}</dd>
 
       <dt>Customer ID</dt>
       <dd>{{ customer.id }}</dd>
-
-      <dt>Company Name</dt>
-      <dd>{{ customer.companyName || '-' }}</dd>
-
-      <dt>Company ABN</dt>
-      <dd>{{ customer.companyAbn || '-' }}</dd>
 
       <dt>First Name</dt>
       <dd>{{ customer.first_name }}</dd>
@@ -59,7 +60,7 @@ export default {
       <dd>{{ customer.email }}</dd>
 
       <dt>Telephone</dt>
-      <dd>{{ customer.mobile }}</dd>
+      <dd>{{ customer.mobile || '-' }}</dd>
 
       <dt>Address</dt>
       <dd>{{ customer.address || '-' }}</dd>

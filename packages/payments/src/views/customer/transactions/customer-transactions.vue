@@ -7,8 +7,8 @@ export default {
     title: 'Customer Transactions',
   },
   props: {
-    customerDetails: {
-      type: Object,
+    id: {
+      type: String,
       required: true,
     },
   },
@@ -16,11 +16,6 @@ export default {
     return {
       table: table(this),
     }
-  },
-  computed: {
-    customerId() {
-      return this.customerDetails.id
-    },
   },
   methods: {
     onRowClick(row) {

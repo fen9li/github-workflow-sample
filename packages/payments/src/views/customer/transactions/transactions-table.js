@@ -8,7 +8,7 @@ const TABLE_FILTERS = [
     icon: 'el-icon-date',
   },
   {
-    attribute: 'action',
+    attribute: 'type',
     label: 'Type',
     type: 'string',
     icon: 'el-icon-document',
@@ -59,16 +59,15 @@ const TABLE_COLUMNS = [
     name: 'createdAt',
     label: 'Date',
     icon: 'el-icon-document',
-    format: 'dayMonthYear',
+    format: 'dateTime',
   },
   {
-    name: 'action',
-    label: 'Type',
+    name: 'type',
     icon: 'el-icon-document',
     format: 'capital',
   },
   {
-    name: 'amount',
+    name: 'amount.total',
     label: 'Amount',
     icon: 'el-icon-document',
     format: 'dollar',
@@ -96,49 +95,38 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'status',
-    label: 'Status',
     icon: 'el-icon-document',
     format: 'capital',
     component: {
       props: {
         styleObj(val) {
           switch (val) {
-            case 'pending':
-              return { color: '#fbb241' }
-            case 'finalised':
-              return { color: '#29d737' }
-            case 'failed':
-              return { color: '#fc7168' }
-            case 'refunded':
-              return { color: '#fc7168' }
-            default:
-              return {}
+            case 'pending': return { color: '#fbb241' }
+            case 'completed': return { color: '#29d737' }
+            case 'failed': return { color: '#fc7168' }
+            case 'refunded': return { color: '#fc7168' }
+            default: return {}
           }
         },
         badge(val) {
           switch (val) {
-            case 'pending':
-              return {
-                name: 'el-icon-time',
-                pos: 'left',
-              }
-            case 'finalised':
-              return {
-                name: 'el-icon-check',
-                pos: 'left',
-              }
-            case 'failed':
-              return {
-                name: 'el-icon-close',
-                pos: 'left',
-              }
-            case 'refunded':
-              return {
-                name: 'el-icon-refresh',
-                pos: 'left',
-              }
-            default:
-              return {}
+            case 'pending': return {
+              name: 'el-icon-time',
+              pos: 'left',
+            }
+            case 'completed': return {
+              name: 'el-icon-check',
+              pos: 'left',
+            }
+            case 'failed': return {
+              name: 'el-icon-close',
+              pos: 'left',
+            }
+            case 'refunded': return {
+              name: 'el-icon-refresh',
+              pos: 'left',
+            }
+            default: return {}
           }
         },
       },
@@ -155,7 +143,7 @@ export default function(component) {
         filters: [
           {
             attribute: 'customerId',
-            value: component.customerId,
+            value: component.id,
           },
         ],
       },

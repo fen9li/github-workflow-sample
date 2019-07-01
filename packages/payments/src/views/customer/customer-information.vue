@@ -19,8 +19,12 @@ export default {
       type: String,
       required: true,
     },
-    customerDetails: {
+    customer: {
       type: Object,
+      required: true,
+    },
+    loading: {
+      type: Boolean,
       required: true,
     },
   },
@@ -33,7 +37,7 @@ export default {
     }
   },
   computed: {
-    customer() {
+    customerMock() {
       return MockData.information
     },
   },
@@ -45,14 +49,17 @@ export default {
     <el-card class="card-no-padding">
       <information
         class="card-inline"
-        :customer="customerDetails"
+        :customer="customer"
+        :loading="loading"
       />
 
       <hr :class="['divider-primary', $style.divider]">
 
+      <!-- TODO: Replace with real data-->
       <payment-methods
         class="card-inline"
         :customer="customer"
+        :loading="loading"
       />
     </el-card>
   </div>

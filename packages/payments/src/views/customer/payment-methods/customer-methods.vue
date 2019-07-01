@@ -9,6 +9,16 @@ export default {
     AddModal,
     DeleteModal,
   },
+  props: {
+    loading: {
+      type: Boolean,
+      required: true,
+    },
+    customer: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
       methodToRemove: null,
@@ -34,7 +44,9 @@ export default {
 </script>
 
 <template>
-  <el-card>
+  <el-card
+    v-loading="loading"
+  >
     <el-row
       slot="header"
       type="flex"
@@ -55,7 +67,10 @@ export default {
       </el-row>
     </el-row>
 
-    <div :class="$style.cards">
+    <div
+      v-if="methods.length"
+      :class="$style.cards"
+    >
       <div
         v-for="(method, idx) in methods"
         :key="idx"
@@ -99,7 +114,10 @@ export default {
         />
       </div>
     </div>
-    <add-modal :visible.sync="modal.add" />
+    <add-modal
+      :visible.sync="modal.add"
+      :customer="customer"
+    />
     <delete-modal
       v-if="methodToRemove"
       :visible="true"

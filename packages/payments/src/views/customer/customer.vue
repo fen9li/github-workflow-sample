@@ -1,8 +1,8 @@
 <script>
 import appConfig from '~/app.config'
-import MockData from '@tests/__fixtures__/customer'
 import AddProduct from './products/product-add'
 import AddSubscription from './subscriptions/subscription-add'
+import formatMethod from '@lib/utils/format-payment-method'
 
 export default {
   name: 'CustomerProfile',
@@ -26,22 +26,11 @@ export default {
         addSubscription: false,
         addProduct: false,
       },
-      customerDetails: {
-        address: '',
-        created_at: '',
-        email: '',
-        enabled: '',
-        first_name: '',
-        id: '',
-        last_name: '',
-        mobile: '',
-      },
+      customer: {},
+      loading: false,
     }
   },
   computed: {
-    subscription() {
-      return MockData.information
-    },
     tabs() {
       return [
         {
@@ -65,20 +54,34 @@ export default {
       ]
     },
     title() {
-      return this.customerDetails.first_name + ' ' + this.customerDetails.last_name
+      return `${this.customer.first_name || ''} ${this.customer.last_name || ''}`
     },
     subtitle() {
-      return 'Customer ID ' + this.customerDetails.id
+      return 'Customer ID ' + this.customer.id
     },
   },
   created() {
-    this.getInformation()
+    this.getInformation().then(() => {
+      this.adjustPaymentMethods()
+    })
   },
   methods: {
     async getInformation() {
+      this.loading = true
       const [, response] = await this.$api.get(`/customers/${this.id}`)
 
-      this.customerDetails = { ...this.customerDetails, ...response }
+      this.customer = { ...response, fullName: `${response.first_name} ${response.last_name} ` }
+      this.loading = false
+      return response
+    },
+    adjustPaymentMethods() {
+      const { endpoints } = this.customer
+
+      if (endpoints) {
+        this.customer.paymentMethods = endpoints.map(item => {
+          return { value: item.pan, label: formatMethod(item) }
+        })
+      }
     },
   },
 }
@@ -112,36 +115,50 @@ export default {
           Add Product
         </el-button>
       </div>
-      <div :class="$style.balance">
+      <div
+        v-loading="loading"
+        :class="$style.balance"
+      >
         <div :class="$style.owing">
           <small :class="$style.balanceLabel">
             Amount Owing
           </small>
-          <strong :class="$style.balanceCount">
-            {{ subscription.owing | dollar }}
+          <strong
+            v-if="!loading"
+            :class="$style.balanceCount"
+          >
+            {{ customer.total_amount_outstanding | dollar }}
           </strong>
         </div>
         <div :class="$style.total">
           <small :class="$style.balanceLabel">
             Total Amount Transacted
           </small>
-          <strong :class="$style.balanceCount">
-            {{ subscription.total | dollar }}
+          <strong
+            v-if="!loading"
+            :class="$style.balanceCount"
+          >
+            {{ customer.total_amount_transacted | dollar }}
           </strong>
         </div>
       </div>
     </div>
 
-    <router-view :customer-details="customerDetails" />
+    <router-view
+      :customer="customer"
+      :loading="loading"
+    />
 
     <add-product
       v-if="modals.addProduct"
       :visible.sync="modals.addProduct"
+      :customer="customer"
     />
 
     <add-subscription
       v-if="modals.addSubscription"
       :visible.sync="modals.addSubscription"
+      :customer="customer"
     />
   </main-layout>
 </template>

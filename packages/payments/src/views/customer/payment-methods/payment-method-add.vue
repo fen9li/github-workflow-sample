@@ -8,7 +8,7 @@ export default {
   },
   inheritAttrs: false,
   props: {
-    subscription: {
+    customer: {
       type: Object,
       default: () => ({}),
     },
@@ -22,17 +22,23 @@ export default {
           number: '',
         },
         card: {
-          name: '',
-          number: '',
-          expiry: '',
-          cvv: '',
+          name: '1',
+          number: '1111 1111 1111',
+          expiry: '11/20',
+          cvv: '111',
         },
       },
     }
   },
   methods: {
-    onSave() {
-      this.$emit('update:visible', false)
+    async onSave() {
+      const requestData = {
+        token: '6G2CTP82HK37AZYJHW78',
+      }
+
+      const [error, response] = await this.$api.post(`/customers/${this.customer.id}/tokens`, requestData)
+      // this.$emit('update:visible', false)
+      console.warn(error, response)
     },
     updateValue({ fieldName, type, newVal }) {
       this.form[type][fieldName] = newVal

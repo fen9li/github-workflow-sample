@@ -63,33 +63,33 @@ const TABLE_COLUMNS = [
       name: 'date',
       params: ['DD/MM/YYYY hh:mm A'],
     },
-    width: 90,
+    width: 160,
   },
   {
     name: 'id',
     label: 'Customer ID',
     type: 'string',
-    width: 90,
+    width: 140,
   },
   {
     name: 'firstName',
     type: 'string',
-    width: 100,
+    width: 140,
   },
   {
     name: 'lastName',
     type: 'string',
-    width: 100,
+    width: 140,
   },
   {
     name: 'email',
     type: 'string',
-    width: 130,
+    width: 200,
   },
   {
     name: 'mobile',
     type: 'string',
-    width: 100,
+    width: 140,
   },
   {
     name: 'status',
@@ -101,7 +101,7 @@ const TABLE_COLUMNS = [
     component: {
       is: 'cell-activity',
     },
-    width: 50,
+    width: 120,
   },
 ]
 

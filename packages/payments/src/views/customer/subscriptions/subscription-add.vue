@@ -1,23 +1,36 @@
 <script>
 import paymentFormItem from '../payment-methods/payment-form-item'
+import ElasticProcessor from '@lib/processors/elastic-processor'
 
 export default {
   name: 'CustomerDetailsAddSubscription',
   components: {
     paymentFormItem,
   },
+  props: {
+    customer: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
-      dialogVisible: false,
       showAddMethodForm: false,
-      subscriptionForm: {
-        customerName: 'Mary Gregov',
-        startDate: '',
-        endDate: '',
-        subscriptionProduct: '',
-        pricingPlan: '',
+      form: {
+        start_at: '',
+        end_at: '',
+        product: '',
+        frequency: '',
         coupon: '',
-        selectedMethod: 1,
+        selectedMethod: '',
+      },
+      productsData: {
+        data: [],
+        loading: true,
+      },
+      couponsData: {
+        date: [],
+        loading: true,
       },
       paymentMethods: [
         {
@@ -29,28 +42,77 @@ export default {
           label: '**** 7493 ',
         },
       ],
-      rules: {},
+      rules: {
+        start_at: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+        product: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+        frequency: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+      },
     }
   },
   computed: {
     displayMethodForm() {
-      return this.paymentMethods.length === 0 || this.showAddMethodForm
+      return this.customer.paymentMethods.length === 0 || this.showAddMethodForm
     },
+    allProducts() {
+      return this.productsData.data.map(product => {
+        return { value: product.id, label: product.name }
+      })
+    },
+    allCoupons() {
+      return this.couponsData.data.map(coupon => {
+        return { value: coupon.code, label: coupon.name }
+      })
+    },
+  },
+  created() {
+    this.getProductsCoupons()
   },
   methods: {
     onSubmit() {
       this.showAddMethodForm = false
       this.$refs.form.validate(valid => {
+        console.warn(this.form)
+
+        // Add method here
+
         if (valid) {
           this.$notify({
             type: 'success',
             title: 'Success',
             message: 'Subscription successfully added.',
           })
-          this.$emit('update:visible', false)
+          // this.$emit('update:visible', false)
         } else {
           return false
         }
+      })
+    },
+    getProductsCoupons() {
+      this.productsData = new ElasticProcessor({
+        component: this,
+        index: 'subscription-products',
+      })
+      this.couponsData = new ElasticProcessor({
+        component: this,
+        index: 'coupons',
       })
     },
   },
@@ -61,13 +123,14 @@ export default {
   <div>
     <el-dialog
       title="Add Subscription"
+      :custom-class="$style.wrapper"
       v-bind="$attrs"
       v-on="$listeners"
     >
       <el-form
         ref="form"
         label-position="top"
-        :model="subscriptionForm"
+        :model="form"
         :rules="rules"
         :class="[$style.form]"
       >
@@ -75,8 +138,8 @@ export default {
           label="Customer"
         >
           <el-input
-            v-model="subscriptionForm.customerName"
-            :disabled="true"
+            :value="customer.fullName"
+            disabled
           />
         </el-form-item>
 
@@ -84,10 +147,10 @@ export default {
         <el-col :span="11">
           <el-form-item
             label="Start Date"
-            required
+            prop="start_at"
           >
             <el-date-picker
-              v-model="subscriptionForm.startDate"
+              v-model="form.start_at"
               type="date"
               placeholder="Enter Date"
             />
@@ -102,10 +165,9 @@ export default {
         <el-col :span="11">
           <el-form-item
             label="End Date"
-            required
           >
             <el-date-picker
-              v-model="subscriptionForm.endDate"
+              v-model="form.end_at"
               type="date"
               placeholder="Enter Date"
             />
@@ -114,56 +176,59 @@ export default {
 
         <el-form-item
           label="Subscription Product"
-          prop="subscriptionProduct"
+          prop="product"
           required
         >
           <el-select
-            v-model="subscriptionForm.subscriptionProduct"
+            v-model="form.product"
+            v-loading="productsData.loading"
             placeholder="Please select"
           >
             <el-option
-              value="1"
-              label="Subscription Product 1"
-            />
-            <el-option
-              value="2"
-              label="Subscription Product 2"
+              v-for="product in allProducts"
+              :key="product.value"
+              :value="product.value"
+              :label="product.label"
             />
           </el-select>
         </el-form-item>
 
         <el-form-item
-          label="Pricing Plan"
-          prop="pricingPlan"
+          label="Frequency"
+          prop="frequency"
           required
         >
           <el-select
-            v-model="subscriptionForm.pricingPlan"
+            v-model="form.frequency"
             placeholder="Please select"
           >
             <el-option
-              value="1"
-              label="Pricing Plan 1"
+              label="Monthly"
+              value="P1M"
             />
             <el-option
-              value="2"
-              label="Pricing Plan 2"
+              label="Yearly"
+              value="P1Y"
+            />
+            <el-option
+              label="Quarterly"
+              value="P3M"
             />
           </el-select>
         </el-form-item>
 
         <el-form-item
           label="Coupon"
-          prop="coupon"
         >
-          <el-select v-model="subscriptionForm.coupon">
+          <el-select
+            v-model="form.coupon"
+            v-loading="couponsData.loading"
+          >
             <el-option
-              value="1"
-              label="Coupon 1"
-            />
-            <el-option
-              value="2"
-              label="Coupon 2"
+              v-for="coupon in allCoupons"
+              :key="coupon.id"
+              :value="coupon.value"
+              :label="coupon.label"
             />
           </el-select>
         </el-form-item>
@@ -171,11 +236,11 @@ export default {
         <hr :class="['divider-primary', $style.divider]">
 
         <payment-form-item
-          :selected-method="subscriptionForm.selectedMethod"
-          :payment-methods="paymentMethods"
+          :selected-method="form.selectedMethod"
+          :payment-methods="customer.paymentMethods"
           :display-form="displayMethodForm"
           @showForm="showAddMethodForm = $event"
-          @changeMethod="subscriptionForm.selectedMethod = $event"
+          @changeMethod="form.selectedMethod = $event"
         />
       </el-form>
       <el-button
@@ -191,8 +256,8 @@ export default {
 </template>
 
 <style lang="scss" module>
-.customerName {
-  font-size: 1rem;
+.wrapper {
+  width: 32rem;
 }
 
 .save {

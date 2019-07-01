@@ -1,6 +1,7 @@
 <script>
 import { mask } from 'vue-the-mask'
 import paymentFormItem from '../payment-methods/payment-form-item'
+import ElasticProcessor from '@lib/processors/elastic-processor'
 
 export default {
   name: 'CustomerDetailsAddProductModal',
@@ -10,33 +11,61 @@ export default {
   directives: {
     mask,
   },
+  props: {
+    customer: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
       showAddMethodForm: false,
-      productForm: {
-        customerName: 'Mary Gregov',
-        singleProduct: '1',
-        amount: '10.00',
-        currency: 'aud',
-        selectedMethod: 1,
+      form: {
+        product: '',
+        amount: '',
+        selectedMethod: '',
       },
-      paymentMethods: [
-        {
-          value: 1,
-          label: '**** 7493 MasterCard',
-        },
-        {
-          value: 2,
-          label: '**** 8888 Visa',
-        },
-      ],
-      rules: {},
+      productsData: {
+        data: [],
+        loading: true,
+      },
+      rules: {
+        product: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+        amount: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+        selectedMethod: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+      },
     }
   },
   computed: {
     displayMethodForm() {
-      return this.paymentMethods.length === 0 || this.showAddMethodForm
+      return this.customer.paymentMethods.length === 0 || this.showAddMethodForm
     },
+    allProducts() {
+      return this.productsData.data.map(product => {
+        return { value: product.id, label: product.name }
+      })
+    },
+  },
+  created() {
+    this.getProductsCoupons()
   },
   methods: {
     onSubmit() {
@@ -48,10 +77,16 @@ export default {
             title: 'Success',
             message: 'Product successfully added.',
           })
-          this.$emit('update:visible', false)
+          // this.$emit('update:visible', false)
         } else {
           return false
         }
+      })
+    },
+    getProductsCoupons() {
+      this.productsData = new ElasticProcessor({
+        component: this,
+        index: 'single-products',
       })
     },
   },
@@ -67,7 +102,7 @@ export default {
     >
       <el-form
         ref="form"
-        :model="productForm"
+        :model="form"
         :rules="rules"
         label-position="top"
         :class="[$style.form]"
@@ -76,69 +111,72 @@ export default {
           label="Customer"
         >
           <el-input
-            v-model="productForm.customerName"
-            :disabled="true"
+            :value="customer.fullName"
+            disabled
           />
         </el-form-item>
 
         <el-form-item
           label="Single Product"
-          required
+          prop="product"
         >
           <el-select
-            v-model="productForm.singleProduct"
+            v-model="form.product"
+            v-loading="productsData.loading"
             placeholder="Please select"
           >
             <el-option
-              value="1"
-              label="T-shirt size M - Black"
-            />
-            <el-option
-              value="2"
-              label="T-shirt size S - Blue"
+              v-for="product in allProducts"
+              :key="product.value"
+              :value="product.value"
+              :label="product.label"
             />
           </el-select>
         </el-form-item>
 
         <el-form-item
           label="Amount"
-          :class="$style.formItem"
-          required
+          prop="amount"
         >
-          <el-input
-            v-model="productForm.amount"
-            v-mask="['#.##', '##.##', '###.##']"
-            :class="$style.amountValue"
-            placeholder="$0.00"
+          <div
+            prop="amount"
+            class="amount-form-item"
           >
-            <template #prepend>
-              $
-            </template>
-            <el-select
-              slot="append"
-              v-model="productForm.currency"
-              :class="$style.amountSelect"
+            <el-form-item
+              prop="amount"
             >
-              <el-option
-                label="AUD"
-                value="aud"
-              />
-              <el-option
-                label="USD"
-                value="usd"
-              />
-            </el-select>
-          </el-input>
+              <el-input
+                v-model="form.amount"
+                v-mask="[
+                  '#.##',
+                  '##.##',
+                  '###.##',
+                  '####.##',
+                  '#####.##'
+                ]"
+                placeholder="$0.00"
+              >
+                <template #prepend>
+                  $
+                </template>
+              </el-input>
+            </el-form-item>
+            <el-select
+              value=""
+              disabled
+              placeholder="AUD"
+            />
+          </div>
         </el-form-item>
 
         <hr :class="['divider-primary', $style.divider]">
 
         <payment-form-item
-          :selected-method="productForm.selectedMethod"
-          :payment-methods="paymentMethods"
+          :selected-method="form.selectedMethod"
+          :payment-methods="customer.paymentMethods"
           :display-form="displayMethodForm"
           @showForm="showAddMethodForm = $event"
-          @changeMethod="productForm.selectedMethod = $event"
+          @changeMethod="form.selectedMethod = $event"
         />
       </el-form>
       <el-button
@@ -154,23 +192,6 @@ export default {
 </template>
 
 <style lang="scss" module>
-.customerName {
-  font-size: 1rem;
-}
-
-.amountBlock {
-  display: flex;
-  align-items: flex-end;
-}
-
-.amountValue {
-  //
-}
-
-.amountSelect {
-  width: 6rem;
-}
-
 .save {
   display: block;
   margin: 0 auto;

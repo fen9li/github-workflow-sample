@@ -1,8 +1,7 @@
 <script>
 import appConfig from '~/app.config'
 import amountCharge from './information/modals/subscription-charge'
-import capitalize from 'lodash/capitalize'
-
+import formatMethod from '@lib/utils/format-payment-method'
 
 export default {
   name: 'SubscriptionsDetails',
@@ -37,7 +36,7 @@ export default {
 
       if (endpoints) {
         return endpoints.map(item => {
-          return { value: item.pan, label: this.formatMethod(item) }
+          return { value: item.pan, label: formatMethod(item) }
         })
       } else {
         return []
@@ -83,9 +82,6 @@ export default {
       if (response) {
         this.customer = { ...response, fullName: `${response.first_name} ${response.last_name}` }
       }
-    },
-    formatMethod(method) {
-      return `*** ${method.pan.toString().slice(-4)} ${capitalize(method.type)}`
     },
   },
 }

@@ -1,5 +1,5 @@
 import ElasticProcessor from '@lib/processors/elastic-processor'
-import CustomerInformationCharge from './customer-charge.vue'
+// import CustomerInformationCharge from './customer-charge.vue'
 
 const TABLE_FILTERS = [
   {
@@ -77,9 +77,7 @@ const TABLE_COLUMNS = [
     name: 'startAt',
     icon: 'el-icon-document',
     label: 'Start Date',
-    format: {
-      name: 'dayMonthYear',
-    },
+    format: 'date',
     width: 120,
   },
   {
@@ -100,25 +98,42 @@ const TABLE_COLUMNS = [
     name: 'currentInterval',
     label: 'Frequency',
     icon: 'el-icon-document',
-    width: 190,
+    width: 90,
+    format: 'capital',
+    component: {
+      props: {
+        format(value) {
+          switch (value) {
+            case 'P1m': return 'Monthly'
+            case 'P3m': return 'Quarterly'
+            case 'P1y': return 'Yearly'
+          }
+        },
+      },
+    },
   },
   {
     name: 'nextBilledAt',
     label: 'Next Billing Date',
     icon: 'el-icon-document',
-    format: {
-      name: 'dayMonthYear',
-    },
-    width: 120,
+    format: 'date',
+    width: 140,
   },
   {
-    name: 'outstandingBalance',
+    name: 'outstandingBalance.total',
     label: 'Amount Owing',
+    format: 'dollar',
     overflowTooltip: false,
-    component: (_, __, { row }) => ({
-      is: CustomerInformationCharge,
-      props: { row },
-    }),
+    component: {
+      props: {
+        styleObj(val) {
+          if (val > 0) {
+            return { color: '#fc7168' }
+          }
+          return {}
+        },
+      },
+    },
     width: 140,
   },
   {
@@ -144,8 +159,7 @@ export default function(component) {
         filters: [
           {
             attribute: 'customerId',
-            comparison: 'eq',
-            value: component.customerId,
+            value: component.id,
           },
         ],
       },
