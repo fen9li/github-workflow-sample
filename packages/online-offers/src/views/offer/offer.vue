@@ -1,15 +1,88 @@
 <script>
 import { mapActions } from 'vuex'
 import get from 'lodash/get'
+import { formatDate } from '@lib/utils/format-date'
+import RemoveModal from './remove-offer-modal'
 
 export default {
   name: 'Offer',
+  components: {
+    RemoveModal,
+  },
   data() {
     return {
       isEdit: false,
       switcher: false,
       offer: {},
       form: {},
+      modals: {
+        remove: false,
+      },
+      mapValues: {
+        name: 'name',
+        code: 'feed_offer.payload.DefaultPromoCode',
+        start_date: 'feed_offer.payload.StartDate',
+        end_date: 'feed_offer.payload.EndDate',
+        description: 'description',
+        terms: 'terms',
+      },
+      feedOffers: [
+        {
+          title: 'Updated-commission-factory',
+          selected: false,
+          name: {
+            selected: false,
+            value: '10% off first purchase',
+          },
+          code: {
+            selected: false,
+            value: 'HB2819',
+          },
+          start_date: {
+            selected: false,
+            value: '2019-06-30T00:00:00+10:00',
+          },
+          end_date: {
+            selected: false,
+            value: '2019-08-10T00:00:00+10:00',
+          },
+          description: {
+            selected: false,
+            value: 'test description',
+          },
+          terms: {
+            selected: false,
+            value: 'test terms',
+          },
+        }, {
+          title: 'Updated-commission-factory 2',
+          selected: false,
+          name: {
+            selected: false,
+            value: '15% off first purchase',
+          },
+          code: {
+            selected: false,
+            value: 'WD1545',
+          },
+          start_date: {
+            selected: false,
+            value: '2019-09-10T00:00:00+10:00',
+          },
+          end_date: {
+            selected: false,
+            value: '2019-11-10T00:00:00+10:00',
+          },
+          description: {
+            selected: false,
+            value: 'test description test description test description test description test description',
+          },
+          terms: {
+            selected: false,
+            value: 'test terms test terms test terms test terms test terms',
+          },
+        },
+      ],
     }
   },
   computed: {
@@ -23,12 +96,35 @@ export default {
       return get(this.offer, 'feed_offer.payload', {})
     },
   },
+  watch: {
+    offer(val) {
+      this.offerToForm()
+    },
+  },
   async mounted() {
     this.offer = await this.getOffer(this.id)
-    this.switcher = this.feedOffer.enabled
+    this.switcher = this.offer.enabled
   },
   methods: {
-    ...mapActions('offers', ['getOffer', 'updateOffer', 'deleteOffer']),
+    ...mapActions('offers', [
+      'getOffer',
+      'updateOffer',
+      'deleteOffer',
+    ]),
+    formatDate(value, format) {
+      return formatDate(value, format || 'DD/MM/YYYY')
+    },
+    offerToForm() {
+      const newForm = {}
+
+      for (const key of Object.keys(this.mapValues)) {
+        newForm[key] = get(this.offer, this.mapValues[key], '')
+      }
+
+      newForm.baseline_url = get(this.offer, 'url', '')
+
+      this.form = newForm
+    },
     async onSwitch() {
       const [, response] = await this.updateOffer({
         id: this.id,
@@ -44,6 +140,83 @@ export default {
           message: `Merchant status sussessfully changed to ${this.switcher ? 'enabled' : 'disabled'}`,
         })
       }
+    },
+    async updateOffer() {
+      // const [, response] = await this.updateOffer({
+      //   id: this.id,
+      //   payload: {
+      //     enabled: this.switcher,
+      //   },
+      // })
+      // console.log(response)
+    },
+    changeValue(checked, type, index) {
+      if (checked) {
+        this.feedOffers.forEach((feed, i) => {
+          if (index === i) {
+            this.form[type] = feed[type].value
+          } else {
+            feed[type].selected = false
+            feed.selected = false
+          }
+        })
+      } else {
+        this.form[type] = get(this.offer, this.mapValues[type], '')
+        this.feedOffers.forEach((feed, i) => {
+          feed[type].selected = false
+          feed.selected = false
+        })
+      }
+
+      this.checkSelectAll(index)
+    },
+    checkSelectAll(index) {
+      let isAllSelected = true
+
+      for (const key of Object.keys(this.mapValues)) {
+        if (!this.feedOffers[index][key].selected) {
+          isAllSelected = false
+          break
+        }
+      }
+
+      this.feedOffers[index].selected = isAllSelected
+    },
+    selectAll(checked, index) {
+      this.feedOffers.forEach((feed, i) => {
+        const isCurrent = index === i
+
+        for (const key of Object.keys(this.mapValues)) {
+          feed[key].selected = isCurrent && checked
+          feed.selected = isCurrent && checked
+          if (isCurrent) {
+            this.form[key] = feed[key].value
+          }
+        }
+      })
+    },
+    isDisabled(type) {
+      let disabled = false
+
+      for (const feed of this.feedOffers) {
+        if (feed[type].selected) {
+          disabled = true
+          break
+        }
+      }
+
+      return disabled
+    },
+    removeOffer(notes) {
+      this.modals.remove = false
+      // TODO: send notes
+      this.deleteOffer(this.offer.id)
+      this.$router.push('/offers')
+      this.$notify({
+        type: 'info',
+        title: 'Deleted',
+        message: 'Offer deleted successfully.',
+      })
     },
   },
 }
@@ -75,6 +248,7 @@ export default {
           >
             <el-input
               v-model="form.name"
+              :disabled="isDisabled('name')"
               placeholder="Name"
             />
           </el-form-item>
@@ -87,6 +261,7 @@ export default {
           >
             <el-input
               v-model="form.code"
+              :disabled="isDisabled('code')"
               placeholder="Coupon code"
             />
           </el-form-item>
@@ -97,8 +272,11 @@ export default {
             required
             :class="$style.columnStart"
           >
-            <el-input
+            <el-date-picker
               v-model="form.start_date"
+              type="date"
+              format="dd/MM/yyyy"
+              :disabled="isDisabled('start_date')"
             />
           </el-form-item>
 
@@ -108,8 +286,11 @@ export default {
             required
             :class="$style.columnEnd"
           >
-            <el-input
+            <el-date-picker
               v-model="form.end_date"
+              type="date"
+              format="dd/MM/yyyy"
+              :disabled="isDisabled('end_date')"
             />
           </el-form-item>
 
@@ -121,6 +302,7 @@ export default {
             <el-input
               v-model="form.description"
               type="textarea"
+              :disabled="isDisabled('description')"
             />
           </el-form-item>
 
@@ -133,6 +315,7 @@ export default {
             <el-input
               v-model="form.terms"
               type="textarea"
+              :disabled="isDisabled('terms')"
             />
           </el-form-item>
 
@@ -151,42 +334,94 @@ export default {
 
           <!-- Feeds part -->
 
-          <template>
-            <div :class="[$style.columnHeader, $style.columnFeedHeader]">
+          <template v-for="(feed, index) in feedOffers">
+            <div
+              :key="`all.${ index }`"
+              :class="[$style.columnHeader, $style.columnFeedHeader]"
+            >
               <div :class="$style.columnTitle">
-                Updated-commission-factory
+                {{ feed.title }}
               </div>
-              <el-checkbox label="Select All" />
+              <el-checkbox
+                v-model="feed.selected"
+                label="Select All"
+                @input="selectAll($event, index)"
+              />
             </div>
-            <div :class="[$style.columnName, $style.columnFeed]">
-              <el-checkbox label="Offer Name" />
-              <span>10% off first purchase</span>
+            <div
+              :key="`name.${ index }`"
+              :class="[$style.columnName, $style.columnFeed]"
+            >
+              <el-checkbox
+                v-model="feed.name.selected"
+                label="Offer Name"
+                @input="changeValue($event, 'name', index)"
+              />
+              <span>{{ feed.name.value }}</span>
             </div>
-            <div :class="[$style.columnCode, $style.columnFeed]">
-              <el-checkbox label="Coupon Code" />
-              <span>10% off first purchase</span>
+            <div
+              :key="`code.${ index }`"
+              :class="[$style.columnCode, $style.columnFeed]"
+            >
+              <el-checkbox
+                v-model="feed.code.selected"
+                label="Coupon Code"
+                @input="changeValue($event, 'code', index)"
+              />
+              <span>{{ feed.code.value }}</span>
             </div>
-            <div :class="[$style.columnStart, $style.columnFeed]">
-              <el-checkbox label="Start Date" />
-              <span>10% off first purchase</span>
+            <div
+              :key="`start.${ index }`"
+              :class="[$style.columnStart, $style.columnFeed]"
+            >
+              <el-checkbox
+                v-model="feed.start_date.selected"
+                label="Start Date"
+                @input="changeValue($event, 'start_date', index)"
+              />
+              <span>{{ formatDate(feed.start_date.value) }}</span>
             </div>
-            <div :class="[$style.columnEnd, $style.columnFeed]">
-              <el-checkbox label="End Date" />
-              <span>10% off first purchase</span>
+            <div
+              :key="`end.${ index }`"
+              :class="[$style.columnEnd, $style.columnFeed]"
+            >
+              <el-checkbox
+                v-model="feed.end_date.selected"
+                label="End Date"
+                @input="changeValue($event, 'end_date', index)"
+              />
+              <span>{{ formatDate(feed.end_date.value) }}</span>
             </div>
-            <div :class="[$style.columnDescription, $style.columnFeed]">
-              <el-checkbox label="Description" />
-              <span>10% off first purchase</span>
+            <div
+              :key="`description.${ index }`"
+              :class="[$style.columnDescription, $style.columnFeed]"
+            >
+              <el-checkbox
+                v-model="feed.description.selected"
+                label="Description"
+                @input="changeValue($event, 'description', index)"
+              />
+              <span>{{ feed.description.value }}</span>
             </div>
-            <div :class="[$style.columnTerms, $style.columnFeed]">
-              <el-checkbox label="Terms & Conditions" />
-              <span>10% off first purchase</span>
+            <div
+              :key="`terms.${ index }`"
+              :class="[$style.columnTerms, $style.columnFeed]"
+            >
+              <el-checkbox
+                v-model="feed.terms.selected"
+                label="Terms & Conditions"
+                @input="changeValue($event, 'terms', index)"
+              />
+              <span>{{ feed.terms.value }}</span>
             </div>
           </template>
         </div>
         <div :class="$style.footer">
           <div :class="$style.footerItem">
-            <el-button type="danger">
+            <el-button
+              type="danger"
+              @click="modals.remove = true"
+            >
               Remove Offer
             </el-button>
           </div>
@@ -194,7 +429,10 @@ export default {
             <el-button @click="isEdit = false">
               Cancel
             </el-button>
-            <el-button type="primary">
+            <el-button
+              type="primary"
+              @click="updateOffer"
+            >
               Update Offer
             </el-button>
           </div>
@@ -241,10 +479,10 @@ export default {
           <dd>{{ feedOffer.external_id || '-' }}</dd>
 
           <dt>Offer Created at</dt>
-          <dd>{{ offer.created_at || '-' }}</dd>
+          <dd>{{ formatDate(offer.created_at, 'DD/MM/YYYY hh:mm A') || '-' }}</dd>
 
           <dt>Offer Updated</dt>
-          <dd>{{ offer.updated_at || '-' }}</dd>
+          <dd>{{ formatDate(offer.updated_at, 'DD/MM/YYYY hh:mm A') || '-' }}</dd>
 
           <dt>Offer Name</dt>
           <dd>{{ offer.name || '-' }}</dd>
@@ -253,10 +491,10 @@ export default {
           <dd>{{ payload.DefaultPromoCode || '-' }}</dd>
 
           <dt>Offer Starts</dt>
-          <dd>{{ '-' }}</dd>
+          <dd>{{ formatDate(payload.StartDate) || '-' }}</dd>
 
           <dt>Offer Ends</dt>
-          <dd>{{ '-' }}</dd>
+          <dd>{{ formatDate(payload.EndDate) || '-' }}</dd>
 
           <dt>Description</dt>
           <dd>{{ offer.description || '-' }}</dd>
@@ -271,6 +509,11 @@ export default {
         <pre>{{ offer }}</pre>
       </div>
     </el-card>
+    <remove-modal
+      v-if="modals.remove"
+      :visible.sync="modals.remove"
+      @submit="removeOffer"
+    />
   </main-layout>
 </template>
 
@@ -337,6 +580,8 @@ export default {
 }
 
 .columnFeed {
+  display: flex;
+  flex-direction: column;
   padding-top: rem(24px);
   padding-left: rem(48px);
 
