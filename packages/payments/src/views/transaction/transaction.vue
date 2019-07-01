@@ -128,8 +128,8 @@ export default {
       v-if="transactionDetails"
       :class="$style.detailsBlock"
     >
-      <div :class="$style.wrap">
-        <span :class="$style.wrapTitle">
+      <div class="info-block">
+        <span class="info-block__title">
           General Information
         </span>
         <div
@@ -181,17 +181,17 @@ export default {
           <dd>{{ formatDate(transactionDetails.dateFinalised) }}</dd>
         </dl>
       </div>
-      <hr :class="['divider-primary', $style.divider]">
+      <hr :class="['divider-primary', 'info-block__divider']">
 
-      <div :class="$style.flexWrap">
-        <div :class="$style.wrap">
-          <span :class="$style.wrapTitle">
+      <div class="info-block__wrapper">
+        <div class="info-block">
+          <span class="info-block__title">
             Customer Details
           </span>
 
           <dl
             v-if="transactionDetails.customerIntegrationId"
-            :class="['datalist', $style.list, $style.flexList]"
+            :class="['datalist', 'info-block__flex-list']"
           >
             <dt>Customer ID</dt>
             <dd>{{ transactionDetails.customerIntegrationId }}</dd>
@@ -205,7 +205,7 @@ export default {
 
           <span
             v-else
-            :class="$style.noInfo"
+            class="info-block__empty"
           >
             No information provided
           </span>
@@ -223,20 +223,20 @@ export default {
           </el-button>
         </div>
       </div>
-      <hr :class="['divider-primary', $style.divider]">
+      <hr :class="['divider-primary', 'info-block__divider']">
 
       <div v-if="productDetails.type === 'subscription'">
         <div
-          :class="$style.flexWrap"
+          class="info-block__wrapper"
         >
-          <div :class="$style.wrap">
-            <span :class="$style.wrapTitle">
+          <div class="info-block">
+            <span class="info-block__title">
               Subscription Details
             </span>
 
             <dl
               v-if="transactionDetails.customerIntegrationId"
-              :class="['datalist', $style.list, $style.flexList]"
+              :class="['datalist', 'info-block__flex-list']"
             >
               <dt>Start Date</dt>
               <dd>{{ `${formatDate(productDetails.startDate)}` }}</dd>
@@ -271,7 +271,7 @@ export default {
 
             <span
               v-else
-              :class="$style.noInfo"
+              class="info-block__empty"
             >
               No information provided
             </span>
@@ -289,26 +289,26 @@ export default {
             </el-button>
           </div>
         </div>
-        <hr :class="['divider-primary', $style.divider]">
+        <hr :class="['divider-primary', 'info-block__divider']">
       </div>
 
-      <div :class="$style.wrap">
-        <span :class="$style.wrapTitle">
+      <div class="info-block">
+        <span class="info-block__title">
           Payment Details
         </span>
-        <dl :class="['datalist', $style.list]">
+        <dl class="datalist">
           <dt>Card Holder Name</dt>
           <dd>{{ transactionDetails.paymentDetails.cardHolderName }}</dd>
 
           <dt>Payment Method</dt>
           <dd>
-            <div :class="$style.paymentMethod">
+            <div class="info-block__pay-method">
               {{ transactionDetails.paymentDetails.paymentMethod }}
-              <div :class="$style.paySysLogo">
+              <div class="info-block__pay-logo">
                 <img
                   :src="paymentSysLogo"
                   :alt="paymentSys"
-                  :class="$style.logoImg"
+                  class="info-block__pay-img"
                 >
               </div>
             </div>
@@ -338,22 +338,6 @@ export default {
 </template>
 
 <style lang="scss" module>
-.wrap {
-  display: flex;
-  flex-direction: column;
-}
-
-.flexWrap {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.wrapTitle {
-  font-size: 1.4rem;
-  font-weight: 600;
-}
-
 .warn {
   max-width: 25rem;
   padding: 1.3rem;
@@ -403,48 +387,6 @@ export default {
   margin-top: 0.3rem;
   font-size: 1rem;
   color: var(--color-error);
-}
-
-.list {
-  flex: 1 0 50%;
-  margin-top: 1.8rem;
-
-  dt {
-    color: black;
-  }
-}
-
-.flexList {
-  dd {
-    width: 55%
-  }
-
-  @include mq($until: lg) {
-    dd {
-      width: 37%
-    }
-  }
-}
-
-.noInfo {
-  padding-top: 1.8rem;
-}
-
-.divider {
-  margin: 2.5rem 0;
-}
-
-.paymentMethod {
-  display: flex;
-  align-items: center;
-}
-
-.paySysLogo {
-  width: 2rem;
-}
-
-.logoImg {
-  width: 100%;
 }
 
 .viewBtn {

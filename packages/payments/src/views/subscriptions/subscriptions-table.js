@@ -125,7 +125,7 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'outstandingBalance',
+    name: 'outstandingBalance.total',
     label: 'Balance',
     icon: 'el-icon-money',
     format: 'dollar',

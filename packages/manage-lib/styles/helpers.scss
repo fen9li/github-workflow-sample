@@ -354,3 +354,97 @@
 .home-dropdown {
   min-width: 4rem;
 }
+
+.info-block {
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+
+  .datalist {
+    flex: 1 0 50%;
+    margin-top: 1.8rem;
+
+    dt {
+      color: black;
+    }
+  }
+
+  &__flex-list {
+    dd {
+      width: 64%;
+    }
+
+    @include mq($until: xl) {
+      dd {
+        width: 32%;
+      }
+    }
+  }
+
+  &__pay-method {
+    display: flex;
+    align-items: center;
+  }
+
+  &__pay-logo {
+    width: 2rem;
+  }
+
+  &__pay-img {
+    width: 100%;
+  }
+
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &__empty {
+    padding-top: 1.8rem;
+  }
+
+  &__divider {
+    margin: 2.5rem 0;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+
+    > .el-button {
+      width: 14rem;
+      margin: 0 0 0.6rem !important;
+    }
+  }
+}
+
+.modal-note {
+  display: flex;
+  width: 100%;
+  padding: 0.6rem;
+  color: var(--color-text-light);
+  word-break: normal !important;
+  background-color: #f4f4f5;
+
+  .el-icon-info {
+    padding-right: 0.5rem;
+    font-size: 1rem;
+  }
+}
+
+.form-tooltip-field {
+  .el-input__inner {
+    padding-right: 2rem !important;
+  }
+
+  .el-tooltip {
+    position: absolute;
+    right: 0.5rem;
+    color: #909399 !important;
+  }
+}

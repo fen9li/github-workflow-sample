@@ -19,6 +19,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    label: {
+      type: String,
+      default: 'Payment Method',
+    },
   },
   data() {
     return {
@@ -58,7 +62,7 @@ export default {
 <template>
   <div>
     <el-form-item
-      label="Payment Method"
+      :label="label"
       :class="$style.methodsElem"
       required
     >

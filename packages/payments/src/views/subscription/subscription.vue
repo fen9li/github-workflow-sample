@@ -1,6 +1,8 @@
 <script>
 import appConfig from '~/app.config'
-import MockData from '@tests/__fixtures__/subscription'
+import amountCharge from './information/modals/subscription-charge'
+import capitalize from 'lodash/capitalize'
+
 
 export default {
   name: 'SubscriptionsDetails',
@@ -8,18 +10,38 @@ export default {
     title: 'Subscriptions',
     meta: [{ name: 'description', content: appConfig.description }],
   },
+  components: {
+    amountCharge,
+  },
   props: {
     id: {
       type: String,
       required: true,
     },
   },
+  data() {
+    return {
+      subscription: {},
+      customer: {},
+      modal: {
+        charge: false,
+      },
+    }
+  },
   computed: {
-    subscription() {
-      return MockData.information
-    },
     tabKey() {
       return this.$route.name
+    },
+    paymentMethods() {
+      const { endpoints } = this.customer
+
+      if (endpoints) {
+        return endpoints.map(item => {
+          return { value: item.pan, label: this.formatMethod(item) }
+        })
+      } else {
+        return []
+      }
     },
     tabs() {
       return [
@@ -38,6 +60,34 @@ export default {
       ]
     },
   },
+  created() {
+    this.getSubscription().then(response => {
+      if (response) {
+        this.getCustomer(response.customer.id)
+      }
+    })
+  },
+  methods: {
+    async getSubscription() {
+      const [error, response] = await this.$api.get(`/subscriptions/${this.id}`)
+      if (response) {
+        this.subscription = { ...response }
+      }
+      console.warn(error, response)
+
+      return response
+    },
+    async getCustomer(customerId) {
+      this.loading = true
+      const [, response] = await this.$api.get(`/customers/${customerId}`)
+      if (response) {
+        this.customer = { ...response, fullName: `${response.first_name} ${response.last_name}` }
+      }
+    },
+    formatMethod(method) {
+      return `*** ${method.pan.toString().slice(-4)} ${capitalize(method.type)}`
+    },
+  },
 }
 </script>
 
@@ -47,17 +97,31 @@ export default {
     back
   >
     <div
+      v-if="subscription.id"
       slot="header"
       :class="[
         $style.balance,
-        subscription.balance < 0 && $style.balanceNegative
+        subscription.outstanding.total < 0 && $style.balanceNegative
       ]"
     >
-      <big :class="$style.balanceCount">
-        {{ subscription.balance | dollar }}
-      </big>
+      <el-button
+        type="primary"
+        @click="modal.charge = true"
+      >
+        Charge Amount Owing
+      </el-button>
+
+      <amount-charge
+        v-if="modal.charge"
+        :visible.sync="modal.charge"
+        :subscription="subscription"
+        :customer-name="customer.fullName"
+        :payment-methods="paymentMethods"
+      />
+
       <small :class="$style.balanceLabel">
         Amount Owing
+        <b :class="$style.balanceCount">{{ subscription.outstanding.total | dollar }}</b>
       </small>
     </div>
     <el-tabs
@@ -80,13 +144,15 @@ export default {
       </el-tab-pane>
     </el-tabs>
 
-    <router-view />
+    <router-view
+      :subscription="subscription"
+      :customer="customer"
+      :payment-methods="paymentMethods"
+    />
   </main-layout>
 </template>
 
 <style lang="scss" module>
-
-
 .tabs {
   margin-bottom: 1.5rem;
 }
@@ -103,17 +169,19 @@ export default {
   flex-direction: column;
   justify-content: center;
   margin-top: 2rem;
-  font-size: 1.2rem;
-  text-align: right;
-}
-
-.balanceNegative {
+  font-size: 1.1rem;
   color: var(--color-error);
 }
 
+.balanceLabel {
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
 .balanceCount {
-  margin-bottom: .7rem;
-  font-size: 1.7rem;
+  margin-left: .7rem;
+  font-size: 1.2rem;
   font-weight: bold;
 }
 </style>

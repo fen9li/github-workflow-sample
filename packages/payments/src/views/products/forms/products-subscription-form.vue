@@ -80,16 +80,15 @@ export default {
     >
       <el-form-item
         label="Product Name"
+        class="form-tooltip-field"
         prop="name"
       >
         <el-input
           :value="data.name"
-          :class="$style.tooltipField"
           @input="changeValue('name', $event)"
         />
         <el-tooltip
           placement="right"
-          :class="$style.tooltip"
         >
           <div slot="content">
             <span>
@@ -105,16 +104,15 @@ export default {
       <el-form-item
         label="Product Code"
         prop="id"
+        class="form-tooltip-field"
       >
         <el-input
           :value="data.id"
-          :class="$style.tooltipField"
           :disabled="edit"
           @input="changeValue('id', $event)"
         />
         <el-tooltip
           placement="right"
-          :class="$style.tooltip"
         >
           <div slot="content">
             <span>
@@ -165,7 +163,7 @@ export default {
           v-if="data.billing_type === 'prorata'"
           label="Anchor Date"
           :prop="edit ? '': 'anchor_on'"
-          :class="{[$style.disabled]: edit}"
+          :class="[{[$style.disabled]: edit}, 'form-tooltip-field']"
         >
           <el-date-picker
             :value="data.anchor_on"
@@ -228,19 +226,5 @@ export default {
 
 .anchor {
   margin-bottom: -1rem;
-}
-
-.tooltipField {
-  :global {
-    .el-input__inner {
-      padding-right: 2rem !important;
-    }
-  }
-}
-
-.tooltip {
-  position: absolute;
-  right: .5rem;
-  color: #909399 !important;
 }
 </style>

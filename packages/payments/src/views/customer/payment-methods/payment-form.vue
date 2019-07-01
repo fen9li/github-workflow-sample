@@ -15,12 +15,55 @@ export default {
   data() {
     return {
       tab: 'card',
-      rules: {},
+      rules: {
+        name: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+        number: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+        expiry: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+        cvv: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+        bsb: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+      },
     }
   },
   methods: {
     changeValue(fieldName, type, newVal) {
       this.$emit('changeValue', { fieldName, type, newVal })
+    },
+    onSave() {
+      this.$refs[this.tab].validate(valid => {
+        if (valid) {
+          this.$emit('save')
+        }
+      })
     },
   },
 }
@@ -37,12 +80,15 @@ export default {
         name="card"
       >
         <el-form
+          ref="card"
           :model="form.card"
+          class="modal-form"
+          label-position="top"
           :rules="rules"
         >
           <el-form-item
             label="Card Holder Name"
-            required
+            prop="name"
           >
             <el-input
               :value="form.card.name"
@@ -52,37 +98,62 @@ export default {
 
           <el-form-item
             label="Card No"
-            required
+            prop="number"
           >
             <el-input
+              v-mask="['#### #### #### ####']"
+              placeholder="---- ---- ---- ----"
               :value="form.card.number"
               @input="changeValue('number', 'card', $event)"
             />
+            <div :class="$style.cardLogos">
+              <div :class="$style.logoWrapper">
+                <img
+                  src="/img/visa_logo.png"
+                  alt="visa"
+                  :class="$style.logo"
+                >
+              </div>
+              <div :class="$style.logoWrapper">
+                <img
+                  src="/img/mastercard_logo.png"
+                  alt="mastercard"
+                  :class="$style.logo"
+                >
+              </div>
+              <div :class="$style.logoWrapper">
+                <img
+                  src="/img/amex_logo.png"
+                  alt="amex"
+                  :class="$style.logo"
+                >
+              </div>
+            </div>
           </el-form-item>
 
-          <el-form-item
-            label="Expiry"
-            required
-          >
-            <el-input
-              v-mask="['##/##']"
-              :value="form.card.expiry"
-              :class="$style.short"
-              @input="changeValue('expiry', 'card', $event)"
-            />
-          </el-form-item>
+          <div class="united-field">
+            <el-form-item
+              label="Expiry"
+              prop="expiry"
+            >
+              <el-input
+                v-mask="['##/##']"
+                :value="form.card.expiry"
+                @input="changeValue('expiry', 'card', $event)"
+              />
+            </el-form-item>
 
-          <el-form-item
-            label="CVV"
-            required
-          >
-            <el-input
-              v-mask="['###']"
-              :value="form.card.cvv"
-              :class="$style.short"
-              @input="changeValue('cvv', 'card', $event)"
-            />
-          </el-form-item>
+            <el-form-item
+              label="CVV"
+              prop="cvv"
+            >
+              <el-input
+                v-mask="['###']"
+                :value="form.card.cvv"
+                @input="changeValue('cvv', 'card', $event)"
+              />
+            </el-form-item>
+          </div>
         </el-form>
       </el-tab-pane>
       <el-tab-pane
@@ -90,12 +161,15 @@ export default {
         name="account"
       >
         <el-form
+          ref="account"
           :model="form.account"
+          class="modal-form"
+          label-position="top"
           :rules="rules"
         >
           <el-form-item
             label="Account Name"
-            required
+            prop="name"
           >
             <el-input
               :value="form.account.name"
@@ -103,33 +177,34 @@ export default {
             />
           </el-form-item>
 
-          <el-form-item
-            label="BSB"
-            required
-          >
-            <el-input
-              :value="form.account.bsb"
-              @input="changeValue('bsb', 'account', $event)"
-            />
-          </el-form-item>
+          <div class="united-field">
+            <el-form-item
+              label="BSB"
+              prop="bsb"
+            >
+              <el-input
+                :value="form.account.bsb"
+                @input="changeValue('bsb', 'account', $event)"
+              />
+            </el-form-item>
 
-          <el-form-item
-            label="Account No"
-            required
-          >
-            <el-input
-              :value="form.account.number"
-              :class="$style.short"
-              @input="changeValue('number', 'account', $event)"
-            />
-          </el-form-item>
+            <el-form-item
+              label="Account No"
+              prop="number"
+            >
+              <el-input
+                :value="form.account.number"
+                @input="changeValue('number', 'account', $event)"
+              />
+            </el-form-item>
+          </div>
         </el-form>
       </el-tab-pane>
     </el-tabs>
     <el-button
       type="primary"
       :class="$style.saveButton"
-      @click="$emit('save')"
+      @click="onSave"
     >
       Save
     </el-button>
@@ -146,8 +221,22 @@ export default {
   }
 }
 
-.short {
-  width: 55%;
+.cardLogos {
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 1rem;
+}
+
+.logoWrapper {
+  width: 1.9rem;
+  margin-left: 0.4rem;
+}
+
+.logo {
+  width: 100%;
 }
 
 .saveButton {

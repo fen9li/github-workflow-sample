@@ -7,11 +7,25 @@ export default {
   page: {
     title: 'Subscription Transactions',
   },
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       processor: new ElasticProcessor({
         index: 'transactions',
         component: this,
+        staticQuery: {
+          filters: [
+            {
+              attribute: 'subscriptionId',
+              value: this.id,
+            },
+          ],
+        },
       }),
       filters: tableConfig.filters,
       columns: tableConfig.columns,
