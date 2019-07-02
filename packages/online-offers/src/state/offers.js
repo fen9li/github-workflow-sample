@@ -5,7 +5,7 @@ const state = {
 }
 
 const getters = {
-  tableOffersUpdate: state => state.updateTable,
+  tableUpdate: state => state.updateTable,
 }
 
 const mutations = {
