@@ -126,20 +126,18 @@ export default {
       this.form = newForm
     },
     async onSwitch() {
-      const [, response] = await this.updateOffer({
+      this.updateOffer({
         id: this.id,
         payload: {
           enabled: this.switcher,
         },
-      })
-      if (response) {
-        this.offer = response
+      }).then(() => {
         this.$notify({
           type: 'success',
           title: 'Success',
-          message: `Merchant status sussessfully changed to ${this.switcher ? 'enabled' : 'disabled'}`,
+          message: `Status sussessfully changed to ${this.switcher ? 'enabled' : 'disabled'}`,
         })
-      }
+      })
     },
     async updateOffer() {
       // const [, response] = await this.updateOffer({
@@ -459,6 +457,7 @@ export default {
       <div @click="onSwitch">
         <el-switch
           v-model="switcher"
+          active-text="active"
         />
       </div>
 
@@ -505,8 +504,6 @@ export default {
           <dt>Offer Tracking Url</dt>
           <dd>{{ '-' }}</dd>
         </dl>
-
-        <pre>{{ offer }}</pre>
       </div>
     </el-card>
     <remove-modal
