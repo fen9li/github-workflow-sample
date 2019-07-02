@@ -44,6 +44,7 @@ const router = new VueRouter({
       path: '/payment/settlements/:id',
       name: 'payment-settlement-details',
       component: () => lazy(import('~/views/settlement')),
+      props: true,
     },
     {
       path: '/customers',

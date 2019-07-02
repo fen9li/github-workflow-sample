@@ -53,6 +53,7 @@ export default class DataProcessor {
     this.disableQueryString = Boolean(params.disableQueryString)
     this.component = params.component
     this.skipNextURLWatcher = false
+    this.dataTransform = params.dataTransform || null
   }
 
   init() {

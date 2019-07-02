@@ -128,10 +128,17 @@ export default class ElasticAdapter extends DataProcessor {
       size: dataQuery.pageSize,
     })
 
-    return {
-      data: get(response, 'hits.hits', []).map(i => i._source),
-      total: get(response, 'hits.total', 0),
+    let data = get(response, 'hits.hits', []).map(i => i._source)
+    let total = get(response, 'hits.total', 0)
+
+    if (this.dataTransform) {
+      const formatted = this.dataTransform(data)
+
+      data = formatted
+      total = formatted.length
     }
+
+    return { data, total }
   }
 
   async sendRequestAll(dataQuery) {

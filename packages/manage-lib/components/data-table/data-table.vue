@@ -24,7 +24,7 @@ export default {
     },
     summaryMethod: {
       type: Function,
-      default: () => [],
+      default: () => null,
     },
     highlightRow: {
       type: Function,
@@ -76,7 +76,7 @@ export default {
       return Boolean(get(this.processor, 'data.length', false))
     },
     showSummary() {
-      return get(this.summaryMethod(), 'length', 0) > 0
+      return this.summaryMethod() !== null
     },
   },
   watch: {

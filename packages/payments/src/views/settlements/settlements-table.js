@@ -7,13 +7,13 @@ const TABLE_FILTERS = [
     type: 'date',
   },
   {
-    attribute: 'netAmount',
+    attribute: 'amount.subtotal',
     label: 'NET',
     type: 'numeric',
     icon: 'el-icon-tickets',
   },
   {
-    attribute: 'accountTransferred',
+    attribute: 'fundingSource',
     label: 'Settlement Account',
     type: 'string',
     icon: 'el-icon-document',
@@ -60,7 +60,7 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'netAmount',
+    name: 'amount.subtotal',
     label: 'NET',
     icon: 'el-icon-document',
     format: 'dollar',
@@ -78,7 +78,7 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'accountTransferred',
+    name: 'fundingSource',
     label: 'Settlement Account',
     width: 100,
     format: 'account',

@@ -1,13 +1,10 @@
-import StaticProcessor from '@lib/processors/static-processor'
-import {
-  details,
-  table,
-} from '@tests/__fixtures__/settlement-details-mock.js'
+import ElasticProcessor from '@lib/processors/elastic-processor'
 
 const TABLE_COLUMNS = [
   {
-    name: 'name',
+    name: 'type',
     label: '',
+    format: 'capital',
     sortable: false,
   },
   {
@@ -38,10 +35,21 @@ const TABLE_COLUMNS = [
 
 export default function(component) {
   return {
-    details,
-    processor: new StaticProcessor({
+    processor: new ElasticProcessor({
       component,
-      data: table,
+      index: 'transactions',
+      dataTransform: component.transformSummaryTableData,
+      staticQuery: {
+        filters: [
+          {
+            attribute: 'settlementId',
+            value: component.id,
+          },
+        ],
+      },
+      query: {
+        pageSize: 1000,
+      },
     }),
     columns: TABLE_COLUMNS,
   }

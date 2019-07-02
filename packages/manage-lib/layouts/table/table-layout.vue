@@ -109,7 +109,7 @@ export default {
       <data-table
         :columns="$attrs.columns"
         :processor="$attrs.processor"
-        :summary-method="$attrs.summaryMethod"
+        :summary-method="$attrs['summary-method']"
         v-bind="$attrs"
         v-on="$listeners"
       >

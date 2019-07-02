@@ -1,6 +1,4 @@
-import StaticProcessor from '@lib/processors/static-processor'
-import tableMock from '@tests/__fixtures__/settlements-transactions-mock.js'
-// import ElasticProcessor from '@lib/processors/elastic-processor'
+import ElasticProcessor from '@lib/processors/elastic-processor'
 
 const TABLE_COLUMNS = [
   {
@@ -13,13 +11,13 @@ const TABLE_COLUMNS = [
     width: 160,
   },
   {
-    name: 'action',
-    label: 'Type',
-    width: 100,
+    name: 'type',
+    width: 140,
+    format: 'capital',
     component: {
       props: {
         styleObj(val) {
-          if (val === 'Refund') {
+          if (val === 'refund') {
             return { color: '#fc7168' }
           }
 
@@ -29,99 +27,77 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'amount',
+    name: 'amount.total',
     label: 'Amount',
     format: 'dollar',
     width: 100,
     component: {
       props: {
-        styleObj(val) {
-          if (val < 0) {
+        styleObj(val, row) {
+          if (val < 0 || row.type === 'refund') {
             return { color: '#fc7168' }
           }
 
           return {}
         },
+        format(value, row) {
+          return row.type === 'refund' ? `(${value})` : value
+        },
       },
     },
   },
   {
-    name: 'customerId',
-    label: 'Customer ID',
-    width: 120,
-  },
-  {
-    name: 'firstName',
-    label: 'First Name',
-    width: 100,
-    component: {
-      props: {
-        allowEmpty: true,
-      },
-    },
-  },
-  {
-    name: 'lastName',
-    label: 'Last Name',
-    width: 100,
-    component: {
-      props: {
-        allowEmpty: true,
-      },
-    },
-  },
-  {
-    name: 'description',
-    label: 'Description',
-    width: 160,
-  },
-  {
-    name: 'crn',
-    label: 'CRN',
+    name: 'amount.fees',
+    label: 'Fee',
+    format: 'dollar',
     width: 100,
   },
   {
-    name: 'orderId',
-    label: 'Order ID',
+    name: 'amount.subtotal',
+    label: 'NET',
+    format: 'dollar',
     width: 100,
+  },
+  {
+    name: 'id',
+    label: 'Transaction ID',
+    width: 300,
   },
   {
     name: 'status',
     label: 'Status',
+    format: 'capital',
     width: 120,
     component: {
       props: {
         styleObj(val) {
           switch (val) {
-            case 'pending':
-              return { color: '#fbb241' }
-            case 'successfull':
-              return { color: '#29d737' }
-            case 'failed':
-              return { color: '#fc7168' }
-            default:
-              return {}
+            case 'pending': return { color: '#fbb241' }
+            case 'completed': return { color: '#29d737' }
+            case 'failed': return { color: '#fc7168' }
+            case 'refunded': return { color: '#fc7168' }
+            default: return {}
           }
         },
         badge(val) {
           switch (val) {
-            case 'pending':
-              return {
-                name: 'el-icon-time',
-                pos: 'left',
-              }
-            case 'successfull':
-              return {
-                name: 'el-icon-check',
-                pos: 'left',
-              }
-            case 'failed':
-              return {
-                name: 'el-icon-close',
-                pos: 'left',
-              }
-            default:
-              return {}
+            case 'pending': return {
+              name: 'el-icon-time',
+              pos: 'left',
+            }
+            case 'completed': return {
+              name: 'el-icon-check',
+              pos: 'left',
+            }
+            case 'failed': return {
+              name: 'el-icon-close',
+              pos: 'left',
+            }
+            case 'refunded': return {
+              name: 'el-icon-refresh',
+              pos: 'left',
+            }
+            default: return {}
           }
         },
       },
@@ -132,23 +108,17 @@ const TABLE_COLUMNS = [
 
 export default function(component) {
   return {
-    // processor: new ElasticProcessor({
-    //   component,
-    //   index: 'transactions',
-    //   staticQuery: {
-    //     filters: [
-    //       {
-    //         attribute: 'type',
-    //         comparison: 'eq',
-    //         value: 'settlement',
-    //       },
-    //     ],
-    //     sort: { 'createdAt': 'desc' },
-    //   },
-    // }),
-    processor: new StaticProcessor({
+    processor: new ElasticProcessor({
       component,
-      data: tableMock.table,
+      index: 'transactions',
+      staticQuery: {
+        filters: [
+          {
+            attribute: 'settlementId',
+            value: component.id,
+          },
+        ],
+      },
     }),
     columns: TABLE_COLUMNS,
   }

@@ -30,7 +30,7 @@ export default {
     onRowClick(row) {
       this.$router.push({
         name: 'payment-settlement-details',
-        params: { id: row.externalId || 1 },
+        params: { id: row.id },
       })
     },
   },

@@ -14,39 +14,82 @@ export default {
   components: {
     settlementInfo,
   },
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       summaryTable: summaryTable(this),
       transactionsTable: transactionsTable(this),
+      settlement: {},
     }
+  },
+  created() {
+    this.getSettlement()
   },
   methods: {
     getSummary(param) {
-      const { columns, data } = param
-      const sums = []
+      if (param) {
+        const { columns, data } = param
+        const sums = []
 
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = 'Payouts'
-          return
-        }
+        columns.forEach((column, index) => {
+          if (index === 0) {
+            sums[index] = 'Payouts'
+            return
+          }
 
-        if (columns.length - 1 === index) {
-          const total = data
-            .map(item => Number(item[column.property]))
-            .reduce((total, value) => total += value)
-          sums[index] = formatDollar(total)
-          return
+          if (columns.length - 1 === index) {
+            if (data.length) {
+              const total = data
+                .map(item => Number(item[column.property]))
+                .reduce((total, value) => total += value)
+              sums[index] = formatDollar(total)
+              return
+            }
+          }
+        })
+
+        return sums
+      }
+    },
+    transformSummaryTableData(data) {
+      const formatted = []
+
+      data.forEach(transaction => {
+        const index = formatted.findIndex(item => item.type === transaction.type)
+        const type = transaction.type
+        const amount = +transaction.amount.total
+        const fee = +transaction.amount.fees
+        const net = +transaction.amount.subtotal
+
+        if (index === -1) {
+          formatted.push(
+            { type, amount, fee, net, count: 1 }
+          )
+        } else {
+          formatted[index].count++
+          formatted[index].amount += amount
+          formatted[index].fee += fee
+          formatted[index].net += net
         }
       })
-
-      return sums
+      return formatted
     },
     onTransactionsRowClick(row) {
       this.$router.push({
         name: 'payment-transaction-details',
         params: { id: row.id },
       })
+    },
+    async getSettlement() {
+      const [, response] = await this.$api.get(`/transactions/${this.id}`)
+      if (response) {
+        this.settlement = { ...response }
+      }
     },
   },
 }
@@ -58,7 +101,7 @@ export default {
     back
   >
     <settlement-info
-      :settlement-details="summaryTable.details"
+      :settlement="settlement"
     />
     <table-layout
       title="Summary"
@@ -67,7 +110,6 @@ export default {
       :columns="summaryTable.columns"
       :summary-method="getSummary"
       :table-controls="false"
-      show-summary
     >
       <span slot="note">
         * Fees refunded by EonX

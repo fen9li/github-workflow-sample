@@ -1,13 +1,19 @@
 <script>
 import formatDollar from '@lib/utils/format-dollar'
+import { formatDate } from '@lib/utils/format-date'
 
 export default {
   name: 'SettlementDetailsBlock',
   props: {
-    settlementDetails: {
+    settlement: {
       type: Object,
-      required: true,
+      default: () => {},
     },
+  },
+  data() {
+    return {
+      showWarning: true,
+    }
   },
   computed: {
     settlementStatus() {
@@ -17,7 +23,7 @@ export default {
           value: 'Pending',
           color: '#fbb241',
         },
-        paid: {
+        successful: {
           icon: 'el-icon-check',
           value: 'Successfull',
           color: '#29d737',
@@ -25,15 +31,34 @@ export default {
         failed: {
           icon: 'el-icon-close',
           value: 'Failed',
-          color: '#fc7168',
+          color: 'var(--color-error)',
+        },
+        5: {
+          icon: 'el-icon-close',
+          value: 'Failed',
+          color: 'var(--color-error)',
         },
       }
-      return availableStatuses[this.settlementDetails.status]
+      return availableStatuses[this.settlement.status]
+    },
+    customerName() {
+      if (this.settlement) {
+        const { customer } = this.settlement.order
+        return `${customer.first_name} ${customer.last_name}`
+      } else {
+        return ''
+      }
+    },
+    dataReady() {
+      return Object.keys(this.settlement).length
     },
   },
   methods: {
     formatDollar(value) {
       return formatDollar(value)
+    },
+    formatDate(value, format) {
+      return formatDate(value, format || 'DD/MM/YYYY hh:mm')
     },
   },
 }
@@ -41,7 +66,7 @@ export default {
 
 <template>
   <el-card
-    v-if="settlementDetails"
+    v-loading="!dataReady"
     :class="$style.detailsBlock"
   >
     <div
@@ -53,11 +78,12 @@ export default {
       </div>
     </div>
     <div
+      v-if="dataReady"
       :class="$style.status"
       :style="{ color: settlementStatus.color }"
     >
       <span :class="$style.statusSum">
-        {{ `${formatDollar(settlementDetails.amount)} AUD` }}
+        {{ `${formatDollar(settlement.amount.total)} AUD` }}
       </span>
       <div
         v-if="settlementStatus"
@@ -71,42 +97,75 @@ export default {
         {{ settlementStatus.value }}
       </div>
     </div>
-    <dl class="datalist">
+    <dl
+      v-if="dataReady"
+      class="datalist"
+    >
       <dt>Date Created</dt>
-      <dd>{{ settlementDetails.date_created }}</dd>
+      <dd>{{ formatDate(settlement.created_at) }}</dd>
 
       <dt>Customer ID</dt>
-      <dd>{{ settlementDetails.customer_id }}</dd>
+      <dd>{{ settlement.order.customer.id }}</dd>
 
       <dt>Customer Name</dt>
-      <dd>{{ settlementDetails.customer_name }}</dd>
+      <dd>{{ customerName }}</dd>
 
       <dt>Settlement Account</dt>
-      <dd>{{ settlementDetails.settlement_account }}</dd>
+      <dd>{{ settlement.funding_source || '-' }}</dd>
 
       <dt>Transaction ID</dt>
-      <dd>{{ settlementDetails.transaction_id }}</dd>
+      <dd>{{ settlement.id }}</dd>
 
       <dt>Description</dt>
-      <dd>{{ settlementDetails.description }}</dd>
+      <dd>{{ settlement.statement_description }}</dd>
 
       <dt>Amount</dt>
-      <dd>{{ formatDollar(settlementDetails.amount) }}</dd>
+      <dd>{{ formatDollar(settlement.amount.total) }}</dd>
 
       <dt>Fee</dt>
-      <dd>{{ formatDollar(settlementDetails.fee) }}</dd>
+      <dd>{{ formatDollar(settlement.amount.fees) }}</dd>
 
       <dt>Net</dt>
-      <dd>{{ formatDollar(settlementDetails.net) }}</dd>
+      <dd>{{ formatDollar(settlement.amount.subtotal) }}</dd>
 
       <dt>Date Finalised</dt>
-      <dd>{{ settlementDetails.date_finalised }}</dd>
+      <dd>{{ formatDate(settlement.completed_at) }}</dd>
     </dl>
+
+    <div
+      v-if="showWarning"
+      :class="$style.warningWrapper"
+    >
+      <div :class="$style.warningHeader">
+        <i class="el-icon-error" />
+        <span :class="$style.warningTitle">
+          This payout was returned by your bank. Reason given was: No account
+        </span>
+        <i
+          class="el-icon-close"
+          @click="showWarning = false"
+        />
+      </div>
+      <div :class="$style.warningBody">
+        <p>
+          Please note that failed payment messages
+          originate from the issuing bank.
+          For any queries please contact the issuing
+          bank to seek more informaton.
+        </p>
+        <p>
+          This and all settlement will not be sent to
+          your bank account until you update your bank account or manually
+          resume your payouts.
+        </p>
+      </div>
+    </div>
   </el-card>
 </template>
 
 <style lang="scss" module>
 .detailsBlock {
+  position: relative;
   margin-bottom: 2rem;
 }
 
@@ -123,5 +182,42 @@ export default {
 
 .statusValue {
   font-size: 1rem;
+}
+
+.warningWrapper {
+  position: absolute;
+  top: 2.3rem;
+  right: 3rem;
+  width: 24rem;
+  padding: .5rem 1rem;
+  color: var(--color-error);
+  background-color: #FEF0F0;
+  border-radius: rem(5px);
+}
+
+.warningTitle {
+  margin: 0 .7rem;
+  font-weight: 700;
+}
+
+.warningHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  :global {
+    .el-icon-error {
+      font-size: 1.8rem;
+    }
+    .el-icon-close {
+      font-size: 1.2rem;
+      color: #000;
+      cursor: pointer;
+    }
+  }
+}
+
+.warningBody {
+  padding: 0 2.5rem;
 }
 </style>
