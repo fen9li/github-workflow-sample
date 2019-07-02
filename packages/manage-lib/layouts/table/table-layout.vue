@@ -22,6 +22,10 @@ export default {
       type: String,
       default: 'always',
     },
+    flat: {
+      type: Boolean,
+      default: false,
+    },
     quantity: {
       type: Boolean,
       default: false,
@@ -96,11 +100,17 @@ export default {
         />
       </div>
     </div>
-    <div :class="$style.tableWrapper">
+    <div
+      :class="[
+        $style.tableWrapper,
+        {[$style.tableWrapperFlat]: flat}
+      ]"
+    >
       <data-table
         :columns="$attrs.columns"
         :processor="$attrs.processor"
         :summary-method="$attrs.summaryMethod"
+        v-bind="$attrs"
         v-on="$listeners"
       >
         <slot slot="columns" />
@@ -131,7 +141,7 @@ export default {
 .layout {
   margin-bottom: 2rem;
   overflow: visible !important;
-  box-shadow: 0 2px 12px 0 rgba(black, 0.05) !important;
+  // box-shadow: 0 2px 12px 0 rgba(black, 0.05) !important;
 
   :global(.el-card__body) {
     padding: 0;
@@ -144,6 +154,10 @@ export default {
   @include mq($until: md) {
     padding: 1rem 0.5rem;
   }
+}
+
+.tableWrapperFlat {
+  padding: 1rem 0;
 }
 
 .tableNote {

@@ -1,8 +1,3 @@
-// import Elastic from '@lib/processors/elastic-processor'
-import Static from '@lib/processors/static-processor'
-import tableMock from '@tests/__fixtures__/merchant-offers'
-import merchantStatus from './merchant-status'
-
 const TABLE_FILTERS = [
   {
     attribute: 'offerName',
@@ -67,23 +62,11 @@ const TABLE_COLUMNS = [
     name: 'status',
     icon: 'el-icon-document',
     width: 90,
-    component: {
-      is: merchantStatus,
-    },
   },
 ]
 
-export default function(component) {
-  return {
-    // processor: new Elastic({
-    //   component,
-    //   index: 'merchants',
-    // }),
-    processor: new Static({
-      component,
-      data: tableMock.table,
-    }),
-    filters: TABLE_FILTERS,
-    columns: TABLE_COLUMNS,
-  }
+export default {
+  processor: null,
+  filters: TABLE_FILTERS,
+  columns: TABLE_COLUMNS,
 }

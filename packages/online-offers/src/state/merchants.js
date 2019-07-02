@@ -25,6 +25,9 @@ const actions = {
       return await api.get('/merchants')
     }
   },
+  async getGlobalMerchant({ commit }, merchantId) {
+    return await api.get(`/merchants/${merchantId}`)
+  },
   async getMerchant({ commit }, { merchantId }) {
     return await api.get(`/feedmerchants/${merchantId}`)
   },

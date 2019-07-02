@@ -35,7 +35,7 @@ const router = new Router({
       props: true,
     },
     {
-      path: '/merchants/:id/offers',
+      path: '/merchants/:id/offers/:tab?',
       name: 'merchant-offers',
       component: () => lazy(import('./views/merchant-offers')),
       props: true,
