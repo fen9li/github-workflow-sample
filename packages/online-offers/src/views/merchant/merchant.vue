@@ -11,7 +11,12 @@ export default {
   },
   data() {
     return {
-      details: {},
+      loading: true,
+      details: {
+        map: {
+          name: '',
+        },
+      },
       edit: false,
     }
   },
@@ -20,22 +25,18 @@ export default {
       return this.$route.params.id
     },
   },
-  watch: {
-    details() {
-      return Object.keys(this.details).length
-    },
-  },
   created() {
     this.fetchMerchant()
   },
   methods: {
     ...mapActions('merchants', [
-      'getGlobalMerchant',
+      'getMerchantFeeds',
     ]),
     async fetchMerchant() {
-      const [, response] = await this.getGlobalMerchant(this.merchantId)
-      if (response) {
-        this.details = response
+      const [, { items }] = await this.getMerchantFeeds(this.merchantId)
+      if (Array.isArray(items)) {
+        this.details = items[0]
+        this.loading = false
       }
     },
   },
@@ -44,11 +45,11 @@ export default {
 
 <template>
   <main-layout
-    :title="details.name"
+    :title="details.map.name"
     :back="{name: 'merchants'}"
   >
     <base-loader
-      v-if="!details"
+      v-if="loading"
       theme="state"
       size="large"
     />

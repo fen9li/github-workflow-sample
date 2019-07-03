@@ -75,25 +75,22 @@ const TABLE_COLUMNS_OFFERS = [
     width: 200,
   },
   {
-    name: 'payload.offerdescription',
+    name: 'map.name',
     label: 'Offer Name',
     icon: 'el-icon-document',
-    width: 200,
+    width: 300,
   },
   {
     name: 'created_at',
     label: 'Date created',
     icon: 'el-icon-date',
     format: 'date',
-  },
-  {
-    name: 'status',
-    icon: 'el-icon-document',
+    width: 100,
   },
   {
     sortable: false,
     overflowTooltip: false,
-    width: 180,
+    width: 100,
     component: (_, __, { row }) => ({
       is: OfferActivate,
       props: { row },
@@ -102,6 +99,7 @@ const TABLE_COLUMNS_OFFERS = [
 ]
 
 export default {
+  processor: null,
   merchants: {
     filters: TABLE_FILTERS_MERCHANTS,
     columns: TABLE_COLUMNS_MERCHANTS,
@@ -110,5 +108,4 @@ export default {
     filters: TABLE_FILTERS_OFFERS,
     columns: TABLE_COLUMNS_OFFERS,
   },
-  processor: null,
 }

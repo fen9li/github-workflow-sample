@@ -11,21 +11,14 @@ export default {
       type: Object,
       required: true,
     },
-    detailsPage: {
-      type: Boolean,
-      default: true,
-    },
     original: {
       type: Boolean,
       default: false,
     },
   },
   computed: {
-    title() {
-      return this.original ? 'Original' : 'Updated'
-    },
     merchantId() {
-      return this.details.id
+      return this.$route.params.id
     },
   },
   methods: {
@@ -59,24 +52,17 @@ export default {
 
 <template>
   <div :class="$style.wrapper">
-    <div
-      v-if="!detailsPage"
-      :class="$style.title"
-    >
-      {{ title }}
-    </div>
     <div :class="$style.innerWrapper">
       <div :class="$style.logo">
-        <div :class="[$style.imageWrapper,{[$style.imageWrapperSm]: !detailsPage}]">
+        <div :class="$style.imageWrapper">
           <img
             v-if="details.logo"
             src="details.logo"
-            alt="details.name"
+            alt="details.map.name"
             :class="$style.image"
           >
         </div>
         <div
-          v-if="detailsPage"
           :class="$style.statusWrapper"
         >
           <span :class="$style.status">Status</span>
@@ -90,7 +76,6 @@ export default {
         <dl
           :class="[
             'datalist datalist__online-offers',
-            !detailsPage && 'datalist-tight',
             !details.enabled && $style.inactive
           ]"
         >
@@ -104,7 +89,7 @@ export default {
             Merchant Ext ID
           </dt>
           <dd :class="$style.grey">
-            {{ details.extId }}
+            {{ details.external_id }}
           </dd>
           <dt :class="$style.grey">
             Merchant Updated
@@ -113,43 +98,41 @@ export default {
             {{ formatDate(details.updated_at) }}
           </dd>
           <dt>Merchant Name</dt>
-          <dd>{{ details.name }}</dd>
+          <dd>{{ details.map.name }}</dd>
           <dt>Commission Aggregator</dt>
           <dd>{{ details.feed }}</dd>
           <dt>Commission Type</dt>
-          <dd>{{ capitalize(details.commissionType) }}</dd>
-          <template v-if="details.commissionRates">
-            <dt>Commission Rate</dt>
-            <dd>
-              <span :class="$style.rate">
-                {{ `Base ${formatDollar(details.commissionRates.base)}` }}
-              </span>
-              <span :class="$style.rate">
-                {{ `Min ${formatDollar(details.commissionRates.min)}` }}
-              </span>
-              <span :class="$style.rate">
-                {{ `Max ${formatDollar(details.commissionRates.max)}` }}
-              </span>
-            </dd>
-            <dt>Classifications</dt>
-            <dd :class="$style.classifications">
-              <span
-                v-for="(item, index) in details.classifications"
-                :key="index"
-              >
-                {{ capitalize(item) }}
-              </span>
-            </dd>
-          </template>
+          <dd>{{ capitalize(details.map.commission.type) }}</dd>
+          <dt>Commission Rate</dt>
+          <dd>
+            <span :class="$style.rate">
+              {{ `Base ${formatDollar(details.map.commission.base)}` }}
+            </span>
+            <span :class="$style.rate">
+              {{ `Min ${formatDollar(details.map.commission.min)}` }}
+            </span>
+            <span :class="$style.rate">
+              {{ `Max ${formatDollar(details.map.commission.max)}` }}
+            </span>
+          </dd>
+          <dt>Classifications</dt>
+          <dd :class="$style.classifications">
+            <span
+              v-for="(item, index) in details.classifications"
+              :key="index"
+            >
+              {{ capitalize(item) }}
+            </span>
+          </dd>
           <dt>Summary</dt>
-          <dd>{{ details.summary }}</dd>
+          <dd>{{ details.map.summary }}</dd>
           <dt>Merchant Website</dt>
-          <dd>{{ details.website }}</dd>
+          <dd>{{ details.map.website }}</dd>
           <dt>Terms & Conditions</dt>
-          <dd>{{ details.terms }}</dd>
+          <dd v-html="details.map.terms" />
         </dl>
       </div>
-      <div v-if="detailsPage">
+      <div>
         <el-button
           type="primary"
           class="wide-button"
