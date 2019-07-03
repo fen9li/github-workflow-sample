@@ -14,7 +14,7 @@ export default {
   <div class="app-sidebar">
     <div class="app-sidebar__wrapper">
       <el-menu
-        :default-active="$route.path"
+        default-active="1"
         :router="true"
       >
         <template v-for="item in menu">
