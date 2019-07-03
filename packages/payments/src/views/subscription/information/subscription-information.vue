@@ -28,10 +28,6 @@ export default {
       type: Object,
       default: () => {},
     },
-    paymentMethods: {
-      type: Array,
-      default: () => [],
-    },
   },
   data() {
     return {
@@ -53,7 +49,6 @@ export default {
       <subscription-details
         :subscription="subscription"
         :customer="customer"
-        :payment-methods="paymentMethods"
       />
       <hr :class="['divider-primary', 'info-block__divider']">
       <customer-details

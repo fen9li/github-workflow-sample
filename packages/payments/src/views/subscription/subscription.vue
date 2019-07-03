@@ -1,16 +1,18 @@
 <script>
 import appConfig from '~/app.config'
 import amountCharge from './information/modals/subscription-charge'
+import subscriptionCancel from './information/modals/subscription-cancel'
 import formatMethod from '@lib/utils/format-payment-method'
 
 export default {
-  name: 'SubscriptionsDetails',
+  name: 'Subscription',
   page: {
     title: 'Subscriptions',
     meta: [{ name: 'description', content: appConfig.description }],
   },
   components: {
     amountCharge,
+    subscriptionCancel,
   },
   props: {
     id: {
@@ -24,23 +26,13 @@ export default {
       customer: {},
       modal: {
         charge: false,
+        cancel: false,
       },
     }
   },
   computed: {
     tabKey() {
       return this.$route.name
-    },
-    paymentMethods() {
-      const { endpoints } = this.customer
-
-      if (endpoints) {
-        return endpoints.map(item => {
-          return { value: item.pan, label: formatMethod(item) }
-        })
-      } else {
-        return []
-      }
     },
     tabs() {
       return [
@@ -81,6 +73,16 @@ export default {
       const [, response] = await this.$api.get(`/customers/${customerId}`)
       if (response) {
         this.customer = { ...response, fullName: `${response.first_name} ${response.last_name}` }
+        this.adjustPaymentMethods()
+      }
+    },
+    adjustPaymentMethods() {
+      const { endpoints } = this.customer
+
+      if (endpoints) {
+        this.customer.paymentMethods = endpoints.map(item => {
+          return { value: item.pan, label: formatMethod(item) }
+        })
       }
     },
   },
@@ -96,23 +98,40 @@ export default {
       v-if="subscription.id"
       slot="header"
       :class="[
-        $style.balance,
+        $style.header,
         subscription.outstanding.total < 0 && $style.balanceNegative
       ]"
     >
-      <el-button
-        type="primary"
-        @click="modal.charge = true"
-      >
-        Charge Amount Owing
-      </el-button>
+      <div :class="$style.headerBtns">
+        <el-button
+          v-if="tabKey === 'subscription-transactions'"
+          type="primary"
+          plain
+          @click="modal.cancel = true"
+        >
+          Cancel Subscription
+        </el-button>
+        <el-button
+          type="primary"
+          @click="modal.charge = true"
+        >
+          Charge Amount Owing
+        </el-button>
+      </div>
+
+      <subscription-cancel
+        v-if="modal.cancel && tabKey === 'subscription-transactions'"
+        :visible.sync="modal.cancel"
+        :subscription="subscription"
+        :payment-methods="customer.paymentMethods"
+      />
 
       <amount-charge
         v-if="modal.charge"
         :visible.sync="modal.charge"
         :subscription="subscription"
         :customer-name="customer.fullName"
-        :payment-methods="paymentMethods"
+        :payment-methods="customer.paymentMethods"
       />
 
       <small :class="$style.balanceLabel">
@@ -143,7 +162,6 @@ export default {
     <router-view
       :subscription="subscription"
       :customer="customer"
-      :payment-methods="paymentMethods"
     />
   </main-layout>
 </template>
@@ -160,7 +178,7 @@ export default {
   text-decoration: none;
 }
 
-.balance {
+.header {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -172,6 +190,7 @@ export default {
 .balanceLabel {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   margin-top: 1.5rem;
 }
 
@@ -179,5 +198,9 @@ export default {
   margin-left: .7rem;
   font-size: 1.2rem;
   font-weight: bold;
+}
+
+.headerBtns {
+  display: flex;
 }
 </style>

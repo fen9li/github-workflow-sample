@@ -188,7 +188,7 @@ export default {
         :visible.sync="modal.payment"
         :subscription="subscription"
         :customer="customer"
-        :payment-methods="paymentMethods"
+        :payment-methods="customer.paymentMethods"
       />
       <product-edit
         v-if="modal.product"
@@ -200,8 +200,7 @@ export default {
         v-if="modal.cancel"
         :visible.sync="modal.cancel"
         :subscription="subscription"
-        :customer="customer"
-        :payment-methods="paymentMethods"
+        :payment-methods="customer.paymentMethods"
       />
     </div>
   </div>
