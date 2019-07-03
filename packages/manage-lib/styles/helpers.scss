@@ -416,9 +416,16 @@
     display: flex;
     flex-direction: column;
 
-    > .el-button {
+    > .el-button,
+    &--subscription > .el-button {
       width: 14rem;
       margin: 0 0 0.6rem !important;
+    }
+
+    &--subscription {
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
     }
   }
 }

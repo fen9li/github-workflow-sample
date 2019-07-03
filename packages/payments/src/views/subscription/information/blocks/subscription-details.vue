@@ -121,49 +121,55 @@ export default {
     </div>
 
     <div
+      v-if="subscription.id"
       class="info-block__actions"
     >
       <el-button
-        v-if="subscription.id && isTransaction"
+        v-if="isTransaction"
         type="primary"
         @click="$router.push({name: 'subscription-details', params: {id: subscription.id}})"
       >
         View Subscription Details
       </el-button>
-      <el-button
-        type="primary"
-        @click="modal.anniversary = true"
+      <div
+        v-else
+        class="info-block__actions--subscription"
       >
-        Edit Anniversary Date
-      </el-button>
+        <el-button
+          type="primary"
+          @click="modal.anniversary = true"
+        >
+          Edit Anniversary Date
+        </el-button>
 
-      <el-button
-        type="primary"
-        @click="modal.coupon = true"
-      >
-        Add or Remove Coupon
-      </el-button>
+        <el-button
+          type="primary"
+          @click="modal.coupon = true"
+        >
+          Add or Remove Coupon
+        </el-button>
 
-      <el-button
-        type="primary"
-        @click="modal.payment = true"
-      >
-        Change Payment Method
-      </el-button>
+        <el-button
+          type="primary"
+          @click="modal.payment = true"
+        >
+          Change Payment Method
+        </el-button>
 
-      <el-button
-        type="primary"
-        @click="modal.product = true"
-      >
-        Change Subscription Product
-      </el-button>
+        <el-button
+          type="primary"
+          @click="modal.product = true"
+        >
+          Change Subscription Product
+        </el-button>
 
-      <el-button
-        type="danger"
-        @click="modal.cancel = true"
-      >
-        Cancel Subscription
-      </el-button>
+        <el-button
+          type="danger"
+          @click="modal.cancel = true"
+        >
+          Cancel Subscription
+        </el-button>
+      </div>
 
       <anniversary-edit
         v-if="modal.anniversary"

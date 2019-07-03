@@ -18,11 +18,17 @@ export default {
     return {
       form: {
         reason: '',
-        amount: '100.00',
+        amount: '',
         currency: 'aud',
-        refundTo: 'account',
       },
       rules: {
+        refundTo: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
         reason: [
           {
             required: true,
@@ -37,53 +43,50 @@ export default {
             trigger: 'blur',
           },
         ],
-        currency: [
-          {
-            required: true,
-            message: 'Currency is required',
-            trigger: 'blur',
-          },
-        ],
       },
-      reasons: [
-        {
-          value: 'Option1',
-          label: 'Option1',
-        },
-        {
-          value: 'Option2',
-          label: 'Option2',
-        },
-        {
-          value: 'Option3',
-          label: 'Option3',
-        },
-        {
-          value: 'Option4',
-          label: 'Option4',
-        },
-        {
-          value: 'Option5',
-          label: 'Option5',
-        },
-      ],
     }
   },
   computed: {
-    accountInfo() {
-      const { transaction } = this
-      return `${transaction.customerName}, BSB ${transaction.bankAccount.bsb}, ACC ${transaction.bankAccount.acc}`
+    refundTo() {
+      const { customer } = this.transaction.order
+      // TODO: Adjust to real data when one is done
+      return `${customer.first_name} ${customer.last_name}, BSB 178-8297, ACC 727873`
     },
   },
   methods: {
-    onSubmit() {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          console.warn('submited', this.form)
-        } else {
-          return false
+    async unSubmit() {
+      const { transaction, form } = this
+      if (!this.validateAll().some(item => item === false)) {
+        const [error, response] = await this.$api.post(`/orders/${transaction.order.id}/refund`,
+          {
+            amount: form.amount,
+            reason: form.reason,
+          }
+        )
+
+        if (response) {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: `Refund paid successfully`,
+          })
+          this.$emit('update:visible', false)
+        } else if (error) {
+          const firstError = error.violations[Object.keys(error.violations)[0]][0]
+          this.$notify({
+            type: 'error',
+            title: 'Error',
+            message: firstError,
+          })
         }
+      }
+    },
+    validateAll() {
+      const result = []
+      this.$refs.form.validate( valid => {
+        result.push(valid)
       })
+      return result
     },
   },
 }
@@ -93,7 +96,7 @@ export default {
   <el-dialog
     title="Refund Payment"
     :visible="visible"
-    :class="$style.modal"
+    :custom-class="$style.modal"
     @update:visible="$emit('update:visible', $event)"
   >
     <el-form
@@ -106,32 +109,15 @@ export default {
     >
       <el-form-item
         label="Refund to"
-        :class="$style.refundWrapper"
-        label-width="50px"
-        required
       >
-        <div :class="$style.radioGroup">
-          <div :class="$style.account">
-            <el-radio
-              v-model="form.refundTo"
-              label="account"
-            >
-              Customer's Bank Account
-            </el-radio>
-            <span :class="$style.accountInfo">{{ accountInfo }}</span>
-          </div>
-          <el-radio
-            v-model="form.refundTo"
-            label="ewallet"
-          >
-            Customer's eWallet
-          </el-radio>
-        </div>
+        <el-select
+          :value="refundTo"
+          disabled
+        />
       </el-form-item>
       <el-form-item
         label="Amount"
         prop="amount"
-        required
       >
         <div
           prop="amount"
@@ -158,6 +144,7 @@ export default {
           </el-form-item>
           <el-select
             v-model="form.currency"
+            disabled
           >
             <el-option
               label="AUD"
@@ -174,17 +161,10 @@ export default {
         label="Reason"
         prop="reason"
       >
-        <el-select
+        <el-input
           v-model="form.reason"
           placeholder="Please select"
-        >
-          <el-option
-            v-for="item in reasons"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
+        />
       </el-form-item>
     </el-form>
     <div :class="$style.note">
@@ -195,7 +175,7 @@ export default {
       <el-button
         class="wide-button"
         type="primary"
-        @click="onSubmit"
+        @click="unSubmit"
       >
         Refund
       </el-button>
@@ -204,6 +184,10 @@ export default {
 </template>
 
 <style lang="scss" module>
+.modal {
+  width: 30rem;
+}
+
 .note {
   padding: .5rem;
   color: var(--color-text-light);
@@ -213,56 +197,5 @@ export default {
 .noteIco {
   padding-right: .5rem;
   font-size: 1rem;
-}
-
-.amount {
-  display: flex;
-
-  :global {
-    .el-input-group__prepend,
-    .el-input-group__append {
-      background-color: inherit !important;
-    }
-
-    .el-input-group {
-      .el-input__inner {
-        border-right: 0;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-      }
-    }
-
-    .el-input--suffix {
-      .el-input__inner {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-      }
-    }
-  }
-}
-.refundWrapper {
-  display: flex;
-  margin-bottom: 0.8rem;
-}
-
-.radioGroup {
-  margin-left: 4rem;
-  :global {
-    .el-radio__label {
-      font-size: 1rem;
-    }
-  }
-}
-
-.account {
-  display: flex;
-  flex-direction: column;
-  padding-top: 0.3rem;
-}
-
-.accountInfo {
-  padding-left: 1.7rem;
-  line-height: 1.7rem;
-  color: #BCBEC1;
 }
 </style>
