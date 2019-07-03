@@ -1,11 +1,23 @@
 <script>
-import EditModal from './coupon-edit'
+import CouponFormModal from './coupon-form-modal'
 import DeleteModal from './coupon-delete'
+import { formatDate } from '@lib/utils/format-date'
+import formatDollar from '@lib/utils/format-dollar'
 
 export default {
+  name: 'Coupon',
   components: {
-    EditModal,
+    CouponFormModal,
     DeleteModal,
+  },
+  props: {
+    id: {
+      type: [String, Number],
+      required: true,
+    },
+  },
+  page: {
+    title: 'Coupon',
   },
   data() {
     return {
@@ -13,17 +25,57 @@ export default {
         edit: false,
         delete: false,
       },
+      loading: false,
       coupon: {
-        created_at: '2019-06-11T09:42:41.947Z',
-        name: '10% Off Purchase',
-        code: 'HE282',
-        start_date: '2019-06-11T09:42:41.947Z',
-        end_date: '2019-06-11T09:42:41.947Z',
-        period: '6',
-        numbber_in_use: '21',
+        created_at: '',
+        name: '',
+        code: '',
+        start_at: '',
+        end_at: '',
+        fixed_amount: {},
+        validity_period: '',
+        useCount: 0,
       },
     }
   },
+  computed: {
+    formattedCoupon() {
+      const { coupon, discount } = this
+      return { ...coupon, ...{ discount_type: discount.type.raw, amount: discount.amount.raw } }
+    },
+    discount() {
+      const { coupon } = this
+      return {
+        type: {
+          raw: coupon.percentage ? 'percentage': 'fixed_amount',
+          formatted: coupon.percentage ? 'Percentage' : 'Fixed Amount',
+        },
+        amount: {
+          raw: coupon.percentage || coupon.fixed_amount.total,
+          formatted: coupon.percentage ? `${coupon.percentage}%` : `${formatDollar(coupon.fixed_amount.total)} ${coupon.fixed_amount.currency}`,
+        },
+      }
+    },
+  },
+  created() {
+    this.getCouponDetails()
+  },
+  methods: {
+    async getCouponDetails() {
+      this.loading = true
+      const [error, response] = await this.$api.get(`/coupons/${this.id}`)
+      if (response) {
+        this.coupon = { ...this.coupon, ...response }
+        this.loading = false
+      }
+      console.warn(error, response)
+    },
+    formatDate(value, format) {
+      return formatDate(value, format)
+    },
+    formatDollar,
+  },
+
 }
 </script>
 
@@ -32,7 +84,7 @@ export default {
     title="Coupon Details"
     back
   >
-    <el-card>
+    <el-card v-if="coupon.id && !loading">
       <el-row
         slot="header"
         type="flex"
@@ -61,7 +113,7 @@ export default {
 
       <dl class="datalist">
         <dt>Date Created</dt>
-        <dd>{{ coupon.created_at | dateTime }}</dd>
+        <dd>{{ formatDate(coupon.created_at, 'DD/MM/YYYY hh:mm') }}</dd>
 
         <dt>Coupon Name</dt>
         <dd>{{ coupon.name }}</dd>
@@ -69,30 +121,42 @@ export default {
         <dt>Coupon Code</dt>
         <dd>{{ coupon.code }}</dd>
 
+        <dt>Discount Type</dt>
+        <dd>{{ discount.type.formatted }}</dd>
+
+        <dt>Amount</dt>
+        <dd>{{ discount.amount.formatted }}</dd>
+
         <dt>Effective Start Date</dt>
-        <dd>{{ coupon.start_date }}</dd>
+        <dd>{{ formatDate(coupon.start_at, 'DD/MM/YYYY') }}</dd>
 
         <dt>End Date</dt>
-        <dd>{{ coupon.end_date }}</dd>
+        <dd>{{ formatDate(coupon.end_at, 'DD/MM/YYYY') }}</dd>
 
         <dt>Validity Period</dt>
-        <dd>{{ coupon.period }}</dd>
+        <dd>{{ coupon.validity_period }}</dd>
 
         <dt>No. in use</dt>
-        <dd>{{ coupon.numbber_in_use }}</dd>
+        <dd>{{ coupon.useCount }}</dd>
       </dl>
     </el-card>
 
+    <div v-else>
+      Coupon not found
+    </div>
 
-    <edit-modal
+
+    <coupon-form-modal
       v-if="modal.edit"
       :visible.sync="modal.edit"
-      :coupon="coupon"
+      :coupon="formattedCoupon"
+      edit
+      @updated="getCouponDetails"
     />
     <delete-modal
       v-if="modal.delete"
+      :id="coupon.id"
       :visible.sync="modal.delete"
-      :coupon="coupon"
     />
   </main-layout>
 </template>

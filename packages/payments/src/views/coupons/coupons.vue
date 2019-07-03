@@ -1,18 +1,24 @@
 <script>
-import CouponsCreateModal from './coupons-create'
-import table from './coupons-table'
+import ElasticProcessor from '@lib/processors/elastic-processor'
+import CouponFormModal from '../coupon/coupon-form-modal'
+import tableConfig from './coupons-table'
 
 export default {
   name: 'Coupons',
+  components: {
+    CouponFormModal,
+  },
   page: {
     title: 'Coupons',
   },
-  components: {
-    CouponsCreateModal,
-  },
   data() {
     return {
-      table: table(this),
+      processor: new ElasticProcessor({
+        component: this,
+        index: 'coupons',
+      }),
+      filters: tableConfig.filters,
+      columns: tableConfig.columns,
       modal: {
         edit: false,
         delete: false,
@@ -35,9 +41,9 @@ export default {
   <main-layout title="Coupons">
     <table-layout
       table-name="coupons"
-      :processor="table.processor"
-      :filters="table.filters"
-      :columns="table.columns"
+      :processor="processor"
+      :filters="filters"
+      :columns="columns"
       :fragments="false"
       @row-click="onRowClick"
     />
@@ -49,7 +55,7 @@ export default {
     >
       Create coupon
     </el-button>
-    <coupons-create-modal
+    <coupon-form-modal
       v-if="modal.create"
       :visible.sync="modal.create"
     />

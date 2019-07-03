@@ -3,19 +3,31 @@ export default {
   name: 'CouponDeleteModal',
   inheritAttrs: false,
   props: {
-    customer: {
-      type: Object,
-      default: () => ({}),
+    id: {
+      type: String,
+      required: true,
     },
   },
   methods: {
-    onSubmit() {
-      this.$notify({
-        type: 'success',
-        title: 'Success',
-        message: 'Coupon successfully deleted.',
-      })
-      this.$emit('update:visible', false)
+    async onSubmit() {
+      const [error] = await this.$api.delete(`/coupons/${this.id}`)
+
+      if (error) {
+        const firstError = error.violations[Object.keys(error.violations)[0]][0]
+        this.$notify({
+          type: 'error',
+          title: 'Error',
+          message: firstError,
+        })
+      } else {
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: 'Coupon successfully deleted.',
+        })
+        this.$emit('update:visible', false)
+        this.$router.push({ name: 'coupons' })
+      }
     },
   },
 }

@@ -1,30 +1,37 @@
-import StaticProcessor from '@lib/processors/static-processor'
-import couponsMock from '@tests/__fixtures__/coupons'
-
 const TABLE_FILTERS = [
   {
-    attribute: 'dateCreated',
+    attribute: 'createdAt',
+    label: 'dateCreated',
     icon: 'el-icon-date',
     type: 'date',
   },
   {
-    attribute: 'effectiveStartDate',
+    attribute: 'startAt',
+    label: 'effectiveStartDate',
     icon: 'el-icon-date',
     type: 'date',
   },
   {
-    attribute: 'couponName',
+    attribute: 'name',
+    label: 'couponName',
     type: 'string',
     icon: 'el-icon-document',
   },
   {
-    attribute: 'couponCode',
+    attribute: 'id',
+    label: 'couponCode',
     type: 'string',
     icon: 'el-icon-document',
   },
   {
     attribute: 'validityPeriod',
     type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'useCount',
+    label: 'No. in Use',
+    type: 'numeric',
     icon: 'el-icon-document',
   },
   {
@@ -51,29 +58,29 @@ const TABLE_FILTERS = [
 
 const TABLE_COLUMNS = [
   {
-    name: 'dateCreated',
+    name: 'createdAt',
     label: 'Date Created',
     icon: 'el-icon-document',
     format: 'dateTime',
   },
   {
-    name: 'couponName',
+    name: 'name',
     label: 'Coupon Name',
     icon: 'el-icon-document',
   },
   {
-    name: 'couponCode',
+    name: 'id',
     label: 'Coupon Code',
     icon: 'el-icon-document',
   },
   {
-    name: 'effectiveStartDate',
+    name: 'startAt',
     label: 'Effective Start Date',
     icon: 'el-icon-document',
-    format: 'date',
+    format: 'dayMonthShort',
   },
   {
-    name: 'endDate',
+    name: 'endAt',
     label: 'End Date',
     icon: 'el-icon-document',
     format: 'date',
@@ -82,20 +89,42 @@ const TABLE_COLUMNS = [
     name: 'validityPeriod',
     label: 'Validity Period',
     icon: 'el-icon-document',
+    format: 'capital',
+    component: {
+      props: {
+        format(value) {
+          switch (value) {
+            case 'P1m': return '1 Month'
+            case 'P3m': return '3 Months'
+            case 'P1y': return '12 Months'
+            default: return ''
+          }
+        },
+      },
+    },
   },
   {
-    name: 'noInUse',
+    name: 'useCount',
     label: 'No. in Use',
     icon: 'el-icon-document',
   },
   {
     name: 'amount',
     label: 'Amount',
+    format: 'capital',
     icon: 'el-icon-document',
+    component: {
+      props: {
+        format(_, row) {
+          return row.discountAbsolute ? `$${row.discountAbsolute.total}` : `${row.discountPercentage}%`
+        },
+      },
+    },
   },
   {
     name: 'status',
     label: 'Status',
+    format: 'capital',
     icon: 'el-icon-document',
     component: {
       is: 'cell-activity',
@@ -103,13 +132,7 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default function(component) {
-  return {
-    processor: new StaticProcessor({
-      component,
-      data: couponsMock.table,
-    }),
-    filters: TABLE_FILTERS,
-    columns: TABLE_COLUMNS,
-  }
+export default {
+  filters: TABLE_FILTERS,
+  columns: TABLE_COLUMNS,
 }

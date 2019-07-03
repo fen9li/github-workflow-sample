@@ -175,11 +175,6 @@ const router = new VueRouter({
       props: true,
     },
     {
-      path: '/coupons/new',
-      name: 'coupon-new',
-      component: () => lazy(import('~/views/coupons/coupon-new')),
-    },
-    {
       path: '/settings/payment',
       name: 'payment-settings',
       component: () => lazy(import('~/views/settings-payment')),
