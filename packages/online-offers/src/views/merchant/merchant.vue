@@ -1,8 +1,7 @@
 <script>
+import { mapActions } from 'vuex'
 import merchantDetails from './details/merchant-details'
 import merchantEdit from './edit/merchant-edit'
-import details from '@tests/__fixtures__/merchant-details.js'
-
 
 export default {
   name: 'MerchantDetails',
@@ -12,9 +11,33 @@ export default {
   },
   data() {
     return {
-      details,
+      details: {},
       edit: false,
     }
+  },
+  computed: {
+    merchantId() {
+      return this.$route.params.id
+    },
+  },
+  watch: {
+    details() {
+      return Object.keys(this.details).length
+    },
+  },
+  created() {
+    this.fetchMerchant()
+  },
+  methods: {
+    ...mapActions('merchants', [
+      'getGlobalMerchant',
+    ]),
+    async fetchMerchant() {
+      const [, response] = await this.getGlobalMerchant(this.merchantId)
+      if (response) {
+        this.details = response
+      }
+    },
   },
 }
 </script>
@@ -22,9 +45,14 @@ export default {
 <template>
   <main-layout
     :title="details.name"
-    back
+    :back="{name: 'merchants'}"
   >
-    <el-card>
+    <base-loader
+      v-if="!details"
+      theme="state"
+      size="large"
+    />
+    <el-card v-else>
       <merchant-edit
         v-if="edit"
         :details="details"

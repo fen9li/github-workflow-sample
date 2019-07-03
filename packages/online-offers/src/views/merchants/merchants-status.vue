@@ -29,12 +29,13 @@ export default {
     ...mapMutations('merchants', {
       updateTable: 'UPDATE_TABLE',
     }),
-    onSwitch(event) {
+    async onSwitch(event) {
       this.enabled = !this.enabled
+      await this.$nextTick()
       this.updateMerchant({
         merchantId: this.row.id,
         payload: {
-          enabled: !this.row.enabled,
+          enabled: this.enabled,
         },
       }).then(() => {
         this.$notify({

@@ -4,7 +4,7 @@ export default {
   inheritAttrs: false,
   props: {
     back: {
-      type: Boolean,
+      type: [Boolean, Object],
       default: false,
     },
     title: {
@@ -35,7 +35,11 @@ export default {
   },
   methods: {
     onBackClick() {
-      this.$router.go(-1)
+      if (this.back instanceof Object) {
+        this.$router.push(this.back)
+      } else {
+        this.$router.go(-1)
+      }
     },
   },
 }

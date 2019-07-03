@@ -1,10 +1,14 @@
 <script>
 import ApiProcessor from '@lib/processors/api-processor'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 import table from './merchant-offers.table'
+import MerchantModal from './merchant-modal'
 
 export default {
   name: 'MerchantOffers',
+  components: {
+    MerchantModal,
+  },
   data() {
     return {
       merchant: {},
@@ -15,12 +19,22 @@ export default {
   },
   computed: {
     ...mapGetters('merchants', ['tableUpdate']),
+    merchantId() {
+      return this.$route.params.id
+    },
+    status() {
+      return this.activeTab === 'active' ? 'true' : 'false'
+    },
     path() {
-      const merchantId = this.$route.params.id
-      return `/merchants/${merchantId}/offers`
+      return `/merchants/${this.merchantId}/offers?filters[enabled]=${this.status}`
     },
     tableIsEmpty() {
       return !this.table.processor.data.length
+    },
+  },
+  watch: {
+    tableUpdate() {
+      this.getMerchantOffers()
     },
   },
   created() {
@@ -30,6 +44,9 @@ export default {
   },
   methods: {
     ...mapActions('merchants', ['getGlobalMerchant']),
+    ...mapMutations('merchants', {
+      updateTable: 'UPDATE_TABLE',
+    }),
     async getMerchant() {
       const [, response] = await this.getGlobalMerchant(this.$route.params.id)
       if (response) {
@@ -37,12 +54,10 @@ export default {
       }
     },
     getMerchantOffers() {
+      this.updateTable(false)
       this.table.processor = new ApiProcessor({
         component: this,
         path: this.path,
-        dataFilter: {
-          [this.activeTab]: this.activeTab,
-        },
       })
     },
     onRowClick(row) {
@@ -76,14 +91,10 @@ export default {
 <template>
   <main-layout
     :title="merchant.name"
+    :back="{
+      name: 'merchant-details'
+    }"
   >
-    <el-button
-      slot="beforeTitle"
-      :class="$style.backButton"
-      circle
-      icon="el-icon-arrow-left"
-      @click="onBackClick"
-    />
     <el-tabs
       v-model="activeTab"
       :class="$style.tabs"
@@ -105,12 +116,17 @@ export default {
           @selection-change="handleSelectionChange"
         >
           <el-table-column
-            v-if="!tableIsEmpty"
             type="selection"
             fixed="left"
             width="55"
           />
         </table-layout>
+        <merchant-modal
+          :id="merchant.id"
+          :items="selectedItems"
+          :name="merchant.name"
+          :activate="false"
+        />
       </el-tab-pane>
       <el-tab-pane
         label="Inactive"
@@ -128,12 +144,17 @@ export default {
           @selection-change="handleSelectionChange"
         >
           <el-table-column
-            v-if="!tableIsEmpty"
             type="selection"
             fixed="left"
             width="55"
           />
         </table-layout>
+        <merchant-modal
+          :id="merchant.id"
+          :items="selectedItems"
+          :name="merchant.name"
+          :activate="true"
+        />
       </el-tab-pane>
     </el-tabs>
   </main-layout>

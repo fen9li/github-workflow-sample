@@ -24,10 +24,14 @@ export default {
     }
   },
   computed: {
+    catalogueId() {
+      return this.$route.params.id
+    },
+    linked() {
+      return this.activeTab === 'linked' ? 'true' : 'false'
+    },
     path() {
-      const catalogueId = this.$route.params.id
-      const linked = this.activeTab === 'linked' ? true : false
-      return `/catalogues/${catalogueId}/merchants?filters[attached]=${linked}`
+      return `/catalogues/${this.catalogueId}/merchants?filters[attached]=${this.linked}`
     },
   },
   created() {

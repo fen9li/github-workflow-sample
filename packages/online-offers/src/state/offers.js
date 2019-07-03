@@ -18,6 +18,9 @@ const actions = {
   async createOffer({ commit }, payload) {
     return await api.post('/offers', payload)
   },
+  async updateOffer({ commit }, { id, payload }) {
+    return await api.put(`/offers/${id}`, payload)
+  },
 }
 
 export default {

@@ -1,4 +1,5 @@
 <script>
+import { mapActions } from 'vuex'
 import { formatDate } from '@lib/utils/format-date'
 import capitalize from 'lodash/capitalize'
 import formatDollar from '@lib/utils/format-dollar'
@@ -23,12 +24,34 @@ export default {
     title() {
       return this.original ? 'Original' : 'Updated'
     },
+    merchantId() {
+      return this.details.id
+    },
   },
   methods: {
     capitalize,
     formatDollar,
+    ...mapActions('merchants', [
+      'updateMerchant',
+    ]),
     formatDate(value) {
       return formatDate(value, 'DD/MM/YYYY hh:mm A')
+    },
+    async onSwitch(event) {
+      this.details.enabled = !this.details.enabled
+      await this.$nextTick()
+      this.updateMerchant({
+        merchantId: this.merchantId,
+        payload: {
+          enabled: this.details.enabled,
+        },
+      }).then(() => {
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: `Merchant status sussessfully changed`,
+        })
+      })
     },
   },
 }
@@ -46,8 +69,9 @@ export default {
       <div :class="$style.logo">
         <div :class="[$style.imageWrapper,{[$style.imageWrapperSm]: !detailsPage}]">
           <img
-            src="https://picsum.photos/id/366/500/500"
-            alt="Merchant name"
+            v-if="details.logo"
+            src="details.logo"
+            alt="details.name"
             :class="$style.image"
           >
         </div>
@@ -57,13 +81,19 @@ export default {
         >
           <span :class="$style.status">Status</span>
           <el-switch
-            v-model="details.status"
-            active-value="active"
+            :value="details.enabled"
+            @change="onSwitch"
           />
         </div>
       </div>
       <div :class="$style.details">
-        <dl :class="['datalist datalist__online-offers', {'datalist-tight' : !detailsPage }, {[$style.inactive]: details.status !== 'active'}]">
+        <dl
+          :class="[
+            'datalist datalist__online-offers',
+            !detailsPage && 'datalist-tight',
+            !details.enabled && $style.inactive
+          ]"
+        >
           <dt :class="$style.grey">
             Merchant ID
           </dt>
@@ -80,7 +110,7 @@ export default {
             Merchant Updated
           </dt>
           <dd :class="$style.grey">
-            {{ `${formatDate(details.updated) } by ${details.updatedBy}` }}
+            {{ formatDate(details.updated_at) }}
           </dd>
           <dt>Merchant Name</dt>
           <dd>{{ details.name }}</dd>
@@ -88,27 +118,29 @@ export default {
           <dd>{{ details.feed }}</dd>
           <dt>Commission Type</dt>
           <dd>{{ capitalize(details.commissionType) }}</dd>
-          <dt>Commission Rate</dt>
-          <dd>
-            <span :class="$style.rate">
-              {{ `Base ${formatDollar(details.commissionRates.base)}` }}
-            </span>
-            <span :class="$style.rate">
-              {{ `Min ${formatDollar(details.commissionRates.min)}` }}
-            </span>
-            <span :class="$style.rate">
-              {{ `Max ${formatDollar(details.commissionRates.max)}` }}
-            </span>
-          </dd>
-          <dt>Classifications</dt>
-          <dd :class="$style.classifications">
-            <span
-              v-for="(item, index) in details.classifications"
-              :key="index"
-            >
-              {{ capitalize(item) }}
-            </span>
-          </dd>
+          <template v-if="details.commissionRates">
+            <dt>Commission Rate</dt>
+            <dd>
+              <span :class="$style.rate">
+                {{ `Base ${formatDollar(details.commissionRates.base)}` }}
+              </span>
+              <span :class="$style.rate">
+                {{ `Min ${formatDollar(details.commissionRates.min)}` }}
+              </span>
+              <span :class="$style.rate">
+                {{ `Max ${formatDollar(details.commissionRates.max)}` }}
+              </span>
+            </dd>
+            <dt>Classifications</dt>
+            <dd :class="$style.classifications">
+              <span
+                v-for="(item, index) in details.classifications"
+                :key="index"
+              >
+                {{ capitalize(item) }}
+              </span>
+            </dd>
+          </template>
           <dt>Summary</dt>
           <dd>{{ details.summary }}</dd>
           <dt>Merchant Website</dt>
