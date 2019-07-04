@@ -3,7 +3,6 @@ import merchantDetails from '../merchant/details/merchant-details'
 import originalMerchantDetails from '@tests/__fixtures__/merchant-details.js'
 import updatedMerchantDetails from '@tests/__fixtures__/merchant-updated.js'
 
-
 export default {
   name: 'MerchantUpdated',
   components: {

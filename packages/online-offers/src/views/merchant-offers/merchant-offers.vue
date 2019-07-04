@@ -1,7 +1,7 @@
 <script>
 import ApiProcessor from '@lib/processors/api-processor'
-import { mapGetters, mapActions, mapMutations } from 'vuex'
-import table from './merchant-offers.table'
+import { mapActions } from 'vuex'
+import merchantOffersTable from './merchant-offers.table'
 import MerchantModal from './merchant-modal'
 
 export default {
@@ -12,13 +12,16 @@ export default {
   data() {
     return {
       merchant: {},
-      table,
+      table: merchantOffersTable,
       activeTab: 'active',
       selectedItems: [],
+      tabs: [
+        { label: 'Active', name: 'active' },
+        { label: 'Inactive', name: 'inactive' },
+      ],
     }
   },
   computed: {
-    ...mapGetters('merchants', ['tableUpdate']),
     merchantId() {
       return this.$route.params.id
     },
@@ -26,15 +29,9 @@ export default {
       return this.activeTab === 'active' ? 'true' : 'false'
     },
     path() {
-      return `/merchants/${this.merchantId}/offers?filters[enabled]=${this.status}`
-    },
-    tableIsEmpty() {
-      return !this.table.processor.data.length
-    },
-  },
-  watch: {
-    tableUpdate() {
-      this.getMerchantOffers()
+      return `/merchants/${this.merchantId}/offers?filters[enabled]=${
+        this.status
+      }`
     },
   },
   created() {
@@ -44,17 +41,14 @@ export default {
   },
   methods: {
     ...mapActions('merchants', ['getGlobalMerchant']),
-    ...mapMutations('merchants', {
-      updateTable: 'UPDATE_TABLE',
-    }),
     async getMerchant() {
       const [, response] = await this.getGlobalMerchant(this.$route.params.id)
+
       if (response) {
         this.merchant = response
       }
     },
     getMerchantOffers() {
-      this.updateTable(false)
       this.table.processor = new ApiProcessor({
         component: this,
         path: this.path,
@@ -76,6 +70,7 @@ export default {
         },
         query: {},
       })
+
       this.getMerchantOffers()
     },
     onBackClick() {
@@ -91,9 +86,7 @@ export default {
 <template>
   <main-layout
     :title="merchant.name"
-    :back="{
-      name: 'merchant-details'
-    }"
+    :back="{ name: 'merchants' }"
   >
     <el-tabs
       v-model="activeTab"
@@ -101,11 +94,13 @@ export default {
       @tab-click="onTabClick"
     >
       <el-tab-pane
-        label="Active"
-        name="active"
+        v-for="tab in tabs"
+        :key="tab.name"
+        :label="tab.label"
+        :name="tab.name"
       >
         <table-layout
-          table-name="merchant-offers"
+          :table-name="`merchant-offers-${tab.name}`"
           :processor="table.processor"
           :filters="table.filters"
           :columns="table.columns"
@@ -116,44 +111,20 @@ export default {
           @selection-change="handleSelectionChange"
         >
           <el-table-column
+            v-if="table.processor.data.length"
             type="selection"
             fixed="left"
             width="55"
           />
+          <div v-else />
         </table-layout>
+
         <merchant-modal
           :id="merchant.id"
           :items="selectedItems"
           :name="merchant.name"
-          :activate="false"
-        />
-      </el-tab-pane>
-      <el-tab-pane
-        label="Inactive"
-        name="inactive"
-      >
-        <table-layout
-          table-name="merchant-offers"
-          :processor="table.processor"
-          :filters="table.filters"
-          :columns="table.columns"
-          :fragments="false"
-          :hider="false"
-          quantity
-          @row-click="onRowClick"
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column
-            type="selection"
-            fixed="left"
-            width="55"
-          />
-        </table-layout>
-        <merchant-modal
-          :id="merchant.id"
-          :items="selectedItems"
-          :name="merchant.name"
-          :activate="true"
+          :activate="tab.name === 'inactive'"
+          :offers-processor="table.processor"
         />
       </el-tab-pane>
     </el-tabs>
@@ -164,7 +135,7 @@ export default {
 .backButton {
   position: absolute;
   left: 0;
-  padding: .2rem !important;
+  padding: 0.2rem !important;
   border-color: var(--color-primary);
   border-width: 2px;
 

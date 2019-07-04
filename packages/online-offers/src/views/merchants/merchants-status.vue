@@ -23,27 +23,27 @@ export default {
     },
   },
   methods: {
-    ...mapActions('merchants', [
-      'updateMerchant',
-    ]),
+    ...mapActions('merchants', ['updateMerchant']),
     ...mapMutations('merchants', {
       updateTable: 'UPDATE_TABLE',
     }),
-    async onSwitch(event) {
+    async onSwitch() {
       this.enabled = !this.enabled
+
       await this.$nextTick()
+
       this.updateMerchant({
         merchantId: this.row.id,
         payload: {
           enabled: this.enabled,
         },
-      }).then(() => {
+      }).then(() =>
         this.$notify({
           type: 'success',
           title: 'Success',
           message: `Merchant status sussessfully changed`,
         })
-      })
+      )
     },
   },
 }
@@ -55,4 +55,3 @@ export default {
     @click="onSwitch"
   />
 </template>
-

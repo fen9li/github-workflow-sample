@@ -1,3 +1,4 @@
+import ApiProcessor from '@lib/processors/api-processor'
 import merchantsStatus from './merchants-status'
 import cellRoute from '~/components/cells/cell-route.vue'
 
@@ -83,8 +84,8 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default {
+export default component => ({
+  processor: new ApiProcessor({ component, path: 'merchants' }),
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
-  processor: null,
-}
+})

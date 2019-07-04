@@ -1,7 +1,8 @@
 <script>
 import StaticProcessor from '@lib/processors/static-processor'
-import table from './merchant-modal.table'
-import { mapActions, mapMutations } from 'vuex'
+import ApiProcessor from '@lib/processors/api-processor'
+import merchantModalTable from './merchant-modal.table'
+import { mapActions } from 'vuex'
 
 export default {
   props: {
@@ -21,33 +22,34 @@ export default {
       type: Boolean,
       default: false,
     },
+    offersProcessor: {
+      type: ApiProcessor,
+      required: true,
+    },
   },
   data() {
     return {
-      table: table(this),
+      table: merchantModalTable,
       showModal: false,
     }
   },
   computed: {
     offersCount() {
-      return this.items.length > 1 ? `${this.items.length} offers` : `${this.items.length} offer`
+      const { length } = this.items
+
+      return length > 1 ? `${length} offers` : `${length} offer`
     },
   },
   watch: {
-    items(value) {
+    items() {
       this.getData()
     },
   },
-  mounted() {
+  created() {
     this.getData()
   },
   methods: {
-    ...mapMutations('merchants', {
-      updateTable: 'UPDATE_TABLE',
-    }),
-    ...mapActions('offers', [
-      'updateOffer',
-    ]),
+    ...mapActions('offers', ['activateOffersBulk']),
     getData() {
       this.table.processor = new StaticProcessor({
         component: this,
@@ -55,21 +57,27 @@ export default {
       })
     },
     onClick() {
-      // We haven't endpoint for bulk operation yet
-      // For single {{baseUrl}}/offers/{{offersId}}
-      this.items.forEach(item => {
-        this.updateOffer({
-          id: item.id,
-          enabled: !item.enabled,
+      const { offersCount } = this
+      const offers = this.items.map(i => i.id)
+
+      // there is a single endpoint
+      // for bulk activation and deactivation
+      this.activateOffersBulk({
+        offers,
+        enabled: this.activate,
+      })
+        .then(() => this.offersProcessor.getData())
+        .then(() => {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: `${offersCount} successfully ${
+              this.activate ? 'activated' : 'deactivated'
+            }`,
+          })
+
+          this.showModal = false
         })
-      })
-      this.updateTable(true)
-      this.$notify({
-        type: 'success',
-        title: 'Success',
-        message: `${this.offersCount} sussessfully ${this.activate ? 'activated' : 'deactivated'}`,
-      })
-      this.showModal = false
     },
   },
 }
@@ -95,7 +103,8 @@ export default {
       width="800px"
     >
       <div :class="$style.subtitle">
-        Are you sure you wish to {{ activate ? 'activate' : 'deactivate' }} these Offers from {{ name }}?
+        Are you sure you wish to
+        {{ activate ? 'activate' : 'deactivate' }} these Offers from {{ name }}?
       </div>
 
       <table-layout
@@ -122,38 +131,38 @@ export default {
 </template>
 
 <style lang="scss" module>
-  .buttonWrapper {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    padding: rem(0 48px 16px 0);
-  }
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: rem(0 48px 16px 0);
+}
 
-  .dialog {
-    :global {
-      .el-dialog {
-        max-width: none !important;
-      }
+.dialog {
+  :global {
+    .el-dialog {
+      max-width: none !important;
     }
   }
+}
 
-  .subtitle {
-    margin-bottom: rem(32px);
-    text-align: center;
-  }
+.subtitle {
+  margin-bottom: rem(32px);
+  text-align: center;
+}
 
-  .table {
-    box-shadow: none !important;
+.table {
+  box-shadow: none !important;
 
-    :global {
-      .el-card__body > div {
-        padding: 0;
-      }
+  :global {
+    .el-card__body > div {
+      padding: 0;
     }
   }
+}
 
-  .link {
-    display: flex;
-    justify-content: center;
-  }
+.link {
+  display: flex;
+  justify-content: center;
+}
 </style>

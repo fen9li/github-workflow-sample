@@ -50,6 +50,15 @@ export class ApiHelper {
     }
   }
 
+  async patch(url, payload, options) {
+    try {
+      const { data } = await this.axios.patch(url, payload, options)
+      return [null, data]
+    } catch (exception) {
+      return [get(exception, 'response.data'), null]
+    }
+  }
+
   async get(url, options) {
     try {
       const { data } = await this.axios.get(url, options)
