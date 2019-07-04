@@ -1,10 +1,16 @@
 <script>
 import { mapActions } from 'vuex'
+import DataProcessor from '@lib/processors/data-processor'
+
 export default {
   props: {
     item: {
       type: Object,
       default: null,
+    },
+    processor: {
+      type: DataProcessor,
+      required: true,
     },
   },
   data() {
@@ -26,14 +32,20 @@ export default {
   methods: {
     ...mapActions('categories', ['createCategory', 'updateCategory']),
     onSubmit() {
+      const { item, form } = this
+      let request
+
       if (this.item) {
-        this.updateCategory({
-          ...this.form,
-          id: this.item.id,
+        request = this.updateCategory({
+          ...form,
+          id: item.id,
         })
       } else {
-        this.createCategory(this.form)
+        request = this.createCategory(form)
       }
+
+      request.then(() => this.processor.getData())
+
       this.$emit('close-modal')
     },
   },
@@ -71,9 +83,9 @@ export default {
 </template>
 
 <style lang="scss" module>
-  .button {
-    display: block;
-    margin-right: auto;
-    margin-left: auto;
-  }
+.button {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
 </style>

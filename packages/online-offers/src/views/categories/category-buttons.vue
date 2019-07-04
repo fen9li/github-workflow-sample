@@ -1,4 +1,5 @@
 <script>
+import CellMixin from '@lib/components/data-table/cells/cell.mixin'
 import CategoryModal from './category-modal'
 import { mapActions } from 'vuex'
 
@@ -6,12 +7,7 @@ export default {
   components: {
     CategoryModal,
   },
-  props: {
-    row: {
-      type: Object,
-      required: true,
-    },
-  },
+  mixins: [CellMixin],
   data() {
     return {
       showEditModal: false,
@@ -21,7 +17,10 @@ export default {
   methods: {
     ...mapActions('categories', ['deleteCategory']),
     onDelete() {
-      this.deleteCategory(this.row.id)
+      this.deleteCategory(this.row.id).then(() => {
+        this.processor.getData()
+        this.showDeleteDialog = false
+      })
     },
   },
 }
@@ -47,12 +46,13 @@ export default {
     />
 
     <category-modal
-      v-if="showEditModal"
       slot="header"
       :visible.sync="showEditModal"
       :item="row"
+      :processor="processor"
       modal-append-to-body
       append-to-body
+      @close-modal="showEditModal = false"
     />
 
     <state-dialog
@@ -71,9 +71,7 @@ export default {
       <div :class="$style.msg">
         Are you sure you wish to delete this category?
       </div>
-      <div
-        class="modal__footer"
-      >
+      <div class="modal__footer">
         <el-button
           class="wide-button"
           type="danger"

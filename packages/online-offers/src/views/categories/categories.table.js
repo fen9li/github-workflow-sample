@@ -1,8 +1,7 @@
+import ApiProcessor from '@lib/processors/api-processor'
 import Buttons from './category-buttons'
 
-const TABLE_FILTERS = [
-
-]
+const TABLE_FILTERS = []
 
 const TABLE_COLUMNS = [
   {
@@ -20,8 +19,8 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default {
+export default component => ({
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
-  processor: null,
-}
+  processor: new ApiProcessor({ component, path: 'categories' }),
+})

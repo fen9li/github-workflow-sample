@@ -1,39 +1,21 @@
 <script>
-import table from './categories.table.js'
-import ApiProcessor from '@lib/processors/api-processor'
+import categoriesTable from './categories.table.js'
+
 import CategoryModal from './category-modal'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 
 export default {
   components: { CategoryModal },
   data() {
     return {
-      table,
+      table: categoriesTable(this),
       showAddModal: false,
     }
-  },
-  computed: {
-    ...mapGetters('categories', ['tableUpdate']),
-  },
-  watch: {
-    tableUpdate() {
-      this.getCategories()
-    },
-  },
-  created() {
-    this.getCategories()
   },
   methods: {
     ...mapMutations('categories', {
       updateTable: 'UPDATE_TABLE',
     }),
-    getCategories() {
-      this.updateTable(false)
-      this.table.processor = new ApiProcessor({
-        component: this,
-        path: `categories`,
-      })
-    },
     closeModal() {
       this.showAddModal = false
     },
@@ -47,7 +29,7 @@ export default {
     title="Categories"
   >
     <table-layout
-      table-name="feed-updates"
+      table-name="categories"
       :processor="table.processor"
       :filters="false"
       :columns="table.columns"
@@ -66,6 +48,7 @@ export default {
     <category-modal
       v-if="showAddModal"
       slot="header"
+      :processor="table.processor"
       :visible.sync="showAddModal"
       @close-modal="closeModal"
     />

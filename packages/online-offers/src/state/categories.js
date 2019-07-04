@@ -3,17 +3,11 @@ import get from 'lodash/get'
 
 const state = {
   categories: [],
-  updateTable: false,
 }
 
-const getters = {
-  tableUpdate: state => state.updateTable,
-}
+const getters = {}
 
 const mutations = {
-  UPDATE_TABLE(state, payload = true) {
-    state.updateTable = payload
-  },
   SET_CATEGORIES(state, payload) {
     state.categories = payload
   },
@@ -22,24 +16,19 @@ const mutations = {
 const actions = {
   async getCategories({ commit }) {
     const [, response] = await api.get(`/categories`)
+
     if (response) {
       commit('SET_CATEGORIES', get(response, 'items', []))
     }
   },
   createCategory({ commit }, payload) {
-    api.post('/categories', payload).then(() => {
-      commit('UPDATE_TABLE')
-    })
+    return api.post('/categories', payload)
   },
   updateCategory({ commit }, payload) {
-    api.put(`/categories/${payload.id}`, payload).then(() => {
-      commit('UPDATE_TABLE')
-    })
+    return api.put(`/categories/${payload.id}`, payload)
   },
   deleteCategory({ commit }, id) {
-    api.delete(`/categories/${id}`).then(() => {
-      commit('UPDATE_TABLE')
-    })
+    return api.delete(`/categories/${id}`)
   },
 }
 
