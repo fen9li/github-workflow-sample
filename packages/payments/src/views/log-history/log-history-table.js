@@ -37,7 +37,14 @@ const TABLE_COLUMNS = [
     icon: 'el-icon-document',
     align: 'right',
     component: {
-      is: 'cell-http-status',
+      is: 'cell-tag',
+      props: {
+        styleObj(val) {
+          if (Number(val[0]) === 4) {
+            return { color: 'red', background: '#FBE6D1' }
+          }
+        },
+      },
     },
   },
 ]

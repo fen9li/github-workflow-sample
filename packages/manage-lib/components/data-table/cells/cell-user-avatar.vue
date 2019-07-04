@@ -2,7 +2,7 @@
 import CellMixin from './cell.mixin'
 
 export default {
-  name: 'CellHttpStatus',
+  name: 'CellUserAvatar',
   mixins: [CellMixin],
   computed: {
   },

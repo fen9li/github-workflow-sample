@@ -217,6 +217,11 @@ const router = new VueRouter({
       component: () => lazy(import('~/views/events')),
     },
     {
+      path: '/settings/webhooks',
+      name: 'settings-webhooks',
+      component: () => lazy(import('~/views/webhooks')),
+    },
+    {
       path: '/profile',
       name: 'profile',
       component: () => lazy(import('~/views/profile')),
