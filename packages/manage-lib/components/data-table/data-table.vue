@@ -81,7 +81,7 @@ export default {
   },
   watch: {
     dataQuery(dataQuery) {
-      this.syncSorting(dataQuery)
+      this.$nextTick(() => this.syncSorting(dataQuery))
     },
   },
   mounted() {

@@ -1,5 +1,5 @@
 <script>
-import table from './feed-status.table.js'
+import statusTable from './feed-status.table.js'
 
 export default {
   name: 'FeedStatus',
@@ -8,7 +8,7 @@ export default {
   },
   data() {
     return {
-      table: table(this),
+      table: statusTable(this),
     }
   },
 }

@@ -1,8 +1,9 @@
 <script>
 import md5 from 'md5'
 import uploadcare from 'uploadcare-vue'
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import find from 'lodash/find'
+import ApiProcessor from '@lib/processors/api-processor'
 
 export default {
   name: 'EditClientModal',
@@ -13,6 +14,10 @@ export default {
     client: {
       type: Object,
       default: null,
+    },
+    processor: {
+      type: ApiProcessor,
+      required: true,
     },
   },
   data() {
@@ -48,7 +53,7 @@ export default {
         ],
       },
       uploadcare: {
-        expire: new Date(new Date + 60 * 60 * 12).getTime(),
+        expire: new Date(new Date() + 60 * 60 * 12).getTime(),
         publicKey: process.env.VUE_APP_UPLOADCARE_PUBLIC_KEY,
         secretKey: process.env.VUE_APP_UPLOADCARE_SECRET_KEY,
       },
@@ -66,29 +71,24 @@ export default {
   watch: {
     client(client) {
       if (client) {
-        this.form.name = client.name,
-        this.form.logo = client.logo,
-        this.form.feeds = client.feeds.map(item => {
+        (this.form.name = client.name),
+        (this.form.logo = client.logo),
+        (this.form.feeds = client.feeds.map(item => {
           return item.name
-        })
+        }))
       }
     },
   },
-  mounted() {
-
-  },
   methods: {
     ...mapActions('catalogues', ['createCatalog', 'updateCatalog']),
-    ...mapMutations('catalogues', {
-      updateTable: 'UPDATE_TABLE',
-    }),
     onSuccessUploading(img) {
       this.form.logo = img.originalUrl
       this.logoName = img.name
     },
     onSubmit() {
       const feeds = this.form.feeds.map(item => {
-        const feed = find(this.feeds, { 'name': item })
+        const feed = find(this.feeds, { name: item })
+
         return feed.slug
       })
 
@@ -97,18 +97,16 @@ export default {
           ...this.form,
           feeds,
           id: this.client.id,
-        }).then(() => {
-          this.updateTable()
-          this.$emit('catalogues-updated')
         })
+          .then(() => this.processor.getData())
+          .then(() => this.$emit('catalogues-updated'))
       } else {
         this.createCatalog({
           ...this.form,
           feeds,
-        }).then(() => {
-          this.updateTable()
-          this.$emit('catalogues-created')
         })
+          .then(() => this.processor.getData())
+          .then(() => this.$emit('catalogues-created'))
       }
     },
   },
@@ -211,66 +209,66 @@ export default {
 </template>
 
 <style lang="scss" module>
-  .wrapper {
-    :global {
-      .el-dialog {
-        max-width: 35rem !important;
-      }
-
-      .el-form-item {
-        .el-checkbox-group {
-          width: 100%;
-        }
-      }
+.wrapper {
+  :global {
+    .el-dialog {
+      max-width: 35rem !important;
     }
-  }
 
-  .form-uploader-tip {
-    width: calc(100% + 2px);
-    height: 40px;
-    padding: 0 1rem 0 0;
-    margin-left: -2px;
-    overflow: hidden;
-    color: #c0c4cb;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    border-left: none;
-    border-radius: 0 4px 4px 0;
-  }
-
-  .form-feeds {
-    display: flex;
-
-    :global {
-      .el-checkbox {
-        &__label {
-          padding-left: 0.5rem;
-        }
+    .el-form-item {
+      .el-checkbox-group {
+        width: 100%;
       }
     }
   }
+}
 
-  .uploader {
-    display: flex;
-    width: 100%;
-    padding-left: rem(15px);
-    border: rem(1px) solid #DCDFE6;
-    border-radius: rem(4px);
-  }
+.form-uploader-tip {
+  width: calc(100% + 2px);
+  height: 40px;
+  padding: 0 1rem 0 0;
+  margin-left: -2px;
+  overflow: hidden;
+  color: #c0c4cb;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+}
 
-  .uploadcare{
-    order: 2;
-  }
+.form-feeds {
+  display: flex;
 
-  .uploadButton {
-    height: 100%;
-    background-color: #DCDFE6;
-    border-width: 0 0 0 1px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-
-    &:hover {
-      border-color: #DCDFE6 !important;
+  :global {
+    .el-checkbox {
+      &__label {
+        padding-left: 0.5rem;
+      }
     }
   }
+}
+
+.uploader {
+  display: flex;
+  width: 100%;
+  padding-left: rem(15px);
+  border: rem(1px) solid #dcdfe6;
+  border-radius: rem(4px);
+}
+
+.uploadcare {
+  order: 2;
+}
+
+.uploadButton {
+  height: 100%;
+  background-color: #dcdfe6;
+  border-width: 0 0 0 1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+
+  &:hover {
+    border-color: #dcdfe6 !important;
+  }
+}
 </style>

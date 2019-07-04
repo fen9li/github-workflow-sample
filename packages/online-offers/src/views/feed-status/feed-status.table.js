@@ -1,3 +1,4 @@
+// import ApiProcessor from '@lib/processors/api-processor'
 import StaticProcessor from '@lib/processors/static-processor'
 import tableMock from '@tests/__fixtures__/feed-status'
 
@@ -55,9 +56,12 @@ const TABLE_COLUMNS = [
         allowEmpty: true,
         styleObj(val) {
           switch (val) {
-            case 'active': return { color: '#3bb720' }
-            case 'inactive': return { color: '#fc1e1e' }
-            default: return {}
+            case 'active':
+              return { color: '#3bb720' }
+            case 'inactive':
+              return { color: '#fc1e1e' }
+            default:
+              return {}
           }
         },
         badge: {
@@ -102,17 +106,15 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default function(component) {
-  return {
-    // processor: new Elastic({
-    //   component,
-    //   index: 'merchants',
-    // }),
-    processor: new StaticProcessor({
-      component,
-      data: tableMock.table,
-    }),
-    filters: TABLE_FILTERS,
-    columns: TABLE_COLUMNS,
-  }
-}
+export default component => ({
+  // processor: new ApiProcessor({
+  //   component,
+  //   index: 'merchants',
+  // }),
+  processor: new StaticProcessor({
+    component,
+    data: tableMock.table,
+  }),
+  filters: TABLE_FILTERS,
+  columns: TABLE_COLUMNS,
+})

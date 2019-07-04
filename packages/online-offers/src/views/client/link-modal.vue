@@ -1,6 +1,7 @@
 <script>
 import StaticProcessor from '@lib/processors/static-processor'
-import table from './merchants.table'
+import ApiProcessor from '@lib/processors/api-processor'
+import merchantsModalTable from './merchants-modal.table.js'
 import { mapActions } from 'vuex'
 
 export default {
@@ -21,15 +22,26 @@ export default {
       type: Boolean,
       default: false,
     },
+    merchantsProcessor: {
+      type: ApiProcessor,
+      required: true,
+    },
   },
   data() {
     return {
-      table: table(this),
+      table: merchantsModalTable,
       showModal: false,
     }
   },
+  computed: {
+    merchantsCount() {
+      const { length } = this.items
+
+      return length > 1 ? `${length} merchants` : `${length} merchant`
+    },
+  },
   watch: {
-    items(value) {
+    items() {
       this.getData()
     },
   },
@@ -37,7 +49,7 @@ export default {
     this.getData()
   },
   methods: {
-    ...mapActions('catalogues', ['attachMerchant', 'detachMerchant']),
+    ...mapActions('catalogues', ['attachMerchantsBulk', 'detachMerchantsBulk']),
     getData() {
       this.table.processor = new StaticProcessor({
         component: this,
@@ -45,16 +57,30 @@ export default {
       })
     },
     onClick() {
-      // We haven't endpoint for bulk operation yet
-      // For single {{baseUrl}}/catalogues/{{catalogueId}}/merchants/{{merchantId}}
-      this.items.forEach(item => {
-        if (this.link) {
-          this.attachMerchant({
-            catalogueId: this.id,
-            merchantId: item.id,
-          })
-        }
+      const { merchantsCount } = this
+      const merchants = this.items.map(i => i.id)
+      let operation = 'attachMerchantsBulk'
+
+      if (!this.link) {
+        operation = 'detachMerchantsBulk'
+      }
+
+      this[operation]({
+        catalogueId: this.id,
+        merchants,
       })
+        .then(() => this.merchantsProcessor.getData())
+        .then(() => {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: `${merchantsCount} successfully ${
+              this.link ? 'linked' : 'unlinked'
+            }`,
+          })
+
+          this.showModal = false
+        })
     },
   },
 }
@@ -80,7 +106,8 @@ export default {
       width="800px"
     >
       <div :class="$style.subtitle">
-        Are you sure you wish to {{ link ? 'link' : 'unlink' }} these Merchants from {{ name }}?
+        Are you sure you wish to {{ link ? 'link' : 'unlink' }} these Merchants
+        from {{ name }}?
       </div>
 
       <table-layout
@@ -88,7 +115,7 @@ export default {
         shadow="never"
         table-name="clients-details"
         :processor="table.processor"
-        :columns="table.unlinked.columns"
+        :columns="table.columns"
         :fragments="false"
         :hider="false"
         :table-controls="false"
@@ -107,38 +134,38 @@ export default {
 </template>
 
 <style lang="scss" module>
-  .buttonWrapper {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    padding: rem(0 48px 16px 0);
-  }
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: rem(0 48px 16px 0);
+}
 
-  .dialog {
-    :global {
-      .el-dialog {
-        max-width: none !important;
-      }
+.dialog {
+  :global {
+    .el-dialog {
+      max-width: none !important;
     }
   }
+}
 
-  .subtitle {
-    margin-bottom: rem(32px);
-    text-align: center;
-  }
+.subtitle {
+  margin-bottom: rem(32px);
+  text-align: center;
+}
 
-  .table {
-    box-shadow: none !important;
+.table {
+  box-shadow: none !important;
 
-    :global {
-      .el-card__body > div {
-        padding: 0;
-      }
+  :global {
+    .el-card__body > div {
+      padding: 0;
     }
   }
+}
 
-  .link {
-    display: flex;
-    justify-content: center;
-  }
+.link {
+  display: flex;
+  justify-content: center;
+}
 </style>

@@ -1,14 +1,14 @@
 <script>
-import table from './merchants.table'
-import ApiProcessor from '@lib/processors/api-processor'
 import { mapActions } from 'vuex'
-import ClientHeader from './client-header'
-import LinkModal from './link-modal'
+import ApiProcessor from '@lib/processors/api-processor'
+import merchantsTable from './merchants.table.js'
+import ClientHeader from './client-header.vue'
+import LinkModal from './link-modal.vue'
 
 export default {
-  name: 'Clients',
+  name: 'Client',
   page: {
-    title: 'Clients',
+    title: 'Client',
   },
   components: {
     ClientHeader,
@@ -16,11 +16,15 @@ export default {
   },
   data() {
     return {
-      table: table(this),
+      table: merchantsTable,
       isEdit: false,
       client: {},
-      activeTab: 'linked',
       selectedItems: [],
+      activeTab: 'linked',
+      tabs: [
+        { label: 'Linked', name: 'linked' },
+        { label: 'Unlinked', name: 'unlinked' },
+      ],
     }
   },
   computed: {
@@ -31,7 +35,9 @@ export default {
       return this.activeTab === 'linked' ? 'true' : 'false'
     },
     path() {
-      return `/catalogues/${this.catalogueId}/merchants?filters[attached]=${this.linked}`
+      return `/catalogues/${this.catalogueId}/merchants?filters[attached]=${
+        this.linked
+      }`
     },
   },
   created() {
@@ -69,21 +75,18 @@ export default {
         },
         query: {},
       })
+
       this.getMerchantOffers()
     },
     handleSelectionChange(value) {
       this.selectedItems = value
     },
-    unlink() {},
-    link() {},
   },
 }
 </script>
 
 <template>
-  <main-layout
-    :title="client.name"
-  >
+  <main-layout :title="client.name">
     <el-button
       slot="beforeTitle"
       :class="$style.backButton"
@@ -96,6 +99,7 @@ export default {
       body-style="padding: 0"
     >
       <client-header
+        :processor="table.processor"
         :client="client"
         @catalogues-updated="getClient()"
       />
@@ -106,64 +110,39 @@ export default {
         @tab-click="onTabClick"
       >
         <el-tab-pane
-          label="Linked"
-          name="linked"
+          v-for="tab in tabs"
+          :key="tab.name"
+          :label="tab.label"
+          :name="tab.name"
         >
           <table-layout
             :class="$style.table"
             shadow="never"
-            table-name="clients-details"
+            :table-name="`clients-details-${tab.name}`"
             :processor="table.processor"
             :filters="table[activeTab].filters"
             :columns="table[activeTab].columns"
             :fragments="false"
-            :hider="false"
-            quantity
+            hider
+            :quantity="false"
             @row-click="onRowClick"
             @selection-change="handleSelectionChange"
           >
             <el-table-column
-              type="selection"
-              fixed="left"
-            />
-          </table-layout>
-
-          <!-- <unlink-dialog :items="selectedItems"/> -->
-          <link-modal
-            :id="client.id"
-            :items="selectedItems"
-            :name="client.name"
-            :link="false"
-          />
-        </el-tab-pane>
-        <el-tab-pane
-          label="Unlinked"
-          name="unlinked"
-        >
-          <table-layout
-            :class="$style.table"
-            shadow="never"
-            table-name="clients-details"
-            :processor="table.processor"
-            :filters="table[activeTab].filters"
-            :columns="table[activeTab].columns"
-            :fragments="false"
-            :hider="false"
-            quantity
-            @row-click="onRowClick"
-            @selection-change="handleSelectionChange"
-          >
-            <el-table-column
+              v-if="table.processor.data.length"
               type="selection"
               fixed="left"
               width="55"
             />
+            <div v-else />
           </table-layout>
+
           <link-modal
             :id="client.id"
             :items="selectedItems"
             :name="client.name"
-            :link="true"
+            :merchants-processor="table.processor"
+            :link="tab.name !== 'linked'"
           />
         </el-tab-pane>
       </el-tabs>
@@ -172,54 +151,53 @@ export default {
 </template>
 
 <style lang="scss" module>
-  .header {
-    display: flex;
-    padding: var(--size-card-spacing);
+.header {
+  display: flex;
+  padding: var(--size-card-spacing);
+}
+
+.backButton {
+  position: absolute;
+  left: 0;
+  padding: 0.2rem !important;
+  border-color: var(--color-primary);
+  border-width: 2px;
+
+  i {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-primary);
   }
+}
 
-  .backButton {
-    position: absolute;
-    left: 0;
-    padding: .2rem !important;
-    border-color: var(--color-primary);
-    border-width: 2px;
+.card {
+  width: 100%;
+  margin: 0 0 1.25rem;
+}
 
-    i {
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: var(--color-primary);
+.table {
+  padding: 0;
+  margin-bottom: rem(16px);
+  border: none;
+  box-shadow: none !important;
+}
+
+.view-details-btn {
+  font-weight: 600;
+}
+
+.tabs {
+  :global {
+    .el-tabs__header {
+      padding: 0 var(--size-card-spacing) calc(var(--size-card-spacing) / 2);
     }
   }
+}
 
-  .card {
-    width: 100%;
-    margin: 0 0 1.25rem;
-  }
-
-  .table {
-    padding: 0;
-    margin-bottom: rem(16px);
-    border: none;
-    box-shadow: none !important;
-  }
-
-  .view-details-btn {
-    font-weight: 600;
-  }
-
-  .tabs {
-    :global {
-      .el-tabs__header {
-        padding: 0 var(--size-card-spacing) calc(var(--size-card-spacing) / 2);
-      }
-    }
-  }
-
-  .buttonWrapper {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    padding: rem(0 48px 16px 0);
-  }
-
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: rem(0 48px 16px 0);
+}
 </style>

@@ -19,7 +19,7 @@ const router = new Router({
       component: () => lazy(import('./views/clients')),
     },
     {
-      path: '/client/:id/:tab?',
+      path: '/clients/:id/:tab?',
       name: 'client-details',
       component: () => lazy(import('./views/client')),
     },

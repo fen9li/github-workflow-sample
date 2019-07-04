@@ -49,16 +49,14 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default function(component) {
-  return {
-    processor: null,
-    linked: {
-      filters: TABLE_FILTERS,
-      columns: TABLE_COLUMNS,
-    },
-    unlinked: {
-      filters: TABLE_FILTERS,
-      columns: TABLE_COLUMNS,
-    },
-  }
+export default {
+  processor: null,
+  linked: {
+    filters: TABLE_FILTERS,
+    columns: TABLE_COLUMNS,
+  },
+  unlinked: {
+    filters: TABLE_FILTERS,
+    columns: TABLE_COLUMNS,
+  },
 }
