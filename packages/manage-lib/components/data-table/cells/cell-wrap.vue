@@ -1,6 +1,7 @@
 <script>
 import get from 'lodash/get'
 import formatters from './formatters'
+import DataProcessor from '../../../processors/data-processor.js'
 import CellDefault from './cell-default'
 import CellLink from './cell-link'
 import CellButton from './cell-button'
@@ -31,6 +32,10 @@ export default {
     },
     column: {
       type: Object,
+      required: true,
+    },
+    processor: {
+      type: DataProcessor,
       required: true,
     },
   },
@@ -65,7 +70,7 @@ export default {
       const isString = typeof format === 'string'
       const isObj = format instanceof Object
 
-      if (isFn ) {
+      if (isFn) {
         return format(value)
       } else if (isString || isObj) {
         let formatName = format
@@ -110,13 +115,20 @@ export default {
       }
     },
     cellCompProps() {
-      const { cell: { row }, attribute, formattedValue, cellData } = this
+      const {
+        cell: { row },
+        attribute,
+        formattedValue,
+        cellData,
+        processor,
+      } = this
       const value = this.sanitizeValue(get(row, attribute))
       const baseProps = {
         attribute,
         row,
         value,
         formattedValue,
+        processor,
       }
       const { props } = cellData
 
@@ -127,8 +139,18 @@ export default {
       return baseProps
     },
     alignClass() {
-      const { $style, column: { align } } = this
-      const result = align === 'right' ? $style.alignRight : align === 'center' ? $style.alignCenter : null
+      const {
+        $style,
+        column: { align },
+      } = this
+      let result = null
+
+      if (align === 'right') {
+        result = $style.alignRight
+      } else if (align === 'center') {
+        result = $style.alignCenter
+      }
+
       return result
     },
   },
@@ -137,6 +159,7 @@ export default {
       if (Array.isArray(value)) {
         return value.toString()
       }
+
       return value || ''
     },
   },
@@ -152,25 +175,25 @@ export default {
 </template>
 
 <style lang="scss" module>
-  .alignRight {
-    justify-content: flex-end !important;
-  }
-  .alignCenter {
-    justify-content: center !important;
-  }
-  .cell {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: rem(12px 0);
-    overflow: hidden;
-    white-space: nowrap;
+.alignRight {
+  justify-content: flex-end !important;
+}
+.alignCenter {
+  justify-content: center !important;
+}
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: rem(12px 0);
+  overflow: hidden;
+  white-space: nowrap;
 
-    > span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+  > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
+}
 </style>
 
 <style lang="scss">

@@ -72,21 +72,18 @@ export default class DataProcessor {
     if (!component) {
       throw new Error(
         '"component" key must be provided in data-processor options. ' +
-        'Or you can set "disableQueryString" to true.'
+          'Or you can set "disableQueryString" to true.'
       )
     }
 
-    component.$watch(
-      '$route.query.q',
-      () => {
-        if (!this.skipNextURLWatcher) {
-          this.applyFiltersFromURL()
-          this.getData({ shouldUpdateURL: false })
-        }
-
-        this.skipNextURLWatcher = false
+    component.$watch('$route.query.q', () => {
+      if (!this.skipNextURLWatcher) {
+        this.applyFiltersFromURL()
+        this.getData({ shouldUpdateURL: false })
       }
-    )
+
+      this.skipNextURLWatcher = false
+    })
   }
 
   get filters() {
@@ -127,12 +124,10 @@ export default class DataProcessor {
 
     this.skipNextURLWatcher = true
 
-    this.component.$router.push(
-      { query: { q: btoa(queryString) } }
-    )
+    this.component.$router.push({ query: { q: btoa(queryString) } })
   }
 
-  async getData({ shouldUpdateURL }) {
+  async getData({ shouldUpdateURL } = {}) {
     const { dataQuery, disableQueryString } = this
     const query = mergeQueries(this.staticQuery, dataQuery)
 
@@ -144,6 +139,7 @@ export default class DataProcessor {
 
     try {
       const { data, total } = await this.sendRequest(query)
+
       this.data = data
       this.total = total
     } catch (error) {

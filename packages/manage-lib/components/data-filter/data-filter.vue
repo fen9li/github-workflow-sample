@@ -2,6 +2,7 @@
 import FilterItem from './filter-item.vue'
 import FilterItemNew from './filter-item-new.vue'
 import filterTypes from './filter-types'
+import DataProcessor from '../../processors/data-processor.js'
 
 export default {
   name: 'DataFilter',
@@ -16,7 +17,7 @@ export default {
       required: true,
     },
     processor: {
-      type: Object,
+      type: DataProcessor,
       required: true,
     },
   },

@@ -1,6 +1,7 @@
 <script>
 import includes from 'lodash/includes'
 import FilterItem from './filter-item'
+import DataProcessor from '../../processors/data-processor.js'
 
 export default {
   name: 'AddFilterItem',
@@ -13,7 +14,7 @@ export default {
       required: true,
     },
     processor: {
-      type: Object,
+      type: DataProcessor,
       required: true,
     },
   },

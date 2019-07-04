@@ -111,7 +111,7 @@ Data Table component accepts Data Processor instance and [columns config](#colum
 
 Each column it the table may have its own type of the cell that will be wrapped later with the **cell-wrap** component. In most cases, it is default **cell-default**. There are also two predefined cell types: **cell-link** and **cell-button**.
 
-Developers can define custom cell components (must use **_cell.mixin.js_**) for their needs and then pass them to any column via columns configuration. The configuration also allows defining many cell components for one column. **cell-wrap** will pass raw value, formatted value, row and column name to each cell component as props. Developers may pass any own props to the cell component, except for the four mentioned (see more in [columns config](#columns-config)).
+Developers can define custom cell components (must use **_cell.mixin.js_**) for their needs and then pass them to any column via columns configuration. The configuration also allows defining many cell components for one column. **cell-wrap** will pass raw value, formatted value, row and column name to each cell component as props. Developers may pass any own props to the cell component, except for the five mentioned (see more in [columns config](#columns-config)).
 
 #### Data Filter
 
@@ -242,7 +242,7 @@ Must be one of the following types:
 }
 ```
 
-**Important note #1**: developers can pass any props except these four: `attribute`, `row`, `value`, `formattedValue`. They will be passed by **cell-wrap** component.
+**Important note #1**: developers can pass any props except these: `attribute`, `row`, `value`, `formattedValue`, `processor`. They will be passed by **cell-wrap** component.
 
 **Important note #2**: if the column component uses **_cell.mixin.js_** then developers can pass three props with a special name: `styleObj`, `badge` and `allowEmpty`. Their schemas:
 

@@ -1,3 +1,5 @@
+import DataProcessor from '../../../processors/data-processor.js'
+
 const emptyRE = /undefined|null|^$/
 
 export default {
@@ -33,6 +35,10 @@ export default {
     format: {
       type: Function,
       default: () => ({}),
+    },
+    processor: {
+      type: DataProcessor,
+      required: true,
     },
   },
   computed: {

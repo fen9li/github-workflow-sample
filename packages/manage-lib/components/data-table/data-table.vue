@@ -175,6 +175,7 @@ export default {
             :attribute="column.key"
             :cell="scope"
             :column="column"
+            :processor="processor"
           />
         </template>
       </el-table-column>
