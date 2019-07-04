@@ -1,17 +1,13 @@
 <script>
 import cellToggle from '@lib/components/data-table/cells/cell-toggle.vue'
-import { mapActions, mapMutations } from 'vuex'
+import CellMixin from '@lib/components/data-table/cells/cell.mixin'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
     cellToggle,
   },
-  props: {
-    row: {
-      type: Object,
-      required: true,
-    },
-  },
+  mixins: [CellMixin],
   data() {
     return {
       enabled: this.row.enabled,
@@ -23,26 +19,25 @@ export default {
     },
   },
   methods: {
-    ...mapActions('offers', [
-      'updateOffer',
-    ]),
-    ...mapMutations('offers', {
-      updateTable: 'UPDATE_TABLE',
-    }),
-    onSwitch(event) {
+    ...mapActions('offers', ['updateOffer']),
+    onSwitch() {
       this.enabled = !this.enabled
+
       this.updateOffer({
         id: this.row.id,
         payload: {
           enabled: !this.row.enabled,
         },
-      }).then(() => {
-        this.$notify({
-          type: 'success',
-          title: 'Success',
-          message: `Status sussessfully changed to ${this.enabled ? 'enabled' : 'disabled'}`,
-        })
       })
+        .then(() =>
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: `Status sussessfully changed to ${
+              this.enabled ? 'enabled' : 'disabled'
+            }`,
+          })
+        )
     },
   },
 }

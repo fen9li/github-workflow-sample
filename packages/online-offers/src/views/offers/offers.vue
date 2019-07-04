@@ -1,37 +1,14 @@
 <script>
-import ApiProcessor from '@lib/processors/api-processor'
-import { mapGetters, mapMutations } from 'vuex'
-import table from './offers.table'
+import offersTable from './offers.table'
 
 export default {
   name: 'GlobalOffers',
   data() {
     return {
-      table,
+      table: offersTable(this),
     }
   },
-  computed: {
-    ...mapGetters('offers', ['tableUpdate']),
-  },
-  watch: {
-    tableUpdate() {
-      this.getOffers()
-    },
-  },
-  created() {
-    this.getOffers()
-  },
   methods: {
-    ...mapMutations('offers', {
-      updateTable: 'UPDATE_TABLE',
-    }),
-    getOffers() {
-      this.updateTable(false)
-      this.table.processor = new ApiProcessor({
-        component: this,
-        path: 'offers',
-      })
-    },
     onRowClick(row) {
       this.$router.push({
         name: 'offer-details',
@@ -39,7 +16,6 @@ export default {
       })
     },
   },
-
 }
 </script>
 

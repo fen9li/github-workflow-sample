@@ -1,18 +1,10 @@
 import api from '~/api'
 
-const state = {
-  updateTable: false,
-}
+const state = {}
 
-const getters = {
-  tableUpdate: state => state.updateTable,
-}
+const getters = {}
 
-const mutations = {
-  UPDATE_TABLE(state, payload = true) {
-    state.updateTable = payload
-  },
-}
+const mutations = {}
 
 const actions = {
   async getOffer({ commit }, id) {

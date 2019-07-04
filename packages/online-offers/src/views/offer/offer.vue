@@ -81,7 +81,7 @@ export default {
     },
   },
   watch: {
-    offer(val) {
+    offer() {
       this.offerToForm()
     },
   },
