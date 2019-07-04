@@ -46,14 +46,23 @@ export default {
 <template>
   <main-layout title="Global Offers">
     <table-layout
-      table-name="merchants"
+      table-name="offers"
       :processor="table.processor"
       :filters="table.filters"
       :columns="table.columns"
       :fragments="false"
       :hider="false"
+      :class="$style.table"
       quantity
       @row-click="onRowClick"
     />
   </main-layout>
 </template>
+
+<style lang="scss" module>
+.table {
+  colgroup > col:first-child {
+    width: rem(120px);
+  }
+}
+</style>

@@ -1,8 +1,18 @@
 
 <script>
 export default {
-  name: 'OfferRemoveModal',
+  name: 'OfferUpdateModal',
   inheritAttrs: false,
+  props: {
+    startDate: {
+      type: String,
+      required: true,
+    },
+    endDate: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       form: {
@@ -26,8 +36,8 @@ export default {
 <template>
   <el-dialog
     v-bind="$attrs"
-    title="Remove Offer"
-    width="30%"
+    title="Update Offer"
+    :class="$style.dialog"
     v-on="$listeners"
   >
     <el-form
@@ -38,10 +48,18 @@ export default {
       :class="$style.root"
     >
       <p :class="$style.text">
-        Are you sure you wish to remove this offer?
-        <br>
-        This action can not be undone.
+        Are you sure you wish to update these details?
       </p>
+      <el-form-item
+        label="Start date"
+      >
+        <span :class="$style.date">{{ startDate | date('DD/MM/YYYY hh:mm A') }}</span>
+      </el-form-item>
+      <el-form-item
+        label="Start date"
+      >
+        <span :class="$style.date">{{ endDate | date('DD/MM/YYYY hh:mm A') }}</span>
+      </el-form-item>
       <el-form-item
         label="Notes"
         prop="notes"
@@ -55,40 +73,56 @@ export default {
         />
       </el-form-item>
       <el-button
-        type="danger"
+        type="primary"
         :class="[
           $style.submit,
           'wide-button',
         ]"
         @click="submit"
       >
-        Remove Offer
+        Update
       </el-button>
     </el-form>
   </el-dialog>
 </template>
 
 <style lang="scss" module>
+.dialog {
+  :global {
+    .el-dialog__header {
+      padding-right: rem(40px);
+      padding-left: rem(40px);
+      text-align: left;
+    }
+
+    .el-form-item__content {
+      min-height: unset;
+    }
+  }
+}
+
 .root {
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .text {
-  margin: 0;
+  margin: rem(0 0 22px 0);
   font-size: 1rem;
   line-height: 1.5;
-  text-align: center;
+}
+
+.date {
+  line-height: 1.1;
+  color: var(--color-dark-gray);
 }
 
 .textarea {
   width: 100%;
-  margin-top: 1rem;
 }
 
 .submit {
-  width: 100%;
-  margin-top: 2rem;
+  width: 50%;
+  margin: 2rem auto 0;
 }
 </style>

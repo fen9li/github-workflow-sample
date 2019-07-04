@@ -165,6 +165,11 @@ export default {
     padding: rem(12px 0);
     overflow: hidden;
     white-space: nowrap;
+
+    > span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 </style>
 

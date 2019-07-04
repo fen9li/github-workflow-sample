@@ -3,11 +3,14 @@ import { mapActions } from 'vuex'
 import get from 'lodash/get'
 import { formatDate } from '@lib/utils/format-date'
 import RemoveModal from './remove-offer-modal'
+import UpdateModal from './update-offer-modal'
+import isPast from '@lib/utils/date-is-past'
 
 export default {
   name: 'Offer',
   components: {
     RemoveModal,
+    UpdateModal,
   },
   data() {
     return {
@@ -17,6 +20,7 @@ export default {
       form: {},
       modals: {
         remove: false,
+        update: false,
       },
       mapValues: {
         name: 'name',
@@ -26,63 +30,27 @@ export default {
         description: 'description',
         terms: 'terms',
       },
-      feedOffers: [
-        {
-          title: 'Updated-commission-factory',
-          selected: false,
-          name: {
-            selected: false,
-            value: '10% off first purchase',
-          },
-          code: {
-            selected: false,
-            value: 'HB2819',
-          },
-          start_date: {
-            selected: false,
-            value: '2019-06-30T00:00:00+10:00',
-          },
-          end_date: {
-            selected: false,
-            value: '2019-08-10T00:00:00+10:00',
-          },
-          description: {
-            selected: false,
-            value: 'test description',
-          },
-          terms: {
-            selected: false,
-            value: 'test terms',
-          },
-        }, {
-          title: 'Updated-commission-factory 2',
-          selected: false,
-          name: {
-            selected: false,
-            value: '15% off first purchase',
-          },
-          code: {
-            selected: false,
-            value: 'WD1545',
-          },
-          start_date: {
-            selected: false,
-            value: '2019-09-10T00:00:00+10:00',
-          },
-          end_date: {
-            selected: false,
-            value: '2019-11-10T00:00:00+10:00',
-          },
-          description: {
-            selected: false,
-            value: 'test description test description test description test description test description',
-          },
-          terms: {
-            selected: false,
-            value: 'test terms test terms test terms test terms test terms',
-          },
-        },
-      ],
+      feedOffers: [],
+      rules: {
+        name: [
+          { required: true, message: 'offer name is required' },
+        ],
+        code: [
+          { required: true, message: 'coupon code is required' },
+        ],
+        start_date: [
+          { required: true, message: 'start date is required' },
+        ],
+        end_date: [
+          { required: true, message: 'end date is required' },
+        ],
+        terms: [
+          { required: true, message: 'terms is required' },
+        ],
+        baseline_url: [
+          { required: true, message: 'tracking url is required' },
+        ],
+      },
     }
   },
   computed: {
@@ -95,6 +63,22 @@ export default {
     payload() {
       return get(this.offer, 'feed_offer.payload', {})
     },
+    feedOfferId() {
+      return get(this.feedOffer, 'id')
+    },
+    aggreg() {
+      const aggregId = get(this.offer, 'feed_offer.feed')
+      switch (aggregId) {
+        case 'apd': return 'APD'
+        case 'rakuten': return 'Rakuten'
+        case 'cf': return 'Commission Factory'
+        default:
+          return null
+      }
+    },
+    isRemoveButton() {
+      return !isPast(this.form.end_date)
+    },
   },
   watch: {
     offer(val) {
@@ -103,7 +87,6 @@ export default {
   },
   async mounted() {
     this.offer = await this.getOffer(this.id)
-    this.switcher = this.offer.enabled
   },
   methods: {
     ...mapActions('offers', [
@@ -112,7 +95,7 @@ export default {
       'deleteOffer',
     ]),
     formatDate(value, format) {
-      return formatDate(value, format || 'DD/MM/YYYY')
+      return formatDate(value, format || 'DD/MM/YYYY', false)
     },
     offerToForm() {
       const newForm = {}
@@ -124,6 +107,36 @@ export default {
       newForm.baseline_url = get(this.offer, 'url', '')
 
       this.form = newForm
+      this.switcher = this.offer.enabled
+
+      this.feedOffers = [{
+        title: `Updated - ${ this.aggreg }`,
+        selected: false,
+        name: {
+          selected: false,
+          value: get(this.offer, 'feed_offer.payload.Name', 'name'),
+        },
+        code: {
+          selected: false,
+          value: get(this.offer, 'feed_offer.payload.DefaultPromoCode', 'CODE'),
+        },
+        start_date: {
+          selected: false,
+          value: get(this.offer, 'feed_offer.payload.StartDate'),
+        },
+        end_date: {
+          selected: false,
+          value: get(this.offer, 'feed_offer.payload.EndDate'),
+        },
+        description: {
+          selected: false,
+          value: get(this.offer, 'feed_offer.payload.Description', ''),
+        },
+        terms: {
+          selected: false,
+          value: get(this.offer, 'feed_offer.payload.Terms', '-'),
+        },
+      }]
     },
     async onSwitch() {
       this.updateOffer({
@@ -138,15 +151,6 @@ export default {
           message: `Status sussessfully changed to ${this.switcher ? 'enabled' : 'disabled'}`,
         })
       })
-    },
-    async updateOffer() {
-      // const [, response] = await this.updateOffer({
-      //   id: this.id,
-      //   payload: {
-      //     enabled: this.switcher,
-      //   },
-      // })
-      // console.log(response)
     },
     changeValue(checked, type, index) {
       if (checked) {
@@ -205,10 +209,53 @@ export default {
 
       return disabled
     },
-    removeOffer(notes) {
+    submitForm() {
+      this.$refs.form.validate(valid => {
+        if (!valid) {
+          return false
+        }
+        this.modals.update = true
+      })
+    },
+    async submitUpdateOffer(notes) {
+      this.modals.update = false
+      const [error, response] = await this.updateOffer({
+        id: this.id,
+        payload: {
+          enabled: this.switcher,
+          name: this.form.name,
+          terms: this.form.terms,
+          description: this.form.description,
+        },
+        // TODO:
+        // code: 'feed_offer.payload.DefaultPromoCode',
+        // start_date: 'feed_offer.payload.StartDate',
+        // end_date: 'feed_offer.payload.EndDate',
+      })
+
+      if (error) {
+        console.error(error)
+        return
+      }
+
+      this.isEdit = false
+      this.offer = response
+      this.$notify({
+        type: 'success',
+        title: 'Success',
+        message: 'Merchant details updated sussessfully.',
+      })
+    },
+    async submitDeleteOffer(notes) {
       this.modals.remove = false
       // TODO: send notes
-      this.deleteOffer(this.offer.id)
+      const [error] = await this.deleteOffer(this.offer.id)
+
+      if (error) {
+        console.error(error)
+        return
+      }
+
       this.$router.push('/offers')
       this.$notify({
         type: 'info',
@@ -227,6 +274,9 @@ export default {
   >
     <el-card v-if="isEdit">
       <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
         :class="$style.edit"
         label-position="top"
       >
@@ -241,7 +291,6 @@ export default {
           <el-form-item
             label="Offer name"
             prop="name"
-            required
             :class="$style.columnName"
           >
             <el-input
@@ -254,7 +303,6 @@ export default {
           <el-form-item
             label="Coupon Code"
             prop="code"
-            required
             :class="$style.columnCode"
           >
             <el-input
@@ -267,7 +315,6 @@ export default {
           <el-form-item
             label="Start Date"
             prop="start_date"
-            required
             :class="$style.columnStart"
           >
             <el-date-picker
@@ -281,7 +328,6 @@ export default {
           <el-form-item
             label="End Date"
             prop="end_date"
-            required
             :class="$style.columnEnd"
           >
             <el-date-picker
@@ -306,8 +352,7 @@ export default {
 
           <el-form-item
             label="Terms & Conditions"
-            prop="description"
-            required
+            prop="terms"
             :class="$style.columnTerms"
           >
             <el-input
@@ -319,6 +364,7 @@ export default {
 
           <el-form-item
             label="Tracking URL"
+            prop="baseline_url"
             :class="$style.columnUrl"
           >
             <el-input
@@ -417,6 +463,7 @@ export default {
         <div :class="$style.footer">
           <div :class="$style.footerItem">
             <el-button
+              v-if="isRemoveButton"
               type="danger"
               @click="modals.remove = true"
             >
@@ -429,7 +476,7 @@ export default {
             </el-button>
             <el-button
               type="primary"
-              @click="updateOffer"
+              @click="submitForm"
             >
               Update Offer
             </el-button>
@@ -457,7 +504,7 @@ export default {
       <div @click="onSwitch">
         <el-switch
           v-model="switcher"
-          active-text="active"
+          active-text="Active"
         />
       </div>
 
@@ -469,7 +516,7 @@ export default {
           ]"
         >
           <dt>Offer Associated Aggreg</dt>
-          <dd>{{ offer.feeds || '-' }}</dd>
+          <dd>{{ aggreg || '-' }}</dd>
 
           <dt>Offer ID</dt>
           <dd>{{ offer.id || '-' }}</dd>
@@ -509,7 +556,14 @@ export default {
     <remove-modal
       v-if="modals.remove"
       :visible.sync="modals.remove"
-      @submit="removeOffer"
+      @submit="submitDeleteOffer"
+    />
+    <update-modal
+      v-if="modals.update"
+      :visible.sync="modals.update"
+      :start-date="form.start_date"
+      :end-date="form.end_date"
+      @submit="submitUpdateOffer"
     />
   </main-layout>
 </template>
@@ -589,13 +643,17 @@ export default {
   > span {
     margin-left: rem(38px);
     font-size: rem(14px);
+    color: var(--color-dark-gray);
   }
 }
 
 .columnTitle {
   margin-bottom: 1.4rem;
+  overflow: hidden;
   font-size: 1.4rem;
   font-weight: bold;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .footer {
