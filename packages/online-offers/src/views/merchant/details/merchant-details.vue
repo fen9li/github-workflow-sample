@@ -2,7 +2,7 @@
 import { mapActions } from 'vuex'
 import { formatDate } from '@lib/utils/format-date'
 import capitalize from 'lodash/capitalize'
-import formatDollar from '@lib/utils/format-dollar'
+import formatCommission from '@lib/utils/format-commission'
 
 export default {
   name: 'MerchantDetails',
@@ -20,10 +20,13 @@ export default {
     merchantId() {
       return this.$route.params.id
     },
+    commission() {
+      return formatCommission(this.details.map.commission)
+    },
   },
   methods: {
     capitalize,
-    formatDollar,
+    formatCommission,
     ...mapActions('merchants', [
       'updateMerchant',
     ]),
@@ -56,9 +59,9 @@ export default {
       <div :class="$style.logo">
         <div :class="$style.imageWrapper">
           <img
-            v-if="details.logo"
-            src="details.logo"
-            alt="details.map.name"
+            v-if="details.map.logo"
+            :src="details.map.logo"
+            :alt="details.map.name"
             :class="$style.image"
           >
         </div>
@@ -102,19 +105,21 @@ export default {
           <dt>Commission Aggregator</dt>
           <dd>{{ details.feed }}</dd>
           <dt>Commission Type</dt>
-          <dd>{{ capitalize(details.map.commission.type) }}</dd>
-          <dt>Commission Rate</dt>
-          <dd>
-            <span :class="$style.rate">
-              {{ `Base ${formatDollar(details.map.commission.base)}` }}
-            </span>
-            <span :class="$style.rate">
-              {{ `Min ${formatDollar(details.map.commission.min)}` }}
-            </span>
-            <span :class="$style.rate">
-              {{ `Max ${formatDollar(details.map.commission.max)}` }}
-            </span>
-          </dd>
+          <dd>{{ capitalize(details.map.commission.type) || '–' }}</dd>
+          <template v-if="commission">
+            <dt>Commission Rate</dt>
+            <dd>
+              <span :class="$style.rate">
+                {{ commission.base }}
+              </span>
+              <span :class="$style.rate">
+                {{ commission.min }}
+              </span>
+              <span :class="$style.rate">
+                {{ commission.max }}
+              </span>
+            </dd>
+          </template>
           <dt>Classifications</dt>
           <dd :class="$style.classifications">
             <span

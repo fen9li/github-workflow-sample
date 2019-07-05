@@ -3,26 +3,6 @@ import { mapActions } from 'vuex'
 import formatDollar from '@lib/utils/format-dollar'
 import capitalize from 'lodash/capitalize'
 
-const rules = [
-  {
-    path: 'payload',
-    key: 'name',
-    values: [
-      'advertisername',
-      'name',
-      'merchantname',
-    ],
-  },
-  {
-    path: 'payload',
-    key: 'comission',
-    values: [
-      'comission',
-      'offerdescription',
-    ],
-  },
-]
-
 export default {
   name: 'FeedDetails',
   props: {
@@ -58,19 +38,10 @@ export default {
       'updateFeedMerchant',
     ]),
     capitalize,
-    dataTransform(item) {
-      rules.forEach(({ path, key, values }) => {
-        const found = Object.keys(item[path]).filter(name => values.includes(name.toLowerCase()))
-        if (found) {
-          item[key] = item[path][found[0]]
-        }
-      })
-      return item
-    },
     async getDetails() {
       try {
         const [, response] = await this.getMerchant({ merchantId: this.id })
-        this.details = this.dataTransform(response)
+        this.details = response
       } catch (error) {
         console.error('Error while requesting data', error)
       } finally {
@@ -135,9 +106,9 @@ export default {
           <dt>Merchant Logo</dt>
           <dd>
             <img
-              v-if="details.payload.logo"
-              :src="details.payload.logo"
-              :alt="details.payload.name"
+              v-if="details.map.logo"
+              :src="details.map.logo"
+              :alt="details.map.name"
             >
             <span v-else>—</span>
           </dd>
@@ -146,16 +117,16 @@ export default {
           <dd>{{ details.feed }}</dd>
 
           <dt>Summary</dt>
-          <dd>{{ details.payload.summary || '—' }}</dd>
+          <dd>{{ details.map.summary || '—' }}</dd>
 
           <template
             v-if="!rakuten"
           >
             <dt>Commission Rate</dt>
-            <dd>{{ details.payload.comission ? formatDollar(details.payload.comission.base) : '—' }}</dd>
+            <dd>{{ details.map.comission ? formatDollar(details.map.comission.base) : '—' }}</dd>
 
             <dt>Merchant Tracking URL</dt>
-            <dd>{{ details.payload.TrackingUrl || '—' }}</dd>
+            <dd>{{ details.map.TrackingUrl || '—' }}</dd>
           </template>
           <template v-else>
             <template v-if="details.metadata && details.metadata.baseline_rate">
@@ -170,12 +141,12 @@ export default {
           </template>
 
           <dt>Merchant Website</dt>
-          <dd>{{ details.payload.TargetUrl || '—' }}</dd>
+          <dd>{{ details.map.TargetUrl || '—' }}</dd>
 
           <dt>Terms and Conditions</dt>
           <dd
             :class="$style.terms"
-            v-html="details.payload.TermsAndConditions"
+            v-html="details.map.TermsAndConditions"
           />
         </dl>
         <div
