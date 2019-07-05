@@ -1,4 +1,5 @@
 import get from 'lodash/get'
+import sortBy from 'lodash/sortBy'
 import api from '~/api'
 
 const state = {
@@ -11,7 +12,7 @@ const getters = {
 
 const mutations = {
   SET_FEEDS(state, payload) {
-    state.feeds = payload
+    state.feeds = sortBy(payload, 'name')
   },
 }
 

@@ -1,22 +1,26 @@
 <script>
+import CellMixin from '@lib/components/data-table/cells/cell.mixin'
 import MerchantCreate from './feed-merchant-create.vue'
-import MerchantAssociate from './feed-merchant-associate.vue'
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
+import ApiProcessor from '@lib/processors/api-processor'
 
 export default {
   components: {
     MerchantCreate,
-    MerchantAssociate,
   },
+  mixins: [CellMixin],
   props: {
     row: {
       type: Object,
       required: true,
     },
+    processor: {
+      type: ApiProcessor,
+      required: true,
+    },
   },
   data() {
     return {
-      showAssociate: false,
       showCreate: false,
       showDetachDialog: false,
     }
@@ -27,24 +31,20 @@ export default {
     },
   },
   methods: {
-    ...mapActions('merchants', [
-      'detachMerchant',
-    ]),
-    ...mapMutations('merchants', {
-      updateTable: 'UPDATE_TABLE',
-    }),
-    switchToCreate() {
-      this.showAssociate = false
-      this.showCreate = true
-    },
+    ...mapActions('merchants', ['detachMerchant']),
     onDetach() {
       this.detachMerchant({
         merchantId: this.merchant.id,
         feedmerchantId: this.row.id,
-      }).then(() => {
-        this.showDetachDialog = false
-        this.updateTable()
-      })
+      }).then(() => this.processor.getData())
+        .then(() => {
+          this.showDetachDialog = false
+          this.$notify({
+            type: 'info',
+            title: 'Detached',
+            message: 'Successfuly detached',
+          })
+        })
     },
   },
 }
@@ -92,40 +92,25 @@ export default {
   <div v-else>
     <div
       :class="$style.link"
-      @click.stop="showAssociate = true"
+      @click.stop="showCreate = true"
     >
-      Associate
+      Create / Associate
     </div>
     <el-dialog
       ref="dialog"
       center
-      title="Associate Merchant"
-      :visible.sync="showAssociate"
-      :class="$style.dialog"
-      width="33%"
-      top="30vh"
-      modal-append-to-body
-      append-to-body
-    >
-      <merchant-associate
-        :row="row"
-        @close-dialog="showAssociate = false"
-        @create-new="switchToCreate"
-      />
-    </el-dialog>
-    <el-dialog
-      ref="dialog"
-      center
-      title="Create Global Merchant"
+      title="Create / Associate Global Merchant"
       :visible.sync="showCreate"
       :class="$style.dialog"
-      width="33%"
+      :processor="processor"
       top="5%"
       modal-append-to-body
       append-to-body
     >
       <merchant-create
+        :key="Math.random()"
         :row="row"
+        :processor="processor"
         @close-dialog="showCreate = false"
       />
     </el-dialog>
@@ -139,5 +124,11 @@ export default {
 
 .dialog {
   cursor: default;
+
+  :global {
+    .el-dialog__headerbtn {
+      top: rem(38px);
+    }
+  }
 }
 </style>

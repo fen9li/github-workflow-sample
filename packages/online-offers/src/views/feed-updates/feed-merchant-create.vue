@@ -3,6 +3,7 @@ import get from 'lodash/get'
 import md5 from 'md5'
 import uploadcare from 'uploadcare-vue'
 import { mapActions, mapMutations, mapState } from 'vuex'
+import DataProcessor from '@lib/processors/data-processor'
 
 export default {
   components: {
@@ -13,25 +14,76 @@ export default {
       type: Object,
       required: true,
     },
+    processor: {
+      type: DataProcessor,
+      required: true,
+    },
   },
   data() {
     return {
       form: {
         classifications: [],
+        name: '',
+        website: '',
+        terms: '',
       },
-      rules: {},
+      rules: {
+        name: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+        logo: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'change',
+          },
+        ],
+        website: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+        terms: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+      },
       // classificationsOptions: ['Cooling & Heating', 'Clothing', 'Floor Care', 'Kitchen & Cooking'],
       uploadcare: {
         expire: new Date(new Date + 60 * 60 * 12).getTime(),
         publicKey: process.env.VUE_APP_UPLOADCARE_PUBLIC_KEY,
         secretKey: process.env.VUE_APP_UPLOADCARE_SECRET_KEY,
       },
+      search: '',
+      selectedItem: null,
+      newItem: {
+        name: '+ New Global Merchant',
+        logo: '',
+        website: '',
+      },
     }
   },
   computed: {
-    ...mapState('categories', ['categories']),
+    ...mapState('categories', [
+      'categories',
+    ]),
     currency() {
       return get(this.row, 'payload.PublicTerms.PayoutTermsList[0].PayoutCurrency')
+    },
+    disabled() {
+      return !get(this.form, 'name.length', false)
+    },
+    merchantId() {
+      return get(this.selectedItem, 'item.id')
     },
     rate() {
       const base = get(this.row, 'payload.PublicTerms.PayoutTermsList[0].PayoutAmount', '')
@@ -52,22 +104,53 @@ export default {
   methods: {
     ...mapActions('merchants', [
       'createMerchant',
+      'searchMerchants',
+      'associateMerchant',
     ]),
     ...mapMutations('merchants', {
       updateTable: 'UPDATE_TABLE',
     }),
+    async querySearchAsync(queryString, cb) {
+      const [, { items = [] }] = await this.searchMerchants(queryString)
+      const suggestions = [this.newItem, ...items]
+      cb(suggestions.map((item, index) => {
+        return {
+          value: item.name,
+          index,
+          item,
+        }
+      }))
+    },
+    handleSelect(item) {
+      this.selectedItem = item
+    },
     onSuccessUploading(img) {
       this.form.clientLogo = img.originalUrl
       this.clientLogoName = img.name
     },
     onSubmit() {
-      const payload = {
-        feed_merchant: this.row.external_id,
-        ...this.form,
+      if (this.merchantId) {
+        this.associateMerchant({
+          merchantId: this.merchantId,
+          feedmerchantId: this.row.id,
+        }).then(() => this.processor.getData())
+          .then(() => this.onSubmitResponse())
+      } else {
+        const payload = {
+          feed_merchant: this.row.external_id,
+          ...this.form,
+        }
+        this.createMerchant(payload)
+          .then(() => this.processor.getData())
+          .then(() => this.onSubmitResponse())
       }
-      this.createMerchant(payload).then(() => {
-        this.$emit('close-dialog')
-        this.updateTable()
+    },
+    onSubmitResponse() {
+      this.$emit('close-dialog')
+      this.$notify({
+        type: 'success',
+        title: 'Success',
+        message: `FeedMerchant successfuly ${this.merchantId ? 'associated' : 'created'}`,
       })
     },
   },
@@ -81,99 +164,147 @@ export default {
     label-width="100%"
     label-position="top"
   >
-    <dl :class="$style.datalist">
-      <dt>Merchant Ext ID</dt>
-      <dd>{{ row.external_id }}</dd>
-
-      <dt>Commission Aggregator</dt>
-      <dd>{{ row.feed }}</dd>
-
-      <dt>Commission Type</dt>
-      <dd>{{ currency }}</dd>
-
-      <dt>Commission Rate</dt>
-      <dd>{{ rate }}</dd>
-
-      <dt>Merchant Tracking URL</dt>
-      <dd>{{ trackingLing }}</dd>
-    </dl>
-
-    <el-form-item label="Merchant Name">
-      <el-input v-model="form.name" />
-    </el-form-item>
-
-    <el-form-item
-      label="Merchant Image"
+    <el-alert
+      v-if="selectedItem"
+      type="warning"
+      :class="$style.alert"
+      :closable="false"
     >
-      <!-- <el-input v-model="form.image" /> -->
-      <div :class="$style.uploader">
-        <uploadcare
-          :public-key="uploadcare.publicKey"
-          :secure-signature="uploadcareSignature"
-          :secure-expire="uploadcare.expire"
-          :class="$style.uploadcare"
-          crop="160x60"
-          @success="onSuccessUploading"
-        >
-          <el-button
-            plain
-            :class="$style.uploadButton"
-          >
-            Upload
-          </el-button>
-        </uploadcare>
-        <div
-          slot="tip"
-          :class="$style['form-uploader-tip']"
-        >
-          {{ uploaderPlaceholder }}
-        </div>
-      </div>
-    </el-form-item>
-
-    <el-form-item label="Summary">
-      <el-input
-        v-model="form.summary"
-        type="textarea"
-        autosize
-      />
-    </el-form-item>
-
-    <el-form-item label="Website">
-      <el-input v-model="form.website" />
-    </el-form-item>
-
+      You want to {{ `${merchantId ? 'associate' : 'create'}` }} <b>{{ row.name }}</b> with <b>{{ selectedItem.value }}</b>
+    </el-alert>
     <el-form-item
-      label="Classifications"
+      label="Global Merchant"
+      prop="merchant"
     >
-      <el-checkbox-group
-        v-model="form.classifications"
-        :class="$style.classifications"
+      <el-autocomplete
+        v-model="search"
+        :fetch-suggestions="querySearchAsync"
+        :class="$style.search"
+        placeholder="Please input"
+        clearable
+        @select="handleSelect"
       >
-        <el-checkbox
-          v-for="option in categories"
-          :key="option.id"
-          :label="option.id"
-          :class="$style.classItem"
-        >
-          {{ option.name }}
-        </el-checkbox>
-      </el-checkbox-group>
+        <template slot-scope="{ item }">
+          <template v-if="!item.index">
+            <b>{{ item.value }}</b>
+          </template>
+          <template v-else>
+            {{ item.value }}
+          </template>
+        </template>
+      </el-autocomplete>
     </el-form-item>
 
-    <el-form-item label="Terms & Conditions">
-      <el-input
-        v-model="form.terms"
-        type="textarea"
-        autosize
-      />
-    </el-form-item>
+    <template v-if="selectedItem">
+      <dl :class="$style.datalist">
+        <dt>Merchant Ext ID</dt>
+        <dd>{{ row.external_id }}</dd>
+
+        <dt>Commission Aggregator</dt>
+        <dd>{{ row.feed }}</dd>
+
+        <dt>Commission Type</dt>
+        <dd>{{ currency }}</dd>
+
+        <dt>Commission Rate</dt>
+        <dd>{{ rate }}</dd>
+
+        <dt>Merchant Tracking URL</dt>
+        <dd>{{ trackingLing }}</dd>
+      </dl>
+
+      <el-form-item
+        label="Merchant Name"
+        prop="name"
+      >
+        <el-input v-model="form.name" />
+      </el-form-item>
+
+      <el-form-item
+        label="Merchant Image"
+        prop="logo"
+      >
+        <!-- <el-input v-model="form.image" /> -->
+        <div :class="$style.uploader">
+          <uploadcare
+            :public-key="uploadcare.publicKey"
+            :secure-signature="uploadcareSignature"
+            :secure-expire="uploadcare.expire"
+            :class="$style.uploadcare"
+            crop="160x60"
+            @success="onSuccessUploading"
+          >
+            <el-button
+              plain
+              :class="$style.uploadButton"
+            >
+              Upload
+            </el-button>
+          </uploadcare>
+          <div
+            slot="tip"
+            :class="$style['form-uploader-tip']"
+          >
+            {{ uploaderPlaceholder }}
+          </div>
+        </div>
+      </el-form-item>
+
+      <el-form-item
+        label="Summary"
+        prop="summary"
+      >
+        <el-input
+          v-model="form.summary"
+          type="textarea"
+          autosize
+        />
+      </el-form-item>
+
+      <el-form-item
+        label="Website"
+        prop="website"
+      >
+        <el-input v-model="form.website" />
+      </el-form-item>
+
+      <el-form-item
+        label="Classifications"
+      >
+        <el-checkbox-group
+          v-model="form.classifications"
+          :class="$style.classifications"
+        >
+          <el-checkbox
+            v-for="option in categories"
+            :key="option.id"
+            :label="option.id"
+            :class="$style.classItem"
+          >
+            {{ option.name }}
+          </el-checkbox>
+        </el-checkbox-group>
+      </el-form-item>
+
+      <el-form-item
+        label="Terms & Conditions"
+        prop="terms"
+      >
+        <el-input
+          v-model="form.terms"
+          type="textarea"
+          autosize
+        />
+      </el-form-item>
+    </template>
+
     <el-button
       type="primary"
       :class="$style.submit"
+      :disabled="disabled"
       @click="onSubmit"
     >
-      Save
+      {{ `${merchantId ? 'Associate' : 'Create'}` }}
     </el-button>
   </el-form>
 </template>
@@ -199,6 +330,10 @@ export default {
   }
 }
 
+.search {
+  width: 100%;
+}
+
 .uploader {
   display: flex;
   width: 100%;
@@ -221,6 +356,10 @@ export default {
   &:hover {
     border-color: #DCDFE6 !important;
   }
+}
+
+.alert {
+  margin-bottom: rem(22px);
 }
 
 .form-uploader-tip {

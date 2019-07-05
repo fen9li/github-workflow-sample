@@ -1,6 +1,6 @@
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex'
-import table from './feed-updates.table.js'
+import { mapMutations } from 'vuex'
+import feedUpdatesTable from './feed-updates.table.js'
 import merchantUpdateModal from '../merchant-update'
 import ApiProcessor from '@lib/processors/api-processor'
 import capitalize from 'lodash/capitalize'
@@ -15,17 +15,19 @@ export default {
   },
   data() {
     return {
-      table,
+      table: feedUpdatesTable,
       activeItemId: null,
-      activeTab: 'merchants',
+      activeTab: this.$route.params.tab || 'merchants',
       modal: {
         merchantUpdate: false,
       },
+      tabs: [
+        { label: 'Merchants', name: 'merchants' },
+        { label: 'Offers', name: 'offers' },
+      ],
     }
   },
   computed: {
-    ...mapGetters('merchants', ['tableUpdate']),
-    ...mapGetters('offers', ['tableOffersUpdate']),
     slug() {
       return this.$route.params.slug
     },
@@ -33,15 +35,12 @@ export default {
       const filter = this.slug ? `?filters[feeds]=${this.slug}` : ''
       return `feed${this.activeTab}${filter}`
     },
+    eventName() {
+      return this.activeTab === 'merchants' ? 'row-click' : null
+    },
   },
   watch: {
     '$route'() {
-      this.getFeeds()
-    },
-    tableUpdate() {
-      this.getFeeds()
-    },
-    tableOffersUpdate() {
       this.getFeeds()
     },
   },
@@ -50,20 +49,12 @@ export default {
   },
   created() {
     this.getFeeds()
-    this.getCategories()
   },
   methods: {
     capitalize,
     ...mapMutations('merchants', {
-      updateMerchantsTable: 'UPDATE_TABLE',
     }),
-    ...mapMutations('offers', {
-      updateOffersTable: 'UPDATE_TABLE',
-    }),
-    ...mapActions('categories', ['getCategories']),
     getFeeds() {
-      this.updateMerchantsTable(false)
-      this.updateOffersTable(false)
       this.table.processor = new ApiProcessor({
         component: this,
         path: this.path,
@@ -99,7 +90,7 @@ export default {
       })
       this.getFeeds()
     },
-    onCellClick(row, column, event) {
+    onRowClick(row, column, event) {
       if (this.activeTab === 'merchants') {
         this.$router.push({
           name: 'feed-details',
@@ -124,33 +115,20 @@ export default {
       @tab-click="onTabClick"
     >
       <el-tab-pane
-        label="Merchants"
-        name="merchants"
+        v-for="tab in tabs"
+        :key="tab.name"
+        :label="tab.label"
+        :name="tab.name"
       >
         <table-layout
-          table-name="feed-updates"
+          :table-name="`feed-updates-${tab.name}`"
           :processor="table.processor"
           :filters="table[activeTab].filters"
           :columns="table[activeTab].columns"
           :fragments="false"
-          :hider="false"
-          quantity
-          @row-click="onCellClick"
-        />
-      </el-tab-pane>
-      <el-tab-pane
-        label="Offers"
-        name="offers"
-      >
-        <table-layout
-          table-name="feed-updates"
-          :processor="table.processor"
-          :filters="table[activeTab].filters"
-          :columns="table[activeTab].columns"
-          :fragments="false"
-          :hider="false"
-          quantity
-          @row-click="onCellClick"
+          hider
+          :quantity="false"
+          @[eventName]="onRowClick"
         />
       </el-tab-pane>
     </el-tabs>
@@ -158,6 +136,7 @@ export default {
       v-if="modal.merchantUpdate"
       :id="activeItemId"
       :visible.sync="modal.merchantUpdate"
+      :processor="table.processor"
     />
   </main-layout>
 </template>

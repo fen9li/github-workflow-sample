@@ -20,6 +20,9 @@ const actions = {
   async getGlobalMerchant({ commit }, merchantId) {
     return api.get(`/merchants/${merchantId}`)
   },
+  async getMerchantFeeds({ commit }, merchantId) {
+    return api.get(`/merchants/${merchantId}/feeds`)
+  },
   async getMerchant({ commit }, { merchantId }) {
     return api.get(`/feedmerchants/${merchantId}`)
   },

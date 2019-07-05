@@ -120,6 +120,7 @@ export default {
         </table-layout>
 
         <merchant-modal
+          v-if="table.processor.data.length"
           :id="merchant.id"
           :items="selectedItems"
           :name="merchant.name"

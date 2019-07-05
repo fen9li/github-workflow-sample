@@ -1,10 +1,17 @@
 <script>
-import { mapActions, mapMutations } from 'vuex'
+import CellMixin from '@lib/components/data-table/cells/cell.mixin'
+import { mapActions } from 'vuex'
+import ApiProcessor from '@lib/processors/api-processor'
 
 export default {
+  mixins: [CellMixin],
   props: {
     row: {
       type: Object,
+      required: true,
+    },
+    processor: {
+      type: ApiProcessor,
       required: true,
     },
   },
@@ -15,43 +22,38 @@ export default {
   },
   computed: {
     activated() {
-      return this.row.status === 'active'
+      return this.row.offer_id !== null
     },
   },
   methods: {
     ...mapActions('offers', [
       'createOffer',
     ]),
-    ...mapMutations('offers', {
-      updateTable: 'UPDATE_TABLE',
-    }),
-    async onSubmit() {
-      const [error, response] = await this.createOffer({
+    onSubmit() {
+      this.createOffer({
         feed_offer: this.row.external_id,
-      })
-      if (response) {
-        this.$notify({
-          type: 'success',
-          title: 'Success',
-          message: 'Successfuly activated',
+        name: this.row.name,
+      }).then(() => this.processor.getData())
+        .then(() => {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: 'Successfuly activated',
+          })
         })
-        this.updateTable()
-      }
-      if (error) {
-        console.error('Error while requesting data', error)
-      }
     },
   },
 }
 </script>
 
 <template>
-  <div v-if="!activated">
+  <div>
     <div
+      v-if="!activated"
       :class="$style.link"
       @click.stop.prevent="onSubmit"
     >
-      Create
+      Associate
     </div>
   </div>
 </template>
@@ -59,5 +61,6 @@ export default {
 <style lang="scss" module>
 .link {
   color: var(--color-primary);
+  cursor: pointer;
 }
 </style>
