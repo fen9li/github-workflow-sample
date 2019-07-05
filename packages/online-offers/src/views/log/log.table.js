@@ -40,6 +40,7 @@ const TABLE_COLUMNS = [
     icon: 'el-icon-date',
     format: 'dateTime',
   },
+  { name: 'expanded' },
 ]
 
 export default component => ({

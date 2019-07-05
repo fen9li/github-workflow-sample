@@ -49,7 +49,10 @@ export default {
         for (let i=0; i<columnsCount; i++) {
           const column = columns[i]
 
-          if (hide.indexOf(column.name) === -1) {
+          if (
+            hide.indexOf(column.name) === -1 &&
+            column.name !== 'expanded'
+          ) {
             readyColumns.push({
               label: startCase(column.name),
               key: column.name,
@@ -77,6 +80,9 @@ export default {
     },
     showSummary() {
       return this.summaryMethod() !== null
+    },
+    isExpanding() {
+      return this.columns.some(item => item.name === 'expanded')
     },
   },
   watch: {
@@ -191,6 +197,17 @@ export default {
           :class="$style.cellMore"
           name="arrow-right"
         />
+      </el-table-column>
+      <el-table-column
+        v-if="isExpanding"
+        type="expand"
+      >
+        <template slot-scope="props">
+          <slot
+            name="expandedBlock"
+            :row="props.row"
+          />
+        </template>
       </el-table-column>
     </el-table>
     <div

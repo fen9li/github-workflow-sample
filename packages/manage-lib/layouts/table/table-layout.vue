@@ -114,6 +114,15 @@ export default {
         v-on="$listeners"
       >
         <slot slot="columns" />
+        <template
+          slot="expandedBlock"
+          slot-scope="{ row }"
+        >
+          <slot
+            name="expandedBlock"
+            :row="row"
+          />
+        </template>
       </data-table>
     </div>
     <div
