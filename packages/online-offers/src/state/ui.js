@@ -36,6 +36,11 @@ const getters = {
         icon: 's-marketing',
       },
       {
+        title: 'Log',
+        path: '/log',
+        icon: 'notebook-2',
+      },
+      {
         title: 'Categories',
         path: '/categories',
         icon: 'refresh-left',

@@ -74,6 +74,11 @@ const router = new Router({
       component: () => lazy(import('./views/feed-status')),
     },
     {
+      path: '/log',
+      name: 'log',
+      component: () => lazy(import('./views/log')),
+    },
+    {
       path: '/categories',
       name: 'categories',
       component: () => lazy(import('./views/categories')),

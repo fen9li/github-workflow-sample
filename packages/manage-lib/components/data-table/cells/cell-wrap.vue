@@ -71,7 +71,7 @@ export default {
       const isObj = format instanceof Object
 
       if (isFn) {
-        return format(value)
+        return format(value, cell.row)
       } else if (isString || isObj) {
         let formatName = format
         const params = [value]
