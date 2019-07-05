@@ -69,9 +69,9 @@ const router = new Router({
       props: true,
     },
     {
-      path: '/feed-status',
-      name: 'feed-status',
-      component: () => lazy(import('./views/feed-status')),
+      path: '/feed-activity',
+      name: 'feed-activity',
+      component: () => lazy(import('./views/feed-activity')),
     },
     {
       path: '/log',

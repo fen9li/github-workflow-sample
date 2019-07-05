@@ -1,10 +1,10 @@
 <script>
-import statusTable from './feed-status.table.js'
+import statusTable from './feed-activity.table.js'
 
 export default {
-  name: 'FeedStatus',
+  name: 'FeedActivity',
   page: {
-    title: 'Feed Status',
+    title: 'Feed Activity',
   },
   data() {
     return {
@@ -17,13 +17,13 @@ export default {
 <template>
   <main-layout title="Activity">
     <table-layout
-      table-name="feed-status"
+      hider
+      table-name="feed-activity"
       :processor="table.processor"
       :filters="table.filters"
       :columns="table.columns"
       :fragments="false"
-      :hider="false"
-      quantity
+      :quantity="false"
     />
   </main-layout>
 </template>

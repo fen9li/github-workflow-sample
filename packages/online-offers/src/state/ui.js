@@ -31,9 +31,9 @@ const getters = {
         }),
       },
       {
-        title: 'Feed Status',
-        path: '/feed-status',
-        icon: 's-marketing',
+        title: 'Feed Activity',
+        path: '/feed-activity',
+        icon: 's-data',
       },
       {
         title: 'Log',

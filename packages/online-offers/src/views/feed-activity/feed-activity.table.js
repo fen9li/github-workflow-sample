@@ -1,6 +1,4 @@
-// import ApiProcessor from '@lib/processors/api-processor'
-import StaticProcessor from '@lib/processors/static-processor'
-import tableMock from '@tests/__fixtures__/feed-status'
+import ApiProcessor from '@lib/processors/api-processor'
 
 const TABLE_FILTERS = [
   {
@@ -50,45 +48,58 @@ const TABLE_COLUMNS = [
   {
     name: 'status',
     icon: 'el-icon-document',
-    format: () => '',
+    format: value => value,
     component: {
       props: {
         allowEmpty: true,
         styleObj(val) {
           switch (val) {
-            case 'active':
+            case 'success':
               return { color: '#3bb720' }
-            case 'inactive':
+            case 'failed':
               return { color: '#fc1e1e' }
             default:
               return {}
           }
         },
-        badge: {
-          name: 'el-icon-info',
+        badge: value => ({
+          name: value === 'success' ? 'el-icon-check' : 'el-icon-close',
           pos: 'left',
-        },
+        }),
       },
     },
   },
   {
-    name: 'aggregators',
+    name: 'feed',
     icon: 'el-icon-document',
+    format: value => {
+      switch (value) {
+        case 'apd': return 'APD'
+        case 'rakuten': return 'Rakuten'
+        case 'commission_factory': return 'Commission factory'
+      }
+    },
   },
   {
-    name: 'api_call',
-    label: 'API Call',
+    name: 'counts',
+    label: 'Changes',
     icon: 'el-icon-document',
+    format: value => {
+      return JSON.stringify(value)
+    },
   },
   {
-    name: 'comments',
+    name: 'reason',
     icon: 'el-icon-document',
+    format: value => {
+      return value || '-'
+    },
     component: {
       props: {
         styleObj(_, row) {
           const { status } = row
 
-          if (status === 'inactive') {
+          if (status === 'failed') {
             return { color: '#fc1e1e' }
           }
 
@@ -107,13 +118,10 @@ const TABLE_COLUMNS = [
 ]
 
 export default component => ({
-  // processor: new ApiProcessor({
-  //   component,
-  //   index: 'merchants',
-  // }),
-  processor: new StaticProcessor({
+  processor: new ApiProcessor({
     component,
-    data: tableMock.table,
+    path: '/feeds/sync-logs',
+    index: 'merchants',
   }),
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
