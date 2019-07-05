@@ -57,6 +57,7 @@ export default {
       <merchant-edit
         v-if="edit"
         :details="details"
+        @cancel="edit = false"
       />
       <merchant-details
         v-else

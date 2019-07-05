@@ -1,16 +1,14 @@
 
 <script>
+import { formatDate } from '@lib/utils/format-date'
+
 export default {
   name: 'OfferUpdateModal',
   inheritAttrs: false,
   props: {
-    startDate: {
-      type: String,
-      required: true,
-    },
-    endDate: {
-      type: String,
-      required: true,
+    changed: {
+      type: Array,
+      default: () => [],
     },
   },
   data() {
@@ -28,6 +26,16 @@ export default {
         }
         this.$emit('submit', this.form.notes)
       })
+    },
+    updateLabel(item) {
+      const { key, value } = item
+      switch (key) {
+        case 'end_date':
+        case 'start_date':
+          return formatDate(value, 'DD/MM/YYYY hh:mm A', false)
+        default:
+          return value
+      }
     },
   },
 }
@@ -51,14 +59,13 @@ export default {
         Are you sure you wish to update these details?
       </p>
       <el-form-item
-        label="Start date"
+        v-for="(item, index) in changed"
+        :key="index"
+        :label="item.label"
       >
-        <span :class="$style.date">{{ startDate | date('DD/MM/YYYY hh:mm A') }}</span>
-      </el-form-item>
-      <el-form-item
-        label="Start date"
-      >
-        <span :class="$style.date">{{ endDate | date('DD/MM/YYYY hh:mm A') }}</span>
+        <span :class="$style.changed">
+          {{ updateLabel(item) }}
+        </span>
       </el-form-item>
       <el-form-item
         label="Notes"
@@ -112,7 +119,7 @@ export default {
   line-height: 1.5;
 }
 
-.date {
+.changed {
   line-height: 1.1;
   color: var(--color-dark-gray);
 }

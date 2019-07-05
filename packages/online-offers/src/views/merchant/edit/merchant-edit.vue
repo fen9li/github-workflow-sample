@@ -1,15 +1,17 @@
 <script>
-import merchantEditBlock from './merchant-edit-block'
-import merchantFeedData from '@tests/__fixtures__/merchant-details-feed'
-import merchantRemoveModal from './merchant-remove'
-import allClassifications from '@tests/__fixtures__/merchant-classifications'
-import cloneDeep from 'lodash/cloneDeep'
+// import merchantEditBlock from './merchant-edit-block'
+// import merchantFeedData from '@tests/__fixtures__/merchant-details-feed'
+// import merchantRemoveModal from './merchant-remove'
+// import allClassifications from '@tests/__fixtures__/merchant-classifications'
+// import cloneDeep from 'lodash/cloneDeep'
+import EditLayout from '../../../components/edit-layout/edit-layout'
 
 export default {
   name: 'MerchantDetailsEdit',
   components: {
-    merchantEditBlock,
-    merchantRemoveModal,
+    EditLayout,
+    // merchantEditBlock,
+    // merchantRemoveModal,
   },
   props: {
     details: {
@@ -19,151 +21,199 @@ export default {
   },
   data() {
     return {
-      checks: {
-        apd: 'APD',
-        cf: 'Commission Factory',
-        rakuten: 'Rakuten',
-      },
-      merchantFeedData,
-      merchantsFeedDetails: [],
-      originalDetails: {},
-      currentDetails: {},
-      allClassifications,
-      availableClassifications: [],
-      modal: {
-        remove: false,
-      },
+      // merchantFeedData,
+      // merchantsFeedDetails: [],
+      // originalDetails: {},
+      // currentDetails: {},
+      // allClassifications,
+      // availableClassifications: [],
+      // modal: {
+      //   remove: false,
+      // },
+      fields: [
+        {
+          key: 'name',
+          label: 'Merchant name',
+          path: 'name',
+          type: 'el-input',
+          rules: [
+            { required: true, message: 'merchant name is required' },
+          ],
+        }, {
+          key: 'logo',
+          label: 'Merchant Image',
+          path: 'logo',
+          type: 'edit-layout-image',
+          rules: [
+            { required: true, message: 'merchant logo is required' },
+          ],
+        }, {
+          key: 'summary',
+          label: 'Summary',
+          path: 'summary',
+          type: 'el-input',
+          typeBindings: {
+            type: 'textarea',
+            rows: 3,
+          },
+        }, {
+          key: 'website',
+          label: 'Merchant Website',
+          path: 'website',
+          rules: [
+            { required: true, message: 'website url is required' },
+          ],
+          type: 'el-input',
+          slots: [
+            {
+              name: 'prepend',
+              value: 'http://',
+            },
+          ],
+        }, {
+          key: 'categories',
+          label: 'Classification',
+          path: 'categories',
+          rules: [
+            { required: true, message: 'classification is required' },
+          ],
+          type: 'edit-layout-categories',
+          // typeBindings: {
+          // },
+        }, {
+          key: 'terms',
+          label: 'Terms & Conditions',
+          path: 'terms',
+          rules: [
+            { required: true, message: 'terms is required' },
+          ],
+          type: 'el-input',
+          typeBindings: {
+            type: 'textarea',
+            rows: 3,
+          },
+        },
+      ],
     }
   },
   created() {
-    const { formatDetails, details } = this
-    this.originalDetails = cloneDeep(this.details)
-    this.currentDetails = formatDetails(details)
-    this.merchantsFeedDetails = this.merchantFeedData.map(v => formatDetails(v))
-    this.formatClassifications()
+    // const { formatDetails, details } = this
+    // this.originalDetails = cloneDeep(this.details)
+    // this.currentDetails = formatDetails(details)
+    // this.merchantsFeedDetails = this.merchantFeedData.map(v => formatDetails(v))
+    // this.formatClassifications()
   },
   methods: {
-    formatDetails(source) {
-      const sourceCopy = cloneDeep(source)
-      const formatedData = {}
+    // formatDetails(source) {
+    //   const sourceCopy = cloneDeep(source)
+    //   const formatedData = {}
 
-      for (const item in sourceCopy) {
-        if (sourceCopy.hasOwnProperty(item)) {
-          formatedData[item] = {
-            value: sourceCopy[item],
-            selected: false,
-          }
-        }
-      }
-      return formatedData
-    },
-    formatClassifications() {
-      this.availableClassifications = this.allClassifications.map(item => {
-        return {
-          label: item,
-          value: item.toLowerCase().replace('& ', '').split(' ').join('-'),
-        }
-      })
-    },
-    saveChanges() {
-      console.warn(this.currentDetails)
-    },
-    changeLocalValue(event) {
-      if (event.type === 'commission') {
-        this.currentDetails.commissionRates.value[event.field] = event.newValue
-      } else {
-        this.currentDetails[event.field].value = event.newValue
-      }
-    },
-    applyNewValue(event) {
-      const { currentDetails, originalDetails, merchantsFeedDetails } = this
+    //   for (const item in sourceCopy) {
+    //     if (sourceCopy.hasOwnProperty(item)) {
+    //       formatedData[item] = {
+    //         value: sourceCopy[item],
+    //         selected: false,
+    //       }
+    //     }
+    //   }
+    //   return formatedData
+    // },
+    // formatClassifications() {
+    //   this.availableClassifications = this.allClassifications.map(item => {
+    //     return {
+    //       label: item,
+    //       value: item.toLowerCase().replace('& ', '').split(' ').join('-'),
+    //     }
+    //   })
+    // },
+    // saveChanges() {
+    //   console.warn(this.currentDetails)
+    // },
+    // changeLocalValue(event) {
+    //   if (event.type === 'commission') {
+    //     this.currentDetails.commissionRates.value[event.field] = event.newValue
+    //   } else {
+    //     this.currentDetails[event.field].value = event.newValue
+    //   }
+    // },
+    // applyNewValue(event) {
+    //   const { currentDetails, originalDetails, merchantsFeedDetails } = this
 
-      if (event.field === 'all') {
-        this.applyAllNewValues(event)
-        return
-      }
+    //   if (event.field === 'all') {
+    //     this.applyAllNewValues(event)
+    //     return
+    //   }
 
-      if (event.type === 'commission') {
-        this.applyRates(event)
-        return
-      }
-      const sourceActiveIndex = merchantsFeedDetails.findIndex(item => item.id.value === event.sourceId)
+    //   if (event.type === 'commission') {
+    //     this.applyRates(event)
+    //     return
+    //   }
+    //   const sourceActiveIndex = merchantsFeedDetails.findIndex(item => item.id.value === event.sourceId)
 
-      merchantsFeedDetails[sourceActiveIndex][event.field].selected = event.apply
+    //   merchantsFeedDetails[sourceActiveIndex][event.field].selected = event.apply
 
-      currentDetails[event.field].value =
-      event.apply ? event.newValue : originalDetails[event.field]
+    //   currentDetails[event.field].value =
+    //   event.apply ? event.newValue : originalDetails[event.field]
 
-      currentDetails[event.field].selected = event.apply
+    //   currentDetails[event.field].selected = event.apply
 
-      this.unselectOldValue(event.sourceId, event.field)
-    },
-    applyAllNewValues(event) {
-      const { originalDetails, formatDetails } = this
+    //   this.unselectOldValue(event.sourceId, event.field)
+    // },
+    // applyAllNewValues(event) {
+    //   const { originalDetails, formatDetails } = this
 
-      if (event.apply) {
-        this.currentDetails = event.newValue
-        this.merchantsFeedDetails.forEach(merchant => {
-          for (const field in merchant) {
-            if (merchant.hasOwnProperty(field)) {
-              merchant[field].selected = (merchant.id.value === event.sourceId)
-            }
-          }
-        })
-      } else {
-        this.currentDetails = formatDetails(originalDetails)
-      }
-    },
-    unselectOldValue(sourceId, field) {
-      this.merchantsFeedDetails.forEach(merchant => {
-        if (merchant.id.value !== sourceId) {
-          merchant[field].selected = false
-        }
-      })
-    },
-    applyRates(event) {
-      const { currentDetails, merchantsFeedDetails } = this
-      currentDetails.commissionRates.selected = true
-      currentDetails.commissionRates.value = event.newValue
-      merchantsFeedDetails.forEach(merchant => {
-        merchant.commissionRates.selected = (merchant.id.value === event.sourceId)
-      })
-    },
+    //   if (event.apply) {
+    //     this.currentDetails = event.newValue
+    //     this.merchantsFeedDetails.forEach(merchant => {
+    //       for (const field in merchant) {
+    //         if (merchant.hasOwnProperty(field)) {
+    //           merchant[field].selected = (merchant.id.value === event.sourceId)
+    //         }
+    //       }
+    //     })
+    //   } else {
+    //     this.currentDetails = formatDetails(originalDetails)
+    //   }
+    // },
+    // unselectOldValue(sourceId, field) {
+    //   this.merchantsFeedDetails.forEach(merchant => {
+    //     if (merchant.id.value !== sourceId) {
+    //       merchant[field].selected = false
+    //     }
+    //   })
+    // },
+    // applyRates(event) {
+    //   const { currentDetails, merchantsFeedDetails } = this
+    //   currentDetails.commissionRates.selected = true
+    //   currentDetails.commissionRates.value = event.newValue
+    //   merchantsFeedDetails.forEach(merchant => {
+    //     merchant.commissionRates.selected = (merchant.id.value === event.sourceId)
+    //   })
+    // },
   },
 }
 </script>
 
 <template>
-  <div :class="$style.wrapper">
-    <div :class="$style.header">
-      <div :class="$style.aggregators">
-        <div :class="$style.aggregatorsTitle">
-          Commission Aggregators
-        </div>
-        <div :class="$style.aggregatorsList">
-          <el-radio
-            v-model="checks.cf"
-            border
-            label="Commission Factory"
-          />
-          <el-radio
-            v-model="checks.rakuten"
-            label="Rakuten"
-            border
-          />
-          <el-radio
-            v-model="checks.apd"
-            label="APD"
-            border
-          />
-        </div>
-      </div>
-      <div class="online-offers__edit-notice">
-        <i class="el-icon-info noticeIcon" />
-        The commission will be paid by the selected Commission Aggregator, regardless of the Merchant's details.
-      </div>
-    </div>
-    <div :class="$style.editBlocks">
+  <!--
+
+    :presets="feedOffers"
+    @update="submitUpdateForm"
+    @remove="modals.remove = true" -->
+  <edit-layout
+    :source="details"
+    :fields="fields"
+    @cancel="$emit('cancel')"
+  >
+    <template slot="removeButton">
+      <span>Delete Global Merchant</span>
+    </template>
+    <template slot="updateButton">
+      <span>Save Changes</span>
+    </template>
+  </edit-layout>
+  <!-- <div> -->
+  <!-- <div :class="$style.editBlocks">
       <merchant-edit-block
         :details="currentDetails"
         :available-classifications="availableClassifications"
@@ -177,8 +227,8 @@ export default {
         :show-new-btn="index === 0"
         @valueChange="applyNewValue"
       />
-    </div>
-    <div class="online-offers__edit-controls">
+    </div> -->
+  <!-- <div class="online-offers__edit-controls">
       <el-button
         type="danger"
         class="wide-button"
@@ -204,42 +254,13 @@ export default {
         :merchant="details"
         :visible.sync="modal.remove"
       />
-    </div>
-  </div>
+    </div> -->
+  <!-- </div> -->
 </template>
 
 <style lang="scss" module>
-.header {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 2rem;
-}
-
-.editBlocks {
+/* .editBlocks {
   display: flex;
   overflow-x: auto;
-}
-
-.aggregators {
-  display: flex;
-  flex-basis: 40%;
-  justify-content: space-between;
-  max-width: 32rem
-}
-
-.aggregatorsTitle {
-  width: 6rem;
-  font-size: .875rem;
-  color: #606266;
-}
-
-.aggregatorsList {
-  display: flex;
-
-  :global {
-    .el-radio {
-      margin: 0 .2rem;
-    }
-    }
-}
+} */
 </style>
