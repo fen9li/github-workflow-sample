@@ -115,12 +115,14 @@ export default {
       >
         <slot slot="columns" />
         <template
-          slot="expandedBlock"
-          slot-scope="{ row }"
+          slot="expandedRow"
+          slot-scope="{ row, columns }"
         >
           <slot
-            name="expandedBlock"
+            name="expandedRow"
             :row="row"
+            ,
+            :columns="columns"
           />
         </template>
       </data-table>

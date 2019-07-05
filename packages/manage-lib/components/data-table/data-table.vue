@@ -204,8 +204,9 @@ export default {
       >
         <template slot-scope="props">
           <slot
-            name="expandedBlock"
+            name="expandedRow"
             :row="props.row"
+            :columns="columns"
           />
         </template>
       </el-table-column>
