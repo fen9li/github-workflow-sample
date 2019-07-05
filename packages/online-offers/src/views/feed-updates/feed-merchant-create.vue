@@ -23,9 +23,10 @@ export default {
     return {
       form: {
         classifications: [],
-        name: '',
-        website: '',
-        terms: '',
+        name: this.row.map.name,
+        logo: this.row.map.logo,
+        website: this.row.map.website,
+        terms: this.row.map.terms,
       },
       rules: {
         name: [
@@ -67,8 +68,6 @@ export default {
       selectedItem: null,
       newItem: {
         name: '+ New Global Merchant',
-        logo: '',
-        website: '',
       },
     }
   },
@@ -83,7 +82,7 @@ export default {
       return !get(this.form, 'name.length', false)
     },
     merchantId() {
-      return get(this.selectedItem, 'item.id')
+      return get(this.selectedItem, 'id')
     },
     rate() {
       const base = get(this.row, 'payload.PublicTerms.PayoutTermsList[0].PayoutAmount', '')
@@ -93,9 +92,6 @@ export default {
     },
     trackingLing() {
       return get(this.row, 'payload.TrackingLink')
-    },
-    uploaderPlaceholder() {
-      return this.clientLogoName || 'Select file'
     },
     uploadcareSignature() {
       return md5(this.uploadcare.secretKey + this.uploadcare.expire)
@@ -121,12 +117,14 @@ export default {
         }
       }))
     },
-    handleSelect(item) {
+    handleSelect({ item }) {
       this.selectedItem = item
     },
+    handleClear() {
+      this.selectedItem = null
+    },
     onSuccessUploading(img) {
-      this.form.clientLogo = img.originalUrl
-      this.clientLogoName = img.name
+      this.form.logo = img.cdnUrl
     },
     onSubmit() {
       if (this.merchantId) {
@@ -170,7 +168,7 @@ export default {
       :class="$style.alert"
       :closable="false"
     >
-      You want to {{ `${merchantId ? 'associate' : 'create'}` }} <b>{{ row.name }}</b> with <b>{{ selectedItem.value }}</b>
+      You want to {{ `${merchantId ? 'associate' : 'create'}` }} <b>{{ row.name }}</b> with <b>{{ selectedItem.name }}</b>
     </el-alert>
     <el-form-item
       label="Global Merchant"
@@ -180,9 +178,10 @@ export default {
         v-model="search"
         :fetch-suggestions="querySearchAsync"
         :class="$style.search"
-        placeholder="Please input"
+        placeholder="Please input or select from list"
         clearable
         @select="handleSelect"
+        @clear="handleClear"
       >
         <template slot-scope="{ item }">
           <template v-if="!item.index">
@@ -243,9 +242,16 @@ export default {
           </uploadcare>
           <div
             slot="tip"
-            :class="$style['form-uploader-tip']"
+            :class="$style.formUploaderTip"
           >
-            {{ uploaderPlaceholder }}
+            <img
+              v-if="form.logo"
+              :src="form.logo"
+              :class="$style.formLogo"
+            >
+            <span v-else>
+              Select file
+            </span>
           </div>
         </div>
       </el-form-item>
@@ -362,8 +368,15 @@ export default {
   margin-bottom: rem(22px);
 }
 
-.form-uploader-tip {
+.formUploaderTip {
   flex-grow: 1;
+}
+
+.formLogo {
+  max-width: 12rem;
+  height: auto;
+  margin: rem(15px 0);
+  overflow: hidden;
 }
 
 .classifications {
