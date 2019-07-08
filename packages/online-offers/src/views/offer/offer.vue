@@ -144,11 +144,7 @@ export default {
     // }
   },
   methods: {
-    ...mapActions('offers', [
-      'getOffer',
-      'updateOffer',
-      'deleteOffer',
-    ]),
+    ...mapActions('offers', ['getOffer', 'updateOffer', 'deleteOffer']),
     formatDate(value, format) {
       return formatDate(value, format || 'DD/MM/YYYY', false)
     },
@@ -162,7 +158,7 @@ export default {
         this.$notify({
           type: 'success',
           title: 'Success',
-          message: `Status sussessfully changed to ${this.switcher ? 'enabled' : 'disabled'}`,
+          message: `Status successfully changed to ${this.switcher ? 'enabled' : 'disabled'}`,
         })
       })
     },

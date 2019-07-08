@@ -33,7 +33,7 @@ export default {
           this.$notify({
             type: 'success',
             title: 'Success',
-            message: `Status sussessfully changed to ${
+            message: `Status successfully changed to ${
               this.enabled ? 'enabled' : 'disabled'
             }`,
           })
