@@ -1,6 +1,14 @@
 <script>
 import appConfig from '~/app.config'
 
+const paymentRules = {
+  're_1': 'Retry next day the previous attempt',
+  're_3': 'Retry 3 days after the previous attempt',
+  're_5': 'Retry 5 days after the previous attempt',
+  'cancel': 'Cancel the Subscription',
+  'notify': 'Notify via email',
+}
+
 export default {
   name: 'PaymentSettings',
   page: {
@@ -9,120 +17,42 @@ export default {
   },
   data() {
     return {
-      paymentSettings: {
-        accountNumber: 'WBC (AU) **** 9289 / 03 9287',
+      settings: {
+        account: {
+          name: 'Professionals Australia',
+          bsb: '078-8278',
+          number: '2781999',
+        },
         rules: {
-          cards: {
-            firstRetry: 're_3',
-            secondRetry: 're_5',
+          card: {
+            first: 're_3',
+            second: 're_5',
             action: 'cancel',
           },
           accounts: {
-            firstRetry: 're_1',
-            secondRetry: 're_3',
-            action: 'notify_email',
+            first: 're_1',
+            second: 're_3',
+            action: 'notify',
           },
         },
-      },
-      formRulesAttemptsOptions: [
-        { label: 'Retry next day the previous attempt', value: 're_1' },
-        { label: 'Retry 3 days after the previous attempt', value: 're_3' },
-        { label: 'Retry 5 days after the previous attempt', value: 're_5' },
-      ],
-      formRulesActionOptions: [
-        { label: 'Cancel the Subscription', value: 'cancel' },
-        { label: 'Notify via email', value: 'notify_email' },
-      ],
-      // Account form
-      form: {
-        accountName: null,
-        bsb: null,
-        account: null,
-        statementDescriptor: null,
-        paymentMethods: [],
-      },
-      rules: {
-        // Account form rules
-        accountName: [
-          {
-            required: true,
-            message: 'This field is required',
-            trigger: 'blur',
-          },
-        ],
-        bsb: [
-          {
-            required: true,
-            message: 'This field is required',
-            trigger: 'blur',
-          },
-        ],
-        account: [
-          {
-            required: true,
-            message: 'This field is required',
-            trigger: 'blur',
-          },
-        ],
-        statementDescriptor: [
-          {
-            required: true,
-            message: 'This field is required',
-            trigger: 'blur',
-          },
-          // {
-          //   max: 22,
-          //   message: '22 characters max',
-          //   trigger: ['blur', 'change'],
-          // },
-        ],
       },
     }
   },
   computed: {
-    paymentMethods() {
-      return [
-        {
-          label: 'Visa',
-          value: 'visa',
-          img: '/img/visa_logo.png',
+    retryRules() {
+      const { rules } = this.settings
+      return {
+        card: {
+          first: paymentRules[rules.card.first],
+          second: paymentRules[rules.card.second],
+          action: paymentRules[rules.card.action],
         },
-        {
-          label: 'BPAY',
-          value: 'bpay',
-          img: '/img/bank_icon.png',
+        accounts: {
+          first: paymentRules[rules.accounts.first],
+          second: paymentRules[rules.accounts.second],
+          action: paymentRules[rules.accounts.action],
         },
-        {
-          label: 'Mastercard',
-          value: 'mastercard',
-          img: '/img/mastercard_logo.png',
-        },
-        {
-          label: 'Direct Debit',
-          value: 'direct-debit',
-          img: '/img/bank_icon.png',
-        },
-        {
-          label: 'Amex',
-          value: 'amex',
-          img: '/img/amex_logo.png',
-        },
-        {
-          label: '3D Secure',
-          value: '3d-secure',
-          img: '/img/bank_icon.png',
-        },
-        {
-          label: 'Bank Accounts',
-          value: 'bank-accounts',
-          img: '/img/bank_icon.png',
-        },
-        {
-          label: 'Nominal Amount',
-          value: 'nominal-amount',
-          img: '/img/bank_icon.png',
-        },
-      ]
+      }
     },
   },
   methods: {
@@ -143,300 +73,98 @@ export default {
 <template>
   <main-layout title="Payment Settings">
     <el-card>
-      <el-row
-        slot="header"
-        type="flex"
-        justify="space-between"
-        align="middle"
-      >
-        <span>Settlment Account Details</span>
-
-        <el-row type="flex">
-          <el-button
-            class="wide-button"
-            type="primary"
-            size="small"
-          >
-            Edit
-          </el-button>
-        </el-row>
-      </el-row>
-      <div class="card-subheader">
-        All funds and charges will be setled into the following account
+      <div :class="$style.title">
+        Settlment Account Details
       </div>
 
-      <el-form
-        :model="form"
-        :rules="rules"
-        class="card-form"
-      >
-        <el-form-item
-          label="AccountName"
-          prop="accountName"
-        >
-          <el-input
-            v-model="form.accountName"
-            placeholder="Professionals Australia"
-          />
-        </el-form-item>
+      <dl class="datalist">
+        <dt>Account Name</dt>
+        <dd>{{ settings.account.name }}</dd>
 
-        <el-form-item
-          label="BSB"
-          prop="bsb"
-        >
-          <el-input
-            v-model="form.bsb"
-            placeholder="Professionals Australia"
-          />
-        </el-form-item>
+        <dt>BSB</dt>
+        <dd>{{ settings.account.bsb }}</dd>
 
-        <el-form-item
-          label="Account"
-          prop="account"
-        >
-          <el-input
-            v-model="form.account"
-            placeholder="Professionals Australia"
-          />
-        </el-form-item>
+        <dt>Account No.</dt>
+        <dd>{{ settings.account.number }}</dd>
+      </dl>
 
-        <el-form-item
-          label="Statement Descriptor"
-          prop="statementDescriptor"
-          suffix-icon="el-icon-warning"
-        >
-          <el-input
-            v-model="form.statementDescriptor"
-            placeholder="Professionals Australia"
-          />
-        </el-form-item>
-      </el-form>
-    </el-card>
+      <hr :class="['divider-primary', $style.divider]">
 
-    <el-card :class="$style.card">
-      <span slot="header">
-        Payment Methods & Security
-      </span>
-
-      <div :class="$style.methods">
-        <div
-          v-for="(method, idx) in paymentMethods"
-          :key="idx"
-          :class="$style.switch"
-          @click="onMethodsChange(method.value)"
-        >
-          <el-switch
-            :value="form.paymentMethods.indexOf(method.value) >= 0"
-          />
-          <div
-            :class="$style.switchImgWrapper"
-          >
-            <img
-              :src="method.img"
-              alt=""
-              :class="$style.switchImg"
-            >
-          </div>
-          <span :class="$style.switchLabel">
-            {{ method.label }}
-          </span>
-        </div>
-      </div>
-    </el-card>
-
-    <el-card>
-      <span slot="header">
+      <div :class="$style.title">
         Recurring Payment Retry Rules
-      </span>
-
-      <div :class="$style.rulesDesc">
-        <span>Custom dunning rules</span>
-        <span :class="$style.rulesSubheader">
-          Manually configure steps to follow to retry
-          payments until they succeed
-        </span>
       </div>
 
-      <div>
-        <el-form
-          :model="paymentSettings.rules"
-          :class="[$style.recurring, 'card-form']"
-        >
-          <div :class="$style.rulesTitle">
-            <div :class="$style.rulesIcon">
-              <img src="@/assets/images/credit_card_icon.png">
-            </div>
-            <span :class="$style.rulesName">
-              Credit / Debit Cards
-            </span>
-          </div>
+      <span :class="$style.subtitle">Custom dunning rules</span>
 
-          <el-form-item label="First retry attempt">
-            <el-select
-              v-model="paymentSettings.rules.cards.firstRetry"
-            >
-              <el-option
-                v-for="(option,index) in formRulesAttemptsOptions"
-                :key="index"
-                :label="option.label"
-                :value="option.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="Second retry attempt">
-            <el-select
-              v-model="paymentSettings.rules.cards.secondRetry"
-            >
-              <el-option
-                v-for="(option,index) in formRulesAttemptsOptions"
-                :key="index"
-                :label="option.label"
-                :value="option.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item
-            :class="$style.lastFormItem"
-            label="Action"
-          >
-            <el-select
-              v-model="paymentSettings.rules.cards.action"
-            >
-              <el-option
-                v-for="(option,index) in formRulesActionOptions"
-                :key="index"
-                :label="option.label"
-                :value="option.value"
-              />
-            </el-select>
-          </el-form-item>
-
-          <div :class="$style.rulesTitle">
-            <div :class="$style.rulesIcon">
-              <img src="@/assets/images/credit_card_icon.png">
-            </div>
-            <span :class="$style.rulesName">
-              Bank Accounts
-            </span>
-          </div>
-
-          <el-form-item label="First retry attempt">
-            <el-select
-              v-model="paymentSettings.rules.accounts.firstRetry"
-            >
-              <el-option
-                v-for="(option,index) in formRulesAttemptsOptions"
-                :key="index"
-                :label="option.label"
-                :value="option.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="Second retry attempt">
-            <el-select
-              v-model="paymentSettings.rules.accounts.secondRetry"
-            >
-              <el-option
-                v-for="(option,index) in formRulesAttemptsOptions"
-                :key="index"
-                :label="option.label"
-                :value="option.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="Action">
-            <el-select
-              v-model="paymentSettings.rules.accounts.action"
-            >
-              <el-option
-                v-for="(option,index) in formRulesActionOptions"
-                :key="index"
-                :label="option.label"
-                :value="option.value"
-              />
-            </el-select>
-          </el-form-item>
-        </el-form>
+      <div :class="$style.ruleTitle">
+        <i :class="['el-icon-bank-card', $style.rulesIcon]" />
+        <span>Credit/Debit Card</span>
       </div>
+
+      <dl class="datalist">
+        <dt>First retry attempt</dt>
+        <dd>{{ retryRules.card.first }}</dd>
+
+        <dt>Second retry</dt>
+        <dd>{{ retryRules.card.second }}</dd>
+
+        <dt>Action</dt>
+        <dd>{{ retryRules.card.action }}</dd>
+      </dl>
+
+      <div :class="$style.ruleTitle">
+        <i :class="['el-icon-house', $style.rulesIcon]" />
+        <span>Bank Accounts</span>
+      </div>
+
+      <dl class="datalist">
+        <dt>First retry attempt</dt>
+        <dd>{{ retryRules.accounts.first }}</dd>
+
+        <dt>Second retry</dt>
+        <dd>{{ retryRules.accounts.second }}</dd>
+
+        <dt>Action</dt>
+        <dd>{{ retryRules.accounts.action }}</dd>
+      </dl>
     </el-card>
   </main-layout>
 </template>
 
 <style lang="scss" module>
-
 .card {
   margin: 2rem 0;
 }
 
-.methods {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 30rem;
+.title {
+  padding-bottom: 2rem;
+  font-size: 1.4rem;
+  font-weight: 600;
 }
 
-.switch {
-  display: flex;
-  align-items: center;
-  width: 50%;
-  margin-bottom: 1.5rem;
+.subtitle {
+  font-size: 1.2rem;
 }
 
-.switchImgWrapper {
+.ruleTitle {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 4.4rem;
-  height: 1.4rem;
-  padding: 0 1.2rem;
-  cursor: pointer;
-}
-
-.switchImg{
-  display: block;
-  max-width: 100%;
-  max-height: 100%;
-}
-
-.switchLabel {
-  cursor: pointer;
-}
-
-.recurring {
-  max-width: 40rem;
-
-  div:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.rulesDesc {
-  display: flex;
-  flex-direction: column;
-}
-
-.rulesSubheader {
-  margin-top: 0.8rem;
-  font-size: 0.9rem;
-  color: #bdbdbd;
-}
-
-.rulesTitle {
-  display: flex;
-  align-items: center;
-  margin: 2rem 0 1rem 0;
+  padding: 1.7rem 0;
+  font-size: 1.3rem;
 }
 
 .rulesIcon {
-  width: 2rem;
   margin-right: 1rem;
+  font-size: 1.7rem;
+  color: var(--color-primary);
 
   img {
     width: 100%;
   }
 }
 
-.rulesName {
-  font-weight: 700;
+.divider {
+  margin: 2.5rem 0;
 }
 
 </style>
