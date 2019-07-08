@@ -322,4 +322,14 @@ export default {
     }
   }
 }
+
+:global{
+  .el-table__expand-icon > .el-icon {
+    transform: rotate(90deg)
+  }
+  .el-table__expand-icon--expanded {
+    transform: rotate(-180deg)
+  }
+}
+
 </style>
