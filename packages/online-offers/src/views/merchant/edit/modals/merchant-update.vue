@@ -1,9 +1,7 @@
 
 <script>
-import { formatDate } from '@lib/utils/format-date'
-
 export default {
-  name: 'OfferUpdateModal',
+  name: 'MerchandUpdateModal',
   inheritAttrs: false,
   props: {
     fields: {
@@ -35,9 +33,8 @@ export default {
     updateLabel(item) {
       const { key, value } = item
       switch (key) {
-        case 'end_date':
-        case 'start_date':
-          return formatDate(value, 'DD/MM/YYYY hh:mm A', false)
+        case 'categories':
+          return value.map(el => el.label).join(', ')
         default:
           return value
       }
@@ -49,7 +46,7 @@ export default {
 <template>
   <el-dialog
     v-bind="$attrs"
-    title="Update Offer"
+    title="Update Merchant"
     :class="$style.dialog"
     v-on="$listeners"
   >
@@ -68,7 +65,16 @@ export default {
         :key="index"
         :label="item.label"
       >
-        <span :class="$style.changed">
+        <img
+          v-if="item.key === 'logo'"
+          :class="$style.preview"
+          :src="item.value"
+          :alt="item.value"
+        >
+        <span
+          v-else
+          :class="$style.changed"
+        >
           {{ updateLabel(item) }}
         </span>
       </el-form-item>
@@ -129,6 +135,10 @@ export default {
   overflow-y: auto;
   line-height: normal;
   color: var(--color-dark-gray);
+}
+
+.preview {
+  max-width: rem(100px);
 }
 
 .textarea {

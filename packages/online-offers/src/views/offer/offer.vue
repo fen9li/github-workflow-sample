@@ -28,7 +28,7 @@ export default {
           key: 'name',
           label: 'Offer Name',
           path: 'name',
-          type: 'el-input',
+          component: 'el-input',
           rules: [
             { required: true, message: 'offer name is required' },
           ],
@@ -36,7 +36,7 @@ export default {
           key: 'code',
           label: 'Coupon Code',
           path: 'feed_offer.payload.DefaultPromoCode',
-          type: 'el-input',
+          component: 'el-input',
           rules: [
             { required: true, message: 'coupon code is required' },
           ],
@@ -47,8 +47,8 @@ export default {
           rules: [
             { required: true, message: 'start date is required' },
           ],
-          type: 'el-date-picker',
-          typeBindings: {
+          component: 'el-date-picker',
+          componentBindings: {
             format: 'dd/MM/yyyy',
             type: 'date',
           },
@@ -59,8 +59,8 @@ export default {
           rules: [
             { required: true, message: 'end date is required' },
           ],
-          type: 'el-date-picker',
-          typeBindings: {
+          component: 'el-date-picker',
+          componentBindings: {
             format: 'dd/MM/yyyy',
             type: 'date',
           },
@@ -68,8 +68,8 @@ export default {
           key: 'description',
           label: 'Descriptions',
           path: 'description',
-          type: 'el-input',
-          typeBindings: {
+          component: 'el-input',
+          componentBindings: {
             type: 'textarea',
             rows: 3,
           },
@@ -80,8 +80,8 @@ export default {
           rules: [
             { required: true, message: 'terms is required' },
           ],
-          type: 'el-input',
-          typeBindings: {
+          component: 'el-input',
+          componentBindings: {
             type: 'textarea',
             rows: 3,
           },
@@ -92,8 +92,8 @@ export default {
           rules: [
             { required: true, message: 'tracking url is required' },
           ],
-          type: 'el-input',
-          slots: [
+          component: 'el-input',
+          componentSlots: [
             {
               name: 'prepend',
               value: 'http://',
@@ -133,44 +133,10 @@ export default {
         return !isPast(this.endDate)
       }
     },
-    changedFields() {
-      return this.fields.filter(el => el.changed)
-    },
   },
   watch: {
     offer(val) {
       this.feedOffers = [{
-        title: this.aggregator,
-        selected: false,
-        items: {
-          name: {
-            selected: false,
-            value: get(this.offer, 'feed_offer.payload.Name', '-'),
-          },
-          code: {
-            selected: false,
-            value: get(this.offer, 'feed_offer.payload.DefaultPromoCode', '-'),
-          },
-          start_date: {
-            selected: false,
-            value: this.startDate,
-            label: this.formatDate(this.startDate),
-          },
-          end_date: {
-            selected: false,
-            value: this.endDate,
-            label: this.formatDate(this.endDate),
-          },
-          description: {
-            selected: false,
-            value: get(this.offer, 'feed_offer.payload.Description', '-'),
-          },
-          terms: {
-            selected: false,
-            value: get(this.offer, 'feed_offer.payload.Terms', '-'),
-          },
-        },
-      }, {
         title: this.aggregator,
         selected: false,
         items: {
@@ -233,9 +199,6 @@ export default {
         })
       })
     },
-    submitUpdateForm() {
-      this.modals.update = true
-    },
     async submitUpdateOffer(notes) {
       this.modals.update = false
 
@@ -265,7 +228,7 @@ export default {
       this.$notify({
         type: 'success',
         title: 'Success',
-        message: 'Merchant details updated sussessfully.',
+        message: 'Offer details updated sussessfully.',
       })
     },
     async submitDeleteOffer(notes) {
@@ -301,7 +264,7 @@ export default {
       :presets="feedOffers"
       :is-remove="isRemove"
       @cancel="isEdit = false"
-      @update="submitUpdateForm"
+      @update="modals.update = true"
       @remove="modals.remove = true"
     >
       <template slot="removeButton">
@@ -387,7 +350,7 @@ export default {
     <update-modal
       v-if="modals.update"
       :visible.sync="modals.update"
-      :changed="changedFields"
+      :fields="fields"
       @submit="submitUpdateOffer"
     />
   </main-layout>

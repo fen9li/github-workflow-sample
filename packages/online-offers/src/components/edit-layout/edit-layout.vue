@@ -1,8 +1,10 @@
 <script>
 import get from 'lodash/get'
+import cloneDeep from 'lodash/cloneDeep'
 import { formatDate } from '@lib/utils/format-date'
 import EditLayoutImage from './components/edit-layout-image'
 import EditLayoutCategories from './components/edit-layout-categories'
+import EditLayoutTable from './components/edit-layout-table'
 import Uploadcare from 'uploadcare-vue'
 
 export default {
@@ -11,6 +13,7 @@ export default {
     Uploadcare,
     EditLayoutImage,
     EditLayoutCategories,
+    EditLayoutTable,
   },
   props: {
     source: {
@@ -25,6 +28,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    footer: {
+      type: Object,
+      default: () => {},
+    },
     isRemove: {
       type: Boolean,
       default: true,
@@ -35,6 +42,13 @@ export default {
       form: {},
       isChanged: false,
     }
+  },
+  computed: {
+    dividerStyles() {
+      return {
+        gridColumn: `1/${ 2 + this.presets.length }`,
+      }
+    },
   },
   watch: {
     source() {
@@ -49,7 +63,7 @@ export default {
       const newForm = {}
 
       for (const field of this.fields) {
-        newForm[field.key] = get(this.source, field.path, '')
+        newForm[field.key] = cloneDeep(get(this.source, field.path, ''))
       }
 
       this.form = newForm
@@ -61,6 +75,10 @@ export default {
       field.changed = true
       field.value = this.form[field.key]
       this.isChanged = true
+    },
+    checkChanged(values, field) {
+      this.form[field.key] = values
+      this.changeField(field)
     },
     imageLoaded(image, field) {
       this.form[field.key] = image
@@ -90,7 +108,7 @@ export default {
           sourcePreset.selected = true
         }
       } else {
-        this.form[key] = get(this.source, path, '')
+        this.form[key] = cloneDeep(get(this.source, path, ''))
         this.presets.forEach(preset => {
           preset.selected = false
         })
@@ -169,38 +187,68 @@ export default {
       label-position="top"
     >
       <div :class="$style.grid">
-        <div :class="$style.divider" />
+        <div
+          :class="$style.divider"
+          :style="dividerStyles"
+        />
         <div :class="$style.columnHeader">
           <div :class="$style.columnTitle">
             Current Details
           </div>
         </div>
-        <el-form-item
+        <!-- :key="fieldIndex" -->
+        <template
           v-for="(field, fieldIndex) in fields"
-          :key="fieldIndex"
-          :label="field.label"
-          :prop="field.key"
-          :rules="field.rules"
-          :style="{
-            gridRowStart: 3 + fieldIndex,
-          }"
         >
-          <component
-            :is="field.type"
-            v-model="form[field.key]"
-            v-bind="field.typeBindings"
-            :disabled="isSelected(field)"
-            @input="changeField(field)"
-            @imageLoaded="imageLoaded($event, field)"
+          <template
+            v-if="field.type === 'divider'"
           >
-            <template
-              v-for="slot in field.slots"
-              :slot="slot.name"
+            <div
+              :key="fieldIndex"
+              :class="$style.footerDivider"
+              :style="{
+                ...dividerStyles,
+                gridRowStart: 3 + fieldIndex,
+              }"
+            />
+            <slot
+              v-if="field.slot"
+              :name="field.slot"
+              :slotStyles="{
+                ...dividerStyles,
+                gridRowStart: 3 + fieldIndex,
+              }"
+            />
+          </template>
+          <el-form-item
+            v-else
+            :key="fieldIndex"
+            :label="field.label"
+            :prop="field.key"
+            :rules="field.rules"
+            :class="$style.columnItem"
+            :style="{
+              gridRowStart: 3 + fieldIndex,
+            }"
+          >
+            <component
+              :is="field.component"
+              v-model="form[field.key]"
+              v-bind="field.componentBindings"
+              :disabled="isSelected(field)"
+              @input="changeField(field)"
+              @checked="checkChanged($event, field)"
+              @imageLoaded="imageLoaded($event, field)"
             >
-              {{ slot.value }}
-            </template>
-          </component>
-        </el-form-item>
+              <template
+                v-for="slot in field.componentSlots"
+                :slot="slot.name"
+              >
+                {{ slot.value }}
+              </template>
+            </component>
+          </el-form-item>
+        </template>
         <!-- Feeds part -->
         <template v-for="(preset, index) in presets">
           <div
@@ -216,23 +264,53 @@ export default {
               @input="selectAll($event, preset)"
             />
           </div>
-          <div
+          <template
             v-for="(field, fieldIndex) in fields"
-            :key="`${ index }-${ fieldIndex }`"
-            :class="$style.columnFeed"
-            :style="{
-              gridRowStart: 3 + fieldIndex,
-            }"
           >
-            <template v-if="preset.items[field.key]">
-              <el-checkbox
-                v-model="preset.items[field.key].selected"
-                :label="field.label"
-                @input="checkPresetField($event, preset, field, preset.items[field.key].value)"
-              />
-              <span>{{ preset.items[field.key].label || preset.items[field.key].value }}</span>
+            <template
+              v-if="preset.items[field.key]"
+            >
+              <div
+                :key="`${ index }-${ fieldIndex }`"
+                :class="[$style.columnItem, $style.columnFeed]"
+                :style="{
+                  gridRowStart: 3 + fieldIndex,
+                }"
+              >
+                <el-radio-group
+                  v-if="preset.items[field.key].type === 'radio'"
+                  v-model="preset.items[field.key].value"
+                  @input="checkPresetField($event, preset, field, preset.items[field.key].value)"
+                >
+                  <el-radio
+                    :label="preset.items[field.key].value"
+                  />
+                </el-radio-group>
+                <el-checkbox
+                  v-else-if="preset.items[field.key]"
+                  v-model="preset.items[field.key].selected"
+                  :label="field.label"
+                  @input="checkPresetField($event, preset, field, preset.items[field.key].value)"
+                />
+                <img
+                  v-if="preset.items[field.key].preview === 'image'"
+                  :src="preset.items[field.key].value"
+                  :alt="preset.items[field.key].label || preset.items[field.key].value"
+                  :class="$style.feedImage"
+                >
+                <component
+                  :is="preset.items[field.key].component"
+                  v-else-if="preset.items[field.key].component"
+                  v-model="preset.items[field.key].value"
+                  :class="$style.feedLabel"
+                  v-bind="preset.items[field.key].componentBindings"
+                />
+                <span :class="$style.feedLabel">
+                  {{ preset.items[field.key].label || preset.items[field.key].value }}
+                </span>
+              </div>
             </template>
-          </div>
+          </template>
         </template>
       </div>
       <div :class="$style.footer">
@@ -281,20 +359,28 @@ export default {
   grid-auto-flow: column dense;
 }
 
+.divider,
+.footerDivider {
+  width: 100%;
+  margin: rem(32px 0);
+  border-top: 2px dashed var(--color-primary);
+}
+
 .divider {
   grid-row-start: 2;
-  grid-column: 1/999;
-  margin: rem(32px 0);
-  border-bottom: 2px dashed var(--color-primary);
 }
 
 .columnHeader {
   grid-row-start: 1;
-  min-width: 300px;
+  min-width: rem(300px);
+}
+
+.columnHeader,
+.columnItem {
+  max-width: rem(400px);
 }
 
 .columnFeedHeader {
-  max-width: rem(400px);
   padding-left: rem(48px);
 }
 
@@ -311,18 +397,29 @@ export default {
   display: flex;
   flex-direction: column;
   max-width: rem(400px);
-  padding-top: rem(24px);
+  padding-bottom: rem(24px);
   padding-left: rem(48px);
 
   :global(.el-checkbox) {
     margin-bottom: rem(8px);
   }
 
-  > span {
+  > span,
+  > div {
     margin-left: rem(38px);
     font-size: rem(14px);
     color: var(--color-dark-gray);
   }
+}
+
+.feedLabel {
+  max-height: rem(200px);
+  overflow-y: auto;
+  line-height: normal;
+}
+
+.feedImage {
+  max-width: rem(100px);
 }
 
 .footer {

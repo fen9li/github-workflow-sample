@@ -1,17 +1,16 @@
 <script>
-// import merchantEditBlock from './merchant-edit-block'
-// import merchantFeedData from '@tests/__fixtures__/merchant-details-feed'
-// import merchantRemoveModal from './merchant-remove'
-// import allClassifications from '@tests/__fixtures__/merchant-classifications'
-// import cloneDeep from 'lodash/cloneDeep'
+import { mapActions } from 'vuex'
+import get from 'lodash/get'
+import MerchantRemoveModal from './modals/merchant-remove'
+import MerchandUpdateModal from './modals/merchant-update'
 import EditLayout from '../../../components/edit-layout/edit-layout'
 
 export default {
   name: 'MerchantDetailsEdit',
   components: {
     EditLayout,
-    // merchantEditBlock,
-    // merchantRemoveModal,
+    MerchantRemoveModal,
+    MerchandUpdateModal,
   },
   props: {
     details: {
@@ -21,50 +20,45 @@ export default {
   },
   data() {
     return {
-      // merchantFeedData,
-      // merchantsFeedDetails: [],
-      // originalDetails: {},
-      // currentDetails: {},
-      // allClassifications,
-      // availableClassifications: [],
-      // modal: {
-      //   remove: false,
-      // },
+      modals: {
+        remove: false,
+        update: false,
+      },
       fields: [
         {
           key: 'name',
           label: 'Merchant name',
-          path: 'name',
-          type: 'el-input',
+          path: 'merchant.name',
+          component: 'el-input',
           rules: [
             { required: true, message: 'merchant name is required' },
           ],
         }, {
           key: 'logo',
           label: 'Merchant Image',
-          path: 'logo',
-          type: 'edit-layout-image',
+          path: 'merchant.logo',
+          component: 'edit-layout-image',
           rules: [
             { required: true, message: 'merchant logo is required' },
           ],
         }, {
           key: 'summary',
           label: 'Summary',
-          path: 'summary',
-          type: 'el-input',
-          typeBindings: {
+          path: 'merchant.summary',
+          component: 'el-input',
+          componentBindings: {
             type: 'textarea',
             rows: 3,
           },
         }, {
           key: 'website',
           label: 'Merchant Website',
-          path: 'website',
+          path: 'merchant.website',
           rules: [
             { required: true, message: 'website url is required' },
           ],
-          type: 'el-input',
-          slots: [
+          component: 'el-input',
+          componentSlots: [
             {
               name: 'prepend',
               value: 'http://',
@@ -73,194 +67,322 @@ export default {
         }, {
           key: 'categories',
           label: 'Classification',
-          path: 'categories',
+          path: 'merchant.categories',
           rules: [
             { required: true, message: 'classification is required' },
           ],
-          type: 'edit-layout-categories',
-          // typeBindings: {
-          // },
+          component: 'edit-layout-categories',
+          componentBindings: {
+            categories: get(this.details, 'map.categories', []),
+          },
         }, {
           key: 'terms',
           label: 'Terms & Conditions',
-          path: 'terms',
+          path: 'merchant.terms',
           rules: [
             { required: true, message: 'terms is required' },
           ],
-          type: 'el-input',
-          typeBindings: {
+          component: 'el-input',
+          componentBindings: {
             type: 'textarea',
             rows: 3,
           },
+        }, {
+          type: 'divider',
+          slot: 'footerTitle',
+        }, {
+          key: 'commission',
+          label: 'Commission Rate',
+          path: 'merchant.commission',
+          component: 'edit-layout-table',
+          componentBindings: {
+            labels: {
+              base: 'Base',
+              min: 'Min',
+              max: 'Max',
+              type: 'Commission Type',
+              url: 'Merchant Tracking URL',
+            },
+            values: [
+              {
+                key: 'commission_factory',
+                items: {
+                  base: {
+                    value: 2,
+                    format: value => `$${ value }`,
+                  },
+                  min: {
+                    value: 3,
+                    format: value => `$${ value }`,
+                  },
+                  max: {
+                    value: 4,
+                    format: value => `$${ value }`,
+                  },
+                  type: {
+                    value: 'DOLLARS',
+                    format: this.formatType,
+                  },
+                  url: {
+                    value: 'www.test.com',
+                  },
+                },
+              }, {
+                key: 'rakuten',
+                items: {
+                  base: {
+                    value: get(this.details, 'map.commission.base', 0),
+                    format: value => `${ value }%`,
+                  },
+                  min: {
+                    value: get(this.details, 'map.commission.min', 0),
+                    format: value => `${ value }%`,
+                  },
+                  max: {
+                    value: get(this.details, 'map.commission.max', 0),
+                    format: value => `${ value }%`,
+                  },
+                  type: {
+                    value: get(this.details, 'map.commission.type', 'PERCENTAGE'),
+                    format: this.formatType,
+                  },
+                  url: {
+                    value: 'www.test.net',
+                  },
+                },
+              },
+            ],
+          },
         },
       ],
+      feedOffers: [{
+        title: get(this.details, 'map.feed', ''),
+        selected: false,
+        items: {
+          name: {
+            selected: false,
+            value: get(this.details, 'map.name', '-'),
+          },
+          website: {
+            selected: false,
+            value: get(this.details, 'map.website', '-'),
+          },
+          logo: {
+            selected: false,
+            value: get(this.details, 'map.logo', '-'),
+            preview: 'image',
+          },
+          summary: {
+            selected: false,
+            value: get(this.details, 'map.summary', '-'),
+          },
+          categories: {
+            selected: false,
+            value: get(this.details, 'map.categories', []),
+            label: get(this.details, 'map.categories', []).map(el => el.label).join(', '),
+          },
+          terms: {
+            selected: false,
+            value: get(this.details, 'map.terms', '-'),
+          },
+          commission: {
+            selected: true,
+            type: 'radio',
+            value: get(this.details, 'map.feed', ''),
+            component: 'edit-layout-table',
+            componentBindings: {
+              labels: {
+                base: 'Base',
+                min: 'Min',
+                max: 'Max',
+                type: 'Commission Type',
+                url: 'Merchant Tracking URL',
+              },
+              values: [
+                {
+                  key: 'commission_factory',
+                  items: {
+                    base: {
+                      value: 2,
+                      format: value => `$${ value }`,
+                    },
+                    min: {
+                      value: 3,
+                      format: value => `$${ value }`,
+                    },
+                    max: {
+                      value: 4,
+                      format: value => `$${ value }`,
+                    },
+                    type: {
+                      value: 'DOLLARS',
+                      format: this.formatType,
+                    },
+                    url: {
+                      value: 'www.test.com',
+                    },
+                  },
+                }, {
+                  key: 'rakuten',
+                  items: {
+                    base: {
+                      value: get(this.details, 'map.commission.base', 0),
+                      format: value => `${ value }%`,
+                    },
+                    min: {
+                      value: get(this.details, 'map.commission.min', 0),
+                      format: value => `${ value }%`,
+                    },
+                    max: {
+                      value: get(this.details, 'map.commission.max', 0),
+                      format: value => `${ value }%`,
+                    },
+                    type: {
+                      value: get(this.details, 'map.commission.type', 'PERCENTAGE'),
+                      format: this.formatType,
+                    },
+                    url: {
+                      value: 'www.test.net',
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      }],
     }
   },
-  created() {
-    // const { formatDetails, details } = this
-    // this.originalDetails = cloneDeep(this.details)
-    // this.currentDetails = formatDetails(details)
-    // this.merchantsFeedDetails = this.merchantFeedData.map(v => formatDetails(v))
-    // this.formatClassifications()
+  computed: {
+    merchantId() {
+      return this.$route.params.id
+    },
+    feed() {
+      return get(this.details, 'map.feed', '')
+    },
   },
   methods: {
-    // formatDetails(source) {
-    //   const sourceCopy = cloneDeep(source)
-    //   const formatedData = {}
+    ...mapActions('merchants', [
+      'updateMerchant',
+      'deleteMerchant',
+    ]),
+    formatType(type) {
+      switch (type) {
+        case 'PERCENTAGE':
+          return 'Percents'
+        case 'DOLLARS':
+        default:
+          return 'Dollars'
+      }
+    },
+    async submitUpdate(notes) {
+      this.modals.update = false
 
-    //   for (const item in sourceCopy) {
-    //     if (sourceCopy.hasOwnProperty(item)) {
-    //       formatedData[item] = {
-    //         value: sourceCopy[item],
-    //         selected: false,
-    //       }
-    //     }
-    //   }
-    //   return formatedData
-    // },
-    // formatClassifications() {
-    //   this.availableClassifications = this.allClassifications.map(item => {
-    //     return {
-    //       label: item,
-    //       value: item.toLowerCase().replace('& ', '').split(' ').join('-'),
-    //     }
-    //   })
-    // },
-    // saveChanges() {
-    //   console.warn(this.currentDetails)
-    // },
-    // changeLocalValue(event) {
-    //   if (event.type === 'commission') {
-    //     this.currentDetails.commissionRates.value[event.field] = event.newValue
-    //   } else {
-    //     this.currentDetails[event.field].value = event.newValue
-    //   }
-    // },
-    // applyNewValue(event) {
-    //   const { currentDetails, originalDetails, merchantsFeedDetails } = this
+      const payload = {}
+      const changedFields = this.fields.filter(field => field.changed)
 
-    //   if (event.field === 'all') {
-    //     this.applyAllNewValues(event)
-    //     return
-    //   }
+      for (const field of changedFields) {
+        if (field.key === 'categories') {
+          payload[field.key] = field.value.map(el => el.id)
+        } else {
+          payload[field.key] = field.value
+        }
+      }
 
-    //   if (event.type === 'commission') {
-    //     this.applyRates(event)
-    //     return
-    //   }
-    //   const sourceActiveIndex = merchantsFeedDetails.findIndex(item => item.id.value === event.sourceId)
+      const [error, response] = await this.updateMerchant({
+        merchantId: this.merchantId,
+        payload,
+      })
 
-    //   merchantsFeedDetails[sourceActiveIndex][event.field].selected = event.apply
+      if (error) {
+        console.error(error)
+        return
+      }
 
-    //   currentDetails[event.field].value =
-    //   event.apply ? event.newValue : originalDetails[event.field]
+      this.$emit('cancel')
+      this.$emit('update', response)
+      this.$notify({
+        type: 'success',
+        title: 'Success',
+        message: 'Merchant details updated sussessfully.',
+      })
+    },
+    async submitDelete(notes) {
+      this.modals.remove = false
+      // TODO: send notes
+      const [error] = await this.deleteMerchant(this.merchantId)
 
-    //   currentDetails[event.field].selected = event.apply
+      if (error) {
+        console.error(error)
+        return
+      }
 
-    //   this.unselectOldValue(event.sourceId, event.field)
-    // },
-    // applyAllNewValues(event) {
-    //   const { originalDetails, formatDetails } = this
-
-    //   if (event.apply) {
-    //     this.currentDetails = event.newValue
-    //     this.merchantsFeedDetails.forEach(merchant => {
-    //       for (const field in merchant) {
-    //         if (merchant.hasOwnProperty(field)) {
-    //           merchant[field].selected = (merchant.id.value === event.sourceId)
-    //         }
-    //       }
-    //     })
-    //   } else {
-    //     this.currentDetails = formatDetails(originalDetails)
-    //   }
-    // },
-    // unselectOldValue(sourceId, field) {
-    //   this.merchantsFeedDetails.forEach(merchant => {
-    //     if (merchant.id.value !== sourceId) {
-    //       merchant[field].selected = false
-    //     }
-    //   })
-    // },
-    // applyRates(event) {
-    //   const { currentDetails, merchantsFeedDetails } = this
-    //   currentDetails.commissionRates.selected = true
-    //   currentDetails.commissionRates.value = event.newValue
-    //   merchantsFeedDetails.forEach(merchant => {
-    //     merchant.commissionRates.selected = (merchant.id.value === event.sourceId)
-    //   })
-    // },
+      this.$router.push('/merchants')
+      this.$notify({
+        type: 'info',
+        title: 'Deleted',
+        message: 'Global merchant deleted successfully.',
+      })
+    },
   },
 }
 </script>
 
 <template>
-  <!--
-
-    :presets="feedOffers"
-    @update="submitUpdateForm"
-    @remove="modals.remove = true" -->
-  <edit-layout
-    :source="details"
-    :fields="fields"
-    @cancel="$emit('cancel')"
-  >
-    <template slot="removeButton">
-      <span>Delete Global Merchant</span>
-    </template>
-    <template slot="updateButton">
-      <span>Save Changes</span>
-    </template>
-  </edit-layout>
-  <!-- <div> -->
-  <!-- <div :class="$style.editBlocks">
-      <merchant-edit-block
-        :details="currentDetails"
-        :available-classifications="availableClassifications"
-        :current-item="true"
-        @valueChange="changeLocalValue"
-      />
-      <merchant-edit-block
-        v-for="(merchantDetails, index) in merchantsFeedDetails"
-        :key="index"
-        :details="merchantDetails"
-        :show-new-btn="index === 0"
-        @valueChange="applyNewValue"
-      />
-    </div> -->
-  <!-- <div class="online-offers__edit-controls">
-      <el-button
-        type="danger"
-        class="wide-button"
-        @click="modal.remove = true"
+  <div>
+    <edit-layout
+      :source="details"
+      :fields="fields"
+      :presets="feedOffers"
+      @cancel="$emit('cancel')"
+      @update="modals.update = true"
+      @remove="modals.remove = true"
+    >
+      <template slot="removeButton">
+        <span>Delete Global Merchant</span>
+      </template>
+      <template slot="updateButton">
+        <span>Save Changes</span>
+      </template>
+      <template
+        v-slot:footerTitle="slotProps"
       >
-        Remove Merchant
-      </el-button>
-      <div class="save-block">
-        <div class="online-offers__edit-notice">
-          <i class="el-icon-info noticeIcon" />
-          This changes will be made for all clients that have this Merchant available
-        </div>
-        <el-button
-          type="primary"
-          class="wide-button save-button"
-          @click="saveChanges"
+        <div
+          :class="$style.editFooterTitle"
+          :style="slotProps.slotStyles"
         >
-          Save Changes
-        </el-button>
-      </div>
-      <merchant-remove-modal
-        v-if="modal.remove"
-        :merchant="details"
-        :visible.sync="modal.remove"
-      />
-    </div> -->
-  <!-- </div> -->
+          <div>Commission Tracking Details</div>
+          <div :class="$style.editFooterActive">
+            Active: {{ feed }}
+          </div>
+        </div>
+      </template>
+    </edit-layout>
+    <merchand-update-modal
+      v-if="modals.update"
+      :visible.sync="modals.update"
+      :fields="fields"
+      @submit="submitUpdate"
+    />
+    <merchant-remove-modal
+      v-if="modals.remove"
+      :visible.sync="modals.remove"
+      @submit="submitDelete"
+    />
+  </div>
 </template>
 
 <style lang="scss" module>
-/* .editBlocks {
-  display: flex;
-  overflow-x: auto;
-} */
+.editFooterTitle {
+  margin-top: rem(80px);
+  margin-bottom: rem(50px);
+  font-size: rem(20px);
+  font-weight: bold;
+}
+
+.editFooterActive {
+  margin-top: rem(5px);
+  font-size: rem(14px);
+  color: #14be21;
+}
 </style>

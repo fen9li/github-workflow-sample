@@ -14,20 +14,30 @@ const mutations = {
 }
 
 const actions = {
-  async getCategories({ commit }) {
+  async getCategories({
+    commit,
+  }) {
     const [, response] = await api.get(`/categories`)
 
+    const items = get(response, 'items', [])
     if (response) {
-      commit('SET_CATEGORIES', get(response, 'items', []))
+      commit('SET_CATEGORIES', items)
     }
+    return items
   },
-  createCategory({ commit }, payload) {
+  createCategory({
+    commit,
+  }, payload) {
     return api.post('/categories', payload)
   },
-  updateCategory({ commit }, payload) {
+  updateCategory({
+    commit,
+  }, payload) {
     return api.put(`/categories/${payload.id}`, payload)
   },
-  deleteCategory({ commit }, id) {
+  deleteCategory({
+    commit,
+  }, id) {
     return api.delete(`/categories/${id}`)
   },
 }

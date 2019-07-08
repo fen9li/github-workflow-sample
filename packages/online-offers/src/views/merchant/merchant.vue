@@ -1,5 +1,6 @@
 <script>
 import { mapActions } from 'vuex'
+import set from 'lodash/set'
 import merchantDetails from './details/merchant-details'
 import merchantEdit from './edit/merchant-edit'
 
@@ -32,12 +33,28 @@ export default {
     ...mapActions('merchants', [
       'getMerchantFeeds',
     ]),
+    ...mapActions('categories', [
+      'getCategories',
+    ]),
     async fetchMerchant() {
       const [, { items }] = await this.getMerchantFeeds(this.merchantId)
+      // get all categories
+      const categories = await this.getCategories()
+      items[0].map.categories = categories.map(el => ({
+        id: el.id,
+        label: el.name,
+      }))
       if (Array.isArray(items)) {
         this.details = items[0]
+        set(this.details, 'merchant.categories', [])
+        set(this.details, 'merchant.commission', 'commission_factory')
         this.loading = false
       }
+    },
+    onUpdate(response) {
+      // TODO: remove
+      set(response, 'categories', this.details.merchant.categories)
+      this.details.merchant = response
     },
   },
 }
@@ -57,6 +74,7 @@ export default {
       <merchant-edit
         v-if="edit"
         :details="details"
+        @update="onUpdate"
         @cancel="edit = false"
       />
       <merchant-details
