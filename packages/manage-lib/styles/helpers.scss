@@ -455,3 +455,14 @@
     color: #909399 !important;
   }
 }
+
+.status-tag {
+  display: inline-block;
+  min-width: 3rem;
+  height: rem(23px);
+  padding: 0 0.5rem;
+  line-height: rem(23px);
+  text-align: center;
+  background: #f3efee;
+  border-radius: rem(20px);
+}

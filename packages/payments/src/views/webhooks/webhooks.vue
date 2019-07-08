@@ -2,7 +2,7 @@
 import StaticProcessor from '@lib/processors/static-processor'
 import tableConfig from './webhooks-table'
 import webhooksMock from '@tests/__fixtures__/webhooks'
-import addEndpoint from './add-endpoint'
+import addEndpoint from '../webhook/endpoint-add-edit'
 
 export default {
   name: 'Webhooks',

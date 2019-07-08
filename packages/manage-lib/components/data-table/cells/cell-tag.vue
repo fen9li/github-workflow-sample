@@ -18,20 +18,10 @@ export default {
       ]"
     />
     <span
-      :class="$style.tag"
+      class="status-tag"
       :style="computedStyle"
     >
       {{ checkEmptyValue(formattedValue) }}
     </span>
   </div>
 </template>
-
-<style lang="scss" module>
-.tag {
-  min-width: 3rem;
-  padding: 0 .5rem;
-  text-align: center;
-  background: #F3EFEE;
-  border-radius: rem(20px);
-}
-</style>

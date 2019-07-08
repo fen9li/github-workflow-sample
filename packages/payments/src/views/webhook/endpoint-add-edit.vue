@@ -1,10 +1,20 @@
 <script>
 export default {
-  name: 'AddWebhooksEndpoint',
+  name: 'AddEditWebhooksEndpoint',
+  props: {
+    edit: {
+      type: Boolean,
+      default: false,
+    },
+    endpoint: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
       form: {
-        url: '',
+        url: this.edit ? this.endpoint.url : '',
         version: 'current',
         events: [],
       },
@@ -97,6 +107,7 @@ export default {
       >
         <el-input
           v-model="form.url"
+          :disabled="edit"
         />
       </el-form-item>
 
