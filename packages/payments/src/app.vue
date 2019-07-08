@@ -58,6 +58,10 @@ export default {
               path: '/settings/webhooks',
             },
             {
+              title: 'Webhook Attempts',
+              path: '/settings/webhook-attempts',
+            },
+            {
               title: 'Events',
               path: '/settings/events',
             },

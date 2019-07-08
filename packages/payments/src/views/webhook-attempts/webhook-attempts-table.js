@@ -1,7 +1,55 @@
 import StaticProcessor from '@lib/processors/static-processor'
 import webhookMock from '@tests/__fixtures__/webhook'
 
+const TABLE_FILTERS = [
+  {
+    attribute: 'url',
+    label: 'URL',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'type',
+    label: 'Type',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'id',
+    label: 'Event ID',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'date',
+    label: 'Date',
+    type: 'date',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'status',
+    type: 'select',
+    icon: 'el-icon-document',
+    values: [
+      {
+        label: 'Failed',
+        value: 'failed',
+      },
+      {
+        label: 'Success',
+        value: 'success',
+      },
+    ],
+  },
+]
+
 const TABLE_COLUMNS = [
+  {
+    name: 'url',
+    label: 'URL',
+    icon: 'el-icon-document',
+    width: 250,
+  },
   {
     name: 'type',
     label: 'Event Type',
@@ -12,14 +60,14 @@ const TABLE_COLUMNS = [
     name: 'id',
     label: 'Event ID',
     icon: 'el-icon-document',
-    width: 250,
+    width: 200,
   },
   {
     name: 'date',
     label: 'Date',
     icon: 'el-icon-document',
     format: 'dateTime',
-    width: 250,
+    width: 160,
   },
   {
     name: 'status',
@@ -39,7 +87,6 @@ const TABLE_COLUMNS = [
     },
     width: 100,
   },
-  { name: 'expanded' },
 ]
 
 export default function(component) {
@@ -49,5 +96,6 @@ export default function(component) {
       data: webhookMock.table,
     }),
     columns: TABLE_COLUMNS,
+    filters: TABLE_FILTERS,
   }
 }

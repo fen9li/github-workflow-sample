@@ -13,7 +13,7 @@ module.exports = {
       type: 'customer.updated',
       id: 'evt_1US8902hki76hF5279g1',
       date: '2019-02-10T17:54:31.965Z',
-      next_retry: '2019-07-10T17:54:31.965Z',
+      url: 'http://pamembers.com.au',
       status: 'failed',
       requestBody: `{
         "string": "a string",
@@ -59,7 +59,7 @@ module.exports = {
       type: 'customer.subscription.updated',
       id: 'evt_1US8902hki76hF5279g2',
       date: '2019-02-10T17:54:31.965Z',
-      next_retry: '2019-07-10T17:54:31.965Z',
+      url: 'http://pamembers.com.au',
       status: 'failed',
       requestBody: `{
         "string": "a string",
@@ -105,7 +105,7 @@ module.exports = {
       type: 'customer.updated',
       id: 'evt_1US8902hki76hF5279g6',
       date: '2019-02-10T17:54:31.965Z',
-      next_retry: '2019-07-10T17:54:31.965Z',
+      url: 'http://pamembers.com.au',
       status: 'failed',
       requestBody: `{
         "string": "a string",
