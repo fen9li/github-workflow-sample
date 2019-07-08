@@ -16,6 +16,7 @@ new Vue({
   store,
   created() {
     this.$store.dispatch('feeds/getFeeds')
+    this.$store.dispatch('categories/getCategories')
   },
   render: h => h(App),
 }).$mount('#app')

@@ -1,5 +1,5 @@
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import DataProcessor from '@lib/processors/data-processor'
 
 export default {
@@ -30,7 +30,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions('categories', ['createCategory', 'updateCategory']),
+    ...mapActions('categories', [
+      'createCategory',
+      'updateCategory',
+    ]),
+    ...mapMutations('categories', {
+      setCategories: 'SET_CATEGORIES',
+    }),
     onSubmit() {
       const { item, form } = this
       let request
@@ -44,7 +50,9 @@ export default {
         request = this.createCategory(form)
       }
 
-      request.then(() => this.processor.getData())
+      request.then(() =>
+        this.processor.getData()
+          .then(data => this.setCategories(data)))
 
       this.$emit('close-modal')
     },

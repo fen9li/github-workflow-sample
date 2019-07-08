@@ -4,6 +4,7 @@ import md5 from 'md5'
 import uploadcare from 'uploadcare-vue'
 import { mapActions, mapMutations, mapState } from 'vuex'
 import DataProcessor from '@lib/processors/data-processor'
+import formatCommission from '@lib/utils/format-commission'
 
 export default {
   components: {
@@ -75,20 +76,14 @@ export default {
     ...mapState('categories', [
       'categories',
     ]),
-    currency() {
-      return get(this.row, 'payload.PublicTerms.PayoutTermsList[0].PayoutCurrency')
+    commission() {
+      return formatCommission(this.row.map.commission)
     },
     disabled() {
       return !get(this.form, 'name.length', false)
     },
     merchantId() {
       return get(this.selectedItem, 'id')
-    },
-    rate() {
-      const base = get(this.row, 'payload.PublicTerms.PayoutTermsList[0].PayoutAmount', '')
-      const min = get(this.row, 'payload.PublicTerms.PayoutTermsList[0].PayoutAmountLowerLimit', '')
-      const max = get(this.row, 'payload.PublicTerms.PayoutTermsList[0].PayoutAmountUpperLimit', '')
-      return `Base $${base} Min $${min} Max $${max}`
     },
     trackingLing() {
       return get(this.row, 'payload.TrackingLink')
@@ -151,6 +146,9 @@ export default {
         message: `FeedMerchant successfuly ${this.merchantId ? 'associated' : 'created'}`,
       })
     },
+    onCreateClick() {
+      this.selectedItem = this.newItem
+    },
   },
 }
 </script>
@@ -162,8 +160,18 @@ export default {
     label-width="100%"
     label-position="top"
   >
+    <div
+      v-if="!selectedItem"
+      :class="$style.subtitle"
+    >
+      Associate <b>{{ row.name }}</b> with an existing global merchant or create a new one.<br>
+      Can’t find the merchant you are looking for? <span
+        :class="$style.create"
+        @click="onCreateClick"
+      >Create a new one</span>
+    </div>
     <el-alert
-      v-if="selectedItem"
+      v-else
       type="warning"
       :class="$style.alert"
       :closable="false"
@@ -203,10 +211,20 @@ export default {
         <dd>{{ row.feed }}</dd>
 
         <dt>Commission Type</dt>
-        <dd>{{ currency }}</dd>
+        <dd>{{ commission.type }}</dd>
 
         <dt>Commission Rate</dt>
-        <dd>{{ rate }}</dd>
+        <dd>
+          <span>
+            {{ commission.base }}
+          </span>
+          <span>
+            {{ commission.min }}
+          </span>
+          <span>
+            {{ commission.max }}
+          </span>
+        </dd>
 
         <dt>Merchant Tracking URL</dt>
         <dd>{{ trackingLing }}</dd>
@@ -300,6 +318,7 @@ export default {
           v-model="form.terms"
           type="textarea"
           autosize
+          :class="$style.textarea"
         />
       </el-form-item>
     </template>
@@ -321,16 +340,30 @@ export default {
   cursor: default;
 }
 
+.subtitle {
+  padding: rem(0 20px);
+  margin: rem(0 0 22px);
+  font-size: rem(14px);
+  line-height: rem(18px);
+  text-align: center;
+}
+
+.create {
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
 .datalist {
   display: flex;
   flex-wrap: wrap;
+  line-height: 21px;
 
   :global {
     dt {
       flex-basis: 40%;
     }
     dd {
-      flex-basis: 40%;
+      flex-basis: 50%;
       font-weight: bold;
     }
   }
@@ -366,6 +399,14 @@ export default {
 
 .alert {
   margin-bottom: rem(22px);
+
+  :global {
+    .el-alert__content,
+    .el-alert__description {
+      width: 100%;
+      text-align: center;
+    }
+  }
 }
 
 .formUploaderTip {
@@ -391,6 +432,14 @@ export default {
 
   span {
   font-size: 0.875rem;
+  }
+}
+
+.textarea {
+  :global {
+    .el-textarea__inner {
+      max-height: 10rem;
+    }
   }
 }
 

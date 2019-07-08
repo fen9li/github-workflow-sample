@@ -2,7 +2,6 @@
 import categoriesTable from './categories.table.js'
 
 import CategoryModal from './category-modal'
-import { mapMutations } from 'vuex'
 
 export default {
   components: { CategoryModal },
@@ -13,9 +12,6 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('categories', {
-      updateTable: 'UPDATE_TABLE',
-    }),
     closeModal() {
       this.showAddModal = false
     },

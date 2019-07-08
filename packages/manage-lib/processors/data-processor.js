@@ -147,6 +147,8 @@ export default class DataProcessor {
     } finally {
       this.loading = false
     }
+
+    return this.data
   }
 
   async getAllData() {

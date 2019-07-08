@@ -1,7 +1,7 @@
 <script>
 import CellMixin from '@lib/components/data-table/cells/cell.mixin'
 import CategoryModal from './category-modal'
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
   components: {
@@ -16,9 +16,13 @@ export default {
   },
   methods: {
     ...mapActions('categories', ['deleteCategory']),
+    ...mapMutations('categories', {
+      setCategories: 'SET_CATEGORIES',
+    }),
     onDelete() {
       this.deleteCategory(this.row.id).then(() => {
         this.processor.getData()
+          .then(data => this.setCategories(data))
         this.showDeleteDialog = false
       })
     },

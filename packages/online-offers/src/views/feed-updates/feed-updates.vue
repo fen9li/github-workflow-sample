@@ -17,7 +17,8 @@ export default {
     return {
       table: feedUpdatesTable,
       activeItemId: null,
-      activeTab: this.$route.params.tab || 'merchants',
+      activeTab: 'merchants',
+      defaultActiveTab: 'merchants',
       modal: {
         merchantUpdate: false,
       },
@@ -36,16 +37,16 @@ export default {
       return `feed${this.activeTab}${filter}`
     },
     eventName() {
-      return this.activeTab === 'merchants' ? 'row-click' : null
+      return this.activeTab === this.defaultActiveTab ? 'row-click' : null
     },
   },
   watch: {
-    '$route'() {
+    '$route'(route, prevRoute) {
       this.getFeeds()
+      if (route.params.slug !== prevRoute.params.slug) {
+        this.activeTab = this.defaultActiveTab
+      }
     },
-  },
-  mounted() {
-    this.activeTab = this.$route.params.tab || 'merchants'
   },
   created() {
     this.getFeeds()
@@ -84,14 +85,14 @@ export default {
         name: 'feed-updates',
         params: {
           slug: this.$route.params.slug,
-          tab: this.activeTab === 'merchants' ? null : this.activeTab,
+          tab: this.activeTab,
         },
         query: {},
       })
       this.getFeeds()
     },
     onRowClick(row, column, event) {
-      if (this.activeTab === 'merchants') {
+      if (this.activeTab === this.defaultActiveTab) {
         this.$router.push({
           name: 'feed-details',
           params: {
