@@ -33,9 +33,9 @@ export default {
     width: 100%;
 
     td {
-      background-color: #DDF1FF !important;
+      background-color: #f9fafc !important;
       :hover {
-        background-color: #DDF1FF !important;
+        background-color: #f9fafc !important;
       }
     }
 
@@ -49,7 +49,6 @@ export default {
       padding: 12px 10px;
       border: 0;
     }
-
   }
 
   :global {

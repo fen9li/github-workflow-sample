@@ -1,5 +1,5 @@
 <script>
-import statusTable from './feed-activity.table.js'
+import feedActivityTable from './feed-activity.table.js'
 import ExpandedRow from '@lib/layouts/table/features/expanded-row'
 
 export default {
@@ -12,7 +12,7 @@ export default {
   },
   data() {
     return {
-      table: statusTable(this),
+      table: feedActivityTable(this),
     }
   },
 }
@@ -35,18 +35,40 @@ export default {
       >
         <expanded-row :columns="columns">
           <div slot="expanded-row-cell-1">
-            <div> Offers created: {{ row.counts.offers_created }} </div>
-            <div> Offers deleted: {{ row.counts.offers_deleted }} </div>
-            <div> Offers updated: {{ row.counts.offers_updated }} </div>
+            <div :class="$style.subrow">
+              Offers created: {{ row.counts.offers_created }}
+            </div>
+            <div :class="$style.subrow">
+              Offers deleted: {{ row.counts.offers_deleted }}
+            </div>
+            <div :class="$style.subrow">
+              Offers updated: {{ row.counts.offers_updated }}
+            </div>
           </div>
 
           <div slot="expanded-row-cell-2">
-            <div> Merchants created: {{ row.counts.merchants_created }} </div>
-            <div> Merchants deleted: {{ row.counts.merchants_deleted }} </div>
-            <div> Merchants updated: {{ row.counts.merchants_updated }} </div>
+            <div :class="$style.subrow">
+              Merchants created: {{ row.counts.merchants_created }}
+            </div>
+            <div :class="$style.subrow">
+              Merchants deleted: {{ row.counts.merchants_deleted }}
+            </div>
+            <div :class="$style.subrow">
+              Merchants updated: {{ row.counts.merchants_updated }}
+            </div>
           </div>
         </expanded-row>
       </template>
     </table-layout>
   </main-layout>
 </template>
+
+<style lang="scss" module>
+.subrow {
+  margin-bottom: 10px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+</style>

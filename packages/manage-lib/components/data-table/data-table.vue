@@ -226,7 +226,6 @@ export default {
 </template>
 
 <style lang="scss" module>
-
 .tablePagination {
   width: 100%;
   margin: 40px auto;
@@ -324,11 +323,21 @@ export default {
 }
 
 :global{
-  .el-table__expand-icon > .el-icon {
-    transform: rotate(90deg)
+  .el-table__expand-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-origin: 50% 50%;
   }
+
+  .el-table__expand-icon > .el-icon {
+    position: static;
+    margin: 0;
+    transform: rotate(90deg);
+  }
+
   .el-table__expand-icon--expanded {
-    transform: rotate(-180deg)
+    transform: rotate(-180deg);
   }
 }
 

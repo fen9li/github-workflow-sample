@@ -7,7 +7,7 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'aggregators',
+    attribute: 'feed',
     type: 'select',
     icon: 'el-icon-document',
     values: [
@@ -26,13 +26,7 @@ const TABLE_FILTERS = [
     ],
   },
   {
-    attribute: 'api_call',
-    label: 'API Call',
-    type: 'string',
-    icon: 'el-icon-document',
-  },
-  {
-    attribute: 'comments',
+    attribute: 'reason',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -48,7 +42,7 @@ const TABLE_COLUMNS = [
   {
     name: 'status',
     icon: 'el-icon-document',
-    format: value => value,
+    format: 'capital',
     component: {
       props: {
         allowEmpty: true,
@@ -71,17 +65,20 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'feed',
+    label: 'Aggregators',
     icon: 'el-icon-document',
     format: value => {
       switch (value) {
         case 'apd': return 'APD'
         case 'rakuten': return 'Rakuten'
         case 'commission_factory': return 'Commission factory'
+        default: return value
       }
     },
   },
   {
     name: 'reason',
+    label: 'Comments',
     icon: 'el-icon-document',
     format: value => {
       return value || '-'
