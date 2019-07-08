@@ -81,14 +81,6 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'counts',
-    label: 'Changes',
-    icon: 'el-icon-document',
-    format: value => {
-      return JSON.stringify(value)
-    },
-  },
-  {
     name: 'reason',
     icon: 'el-icon-document',
     format: value => {
@@ -115,6 +107,7 @@ const TABLE_COLUMNS = [
     icon: 'el-icon-date',
     format: 'dateTime',
   },
+  { name: 'expanded' },
 ]
 
 export default component => ({
