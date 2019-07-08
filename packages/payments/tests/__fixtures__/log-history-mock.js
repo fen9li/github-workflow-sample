@@ -21,7 +21,7 @@ module.exports = {
           "key": "value"  
         },
         "array": [
-          
+
         ],
         "boolean": true,
         "nul": null
@@ -73,10 +73,10 @@ module.exports = {
         "string": "a string",
         "number": 10575.023,
         "object": {
-          "key": "value"  
+          "key": "value"
         },
         "array": [
-          
+
         ],
         "boolean": true,
         "nul": null
@@ -85,10 +85,10 @@ module.exports = {
         "string": "a string",
         "number": 10575.023,
         "object": {
-          "key": "value"  
+          "key": "value"
         },
         "array": [
-          
+
         ],
         "boolean": true,
         "nul": null

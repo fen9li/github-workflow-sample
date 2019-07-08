@@ -17,7 +17,7 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'eventId',
+    attribute: 'id',
     label: 'ID',
     type: 'string',
     icon: 'el-icon-document',
@@ -27,24 +27,22 @@ const TABLE_FILTERS = [
 const TABLE_COLUMNS = [
   {
     name: 'created',
-    label: 'Date',
+    label: 'Date Created',
     icon: 'el-icon-document',
     format: 'dateTime',
+    width: 160,
   },
   {
     name: 'description',
     label: 'Description',
     icon: 'el-icon-document',
+    width: 400,
   },
   {
-    name: 'userEmail',
-    label: 'User Email',
-    icon: 'el-icon-document',
-  },
-  {
-    name: 'eventId',
+    name: 'id',
     label: 'ID',
     icon: 'el-icon-document',
+    width: 180,
   },
 ]
 
