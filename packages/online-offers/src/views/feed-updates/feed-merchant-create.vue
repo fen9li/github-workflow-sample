@@ -59,7 +59,6 @@ export default {
           },
         ],
       },
-      // classificationsOptions: ['Cooling & Heating', 'Clothing', 'Floor Care', 'Kitchen & Cooking'],
       uploadcare: {
         expire: new Date(new Date + 60 * 60 * 12).getTime(),
         publicKey: process.env.VUE_APP_UPLOADCARE_PUBLIC_KEY,
@@ -67,6 +66,7 @@ export default {
       },
       search: '',
       selectedItem: null,
+      isCreate: false,
       newItem: {
         name: '+ New Global Merchant',
       },
@@ -148,6 +148,14 @@ export default {
     },
     onCreateClick() {
       this.selectedItem = this.newItem
+      this.form = {
+        classifications: [],
+        name: '',
+        logo: '',
+        website: '',
+        terms: '',
+      }
+      this.isCreate = true
     },
   },
 }
@@ -179,6 +187,7 @@ export default {
       You want to {{ `${merchantId ? 'associate' : 'create'}` }} <b>{{ row.name }}</b> with <b>{{ selectedItem.name }}</b>
     </el-alert>
     <el-form-item
+      v-if="!isCreate"
       label="Global Merchant"
       prop="merchant"
     >

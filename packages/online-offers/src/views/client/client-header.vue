@@ -92,10 +92,10 @@ export default {
           <div :class="$style['form-inner-right']">
             <el-button
               type="primary"
+              icon="el-icon-edit"
+              circle
               @click="showEditModal = true"
-            >
-              {{ 'Edit Client' }}
-            </el-button>
+            />
           </div>
           <client-edit-modal
             :visible.sync="showEditModal"

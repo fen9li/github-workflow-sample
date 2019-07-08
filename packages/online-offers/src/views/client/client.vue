@@ -16,6 +16,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       table: merchantsTable,
       isEdit: false,
       client: {},
@@ -49,6 +50,7 @@ export default {
     ...mapActions('catalogues', ['getMerchant']),
     async getClient() {
       this.client = await this.getMerchant(this.$route.params.id)
+      this.loading = false
     },
     getMerchantOffers() {
       this.table.processor = new ApiProcessor({
@@ -56,13 +58,10 @@ export default {
         path: this.path,
       })
     },
-    onBackClick() {
-      this.$router.push({ name: 'clients' })
-    },
     onRowClick(row) {
       this.$router.push({
         name: 'merchant-details',
-        params: { id: row.id || 'unknown' },
+        params: { id: row.id },
       })
     },
     onTabClick() {
@@ -86,66 +85,68 @@ export default {
 </script>
 
 <template>
-  <main-layout :title="client.name">
-    <el-button
-      slot="beforeTitle"
-      :class="$style.backButton"
-      circle
-      icon="el-icon-arrow-left"
-      @click="onBackClick"
-    />
+  <main-layout
+    :title="client.name"
+    :back="{ name: 'clients' }"
+  >
     <el-card
       :class="$style.card"
       body-style="padding: 0"
     >
-      <client-header
-        :processor="table.processor"
-        :client="client"
-        @catalogues-updated="getClient()"
+      <base-loader
+        v-if="loading"
+        theme="state"
+        size="large"
       />
-
-      <el-tabs
-        v-model="activeTab"
-        :class="$style.tabs"
-        @tab-click="onTabClick"
-      >
-        <el-tab-pane
-          v-for="tab in tabs"
-          :key="tab.name"
-          :label="tab.label"
-          :name="tab.name"
+      <template v-else>
+        <client-header
+          :processor="table.processor"
+          :client="client"
+          @catalogues-updated="getClient()"
+        />
+        <el-tabs
+          v-model="activeTab"
+          :class="$style.tabs"
+          @tab-click="onTabClick"
         >
-          <table-layout
-            :class="$style.table"
-            shadow="never"
-            :table-name="`clients-details-${tab.name}`"
-            :processor="table.processor"
-            :filters="table[activeTab].filters"
-            :columns="table[activeTab].columns"
-            :fragments="false"
-            hider
-            :quantity="false"
-            @row-click="onRowClick"
-            @selection-change="handleSelectionChange"
+          <el-tab-pane
+            v-for="tab in tabs"
+            :key="tab.name"
+            :label="tab.label"
+            :name="tab.name"
           >
-            <el-table-column
-              v-if="table.processor.data.length"
-              type="selection"
-              fixed="left"
-              width="55"
-            />
-            <div v-else />
-          </table-layout>
+            <table-layout
+              :class="$style.table"
+              shadow="never"
+              :table-name="`clients-details-${tab.name}`"
+              :processor="table.processor"
+              :filters="table[activeTab].filters"
+              :columns="table[activeTab].columns"
+              :fragments="false"
+              hider
+              :quantity="false"
+              @row-click="onRowClick"
+              @selection-change="handleSelectionChange"
+            >
+              <el-table-column
+                v-if="table.processor.data.length"
+                type="selection"
+                fixed="left"
+                width="55"
+              />
+              <div v-else />
+            </table-layout>
 
-          <link-modal
-            :id="client.id"
-            :items="selectedItems"
-            :name="client.name"
-            :merchants-processor="table.processor"
-            :link="tab.name !== 'linked'"
-          />
-        </el-tab-pane>
-      </el-tabs>
+            <link-modal
+              :id="client.id"
+              :items="selectedItems"
+              :name="client.name"
+              :merchants-processor="table.processor"
+              :link="tab.name !== 'linked'"
+            />
+          </el-tab-pane>
+        </el-tabs>
+      </template>
     </el-card>
   </main-layout>
 </template>
@@ -154,20 +155,6 @@ export default {
 .header {
   display: flex;
   padding: var(--size-card-spacing);
-}
-
-.backButton {
-  position: absolute;
-  left: 0;
-  padding: 0.2rem !important;
-  border-color: var(--color-primary);
-  border-width: 2px;
-
-  i {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--color-primary);
-  }
 }
 
 .card {

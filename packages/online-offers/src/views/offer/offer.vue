@@ -220,7 +220,7 @@ export default {
 <template>
   <main-layout
     :title="offer.name"
-    back
+    :back="{name: 'offers'}"
   >
     <edit-layout
       v-if="isEdit"
