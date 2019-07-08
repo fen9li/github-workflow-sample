@@ -73,42 +73,44 @@ export default {
 </script>
 
 <template>
-  <div :class="$style.wrapper">
-    <div :class="$style.editBlocks">
-      <!-- Temporary structure. Apparently might be more that 2 block, in that case loop will be used -->
-      <edit-block
-        :details="currentDetails"
-        :current-item="true"
-        @valueChange="changeLocalValue"
-      />
-      <edit-block
-        :details="merchantOfferFeedData"
-        @valueChange="applyNewValue"
-      />
-    </div>
-    <div class="online-offers__edit-controls">
-      <el-button
-        type="danger"
-        class="wide-button"
-        @click="removeOffer"
-      >
-        Remove Offer
-      </el-button>
-      <div class="save-block">
-        <div class="online-offers__edit-notice">
-          <i class="el-icon-info noticeIcon" />
-          This changes will be made for all clients that have this Merchant available
-        </div>
+  <el-card>
+    <div :class="$style.wrapper">
+      <div :class="$style.editBlocks">
+        <!-- Temporary structure. Apparently might be more that 2 block, in that case loop will be used -->
+        <edit-block
+          :details="currentDetails"
+          :current-item="true"
+          @valueChange="changeLocalValue"
+        />
+        <edit-block
+          :details="merchantOfferFeedData"
+          @valueChange="applyNewValue"
+        />
+      </div>
+      <div class="online-offers__edit-controls">
         <el-button
-          type="primary"
-          class="wide-button save-button"
-          @click="saveChanges"
+          type="danger"
+          class="wide-button"
+          @click="removeOffer"
         >
-          Save Changes
+          Remove Offer
         </el-button>
+        <div class="save-block">
+          <div class="online-offers__edit-notice">
+            <i class="el-icon-info noticeIcon" />
+            This changes will be made for all clients that have this Merchant available
+          </div>
+          <el-button
+            type="primary"
+            class="wide-button save-button"
+            @click="saveChanges"
+          >
+            Save Changes
+          </el-button>
+        </div>
       </div>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <style lang="scss" module>

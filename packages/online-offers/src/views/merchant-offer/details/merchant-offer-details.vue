@@ -1,4 +1,5 @@
 <script>
+import { mapActions } from 'vuex'
 import { formatDate } from '@lib/utils/format-date'
 import capitalize from 'lodash/capitalize'
 import formatDollar from '@lib/utils/format-dollar'
@@ -12,6 +13,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions('offers', ['updateOffer']),
     capitalize,
     formatDollar,
     formatDate(value, format) {
@@ -20,86 +22,128 @@ export default {
     editOffer() {
       this.$emit('editOffer')
     },
+    async onSwitch() {
+      this.updateOffer({
+        id: this.details.id,
+        payload: {
+          enabled: !this.details.enabled,
+        },
+      }).then(() => {
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: `Status sussessfully changed to ${this.details.enabled ? 'enabled' : 'disabled'}`,
+        })
+      })
+    },
   },
 }
 </script>
 
 <template>
-  <div
-    :class="$style.wrapper"
-  >
-    <div>
-      <span :class="$style.title">
-        {{ details.name }}
+  <el-card>
+    <div
+      slot="header"
+      :class="$style.header"
+    >
+      <span>
+        General Information
       </span>
-      <dl :class="['datalist datalist__online-offers', $style.dataList]">
+      <el-button
+        type="primary"
+        icon="el-icon-edit"
+        circle
+        @click="editOffer"
+      />
+    </div>
+
+    <div @click="onSwitch">
+      <el-switch
+        v-model="details.enabled"
+        active-text="Active"
+      />
+    </div>
+
+    <div>
+      <dl :class="['datalist datalist__online-offers', $style.list]">
         <dt :class="$style.grey">
           Offer Associated Aggregator
         </dt>
         <dd :class="$style.grey">
-          {{ details.feed }}
+          {{ details.feed_offer.map.feed || '—' }}
         </dd>
         <dt :class="$style.grey">
           Offer ID
         </dt>
         <dd :class="$style.grey">
-          {{ details.id }}
+          {{ details.id || '—' }}
         </dd>
         <dt :class="$style.grey">
           Offer Ext ID
         </dt>
         <dd :class="$style.grey">
-          {{ details.extId }}
+          {{ details.feed_offer.external_id || '—' }}
         </dd>
         <dt :class="$style.grey">
           Offer Created
         </dt>
         <dd :class="$style.grey">
-          {{ formatDate(details.created) }}
+          {{ formatDate(details.created_at) || '—' }}
         </dd>
         <dt :class="$style.grey">
           Offer Updated
         </dt>
         <dd :class="$style.grey">
-          {{ `${formatDate(details.updated) } by ${details.updatedBy}` }}
+          {{ `${formatDate(details.updated_at) || '—' }` }}
         </dd>
-        <dt>Coupon Code</dt>
-        <dd>{{ details.coupon }}</dd>
-        <dt>Offer Starts</dt>
-        <dd>{{ formatDate(details.offerStarts) }}</dd>
-        <dt>Offer Ends</dt>
-        <dd>{{ formatDate(details.offerEnds) }}</dd>
-        <dt>Description</dt>
-        <dd>{{ details.description }}</dd>
-        <dt>Terms & Conditions</dt>
-        <dd>{{ details.terms }}</dd>
-        <dt>Offer URL</dt>
-        <dd>{{ details.url }}</dd>
+        <dt>
+          Coupon Code
+        </dt>
+        <dd>
+          {{ details.feed_offer.map.coupon || '—' }}
+        </dd>
+        <dt>
+          Offer Starts
+        </dt>
+        <dd>
+          {{ formatDate(details.feed_offer.map.start_date) || '—' }}
+        </dd>
+        <dt>
+          Offer Ends
+        </dt>
+        <dd>
+          {{ formatDate(details.feed_offer.map.end_date) || '—' }}
+        </dd>
+        <dt>
+          Description
+        </dt>
+        <dd>
+          {{ details.feed_offer.map.description || '—' }}
+        </dd>
+        <dt>
+          Terms & Conditions
+        </dt>
+        <dd>
+          {{ details.terms || '—' }}
+        </dd>
+        <dt>
+          Offer URL
+        </dt>
+        <dd>
+          {{ details.feed_offer.map.url || '—' }}
+        </dd>
       </dl>
     </div>
-
-    <div :class="$style.controls">
-      <el-button
-        type="success"
-        class="wide-button"
-      >
-        Activate Offer
-      </el-button>
-
-      <div>
-        <el-button
-          type="primary"
-          :class="['wide-button', $style.editBtn]"
-          @click="editOffer"
-        >
-          Edit Offer Details
-        </el-button>
-      </div>
-    </div>
-  </div>
+  </el-card>
 </template>
 
 <style lang="scss" module>
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .wrapper {
   display: flex;
   justify-content: space-between
@@ -115,8 +159,24 @@ export default {
   font-size: 1.5rem;
 }
 
-.dataList {
-  max-width: 80%;
+.list {
+  flex: 1 0 50%;
+  margin-top: 1.8rem;
+
+  dt {
+    color: black;
+  }
+
+  dt:not(:first-of-type),
+  dd:not(:first-of-type) {
+    padding-top: 1rem;
+  }
+
+  h2, h3, h4, h5, h6 {
+    padding: 0;
+    margin: 0 0 1rem;
+    font-size: 1rem;
+  }
 }
 
 .editBtn {

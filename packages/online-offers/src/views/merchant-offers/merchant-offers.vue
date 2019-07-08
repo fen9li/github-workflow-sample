@@ -73,9 +73,6 @@ export default {
 
       this.getMerchantOffers()
     },
-    onBackClick() {
-      this.$router.push({ name: 'merchant-details' })
-    },
     handleSelectionChange(value) {
       this.selectedItems = value
     },

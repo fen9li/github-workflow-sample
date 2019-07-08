@@ -26,6 +26,9 @@ const actions = {
   async getMerchant({ commit }, { merchantId }) {
     return api.get(`/feedmerchants/${merchantId}`)
   },
+  async getMerchantOffers({ commit }, merchantId) {
+    return api.get(`/merchants/${merchantId}/offers`)
+  },
   async createMerchant({ commit }, payload) {
     return api.post('/merchants', payload)
   },

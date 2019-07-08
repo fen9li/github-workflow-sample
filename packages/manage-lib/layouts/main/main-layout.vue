@@ -149,9 +149,11 @@ export default {
 .headerTop {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
-  height: 5rem;
+  width: 100%;
+  min-height: 5rem;
+  padding: 2rem 3rem;
 
   .backButton {
     position: absolute;
@@ -190,7 +192,6 @@ export default {
   flex-shrink: 0;
 }
 
-.headerTop,
 .headerBottom {
   width: 100%;
   padding: 0 3rem;

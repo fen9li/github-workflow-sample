@@ -1,5 +1,5 @@
 <script>
-import details from '@tests/__fixtures__/merchant-offer'
+import { mapActions } from 'vuex'
 import offerDetails from './details/merchant-offer-details'
 import editOffer from './edit/merchant-offer-edit'
 
@@ -11,17 +11,41 @@ export default {
   },
   data() {
     return {
-      details,
+      loading: true,
+      details: {},
       edit: false,
     }
   },
   computed: {
+    merchantId() {
+      return this.$route.params.id
+    },
+    offerId() {
+      return this.$route.params.offerId
+    },
     showEdit() {
       return this.details.status === 'active' || this.edit
     },
     title() {
       const { details, showEdit } = this
-      return `${details.merchantName} ${details.name} ${showEdit ? 'Edit Offers Details' : '' }`
+      if (Object.keys(details).length) {
+        return `${details.name} ${showEdit ? 'Edit Offers Details' : '' }`
+      }
+      return 'Offers Details'
+    },
+  },
+  created() {
+    this.getMerchant()
+  },
+  methods: {
+    ...mapActions('merchants', ['getMerchantOffers']),
+    async getMerchant() {
+      const [, { items }] = await this.getMerchantOffers(this.merchantId)
+
+      if (Array.isArray(items)) {
+        this.details = items.filter(item => item.id === this.offerId)[0]
+        this.loading = false
+      }
     },
   },
 }
@@ -30,9 +54,14 @@ export default {
 <template>
   <main-layout
     :title="title"
-    back
+    :back="{name: 'merchant-offers'}"
   >
-    <el-card>
+    <base-loader
+      v-if="loading"
+      theme="state"
+      size="large"
+    />
+    <template v-else>
       <edit-offer
         v-if="showEdit"
         :details="details"
@@ -42,7 +71,7 @@ export default {
         :details="details"
         @editOffer="edit = true"
       />
-    </el-card>
+    </template>
   </main-layout>
 </template>
 
