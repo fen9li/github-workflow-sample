@@ -27,9 +27,8 @@ export default {
   },
   methods: {
     capitalize,
-    ...mapActions('merchants', [
-      'updateMerchant',
-    ]),
+    formatCommission,
+    ...mapActions('merchants', ['updateMerchant']),
     formatDate(value) {
       return formatDate(value, 'DD/MM/YYYY hh:mm A')
     },
@@ -45,7 +44,7 @@ export default {
         this.$notify({
           type: 'success',
           title: 'Success',
-          message: `Merchant status sussessfully changed`,
+          message: `Merchant status successfully changed`,
         })
       })
     },
@@ -65,12 +64,9 @@ export default {
             :class="$style.image"
           >
         </div>
-        <div
-          :class="$style.statusWrapper"
-        >
-          <span :class="$style.status">Status</span>
+        <div :class="$style.statusWrapper">
           <el-switch
-            :value="merchant.enabled"
+            active-text="Active"
             @change="onSwitch"
           />
         </div>
@@ -101,6 +97,12 @@ export default {
           <dd>
             {{ formatDate(merchant.updated_at) }}
           </dd>
+          <dt>Merchant ID</dt>
+          <dd>{{ details.id }}</dd>
+          <dt>Merchant Ext ID</dt>
+          <dd>{{ details.external_id }}</dd>
+          <dt>Merchant Updated</dt>
+          <dd>{{ formatDate(details.updated_at) }}</dd>
           <dt>Merchant Name</dt>
           <dd>{{ merchant.name }}</dd>
           <dt>Commission Aggregator</dt>
@@ -165,7 +167,7 @@ export default {
   width: 12rem;
   height: 12rem;
   overflow: hidden;
-  box-shadow: 0 0 15px -5px rgba(0,0,0,0.75);
+  box-shadow: 0 0 15px -5px rgba(0, 0, 0, 0.75);
 }
 
 .imageWrapperSm {
@@ -205,6 +207,10 @@ export default {
 .details {
   width: 100%;
   padding-left: 3rem;
+
+  dd {
+    font-weight: bold;
+  }
 }
 
 .rate {
@@ -219,11 +225,7 @@ export default {
   }
 }
 
-.grey {
-  color: gray;
-}
-
 .inactive {
-  opacity: .6;
+  opacity: 0.6;
 }
 </style>

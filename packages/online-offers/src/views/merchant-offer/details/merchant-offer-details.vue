@@ -32,7 +32,7 @@ export default {
         this.$notify({
           type: 'success',
           title: 'Success',
-          message: `Status sussessfully changed to ${this.details.enabled ? 'enabled' : 'disabled'}`,
+          message: `Status successfully changed to ${this.details.enabled ? 'enabled' : 'disabled'}`,
         })
       })
     },
@@ -161,6 +161,7 @@ export default {
 
 .list {
   flex: 1 0 50%;
+  max-width: 1000px;
   margin-top: 1.8rem;
 
   dt {

@@ -41,7 +41,7 @@ export default {
         this.$notify({
           type: 'success',
           title: 'Success',
-          message: `Merchant status sussessfully changed`,
+          message: `Merchant status successfully changed`,
         })
       )
     },

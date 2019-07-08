@@ -62,7 +62,7 @@ export default {
     onRowClick(row) {
       this.$router.push({
         name: 'merchant-details',
-        params: { slug: row.merchantName || 'unknown' },
+        params: { id: row.id || 'unknown' },
       })
     },
     onTabClick() {
