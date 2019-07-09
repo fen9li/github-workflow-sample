@@ -1,16 +1,8 @@
 <script>
-import endpointEdit from './endpoint-add-edit'
-import webhookDeactivate from './webhook-deactivate'
-import webhookDelete from './webhook-delete'
 import capitalize from 'lodash/capitalize'
 
 export default {
   name: 'WebhookSummary',
-  components: {
-    endpointEdit,
-    webhookDeactivate,
-    webhookDelete,
-  },
   props: {
     endpoint: {
       type: Object,
@@ -34,51 +26,8 @@ export default {
 
 <template>
   <el-card :class="$style.wrapper">
-    <div
-      slot="header"
-    >
-      <div :class="$style.header">
-        <span>Summary</span>
-
-        <div :class="$style.headerActions">
-          <el-switch
-            :value="endpoint.active"
-            active-text="Active"
-            :class="[$style.switch, {[$style.switchActive]: endpoint.active}]"
-            @change="modal.disable = true"
-          />
-          <el-button
-            type="primary"
-            icon="el-icon-edit"
-            circle
-            @click="modal.edit = true"
-          />
-
-          <el-button
-            type="danger"
-            icon="el-icon-delete"
-            circle
-            @click="modal.delete = true"
-          />
-
-          <webhook-deactivate
-            v-if="modal.disable"
-            :visible.sync="modal.disable"
-            :endpoint="endpoint"
-          />
-          <endpoint-edit
-            v-if="modal.edit"
-            :visible.sync="modal.edit"
-            :endpoint="endpoint"
-            edit
-          />
-          <webhook-delete
-            v-if="modal.delete"
-            :visible.sync="modal.delete"
-            :endpoint="endpoint"
-          />
-        </div>
-      </div>
+    <div slot="header">
+      Summary
     </div>
     <dl
       v-if="endpoint.id"
@@ -110,40 +59,6 @@ export default {
 <style lang="scss" module>
 .wrapper {
   margin-bottom: 2rem;
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.headerActions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.switch {
-  margin-right: 1.5rem;
-  :global {
-    .el-switch__label  {
-      margin-left: 1rem;
-
-      > span {
-        font-size: 1.1rem !important;
-        color: #bbb;
-      }
-    }
-  }
-}
-
-.switchActive {
-  :global {
-    .el-switch__label > span {
-      color: #29d737;
-    }
-  }
 }
 
 .modeLive {

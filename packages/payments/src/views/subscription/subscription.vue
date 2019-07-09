@@ -91,8 +91,9 @@ export default {
 
 <template>
   <main-layout
-    title="Subscriptions"
+    title="Subscription Details"
     back
+    :tabs="tabs"
   >
     <div
       v-if="subscription.id"
@@ -139,25 +140,6 @@ export default {
         <b :class="$style.balanceCount">{{ subscription.outstanding.total | dollar }}</b>
       </small>
     </div>
-    <el-tabs
-      slot="subheader"
-      :class="$style.tabs"
-      :value="tabKey"
-    >
-      <el-tab-pane
-        v-for="tab in tabs"
-        :key="tab.route.name"
-        :name="tab.route.name"
-      >
-        <router-link
-          slot="label"
-          :class="$style.tab"
-          :to="tab.route"
-        >
-          {{ tab.label }}
-        </router-link>
-      </el-tab-pane>
-    </el-tabs>
 
     <router-view
       :subscription="subscription"
@@ -167,22 +149,11 @@ export default {
 </template>
 
 <style lang="scss" module>
-.tabs {
-  margin-bottom: 1.5rem;
-}
-
-.tab {
-  display: block;
-  height: 100%;
-  color: inherit !important;
-  text-decoration: none;
-}
 
 .header {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 2rem;
   font-size: 1.1rem;
   color: var(--color-error);
 }

@@ -2,9 +2,9 @@
 import appConfig from '~/app.config'
 
 const paymentRules = {
-  're_1': 'Retry next day the previous attempt',
-  're_3': 'Retry 3 days after the previous attempt',
-  're_5': 'Retry 5 days after the previous attempt',
+  're_1': 'Retry next day after the previous failure',
+  're_3': 'Retry 3 days after the previous failure',
+  're_5': 'Retry 5 days after the previous failure',
   'cancel': 'Cancel the Subscription',
   'notify': 'Notify via email',
 }
@@ -98,7 +98,7 @@ export default {
 
       <div :class="$style.ruleTitle">
         <i :class="['el-icon-bank-card', $style.rulesIcon]" />
-        <span>Credit/Debit Card</span>
+        <span>Credit/Debit Cards</span>
       </div>
 
       <dl class="datalist">

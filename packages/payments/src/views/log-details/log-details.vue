@@ -47,18 +47,8 @@ export default {
         <dd>{{ status }}</dd>
         <dt>IP Address</dt>
         <dd>{{ ipAddress }}</dd>
-        <dt>Version</dt>
-        <dd>{{ version }}</dd>
-        <dt>Source</dt>
-        <dd>{{ source }}</dd>
-        <dt>Related</dt>
-        <dd>{{ related }}</dd>
         <dt>Origin</dt>
         <dd>{{ origin }}</dd>
-        <dt v-if="requestQuery">
-          Request Query
-        </dt>
-        <dd>{{ requestQuery }}</dd>
       </dl>
     </el-card>
     <el-card
@@ -91,4 +81,3 @@ export default {
     }
   }
 </style>
-

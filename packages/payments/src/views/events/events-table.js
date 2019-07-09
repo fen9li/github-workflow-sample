@@ -11,12 +11,6 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'userEmail',
-    label: 'User Email',
-    type: 'string',
-    icon: 'el-icon-document',
-  },
-  {
     attribute: 'id',
     label: 'ID',
     type: 'string',

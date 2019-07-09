@@ -1,6 +1,7 @@
 <script>
+
 export default {
-  name: 'DeleteWebhook',
+  name: 'RetryWebhooks',
   inheritAttrs: false,
   props: {
     endpoint: {
@@ -14,7 +15,7 @@ export default {
       this.$notify({
         type: 'success',
         title: 'Success',
-        message: 'Webhook successfully deleted.',
+        message: 'Changes successfully saved.',
       })
       this.$emit('update:visible', false)
     },
@@ -25,7 +26,7 @@ export default {
 <template>
   <state-dialog
     v-bind="$attrs"
-    title="Delete Webhook"
+    title="Retry Failed Webhooks"
     :class="$style.wrapper"
     v-on="$listeners"
   >
@@ -33,18 +34,14 @@ export default {
       slot="icon"
       name="link"
     />
-    <el-button
-      slot="subicon"
-      type="danger"
-      icon="el-icon-delete"
-      circle
-    />
-    <div :class="$style.text">
-      <p>
-        After deleting this endpoint no future <br>
-        webhook will be sent to this URL.
-      </p>
-    </div>
+    <p>
+      This will retry all webhook attempts that have <br>
+      failed in the last 30 calendar days.
+    </p>
+    <p>
+      Please be patient, as the system might take a <br>
+      while to process all the attempts.
+    </p>
     <el-button
       type="primary"
       :class="[
@@ -53,7 +50,7 @@ export default {
       ]"
       @click="submit"
     >
-      Delete Webhook
+      Retry failed webhooks
     </el-button>
   </state-dialog>
 </template>
@@ -69,5 +66,10 @@ export default {
 
 .submit {
   margin-top: 1rem;
+}
+
+.subIcon {
+  color: #fff;
+  background-color: #bbb;
 }
 </style>

@@ -30,6 +30,8 @@ export default {
         case 'failed': return { color: 'var(--color-error)', background: '#FBD2D2' }
       }
     },
+    resendEvent() {
+    },
   },
 }
 </script>
@@ -87,6 +89,14 @@ export default {
             <span :class="$style.webhookUrl">
               {{ webhook.url }}
             </span>
+            <el-button
+              v-if="webhook.status === 'failed'"
+              type="primary"
+              :class="$style.resend"
+              @click.stop="resendEvent"
+            >
+              Re-send event
+            </el-button>
           </template>
           <div>
             Here will be data
@@ -101,6 +111,15 @@ export default {
   :global {
     .el-card + .el-card {
       margin-top: 2rem;
+    }
+
+    .el-collapse,
+    .el-collapse-item__header {
+      border: none;
+    }
+
+    .el-collapse-item__header {
+      height: 4rem;
     }
   }
 .webhook {
@@ -124,5 +143,9 @@ export default {
 .webhookUrl {
   font-size: 1rem;
   color:#bbb;
+}
+
+.resend {
+  margin: 0 0 auto auto;
 }
 </style>

@@ -74,7 +74,7 @@ export default {
   >
     <div class="info-block">
       <span class="info-block__title">
-        Subscription Details
+        {{ isTransaction ? 'Subscription Details' : 'General Information' }}
       </span>
 
       <dl

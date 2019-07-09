@@ -2,15 +2,11 @@
 import StaticProcessor from '@lib/processors/static-processor'
 import tableConfig from './webhooks-table'
 import webhooksMock from '@tests/__fixtures__/webhooks'
-import addEndpoint from '../webhook/endpoint-add-edit'
 
 export default {
   name: 'Webhooks',
   page: {
     title: 'Webhooks',
-  },
-  components: {
-    addEndpoint,
   },
   data() {
     return {
@@ -38,27 +34,12 @@ export default {
 
 <template>
   <main-layout title="Webhooks">
-    <div
-      slot="header"
-    >
-      <el-button
-        type="primary"
-        @click="modal.add = true"
-      >
-        Add Endpoints
-      </el-button>
-
-      <add-endpoint
-        v-if="modal.add"
-        :visible.sync="modal.add"
-      />
-    </div>
-
     <table-layout
       table-name="webhooks"
       :processor="processor"
       :filters="filters"
       :columns="columns"
+      :fragments="false"
       @row-click="onRowClick"
     />
   </main-layout>

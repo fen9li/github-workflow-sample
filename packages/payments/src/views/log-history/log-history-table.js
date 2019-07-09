@@ -19,14 +19,16 @@ const TABLE_FILTERS = [
 const TABLE_COLUMNS = [
   {
     name: 'createdAt',
-    label: 'Date',
+    label: 'Date Created',
     icon: 'el-icon-document',
     format: 'dateTime',
+    width: 200,
   },
   {
     name: 'description',
     label: 'Description',
     icon: 'el-icon-document',
+    width: 500,
   },
   {
     name: 'status',

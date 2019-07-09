@@ -1,9 +1,6 @@
 <script>
 import tableConfig from './webhook-attempts-table'
 import webhookMock from '@tests/__fixtures__/webhook'
-// import endpointEdit from './endpoint-add-edit'
-// import webhookDeactivate from './webhook-deactivate'
-// import webhookDelete from './webhook-delete'
 import webhookSummary from './webhook-summary'
 
 export default {
@@ -19,11 +16,6 @@ export default {
       tableConfig: tableConfig(this),
       endpoint: webhookMock.details,
     }
-  },
-  methods: {
-    onRowClick(row) {
-      // console.log(row)
-    },
   },
 }
 </script>
