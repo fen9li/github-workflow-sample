@@ -34,7 +34,7 @@ export default {
       const { key, value } = item
       switch (key) {
         case 'categories':
-          return value.map(el => el.label).join(', ')
+          return value.map(el => el.name).join(', ')
         default:
           return value
       }

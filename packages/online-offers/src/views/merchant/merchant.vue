@@ -1,6 +1,5 @@
 <script>
 import { mapActions } from 'vuex'
-import set from 'lodash/set'
 import merchantDetails from './details/merchant-details'
 import merchantEdit from './edit/merchant-edit'
 
@@ -13,11 +12,9 @@ export default {
   data() {
     return {
       loading: true,
-      details: {
-        map: {
-          name: '',
-        },
-      },
+      merchant: {},
+      merchantFeeds: [],
+      categories: [],
       edit: false,
     }
   },
@@ -32,29 +29,24 @@ export default {
   methods: {
     ...mapActions('merchants', [
       'getMerchantFeeds',
+      'getGlobalMerchant',
     ]),
     ...mapActions('categories', [
       'getCategories',
     ]),
     async fetchMerchant() {
-      const [, { items }] = await this.getMerchantFeeds(this.merchantId)
+      const [, merchant] = await this.getGlobalMerchant(this.merchantId)
+      const [, { items: merchantFeeds }] = await this.getMerchantFeeds(this.merchantId)
       // get all categories
-      const categories = await this.getCategories()
-      items[0].map.categories = categories.map(el => ({
-        id: el.id,
-        label: el.name,
-      }))
-      if (Array.isArray(items)) {
-        this.details = items[0]
-        // TODO: remove
-        set(this.details, 'merchant.categories', [])
-        this.loading = false
-      }
+      this.categories = await this.getCategories()
+      this.merchant = merchant
+      this.merchant.commission = merchantFeeds[0].map.feed
+      this.merchantFeeds = merchantFeeds
+      this.loading = false
     },
     onUpdate(response) {
-      // TODO: remove
-      set(response, 'categories', this.details.merchant.categories)
-      this.details.merchant = response
+      response.commission = this.merchantFeeds[0].map.feed
+      this.merchant = response
     },
   },
 }
@@ -62,8 +54,8 @@ export default {
 
 <template>
   <main-layout
-    :title="details.map.name"
-    :back="{name: 'merchants'}"
+    :title="merchant.name"
+    :back="{ name: 'merchants' }"
   >
     <base-loader
       v-if="loading"
@@ -73,13 +65,16 @@ export default {
     <el-card v-else>
       <merchant-edit
         v-if="edit"
-        :details="details"
+        :merchant="merchant"
+        :feeds="merchantFeeds"
+        :categories="categories"
         @update="onUpdate"
         @cancel="edit = false"
       />
       <merchant-details
         v-else
-        :details="details"
+        :merchant="merchant"
+        :feed="merchantFeeds[0]"
         @editMerchant="edit = true"
       />
     </el-card>

@@ -22,7 +22,7 @@ export default {
       return this.values.find(el => el.key === this.value)
     },
     keys() {
-      return Object.keys(this.currentValue.items)
+      return Object.keys(get(this.currentValue, 'items', {}))
     },
   },
   methods: {

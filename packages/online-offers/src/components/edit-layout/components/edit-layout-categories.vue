@@ -22,7 +22,7 @@ export default {
           this.value.push(item)
         }
       } else {
-        const indexOf = this.value.indexOf(item)
+        const indexOf = this.value.findIndex(el => el.id === item.id)
         if (indexOf !== -1) {
           this.value.splice(indexOf, 1)
         }
@@ -30,7 +30,12 @@ export default {
       this.$emit('input', this.value)
     },
     selected(item) {
-      return this.value.includes(item)
+      for (const el of this.value) {
+        if (el.id === item.id) {
+          return true
+        }
+      }
+      return false
     },
   },
 }
@@ -41,7 +46,7 @@ export default {
     <el-checkbox
       v-for="item in categories"
       :key="item.id"
-      :label="item.label"
+      :label="item.name"
       :value="selected(item)"
       :disabled="disabled"
       @input="selectValue($event, item)"

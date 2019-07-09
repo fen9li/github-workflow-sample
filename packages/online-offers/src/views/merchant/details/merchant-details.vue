@@ -7,7 +7,11 @@ import formatCommission from '@lib/utils/format-commission'
 export default {
   name: 'MerchantDetails',
   props: {
-    details: {
+    merchant: {
+      type: Object,
+      required: true,
+    },
+    feed: {
       type: Object,
       required: true,
     },
@@ -17,16 +21,12 @@ export default {
     },
   },
   computed: {
-    merchantId() {
-      return this.$route.params.id
-    },
     commission() {
-      return formatCommission(this.details.map.commission)
+      return formatCommission(this.feed.map.commission)
     },
   },
   methods: {
     capitalize,
-    formatCommission,
     ...mapActions('merchants', [
       'updateMerchant',
     ]),
@@ -34,12 +34,12 @@ export default {
       return formatDate(value, 'DD/MM/YYYY hh:mm A')
     },
     async onSwitch(event) {
-      this.details.enabled = !this.details.enabled
+      this.merchant.enabled = !this.merchant.enabled
       await this.$nextTick()
       this.updateMerchant({
-        merchantId: this.merchantId,
+        merchantId: this.merchant.id,
         payload: {
-          enabled: this.details.enabled,
+          enabled: this.merchant.enabled,
         },
       }).then(() => {
         this.$notify({
@@ -59,9 +59,9 @@ export default {
       <div :class="$style.logo">
         <div :class="$style.imageWrapper">
           <img
-            v-if="details.map.logo"
-            :src="details.map.logo"
-            :alt="details.map.name"
+            v-if="merchant.logo"
+            :src="merchant.logo"
+            :alt="merchant.name"
             :class="$style.image"
           >
         </div>
@@ -70,7 +70,7 @@ export default {
         >
           <span :class="$style.status">Status</span>
           <el-switch
-            :value="details.enabled"
+            :value="merchant.enabled"
             @change="onSwitch"
           />
         </div>
@@ -78,34 +78,35 @@ export default {
       <div :class="$style.details">
         <dl
           :class="[
-            'datalist datalist__online-offers',
-            !details.enabled && $style.inactive
+            'datalist',
+            $style.datalist,
+            !merchant.enabled && $style.inactive
           ]"
         >
-          <dt :class="$style.grey">
+          <dt>
             Merchant ID
           </dt>
-          <dd :class="$style.grey">
-            {{ details.id }}
+          <dd>
+            {{ merchant.id }}
           </dd>
-          <dt :class="$style.grey">
+          <dt>
             Merchant Ext ID
           </dt>
-          <dd :class="$style.grey">
-            {{ details.external_id }}
+          <dd>
+            {{ feed.external_id }}
           </dd>
-          <dt :class="$style.grey">
+          <dt>
             Merchant Updated
           </dt>
-          <dd :class="$style.grey">
-            {{ formatDate(details.updated_at) }}
+          <dd>
+            {{ formatDate(merchant.updated_at) }}
           </dd>
           <dt>Merchant Name</dt>
-          <dd>{{ details.map.name }}</dd>
+          <dd>{{ merchant.name }}</dd>
           <dt>Commission Aggregator</dt>
-          <dd>{{ details.feed }}</dd>
+          <dd>{{ feed.feed }}</dd>
           <dt>Commission Type</dt>
-          <dd>{{ capitalize(details.map.commission.type) || '–' }}</dd>
+          <dd>{{ commission.type || '–' }}</dd>
           <template v-if="commission">
             <dt>Commission Rate</dt>
             <dd>
@@ -123,28 +124,27 @@ export default {
           <dt>Classifications</dt>
           <dd :class="$style.classifications">
             <span
-              v-for="(item, index) in details.classifications"
+              v-for="(item, index) in merchant.categories"
               :key="index"
             >
-              {{ capitalize(item) }}
+              {{ capitalize(item.name) }}
             </span>
           </dd>
           <dt>Summary</dt>
-          <dd>{{ details.map.summary }}</dd>
+          <dd>{{ merchant.summary }}</dd>
           <dt>Merchant Website</dt>
-          <dd>{{ details.map.website }}</dd>
+          <dd>{{ merchant.website }}</dd>
           <dt>Terms & Conditions</dt>
-          <dd v-html="details.map.terms" />
+          <dd v-html="merchant.terms" />
         </dl>
       </div>
       <div>
         <el-button
           type="primary"
-          class="wide-button"
+          icon="el-icon-edit"
+          circle
           @click="$emit('editMerchant')"
-        >
-          Edit Merchant Details
-        </el-button>
+        />
       </div>
     </div>
   </div>
@@ -184,6 +184,22 @@ export default {
 
 .status {
   padding-right: 1.5rem;
+}
+
+.datalist {
+  display: grid;
+  flex: 1 0 50%;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: rem(20px);
+  margin-top: 1.8rem;
+
+  dd {
+    font-weight: bold;
+  }
+
+  dt {
+    min-width: auto;
+  }
 }
 
 .details {

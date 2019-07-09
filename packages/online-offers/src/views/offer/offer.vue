@@ -306,7 +306,7 @@ export default {
           <dt>Terms & Conditions</dt>
           <dd>{{ offer.terms || '-' }}</dd>
 
-          <dt>Offer Tracking Url</dt>
+          <dt>Offer Tracking URL</dt>
           <dd>{{ '-' }}</dd>
         </dl>
       </div>

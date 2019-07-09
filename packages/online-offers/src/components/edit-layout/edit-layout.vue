@@ -1,5 +1,6 @@
 <script>
 import get from 'lodash/get'
+import has from 'lodash/has'
 import cloneDeep from 'lodash/cloneDeep'
 import { formatDate } from '@lib/utils/format-date'
 import EditLayoutImage from './components/edit-layout-image'
@@ -63,7 +64,11 @@ export default {
       const newForm = {}
 
       for (const field of this.fields) {
-        newForm[field.key] = cloneDeep(get(this.source, field.path, ''))
+        if (field.key) {
+          newForm[field.key] = {
+            value: cloneDeep(get(this.source, field.path, '')),
+          }
+        }
       }
 
       this.form = newForm
@@ -73,22 +78,21 @@ export default {
     },
     changeField(field) {
       field.changed = true
-      field.value = this.form[field.key]
+      field.value = this.form[field.key].value
       this.isChanged = true
     },
     checkChanged(values, field) {
-      this.form[field.key] = values
+      this.form[field.key].value = values
       this.changeField(field)
     },
     imageLoaded(image, field) {
-      this.form[field.key] = image
+      this.form[field.key].value = image
       this.changeField(field)
     },
     checkPresetField(checked, sourcePreset, field, value) {
       const { key, path } = field
-
       if (checked) {
-        this.form[key] = value
+        this.form[key] = { value }
         this.presets.forEach(preset => {
           if (preset !== sourcePreset) {
             preset.selected = false
@@ -108,14 +112,14 @@ export default {
           sourcePreset.selected = true
         }
       } else {
-        this.form[key] = cloneDeep(get(this.source, path, ''))
+        this.form[key] = { value: cloneDeep(get(this.source, path, '')) }
         this.presets.forEach(preset => {
           preset.selected = false
         })
       }
 
       field.changed = true
-      field.value = this.form[field.key]
+      field.value = this.form[field.key].value
       this.isChanged = true
     },
     selectAll(checked, sourcePreset) {
@@ -123,8 +127,9 @@ export default {
         const { items } = preset
         const isChecked = checked && preset === sourcePreset
 
+        preset.selected = isChecked
+
         for (const key of Object.keys(items)) {
-          preset.selected = isChecked
           items[key].selected = isChecked
         }
 
@@ -132,12 +137,17 @@ export default {
           for (const field of this.fields) {
             // check if field editable
             if (field.component) {
-              field.changed = checked
               if (checked) {
-                field.value = get(preset, `items.${ field.key }.value`)
+                if (!has(preset, `items.${ field.key }.value`)) {
+                  continue
+                }
+                this.form[field.key] = { value: get(preset, `items.${ field.key }.value`) }
               } else {
-                field.value = this.form[field.key]
+                this.form[field.key] = { value: cloneDeep(get(this.source, field.path)) }
               }
+
+              field.changed = checked
+              field.value = this.form[field.key].value
             }
           }
         }
@@ -183,7 +193,10 @@ export default {
     },
     formatValue(field) {
       const format = get(field, 'format', el => el)
-      return format(this.form[field.key])
+      return format(this.form[field.key].value)
+    },
+    presetItem(preset, key) {
+      return preset.items[key]
     },
   },
 }
@@ -248,7 +261,7 @@ export default {
             <component
               :is="field.component"
               v-else
-              v-model="form[field.key]"
+              v-model="form[field.key].value"
               v-bind="field.componentBindings"
               :disabled="isSelected(field)"
               @input="changeField(field)"
@@ -439,7 +452,8 @@ export default {
   }
 
   > span,
-  > div {
+  > div,
+  > img {
     margin-left: rem(38px);
   }
 }

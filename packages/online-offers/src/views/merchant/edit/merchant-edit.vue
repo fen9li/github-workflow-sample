@@ -13,9 +13,17 @@ export default {
     MerchandUpdateModal,
   },
   props: {
-    details: {
+    merchant: {
       type: Object,
       required: true,
+    },
+    feeds: {
+      type: Array,
+      required: true,
+    },
+    categories: {
+      type: Array,
+      default: () => [],
     },
   },
   data() {
@@ -27,43 +35,24 @@ export default {
     }
   },
   computed: {
-    merchantId() {
-      return this.$route.params.id
-    },
     feed() {
-      return get(this.details, 'map.feed', '')
+      return get(this.feeds[0], 'map.feed', '')
     },
     commissions() {
-      return [{
-        key: 'commission_factory',
-        items: {
-          base: {
-            value: get(this.details, 'map.commission.base', 0),
-            format: this.formatCommissionValue,
-          },
-          min: {
-            value: get(this.details, 'map.commission.min', 0),
-            format: this.formatCommissionValue,
-          },
-          max: {
-            value: get(this.details, 'map.commission.max', 0),
-            format: this.formatCommissionValue,
-          },
-          type: {
-            value: get(this.details, 'map.commission.type', 'DOLLARS'),
-            format: this.formatCommissionType,
-          },
-          url: {
-          },
-        },
-      }]
+      const commissions = []
+
+      for (const feed of this.feeds) {
+        commissions.push(this.comissionForFeed(feed))
+      }
+
+      return commissions
     },
     fields() {
       return [
         {
           key: 'name',
           label: 'Merchant name',
-          path: 'merchant.name',
+          path: 'name',
           component: 'el-input',
           rules: [
             { required: true, message: 'merchant name is required' },
@@ -71,7 +60,7 @@ export default {
         }, {
           key: 'logo',
           label: 'Merchant Image',
-          path: 'merchant.logo',
+          path: 'logo',
           component: 'edit-layout-image',
           rules: [
             { required: true, message: 'merchant logo is required' },
@@ -79,7 +68,7 @@ export default {
         }, {
           key: 'summary',
           label: 'Summary',
-          path: 'merchant.summary',
+          path: 'summary',
           component: 'el-input',
           componentBindings: {
             type: 'textarea',
@@ -88,7 +77,7 @@ export default {
         }, {
           key: 'website',
           label: 'Merchant Website',
-          path: 'merchant.website',
+          path: 'website',
           rules: [
             { required: true, message: 'website url is required' },
           ],
@@ -101,18 +90,18 @@ export default {
         }, {
           key: 'categories',
           label: 'Classification',
-          path: 'merchant.categories',
+          path: 'categories',
           rules: [
             { required: true, message: 'classification is required' },
           ],
           component: 'edit-layout-categories',
           componentBindings: {
-            categories: get(this.details, 'map.categories', []),
+            categories: this.categories,
           },
         }, {
           key: 'terms',
           label: 'Terms & Conditions',
-          path: 'merchant.terms',
+          path: 'terms',
           rules: [
             { required: true, message: 'terms is required' },
           ],
@@ -127,7 +116,7 @@ export default {
         }, {
           key: 'commission',
           label: 'Commission Rate',
-          path: 'map.feed',
+          path: 'commission',
           component: 'edit-layout-table',
           componentBindings: {
             labels: {
@@ -143,62 +132,51 @@ export default {
       ]
     },
     feedOffers() {
-      let commission
+      const feedOffers = []
 
-      if (this.commissions.length > 1) {
-        commission = {
-          selected: true,
-          label: false,
-          type: 'radio',
-          value: get(this.details, 'map.feed', ''),
-          component: 'edit-layout-table',
-          componentBindings: {
-            labels: {
-              base: 'Base',
-              min: 'Min',
-              max: 'Max',
-              type: 'Commission Type',
-              url: 'Merchant Tracking URL',
+      for (const feed of this.feeds) {
+        const feedObject = {
+          title: get(feed, 'map.feed'),
+          selected: false,
+          updated: get(this.merchant, 'feed_updated', false),
+          items: {
+            name: {
+              selected: false,
+              value: get(feed, 'map.name', '-'),
             },
-            values: this.commissions,
+            website: {
+              selected: false,
+              value: get(feed, 'map.website', '-'),
+            },
+            logo: {
+              selected: false,
+              value: get(feed, 'map.logo', '-'),
+              preview: 'image',
+            },
+            summary: {
+              selected: false,
+              value: get(feed, 'map.summary', '-'),
+            },
+            categories: {
+              selected: false,
+              value: this.categories,
+              label: this.categories.map(el => el.name).join(', '),
+            },
+            terms: {
+              selected: false,
+              value: get(feed, 'map.terms', '-'),
+            },
           },
         }
+
+        if (this.commissions.length > 1) {
+          feedObject.commissions = this.comissionForFeed(feed)
+        }
+
+        feedOffers.push(feedObject)
       }
 
-      return [{
-        title: get(this.details, 'map.feed', ''),
-        selected: false,
-        updated: get(this.details, 'feed_updated', false),
-        items: {
-          name: {
-            selected: false,
-            value: get(this.details, 'map.name', '-'),
-          },
-          website: {
-            selected: false,
-            value: get(this.details, 'map.website', '-'),
-          },
-          logo: {
-            selected: false,
-            value: get(this.details, 'map.logo', '-'),
-            preview: 'image',
-          },
-          summary: {
-            selected: false,
-            value: get(this.details, 'map.summary', '-'),
-          },
-          categories: {
-            selected: false,
-            value: get(this.details, 'map.categories', []),
-            label: get(this.details, 'map.categories', []).map(el => el.label).join(', '),
-          },
-          terms: {
-            selected: false,
-            value: get(this.details, 'map.terms', '-'),
-          },
-          commission,
-        },
-      }]
+      return feedOffers
     },
   },
   methods: {
@@ -224,6 +202,31 @@ export default {
           return `$${ value }`
       }
     },
+    comissionForFeed(feed) {
+      return {
+        key: get(feed, 'map.feed'),
+        items: {
+          base: {
+            value: get(feed, 'map.commission.base', 0),
+            format: this.formatCommissionValue,
+          },
+          min: {
+            value: get(feed, 'map.commission.min', 0),
+            format: this.formatCommissionValue,
+          },
+          max: {
+            value: get(feed, 'map.commission.max', 0),
+            format: this.formatCommissionValue,
+          },
+          type: {
+            value: get(feed, 'map.commission.type', 'DOLLARS'),
+            format: this.formatCommissionType,
+          },
+          url: {
+          },
+        },
+      }
+    },
     async submitUpdate(notes) {
       this.modals.update = false
 
@@ -240,7 +243,7 @@ export default {
       }
 
       const [error, response] = await this.updateMerchant({
-        merchantId: this.merchantId,
+        merchantId: this.merchant.id,
         payload,
       })
 
@@ -261,7 +264,7 @@ export default {
       this.modals.remove = false
       // TODO: send notes
       const [error] = await this.deleteMerchant({
-        merchantId: this.merchantId,
+        merchantId: this.merchant.id,
       })
 
       if (error) {
@@ -283,7 +286,7 @@ export default {
 <template>
   <div>
     <edit-layout
-      :source="details"
+      :source="merchant"
       :fields="fields"
       :presets="feedOffers"
       @cancel="$emit('cancel')"
