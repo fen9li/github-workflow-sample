@@ -46,8 +46,8 @@ export default {
       }))
       if (Array.isArray(items)) {
         this.details = items[0]
+        // TODO: remove
         set(this.details, 'merchant.categories', [])
-        set(this.details, 'merchant.commission', 'commission_factory')
         this.loading = false
       }
     },

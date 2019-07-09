@@ -24,7 +24,42 @@ export default {
         remove: false,
         update: false,
       },
-      fields: [
+    }
+  },
+  computed: {
+    merchantId() {
+      return this.$route.params.id
+    },
+    feed() {
+      return get(this.details, 'map.feed', '')
+    },
+    commissions() {
+      return [{
+        key: 'commission_factory',
+        items: {
+          base: {
+            value: get(this.details, 'map.commission.base', 0),
+            format: this.formatCommissionValue,
+          },
+          min: {
+            value: get(this.details, 'map.commission.min', 0),
+            format: this.formatCommissionValue,
+          },
+          max: {
+            value: get(this.details, 'map.commission.max', 0),
+            format: this.formatCommissionValue,
+          },
+          type: {
+            value: get(this.details, 'map.commission.type', 'DOLLARS'),
+            format: this.formatCommissionType,
+          },
+          url: {
+          },
+        },
+      }]
+    },
+    fields() {
+      return [
         {
           key: 'name',
           label: 'Merchant name',
@@ -61,7 +96,6 @@ export default {
           componentSlots: [
             {
               name: 'prepend',
-              value: 'http://',
             },
           ],
         }, {
@@ -93,7 +127,7 @@ export default {
         }, {
           key: 'commission',
           label: 'Commission Rate',
-          path: 'merchant.commission',
+          path: 'map.feed',
           component: 'edit-layout-table',
           componentBindings: {
             labels: {
@@ -103,61 +137,38 @@ export default {
               type: 'Commission Type',
               url: 'Merchant Tracking URL',
             },
-            values: [
-              {
-                key: 'commission_factory',
-                items: {
-                  base: {
-                    value: 2,
-                    format: value => `$${ value }`,
-                  },
-                  min: {
-                    value: 3,
-                    format: value => `$${ value }`,
-                  },
-                  max: {
-                    value: 4,
-                    format: value => `$${ value }`,
-                  },
-                  type: {
-                    value: 'DOLLARS',
-                    format: this.formatType,
-                  },
-                  url: {
-                    value: 'www.test.com',
-                  },
-                },
-              }, {
-                key: 'rakuten',
-                items: {
-                  base: {
-                    value: get(this.details, 'map.commission.base', 0),
-                    format: value => `${ value }%`,
-                  },
-                  min: {
-                    value: get(this.details, 'map.commission.min', 0),
-                    format: value => `${ value }%`,
-                  },
-                  max: {
-                    value: get(this.details, 'map.commission.max', 0),
-                    format: value => `${ value }%`,
-                  },
-                  type: {
-                    value: get(this.details, 'map.commission.type', 'PERCENTAGE'),
-                    format: this.formatType,
-                  },
-                  url: {
-                    value: 'www.test.net',
-                  },
-                },
-              },
-            ],
+            values: this.commissions,
           },
         },
-      ],
-      feedOffers: [{
+      ]
+    },
+    feedOffers() {
+      let commission
+
+      if (this.commissions.length > 1) {
+        commission = {
+          selected: true,
+          label: false,
+          type: 'radio',
+          value: get(this.details, 'map.feed', ''),
+          component: 'edit-layout-table',
+          componentBindings: {
+            labels: {
+              base: 'Base',
+              min: 'Min',
+              max: 'Max',
+              type: 'Commission Type',
+              url: 'Merchant Tracking URL',
+            },
+            values: this.commissions,
+          },
+        }
+      }
+
+      return [{
         title: get(this.details, 'map.feed', ''),
         selected: false,
+        updated: get(this.details, 'feed_updated', false),
         items: {
           name: {
             selected: false,
@@ -185,80 +196,9 @@ export default {
             selected: false,
             value: get(this.details, 'map.terms', '-'),
           },
-          commission: {
-            selected: true,
-            type: 'radio',
-            value: get(this.details, 'map.feed', ''),
-            component: 'edit-layout-table',
-            componentBindings: {
-              labels: {
-                base: 'Base',
-                min: 'Min',
-                max: 'Max',
-                type: 'Commission Type',
-                url: 'Merchant Tracking URL',
-              },
-              values: [
-                {
-                  key: 'commission_factory',
-                  items: {
-                    base: {
-                      value: 2,
-                      format: value => `$${ value }`,
-                    },
-                    min: {
-                      value: 3,
-                      format: value => `$${ value }`,
-                    },
-                    max: {
-                      value: 4,
-                      format: value => `$${ value }`,
-                    },
-                    type: {
-                      value: 'DOLLARS',
-                      format: this.formatType,
-                    },
-                    url: {
-                      value: 'www.test.com',
-                    },
-                  },
-                }, {
-                  key: 'rakuten',
-                  items: {
-                    base: {
-                      value: get(this.details, 'map.commission.base', 0),
-                      format: value => `${ value }%`,
-                    },
-                    min: {
-                      value: get(this.details, 'map.commission.min', 0),
-                      format: value => `${ value }%`,
-                    },
-                    max: {
-                      value: get(this.details, 'map.commission.max', 0),
-                      format: value => `${ value }%`,
-                    },
-                    type: {
-                      value: get(this.details, 'map.commission.type', 'PERCENTAGE'),
-                      format: this.formatType,
-                    },
-                    url: {
-                      value: 'www.test.net',
-                    },
-                  },
-                },
-              ],
-            },
-          },
+          commission,
         },
-      }],
-    }
-  },
-  computed: {
-    merchantId() {
-      return this.$route.params.id
-    },
-    feed() {
-      return get(this.details, 'map.feed', '')
+      }]
     },
   },
   methods: {
@@ -266,13 +206,22 @@ export default {
       'updateMerchant',
       'deleteMerchant',
     ]),
-    formatType(type) {
+    formatCommissionType(type) {
       switch (type) {
         case 'PERCENTAGE':
           return 'Percents'
         case 'DOLLARS':
         default:
           return 'Dollars'
+      }
+    },
+    formatCommissionValue(type, value) {
+      switch (type) {
+        case 'PERCENTAGE':
+          return `${ value }%`
+        case 'DOLLARS':
+        default:
+          return `$${ value }`
       }
     },
     async submitUpdate(notes) {
@@ -287,6 +236,7 @@ export default {
         } else {
           payload[field.key] = field.value
         }
+        field.changed = false
       }
 
       const [error, response] = await this.updateMerchant({
@@ -310,7 +260,9 @@ export default {
     async submitDelete(notes) {
       this.modals.remove = false
       // TODO: send notes
-      const [error] = await this.deleteMerchant(this.merchantId)
+      const [error] = await this.deleteMerchant({
+        merchantId: this.merchantId,
+      })
 
       if (error) {
         console.error(error)

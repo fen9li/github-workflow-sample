@@ -130,11 +130,14 @@ export default {
 
         if (preset === sourcePreset) {
           for (const field of this.fields) {
-            field.changed = checked
-            if (checked) {
-              field.value = get(preset, `items.${ field.key }.value`)
-            } else {
-              field.value = this.form[field.key]
+            // check if field editable
+            if (field.component) {
+              field.changed = checked
+              if (checked) {
+                field.value = get(preset, `items.${ field.key }.value`)
+              } else {
+                field.value = this.form[field.key]
+              }
             }
           }
         }
@@ -172,7 +175,15 @@ export default {
           return false
         }
         this.$emit('update')
+        this.isChanged = false
       })
+    },
+    getPath(path, def = '') {
+      return get(this.source, path, def)
+    },
+    formatValue(field) {
+      const format = get(field, 'format', el => el)
+      return format(this.form[field.key])
     },
   },
 }
@@ -196,13 +207,10 @@ export default {
             Current Details
           </div>
         </div>
-        <!-- :key="fieldIndex" -->
         <template
           v-for="(field, fieldIndex) in fields"
         >
-          <template
-            v-if="field.type === 'divider'"
-          >
+          <template v-if="field.type === 'divider'">
             <div
               :key="fieldIndex"
               :class="$style.footerDivider"
@@ -231,8 +239,15 @@ export default {
               gridRowStart: 3 + fieldIndex,
             }"
           >
+            <div
+              v-if="!field.component"
+              :class="$style.contentValue"
+            >
+              {{ formatValue(field) }}
+            </div>
             <component
               :is="field.component"
+              v-else
               v-model="form[field.key]"
               v-bind="field.componentBindings"
               :disabled="isSelected(field)"
@@ -244,7 +259,7 @@ export default {
                 v-for="slot in field.componentSlots"
                 :slot="slot.name"
               >
-                {{ slot.value }}
+                {{ getPath(slot.path) || 'http://' }}
               </template>
             </component>
           </el-form-item>
@@ -257,6 +272,10 @@ export default {
           >
             <div :class="$style.columnTitle">
               {{ isUpdated(preset) ? 'Updated - ' : null }}{{ preset.title }}
+              <span
+                v-if="preset.updated"
+                :class="$style.feedUpdated"
+              >Updated</span>
             </div>
             <el-checkbox
               v-model="preset.selected"
@@ -287,7 +306,7 @@ export default {
                   />
                 </el-radio-group>
                 <el-checkbox
-                  v-else-if="preset.items[field.key]"
+                  v-else
                   v-model="preset.items[field.key].selected"
                   :label="field.label"
                   @input="checkPresetField($event, preset, field, preset.items[field.key].value)"
@@ -305,7 +324,10 @@ export default {
                   :class="$style.feedLabel"
                   v-bind="preset.items[field.key].componentBindings"
                 />
-                <span :class="$style.feedLabel">
+                <span
+                  v-if="preset.items[field.key].label !== false"
+                  :class="$style.feedLabel"
+                >
                   {{ preset.items[field.key].label || preset.items[field.key].value }}
                 </span>
               </div>
@@ -380,6 +402,18 @@ export default {
   max-width: rem(400px);
 }
 
+.columnItem {
+  :global {
+    .el-radio-group {
+      margin: rem(0 0 10px 0);
+    }
+
+    .el-radio__label {
+      padding-left: rem(24px);
+    }
+  }
+}
+
 .columnFeedHeader {
   padding-left: rem(48px);
 }
@@ -407,9 +441,14 @@ export default {
   > span,
   > div {
     margin-left: rem(38px);
-    font-size: rem(14px);
-    color: var(--color-dark-gray);
   }
+}
+
+.columnFeed > span,
+.columnFeed > div,
+.contentValue {
+  font-size: rem(14px);
+  color: var(--color-dark-gray);
 }
 
 .feedLabel {
@@ -426,5 +465,16 @@ export default {
   display: flex;
   justify-content: space-between;
   padding-top: rem(16px);
+}
+
+.feedUpdated {
+  position: relative;
+  top: rem(-2px);
+  padding: rem(2px 9px);
+  font-size: rem(12px);
+  font-weight: normal;
+  color: white;
+  background-color: #14be21;
+  border-radius: rem(10px);
 }
 </style>

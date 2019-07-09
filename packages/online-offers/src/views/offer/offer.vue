@@ -33,38 +33,6 @@ export default {
             { required: true, message: 'offer name is required' },
           ],
         }, {
-          key: 'code',
-          label: 'Coupon Code',
-          path: 'feed_offer.payload.DefaultPromoCode',
-          component: 'el-input',
-          rules: [
-            { required: true, message: 'coupon code is required' },
-          ],
-        }, {
-          key: 'start_date',
-          label: 'Start Date',
-          path: 'feed_offer.payload.StartDate',
-          rules: [
-            { required: true, message: 'start date is required' },
-          ],
-          component: 'el-date-picker',
-          componentBindings: {
-            format: 'dd/MM/yyyy',
-            type: 'date',
-          },
-        }, {
-          key: 'end_date',
-          label: 'End Date',
-          path: 'feed_offer.payload.EndDate',
-          rules: [
-            { required: true, message: 'end date is required' },
-          ],
-          component: 'el-date-picker',
-          componentBindings: {
-            format: 'dd/MM/yyyy',
-            type: 'date',
-          },
-        }, {
           key: 'description',
           label: 'Descriptions',
           path: 'description',
@@ -86,19 +54,23 @@ export default {
             rows: 3,
           },
         }, {
-          key: 'baseline_url',
+          key: 'code',
+          label: 'Coupon Code',
+          path: 'feed_offer.map.code',
+        }, {
+          key: 'start_date',
+          label: 'Start Date',
+          path: 'feed_offer.map.start_date',
+          format: this.formatDate,
+        }, {
+          key: 'end_date',
+          label: 'End Date',
+          path: 'feed_offer.map.end_date',
+          format: this.formatDate,
+        }, {
+          key: 'tracking_url',
           label: 'Tracking URL',
-          path: 'baseline_url',
-          rules: [
-            { required: true, message: 'tracking url is required' },
-          ],
-          component: 'el-input',
-          componentSlots: [
-            {
-              name: 'prepend',
-              value: 'http://',
-            },
-          ],
+          path: 'tracking_url',
         },
       ],
       feedOffers: [],
@@ -111,8 +83,8 @@ export default {
     feedOffer() {
       return get(this.offer, 'feed_offer', {})
     },
-    payload() {
-      return get(this.offer, 'feed_offer.payload', {})
+    map() {
+      return get(this.offer, 'feed_offer.map', {})
     },
     feedOfferId() {
       return get(this.feedOffer, 'id')
@@ -121,10 +93,10 @@ export default {
       return get(this.offer, 'feed_offer.feed')
     },
     endDate() {
-      return get(this.offer, 'feed_offer.payload.EndDate')
+      return get(this.offer, 'feed_offer.map.end_date')
     },
     startDate() {
-      return get(this.offer, 'feed_offer.payload.StartDate')
+      return get(this.offer, 'feed_offer.map.start_date')
     },
     isRemove() {
       if (!this.endDate) {
@@ -139,32 +111,19 @@ export default {
       this.feedOffers = [{
         title: this.aggregator,
         selected: false,
+        updated: get(this.offer, 'feed_updated', false),
         items: {
           name: {
             selected: false,
-            value: get(this.offer, 'feed_offer.payload.Name', '-'),
-          },
-          code: {
-            selected: false,
-            value: get(this.offer, 'feed_offer.payload.DefaultPromoCode', '-'),
-          },
-          start_date: {
-            selected: false,
-            value: this.startDate,
-            label: this.formatDate(this.startDate),
-          },
-          end_date: {
-            selected: false,
-            value: this.endDate,
-            label: this.formatDate(this.endDate),
+            value: get(this.offer, 'feed_offer.map.name', '-'),
           },
           description: {
             selected: false,
-            value: get(this.offer, 'feed_offer.payload.Description', '-'),
+            value: get(this.offer, 'feed_offer.map.description', '-'),
           },
           terms: {
             selected: false,
-            value: get(this.offer, 'feed_offer.payload.Terms', '-'),
+            value: get(this.offer, 'feed_offer.map.terms', '-'),
           },
         },
       }]
@@ -173,8 +132,16 @@ export default {
   async mounted() {
     this.offer = await this.getOffer(this.id)
     this.switcher = this.offer.enabled
-    // TODO: remove
-    this.offer.baseline_url = get(this.offer, 'url', '')
+    // parse url
+    this.offer.tracking_url = get(this.offer, 'baseline_url', '')
+    // const url = get(this.offer, 'baseline_url')
+    // if (url) {
+    //   const urlComponents = url.split('://')
+    //   this.offer.tracking_url = {
+    //     prepend: `${ urlComponents[0] }://`,
+    //     value: urlComponents[1],
+    //   }
+    // }
   },
   methods: {
     ...mapActions('offers', [
@@ -207,10 +174,12 @@ export default {
 
       for (const field of changedFields) {
         payload[field.key] = field.value
+        field.changed = false
         // TODO:
-        // code: 'feed_offer.payload.DefaultPromoCode',
-        // start_date: 'feed_offer.payload.StartDate',
-        // end_date: 'feed_offer.payload.EndDate',
+        // code,
+        // start_date,
+        // end_date,
+        // track_url
       }
 
       const [error, response] = await this.updateOffer({
@@ -323,13 +292,13 @@ export default {
           <dd>{{ offer.name || '-' }}</dd>
 
           <dt>Coupon Code</dt>
-          <dd>{{ payload.DefaultPromoCode || '-' }}</dd>
+          <dd>{{ map.code || '-' }}</dd>
 
           <dt>Offer Starts</dt>
-          <dd>{{ formatDate(payload.StartDate) || '-' }}</dd>
+          <dd>{{ formatDate(map.start_date) || '-' }}</dd>
 
           <dt>Offer Ends</dt>
-          <dd>{{ formatDate(payload.EndDate) || '-' }}</dd>
+          <dd>{{ formatDate(map.end_date) || '-' }}</dd>
 
           <dt>Description</dt>
           <dd>{{ offer.description || '-' }}</dd>
