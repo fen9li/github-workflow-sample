@@ -66,6 +66,7 @@ export default {
         </div>
         <div :class="$style.statusWrapper">
           <el-switch
+            :value="merchant.enabled"
             active-text="Active"
             @change="onSwitch"
           />
