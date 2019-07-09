@@ -40,8 +40,7 @@ export default {
                 expanded && 'menu__item--expanded'
               ]"
             >
-              <label
-                :for="item.path"
+              <span
                 class="menu__link"
                 @click="onExpand"
               >
@@ -53,20 +52,19 @@ export default {
                   v-if="item.children"
                   class="el-icon-arrow-down"
                 />
-              </label>
+              </span>
               <ul class="submenu">
-                <template v-for="children in item.children">
-                  <router-link
-                    :key="children.path"
-                    :to="{ path: children.path }"
-                    tag="li"
-                    class="menu__item"
-                  >
-                    <a class="menu__link">
-                      {{ children.title }}
-                    </a>
-                  </router-link>
-                </template>
+                <router-link
+                  v-for="children in item.children"
+                  :key="children.path"
+                  :to="{ path: children.path }"
+                  tag="li"
+                  class="menu__item"
+                >
+                  <a class="menu__link">
+                    {{ children.title }}
+                  </a>
+                </router-link>
               </ul>
             </li>
           </template>
@@ -143,14 +141,6 @@ export default {
     max-height: 0;
     overflow: hidden;
     transition: max-height .5s cubic-bezier(0, 1, 0, 1);
-
-    &__title {
-      color: var(--color-primary-text);
-
-      &:hover {
-        background-color: rgba(#fff, .1);
-      }
-    }
 
     .menu__link {
       padding-left: 5rem;
