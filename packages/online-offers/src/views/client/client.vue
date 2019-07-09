@@ -87,66 +87,60 @@ export default {
 <template>
   <main-layout
     :title="client.name"
+    :loading="loading"
     :back="{ name: 'clients' }"
   >
     <el-card
       :class="$style.card"
       body-style="padding: 0"
     >
-      <base-loader
-        v-if="loading"
-        theme="state"
-        size="large"
+      <client-header
+        :processor="table.processor"
+        :client="client"
+        @catalogues-updated="getClient()"
       />
-      <template v-else>
-        <client-header
-          :processor="table.processor"
-          :client="client"
-          @catalogues-updated="getClient()"
-        />
-        <el-tabs
-          v-model="activeTab"
-          :class="$style.tabs"
-          @tab-click="onTabClick"
+      <el-tabs
+        v-model="activeTab"
+        :class="$style.tabs"
+        @tab-click="onTabClick"
+      >
+        <el-tab-pane
+          v-for="tab in tabs"
+          :key="tab.name"
+          :label="tab.label"
+          :name="tab.name"
         >
-          <el-tab-pane
-            v-for="tab in tabs"
-            :key="tab.name"
-            :label="tab.label"
-            :name="tab.name"
+          <table-layout
+            :class="$style.table"
+            shadow="never"
+            :table-name="`clients-details-${tab.name}`"
+            :processor="table.processor"
+            :filters="table[activeTab].filters"
+            :columns="table[activeTab].columns"
+            :fragments="false"
+            hider
+            :quantity="false"
+            @row-click="onRowClick"
+            @selection-change="handleSelectionChange"
           >
-            <table-layout
-              :class="$style.table"
-              shadow="never"
-              :table-name="`clients-details-${tab.name}`"
-              :processor="table.processor"
-              :filters="table[activeTab].filters"
-              :columns="table[activeTab].columns"
-              :fragments="false"
-              hider
-              :quantity="false"
-              @row-click="onRowClick"
-              @selection-change="handleSelectionChange"
-            >
-              <el-table-column
-                v-if="table.processor.data.length"
-                type="selection"
-                fixed="left"
-                width="55"
-              />
-              <div v-else />
-            </table-layout>
-
-            <link-modal
-              :id="client.id"
-              :items="selectedItems"
-              :name="client.name"
-              :merchants-processor="table.processor"
-              :link="tab.name !== 'linked'"
+            <el-table-column
+              v-if="table.processor.data.length"
+              type="selection"
+              fixed="left"
+              width="55"
             />
-          </el-tab-pane>
-        </el-tabs>
-      </template>
+            <div v-else />
+          </table-layout>
+
+          <link-modal
+            :id="client.id"
+            :items="selectedItems"
+            :name="client.name"
+            :merchants-processor="table.processor"
+            :link="tab.name !== 'linked'"
+          />
+        </el-tab-pane>
+      </el-tabs>
     </el-card>
   </main-layout>
 </template>

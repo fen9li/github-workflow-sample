@@ -16,8 +16,9 @@ export default {
   },
   data() {
     return {
-      isEdit: false,
+      isEdit: this.$route.params.edit,
       switcher: false,
+      loading: true,
       offer: {},
       modals: {
         remove: false,
@@ -105,6 +106,21 @@ export default {
         return !isPast(this.endDate)
       }
     },
+    back() {
+      if (this.isEdit) {
+        return {
+          name: 'offer-details',
+          params: {
+            id: this.id,
+            edit: null,
+          },
+        }
+      } else {
+        return {
+          name: 'offers',
+        }
+      }
+    },
   },
   watch: {
     offer(val) {
@@ -127,6 +143,12 @@ export default {
           },
         },
       }]
+      this.loading = false
+    },
+    '$route'(route) {
+      if (!route.params.edit) {
+        this.isEdit = false
+      }
     },
   },
   async mounted() {
@@ -188,7 +210,7 @@ export default {
         return
       }
 
-      this.isEdit = false
+      this.onEdit(false)
       this.offer = response
       this.$notify({
         type: 'success',
@@ -213,6 +235,16 @@ export default {
         message: 'Offer deleted successfully.',
       })
     },
+    async onEdit(value) {
+      this.isEdit = value
+      await this.$nextTick()
+      if (this.isEdit) {
+        this.$router.push({
+          name: 'offer-details',
+          params: { edit: 'edit' },
+        })
+      }
+    },
   },
 }
 </script>
@@ -220,7 +252,8 @@ export default {
 <template>
   <main-layout
     :title="offer.name"
-    :back="{name: 'offers'}"
+    :back="back"
+    :loading="loading"
   >
     <edit-layout
       v-if="isEdit"
@@ -228,7 +261,7 @@ export default {
       :fields="fields"
       :presets="feedOffers"
       :is-remove="isRemove"
-      @cancel="isEdit = false"
+      @cancel="onEdit(false)"
       @update="modals.update = true"
       @remove="modals.remove = true"
     >
@@ -251,7 +284,7 @@ export default {
           type="primary"
           icon="el-icon-edit"
           circle
-          @click="isEdit = true"
+          @click="onEdit(true)"
         />
       </div>
 

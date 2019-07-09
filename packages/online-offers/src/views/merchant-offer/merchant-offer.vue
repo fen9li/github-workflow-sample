@@ -55,23 +55,17 @@ export default {
   <main-layout
     :title="title"
     :back="{name: 'merchant-offers'}"
+    :loading="loading"
   >
-    <base-loader
-      v-if="loading"
-      theme="state"
-      size="large"
+    <edit-offer
+      v-if="showEdit"
+      :details="details"
     />
-    <template v-else>
-      <edit-offer
-        v-if="showEdit"
-        :details="details"
-      />
-      <offer-details
-        v-else
-        :details="details"
-        @editOffer="edit = true"
-      />
-    </template>
+    <offer-details
+      v-else
+      :details="details"
+      @editOffer="edit = true"
+    />
   </main-layout>
 </template>
 

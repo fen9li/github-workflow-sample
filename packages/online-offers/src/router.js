@@ -30,7 +30,7 @@ const router = new Router({
       component: () => lazy(import('./views/merchants')),
     },
     {
-      path: '/merchants/:id',
+      path: '/merchants/:id/:edit?',
       name: 'merchant-details',
       component: () => lazy(import('./views/merchant')),
       props: true,
@@ -53,7 +53,7 @@ const router = new Router({
       component: () => lazy(import('./views/offers')),
     },
     {
-      path: '/offers/:id',
+      path: '/offers/:id/:edit?',
       name: 'offer-details',
       component: () => lazy(import('./views/offer')),
     },
@@ -71,6 +71,9 @@ const router = new Router({
       name: 'feed-details',
       component: () => lazy(import('./views/feed-updates/details')),
       props: true,
+      meta: {
+        nested: true,
+      },
     },
     {
       path: '/feed-activity',

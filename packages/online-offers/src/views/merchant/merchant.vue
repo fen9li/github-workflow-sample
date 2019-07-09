@@ -15,7 +15,7 @@ export default {
       merchant: {},
       merchantFeeds: [],
       categories: [],
-      edit: false,
+      isEdit: this.$route.params.edit,
     }
   },
   computed: {
@@ -33,6 +33,28 @@ export default {
       }
 
       return false
+    },
+    back() {
+      if (this.isEdit) {
+        return {
+          name: 'merchant-details',
+          params: {
+            id: this.merchantId,
+            edit: null,
+          },
+        }
+      } else {
+        return {
+          name: 'merchants',
+        }
+      }
+    },
+  },
+  watch: {
+    '$route'(route) {
+      if (!route.params.edit) {
+        this.isEdit = false
+      }
     },
   },
   created() {
@@ -53,6 +75,14 @@ export default {
       this.merchant.commission = merchantFeeds[0].map.feed
       this.loading = false
     },
+    async onEdit(value) {
+      this.isEdit = value
+      await this.$nextTick()
+      this.$router.push({
+        name: 'merchant-details',
+        params: { edit: this.isEdit ? 'edit' : null },
+      })
+    },
     onUpdate(response) {
       response.commission = this.merchantFeeds[0].map.feed
       this.merchant = response
@@ -64,23 +94,19 @@ export default {
 <template>
   <main-layout
     :title="merchant.name"
-    :back="{ name: 'merchants' }"
+    :back="back"
+    :loading="loading"
   >
-    <base-loader
-      v-if="loading"
-      theme="state"
-      size="large"
+    <merchant-edit
+      v-if="isEdit"
+      :merchant="merchant"
+      :feeds="merchantFeeds"
+      :categories="categories"
+      @update="onUpdate"
+      @cancel="onEdit(false)"
     />
-    <el-card v-else>
-      <merchant-edit
-        v-if="edit"
-        :merchant="merchant"
-        :feeds="merchantFeeds"
-        :categories="categories"
-        @update="onUpdate"
-        @cancel="edit = false"
-      />
-      <template v-else>
+    <template v-else>
+      <el-card>
         <div
           slot="header"
           :class="$style.header"
@@ -100,7 +126,7 @@ export default {
               type="primary"
               icon="el-icon-edit"
               circle
-              @click="edit = true"
+              @click="onEdit(true)"
             />
           </div>
         </div>
@@ -108,8 +134,8 @@ export default {
           :merchant="merchant"
           :feed="feed"
         />
-      </template>
-    </el-card>
+      </el-card>
+    </template>
   </main-layout>
 </template>
 

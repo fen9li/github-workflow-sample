@@ -21,6 +21,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    center: {
+      type: Boolean,
+      default: false,
+    },
   },
 }
 </script>
@@ -33,6 +37,7 @@ export default {
         'base-loader': true,
         'base-loader--fullscreen': fullscreen,
         'base-loader--transparent': transparent,
+        'base-loader--center': center,
       }
     ]"
     data-cy="init-loader"

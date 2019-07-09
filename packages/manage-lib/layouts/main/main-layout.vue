@@ -7,6 +7,10 @@ export default {
       type: [Boolean, Object],
       default: false,
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
     title: {
       type: String,
       default: '',
@@ -47,82 +51,90 @@ export default {
 
 <template>
   <div :class="[$style.layout, {[$style.fixedWidth] : fixedWidth}]">
-    <div
-      v-if="header"
-      :class="$style.header"
-    >
+    <base-loader
+      v-if="loading"
+      theme="state"
+      center
+    />
+    <template v-else>
       <div
-        :class="[
-          $style.headerTop,
-          {[$style.headerSubtitled]: subtitle}
-        ]"
+        v-if="header"
+        :class="$style.header"
       >
-        <el-button
-          v-if="back"
-          :class="$style.backButton"
-          circle
-          icon="el-icon-arrow-left"
-          @click="onBackClick"
-        />
-        <slot name="beforeTitle" />
-
         <div
-          v-if="subtitle"
-          :class="$style.headerTitles"
+          :class="[
+            $style.headerTop,
+            {[$style.headerSubtitled]: subtitle}
+          ]"
         >
-          <h1 :class="$style.headerTitle">
+          <el-button
+            v-if="back"
+            :class="$style.backButton"
+            circle
+            icon="el-icon-arrow-left"
+            @click="onBackClick"
+          />
+          <slot name="beforeTitle" />
+
+          <div
+            v-if="subtitle"
+            :class="$style.headerTitles"
+          >
+            <h1 :class="$style.headerTitle">
+              {{ title }}
+            </h1>
+            <h2 :class="$style.headerSubtitle">
+              {{ subtitle }}
+            </h2>
+          </div>
+          <h1
+            v-else
+            :class="$style.headerTitle"
+          >
             {{ title }}
           </h1>
-          <h2 :class="$style.headerSubtitle">
-            {{ subtitle }}
-          </h2>
-        </div>
-        <h1
-          v-else
-          :class="$style.headerTitle"
-        >
-          {{ title }}
-        </h1>
 
-        <div style="flex-grow: 1" />
-        <div :class="$style.headerSlot">
-          <slot name="header" />
+          <div style="flex-grow: 1" />
+          <div :class="$style.headerSlot">
+            <slot name="header" />
+          </div>
         </div>
-      </div>
-      <div :class="$style.headerBottom">
-        <el-tabs
-          v-if="tabs"
-          slot="subheader"
-          :class="$style.tabs"
-          :value="activeTabKey"
-        >
-          <el-tab-pane
-            v-for="tab in tabs"
-            :key="tab.key || tab.route.name"
-            :name="tab.key || tab.route.name"
+        <div :class="$style.headerBottom">
+          <el-tabs
+            v-if="tabs"
+            slot="subheader"
+            :class="$style.tabs"
+            :value="activeTabKey"
           >
-            <router-link
-              slot="label"
-              :class="$style.tab"
-              :to="tab.route"
+            <el-tab-pane
+              v-for="tab in tabs"
+              :key="tab.key || tab.route.name"
+              :name="tab.key || tab.route.name"
             >
-              {{ tab.label }}
-            </router-link>
-          </el-tab-pane>
-        </el-tabs>
+              <router-link
+                slot="label"
+                :class="$style.tab"
+                :to="tab.route"
+              >
+                {{ tab.label }}
+              </router-link>
+            </el-tab-pane>
+          </el-tabs>
 
-        <slot name="subheader" />
+          <slot name="subheader" />
+        </div>
       </div>
-    </div>
-    <div :class="[$style.body, {[$style.noHeader] : !header}]">
-      <slot />
-    </div>
+      <div :class="[$style.body, {[$style.noHeader] : !header}]">
+        <slot />
+      </div>
+    </template>
   </div>
 </template>
 
 <style lang="scss" module>
 .layout {
   width: 100%;
+  min-height: 100%;
 }
 
 .fixedWidth {

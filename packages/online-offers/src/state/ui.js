@@ -27,6 +27,7 @@ const getters = {
           return {
             title: item.name,
             path: `/feed-updates/${item.slug}`,
+            slug: item.slug,
           }
         }),
       },

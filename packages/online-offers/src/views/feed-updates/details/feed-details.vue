@@ -26,6 +26,12 @@ export default {
     rakuten() {
       return this.details && this.details.feed === 'rakuten'
     },
+    ready() {
+      return Object.keys(this.details).length
+    },
+    name() {
+      return this.ready ? this.details.map.name : ''
+    },
   },
   created() {
     this.getDetails()
@@ -43,6 +49,7 @@ export default {
         const [, response] = await this.getMerchant({ merchantId: this.id })
         this.details = response
       } catch (error) {
+        this.$router.push('/merchants')
         console.error('Error while requesting data', error)
       } finally {
         this.loading = false
@@ -73,16 +80,12 @@ export default {
 
 <template>
   <main-layout
-    :title="`${details.name ? details.name : ''} Feed Updates`"
-    back
+    :title="`${name} Feed Updates`"
+    :back="{name: 'feed-updates', params: {slug: slug}}"
+    :loading="loading"
   >
-    <base-loader
-      v-if="loading"
-      theme="state"
-      size="large"
-    />
     <el-card
-      v-else-if="!loading && details"
+      v-if="!loading && ready"
       :class="$style.card"
     >
       <div :class="$style.wrap">
@@ -107,6 +110,7 @@ export default {
           <dd>
             <img
               v-if="details.map.logo"
+              :class="$style.img"
               :src="details.map.logo"
               :alt="details.map.name"
             >
@@ -229,6 +233,9 @@ export default {
   border-radius: 0.7rem;
 }
 
+.img {
+  max-width: 10rem;
+}
 .warnMeta {
   font-weight: bold;
 }

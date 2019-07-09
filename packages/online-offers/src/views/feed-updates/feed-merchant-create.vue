@@ -355,6 +355,7 @@ export default {
   font-size: rem(14px);
   line-height: rem(18px);
   text-align: center;
+  word-break: break-word;
 }
 
 .create {

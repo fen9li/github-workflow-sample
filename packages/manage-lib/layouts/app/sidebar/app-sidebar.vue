@@ -23,6 +23,12 @@ export default {
     onExpand() {
       this.expanded = !this.expanded
     },
+    activeClass(slug) {
+      if (this.$route.params.slug === slug) {
+        return 'menu__item--active'
+      }
+      return ''
+    },
   },
 }
 </script>
@@ -59,7 +65,10 @@ export default {
                   :key="children.path"
                   :to="{ path: children.path }"
                   tag="li"
-                  class="menu__item"
+                  :class="[
+                    'menu__item',
+                    activeClass(children.slug)
+                  ]"
                 >
                   <a class="menu__link">
                     {{ children.title }}
@@ -131,10 +140,6 @@ export default {
 
   .menu__item--active {
     background-color: rgba(#fff, .15);
-  }
-
-  .menu__item--active .menu__link {
-    cursor: default;
   }
 
   .submenu {
