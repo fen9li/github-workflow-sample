@@ -22,29 +22,35 @@ export default {
     merchantId() {
       return this.$route.params.id
     },
+    feed() {
+      return this.merchantFeeds[0] || {}
+    },
     showAck() {
-      return this.details.acknowledgement === 'created'
+      const { feed } = this
+
+      if (feed) {
+        return this.feed.acknowledgement === 'created'
+      }
+
+      return false
     },
   },
   created() {
     this.fetchMerchant()
   },
   methods: {
-    ...mapActions('merchants', [
-      'getMerchantFeeds',
-      'getGlobalMerchant',
-    ]),
-    ...mapActions('categories', [
-      'getCategories',
-    ]),
+    ...mapActions('merchants', ['getMerchantFeeds', 'getGlobalMerchant']),
+    ...mapActions('categories', ['getCategories']),
     async fetchMerchant() {
       const [, merchant] = await this.getGlobalMerchant(this.merchantId)
-      const [, { items: merchantFeeds }] = await this.getMerchantFeeds(this.merchantId)
+      const [, { items: merchantFeeds }] = await this.getMerchantFeeds(
+        this.merchantId
+      )
       // get all categories
       this.categories = await this.getCategories()
+      this.merchantFeeds = merchantFeeds
       this.merchant = merchant
       this.merchant.commission = merchantFeeds[0].map.feed
-      this.merchantFeeds = merchantFeeds
       this.loading = false
     },
     onUpdate(response) {
@@ -98,7 +104,10 @@ export default {
             />
           </div>
         </div>
-        <merchant-details :details="details" />
+        <merchant-details
+          :merchant="merchant"
+          :feed="feed"
+        />
       </template>
     </el-card>
   </main-layout>

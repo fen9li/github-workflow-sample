@@ -99,11 +99,11 @@ export default {
             {{ formatDate(merchant.updated_at) }}
           </dd>
           <dt>Merchant ID</dt>
-          <dd>{{ details.id }}</dd>
+          <dd>{{ merchant.id }}</dd>
           <dt>Merchant Ext ID</dt>
-          <dd>{{ details.external_id }}</dd>
+          <dd>{{ merchant.external_id }}</dd>
           <dt>Merchant Updated</dt>
-          <dd>{{ formatDate(details.updated_at) }}</dd>
+          <dd>{{ formatDate(merchant.updated_at) }}</dd>
           <dt>Merchant Name</dt>
           <dd>{{ merchant.name }}</dd>
           <dt>Commission Aggregator</dt>
@@ -140,14 +140,6 @@ export default {
           <dt>Terms & Conditions</dt>
           <dd v-html="merchant.terms" />
         </dl>
-      </div>
-      <div>
-        <el-button
-          type="primary"
-          icon="el-icon-edit"
-          circle
-          @click="$emit('editMerchant')"
-        />
       </div>
     </div>
   </div>
