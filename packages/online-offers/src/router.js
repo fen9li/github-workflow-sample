@@ -7,6 +7,7 @@ Vue.use(Router)
 const router = new Router({
   mode: 'history',
   base: process.env.VUE_APP_BASE_URL,
+  linkActiveClass: 'menu__item--active',
   routes: [
     {
       path: '/',
@@ -61,6 +62,9 @@ const router = new Router({
       name: 'feed-updates',
       component: () => lazy(import('./views/feed-updates')),
       props: true,
+      meta: {
+        nested: true,
+      },
     },
     {
       path: '/feed-updates/details/:slug/:id',

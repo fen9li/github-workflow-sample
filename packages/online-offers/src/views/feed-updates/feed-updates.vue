@@ -1,9 +1,8 @@
 <script>
-import { mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import feedUpdatesTable from './feed-updates.table.js'
 import merchantUpdateModal from '../merchant-update'
 import ApiProcessor from '@lib/processors/api-processor'
-import capitalize from 'lodash/capitalize'
 
 export default {
   name: 'FeedUpdates',
@@ -17,7 +16,7 @@ export default {
     return {
       table: feedUpdatesTable,
       activeItemId: null,
-      activeTab: 'merchants',
+      activeTab: this.$route.params.tab || 'merchants',
       defaultActiveTab: 'merchants',
       modal: {
         merchantUpdate: false,
@@ -29,8 +28,15 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('feeds', [
+      'feeds',
+    ]),
     slug() {
       return this.$route.params.slug
+    },
+    name() {
+      const { name } = this.feeds.find(el => el.slug === this.slug)
+      return name
     },
     path() {
       const filter = this.slug ? `?filters[feeds]=${this.slug}` : ''
@@ -52,7 +58,6 @@ export default {
     this.getFeeds()
   },
   methods: {
-    capitalize,
     ...mapMutations('merchants', {
     }),
     getFeeds() {
@@ -108,7 +113,7 @@ export default {
 <template>
   <main-layout
     v-if="table.processor"
-    :title="`${capitalize(slug)} Feed Updates`"
+    :title="`${name} Feed Updates`"
   >
     <el-tabs
       v-model="activeTab"

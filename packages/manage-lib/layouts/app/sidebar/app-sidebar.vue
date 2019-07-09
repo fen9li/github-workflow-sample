@@ -7,50 +7,84 @@ export default {
       default: () => [],
     },
   },
+  data() {
+    return {
+      expanded: this.$route.meta.nested,
+    }
+  },
+  watch: {
+    '$route'(route) {
+      if (route.meta.nested) {
+        this.expanded = true
+      }
+    },
+  },
+  methods: {
+    onExpand() {
+      this.expanded = !this.expanded
+    },
+  },
 }
 </script>
 
 <template>
   <div class="app-sidebar">
     <div class="app-sidebar__wrapper">
-      <el-menu
-        default-active="1"
-        :router="true"
-      >
+      <ul class="menu">
         <template v-for="item in menu">
-          <el-submenu
-            v-if="item.children && item.children.length"
-            :key="item.path"
-            :index="item.path"
-          >
-            <template slot="title">
-              <i
-                v-if="item.icon"
-                :class="'el-icon-' + item.icon"
-              />
-              <span>{{ item.title }}</span>
-            </template>
-            <el-menu-item
-              v-for="subitem in item.children"
-              :key="subitem.path"
-              :index="subitem.path"
+          <template v-if="item.children && item.children.length">
+            <li
+              :key="item.path"
+              :class="[
+                'menu__item',
+                expanded && 'menu__item--expanded'
+              ]"
             >
-              {{ subitem.title }}
-            </el-menu-item>
-          </el-submenu>
-          <el-menu-item
-            v-else
-            :key="item.path"
-            :index="item.path"
-          >
-            <i
-              v-if="item.icon"
-              :class="'el-icon-' + item.icon"
-            />
-            <span>{{ item.title }}</span>
-          </el-menu-item>
+              <label
+                :for="item.path"
+                class="menu__link"
+                @click="onExpand"
+              >
+                <i
+                  :class="`el-icon-${item.icon}`"
+                />
+                {{ item.title }}
+                <i
+                  v-if="item.children"
+                  class="el-icon-arrow-down"
+                />
+              </label>
+              <ul class="submenu">
+                <template v-for="children in item.children">
+                  <router-link
+                    :key="children.path"
+                    :to="{ path: children.path }"
+                    tag="li"
+                    class="menu__item"
+                  >
+                    <a class="menu__link">
+                      {{ children.title }}
+                    </a>
+                  </router-link>
+                </template>
+              </ul>
+            </li>
+          </template>
+          <template v-else>
+            <router-link
+              :key="item.path"
+              :to="{ path: item.path }"
+              tag="li"
+              class="menu__item"
+            >
+              <a class="menu__link">
+                <el-icon :name="item.icon" />
+                {{ item.title }}
+              </a>
+            </router-link>
+          </template>
         </template>
-      </el-menu>
+      </ul>
     </div>
   </div>
 </template>
@@ -66,59 +100,80 @@ export default {
   background: linear-gradient(to bottom, #1681ee, #47a1f7);
   border: none;
 
-  .el-menu {
-    background: transparent;
-    border-right: 0;
+  .menu,
+  .submenu {
+    padding: 0;
+    margin: 0;
+    list-style: none;
 
-    [class*=' el-icon-'],
     [class^='el-icon-'] {
-      color: var(--color-primary-text) !important;
-    }
-
-    &-item {
-      color: var(--color-primary-text) !important;
-
-      &:hover,
-      &:focus,
-      &:active {
-        background-color: rgba(255, 255, 255, 0.1);
-      }
-    }
-  }
-
-  .el-menu, .el-submenu {
-
-    [class^="el-icon-"] {
       margin-right: .6rem;
+      color: var(--color-primary-text);
     }
   }
 
-  .el-menu-item, .el-submenu__title {
-    display: flex;
-    align-items: center;
+  .menu__item {
+    position: relative;
+  }
+
+  .menu__link {
+    display: block;
+    padding: .75rem 1.5rem;
     font-size: 1rem;
+    color: var(--color-primary-text);
+    cursor: pointer;
+    transition: background-color .15s;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: rgba(#fff, .1);
+    }
   }
 
-  .el-menu-item.is-active {
-    background-color: rgba(255,255,255,.1);
+  .menu__item--active {
+    background-color: rgba(#fff, .15);
   }
 
-  .el-submenu {
+  .menu__item--active .menu__link {
+    cursor: default;
+  }
+
+  .submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .5s cubic-bezier(0, 1, 0, 1);
 
     &__title {
       color: var(--color-primary-text);
 
-      &:hover,
-      &:focus,
-      &:active {
-        background-color: rgba(255, 255, 255, 0.1);
+      &:hover {
+        background-color: rgba(#fff, .1);
       }
     }
 
-    .el-menu-item {
-      padding-left: 75px !important;
+    .menu__link {
+      padding-left: 5rem;
       margin-bottom: 0;
     }
+  }
+
+  .menu__item--expanded .submenu {
+    max-height: 1000px;
+    transition: max-height 1s ease-in-out;
+  }
+
+  .menu__item .el-icon-arrow-down {
+    position: absolute;
+    top: .9rem;
+    right: 1.25rem;
+    font-weight: bold;
+    transition: transform .5s cubic-bezier(0, 1, 0, 1);
+    transform: rotate(0);
+  }
+
+  .menu__item--expanded .el-icon-arrow-down {
+    transform: rotate(180deg)
   }
 }
 </style>
