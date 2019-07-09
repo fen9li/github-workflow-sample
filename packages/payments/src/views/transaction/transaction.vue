@@ -27,7 +27,7 @@ const availableStatuses = {
   },
   3: {
     icon: 'el-icon-close',
-    color: 'var(--color-error)',
+    color: '#f00',
     label: 'Failed',
   },
 }
@@ -60,6 +60,7 @@ export default {
         refund: false,
       },
       loading: false,
+      ready: false,
     }
   },
   computed: {
@@ -98,6 +99,7 @@ export default {
         this.subscription = { ...response }
       }
       this.loading = false
+      this.ready = true
     },
   },
 }
@@ -127,7 +129,7 @@ export default {
       :class="$style.detailsBlock"
     >
       <div
-        v-if="!loading"
+        v-if="!loading && ready"
       >
         <div class="info-block">
           <span class="info-block__title">

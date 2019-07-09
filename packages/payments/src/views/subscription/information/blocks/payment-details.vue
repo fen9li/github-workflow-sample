@@ -10,6 +10,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    customer: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {
