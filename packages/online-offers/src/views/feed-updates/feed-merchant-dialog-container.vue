@@ -82,7 +82,7 @@ export default {
         <el-button
           class="wide-button"
           type="danger"
-          @click="onDetach"
+          @click.stop.prevent="onDetach"
         >
           Detach
         </el-button>
@@ -92,7 +92,7 @@ export default {
   <div v-else>
     <div
       :class="$style.link"
-      @click.stop="showCreate = true"
+      @click.stop.prevent="showCreate = true"
     >
       Create / Associate
     </div>

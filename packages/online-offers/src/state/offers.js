@@ -7,25 +7,43 @@ const getters = {}
 const mutations = {}
 
 const actions = {
-  async getOffer({ commit }, id) {
-    const [, result] = await api.get(`/offers/${id}`)
-
+  async getOffer({
+    commit,
+  }, offerId) {
+    const [, result] = await api.get(`/offers/${offerId}`)
     return result
   },
-
-  async createOffer({ commit }, payload) {
+  async createOffer({
+    commit,
+  }, payload) {
     return api.post('/offers', payload)
   },
-
-  async updateOffer({ commit }, { id, payload }) {
-    return api.put(`/offers/${id}`, payload)
+  async updateOffer({
+    commit,
+  }, {
+    offerId,
+    payload,
+  }) {
+    return api.put(`/offers/${offerId}`, payload)
+  },
+  async deleteOffer({
+    commit,
+  }, offerId) {
+    return api.delete(`/offers/${offerId}`)
   },
 
-  async deleteOffer({ commit }, id) {
-    return api.delete(`/offers/${id}`)
+  async activateOffer({
+    commit,
+  }, {
+    feedOfferId,
+    payload,
+  }) {
+    return api.put(`/feedoffers/${feedOfferId}`, payload)
   },
 
-  async activateOffersBulk({ commit }, payload) {
+  async activateOffersBulk({
+    commit,
+  }, payload) {
     // this action also serves as bulk deactivate
     return api.patch(`/offers`, payload)
   },

@@ -110,6 +110,7 @@ export default {
       'createMerchant',
       'searchMerchants',
       'associateMerchant',
+      'activateMerchant',
     ]),
     async querySearch(queryString = null, cb) {
       let result = this.suggestions
@@ -153,16 +154,23 @@ export default {
         this.associateMerchant({
           merchantId: this.merchantId,
           feedmerchantId: this.row.id,
-        }).then(() => this.processor.getData())
+        })
+          .then(() => this.activateMerchant({
+            feedmerchantId: this.row.id,
+            payload: {
+              acknowledgement: 'acknowledged',
+            },
+          }))
           .then(() => this.onSubmitResponse())
+          .then(() => this.processor.getData())
       } else {
         const payload = {
           feed_merchant: this.row.external_id,
           ...this.form,
         }
         this.createMerchant(payload)
-          .then(() => this.processor.getData())
           .then(() => this.onSubmitResponse())
+          .then(() => this.processor.getData())
       }
     },
     onSubmitResponse() {
@@ -492,6 +500,7 @@ export default {
     .el-alert__description {
       width: 100%;
       text-align: center;
+      word-break: break-word;
     }
   }
 }

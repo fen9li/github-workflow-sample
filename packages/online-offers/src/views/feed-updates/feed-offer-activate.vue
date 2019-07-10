@@ -28,12 +28,19 @@ export default {
   methods: {
     ...mapActions('offers', [
       'createOffer',
+      'activateOffer',
     ]),
     onSubmit() {
       this.createOffer({
         feed_offer: this.row.external_id,
         name: this.row.name,
-      }).then(() => this.processor.getData())
+      })
+        .then(() => this.activateOffer({
+          feedOfferId: this.row.id,
+          payload: {
+            acknowledgement: 'acknowledged',
+          },
+        }))
         .then(() => {
           this.$notify({
             type: 'success',
@@ -41,6 +48,7 @@ export default {
             message: 'Successfuly activated',
           })
         })
+        .then(() => this.processor.getData())
     },
   },
 }

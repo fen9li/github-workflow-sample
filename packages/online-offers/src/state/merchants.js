@@ -65,11 +65,10 @@ const actions = {
   async activateMerchant({
     commit,
   }, {
-    merchantId,
+    feedmerchantId,
+    payload,
   }) {
-    return api.put(`/feedmerchants/${merchantId}`, {
-      enabled: true,
-    })
+    return api.put(`/feedmerchants/${feedmerchantId}`, payload)
   },
   async updateMerchant({
     commit,
