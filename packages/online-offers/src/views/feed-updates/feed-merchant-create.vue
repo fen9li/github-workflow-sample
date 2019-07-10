@@ -113,12 +113,11 @@ export default {
     ]),
     async querySearch(queryString = null, cb) {
       let result = this.suggestions
-      if (queryString) {
+      if (queryString && queryString !== this.newItem.name) {
         result = await this.fetchSuggestions(queryString)
       }
       cb(result)
     },
-
     async fetchSuggestions(queryString = null) {
       const [, { items = [] }] = await this.searchMerchants(queryString)
       const result = concat([this.newItem], sortBy(items, 'name'))
@@ -138,7 +137,6 @@ export default {
     },
     handleClear() {
       this.search = ''
-      // this.selectedItem = null
     },
     handleClick(event) {
       if (this.isSearchEmpty) {
@@ -210,7 +208,7 @@ export default {
         You want to associate <b>{{ row.name }}</b><br>with <b>{{ selectedItem.name }}</b>
       </template>
       <template v-else>
-        You want to create <b>{{ row.name }}</b><br>as new Global Merchant
+        You want to create <b>{{ row.name }}</b><br>as new global merchant
       </template>
     </el-alert>
 
