@@ -2,9 +2,11 @@
 import get from 'lodash/get'
 import md5 from 'md5'
 import uploadcare from 'uploadcare-vue'
-import { mapActions, mapMutations, mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import DataProcessor from '@lib/processors/data-processor'
 import formatCommission from '@lib/utils/format-commission'
+import sortBy from 'lodash/sortBy'
+import concat from 'lodash/concat'
 
 export default {
   components: {
@@ -59,6 +61,7 @@ export default {
           },
         ],
       },
+      suggestions: [],
       uploadcare: {
         expire: new Date(new Date + 60 * 60 * 12).getTime(),
         publicKey: process.env.VUE_APP_UPLOADCARE_PUBLIC_KEY,
@@ -79,8 +82,12 @@ export default {
     commission() {
       return formatCommission(this.row.map.commission)
     },
-    disabled() {
-      return !get(this.form, 'name.length', false)
+    submitDisabled() {
+      if (!this.selectedItem) {
+        return true
+      } else {
+        return !get(this.form, 'name.length', false)
+      }
     },
     merchantId() {
       return get(this.selectedItem, 'id')
@@ -91,6 +98,12 @@ export default {
     uploadcareSignature() {
       return md5(this.uploadcare.secretKey + this.uploadcare.expire)
     },
+    isSearchEmpty() {
+      return !this.search.length
+    },
+  },
+  mounted() {
+    this.preloadSuggestions()
   },
   methods: {
     ...mapActions('merchants', [
@@ -98,25 +111,41 @@ export default {
       'searchMerchants',
       'associateMerchant',
     ]),
-    ...mapMutations('merchants', {
-      updateTable: 'UPDATE_TABLE',
-    }),
-    async querySearchAsync(queryString, cb) {
+    async querySearch(queryString = null, cb) {
+      let result = this.suggestions
+      if (queryString) {
+        result = await this.fetchSuggestions(queryString)
+      }
+      cb(result)
+    },
+
+    async fetchSuggestions(queryString = null) {
       const [, { items = [] }] = await this.searchMerchants(queryString)
-      const suggestions = [this.newItem, ...items]
-      cb(suggestions.map((item, index) => {
+      const result = concat([this.newItem], sortBy(items, 'name'))
+      return result.map((item, index) => {
         return {
           value: item.name,
           index,
           item,
         }
-      }))
+      })
+    },
+    async preloadSuggestions() {
+      this.suggestions = await this.fetchSuggestions()
     },
     handleSelect({ item }) {
       this.selectedItem = item
     },
     handleClear() {
-      this.selectedItem = null
+      this.search = ''
+      // this.selectedItem = null
+    },
+    handleClick(event) {
+      if (this.isSearchEmpty) {
+        this.$refs.autocomplete.focus()
+      } else {
+        this.handleClear()
+      }
     },
     onSuccessUploading(img) {
       this.form.logo = img.cdnUrl
@@ -148,13 +177,6 @@ export default {
     },
     onCreateClick() {
       this.selectedItem = this.newItem
-      this.form = {
-        classifications: [],
-        name: '',
-        logo: '',
-        website: '',
-        terms: '',
-      }
       this.isCreate = true
     },
   },
@@ -184,22 +206,68 @@ export default {
       :class="$style.alert"
       :closable="false"
     >
-      You want to {{ `${merchantId ? 'associate' : 'create'}` }} <b>{{ row.name }}</b> with <b>{{ selectedItem.name }}</b>
+      <template v-if="merchantId">
+        You want to associate <b>{{ row.name }}</b><br>with <b>{{ selectedItem.name }}</b>
+      </template>
+      <template v-else>
+        You want to create <b>{{ row.name }}</b><br>as new Global Merchant
+      </template>
     </el-alert>
+
+    <template v-if="selectedItem">
+      <dl
+        v-show="merchantId"
+        :class="$style.datalist"
+      >
+        <dt>Merchant Ext ID</dt>
+        <dd>{{ row.external_id }}</dd>
+
+        <dt>Commission Aggregator</dt>
+        <dd>{{ row.feed }}</dd>
+
+        <template v-if="commission">
+          <dt>Commission Type</dt>
+          <dd>{{ commission.type }}</dd>
+
+          <dt>Commission Rate</dt>
+          <dd>
+            <span>
+              {{ commission.base }}
+            </span>
+            <span>
+              {{ commission.min }}
+            </span>
+            <span>
+              {{ commission.max }}
+            </span>
+          </dd>
+        </template>
+
+        <dt>Merchant Tracking URL</dt>
+        <dd>{{ trackingLing }}</dd>
+      </dl>
+    </template>
+
     <el-form-item
-      v-if="!isCreate"
       label="Global Merchant"
       prop="merchant"
     >
       <el-autocomplete
+        ref="autocomplete"
         v-model="search"
-        :fetch-suggestions="querySearchAsync"
+        :fetch-suggestions="querySearch"
         :class="$style.search"
         placeholder="Please input or select from list"
-        clearable
         @select="handleSelect"
-        @clear="handleClear"
       >
+        <i
+          slot="suffix"
+          :class="[
+            `el-icon-${isSearchEmpty ? 'arrow-down' : 'close'}`,
+            [$style.inputIcon]
+          ]"
+          @click.stop="handleClick"
+        />
         <template slot-scope="{ item }">
           <template v-if="!item.index">
             <b>{{ item.value }}</b>
@@ -212,28 +280,33 @@ export default {
     </el-form-item>
 
     <template v-if="selectedItem">
-      <dl :class="$style.datalist">
+      <dl
+        v-show="!merchantId"
+        :class="$style.datalist"
+      >
         <dt>Merchant Ext ID</dt>
         <dd>{{ row.external_id }}</dd>
 
         <dt>Commission Aggregator</dt>
         <dd>{{ row.feed }}</dd>
 
-        <dt>Commission Type</dt>
-        <dd>{{ commission.type }}</dd>
+        <template v-if="commission">
+          <dt>Commission Type</dt>
+          <dd>{{ commission.type }}</dd>
 
-        <dt>Commission Rate</dt>
-        <dd>
-          <span>
-            {{ commission.base }}
-          </span>
-          <span>
-            {{ commission.min }}
-          </span>
-          <span>
-            {{ commission.max }}
-          </span>
-        </dd>
+          <dt>Commission Rate</dt>
+          <dd>
+            <span>
+              {{ commission.base }}
+            </span>
+            <span>
+              {{ commission.min }}
+            </span>
+            <span>
+              {{ commission.max }}
+            </span>
+          </dd>
+        </template>
 
         <dt>Merchant Tracking URL</dt>
         <dd>{{ trackingLing }}</dd>
@@ -335,7 +408,7 @@ export default {
     <el-button
       type="primary"
       :class="$style.submit"
-      :disabled="disabled"
+      :disabled="submitDisabled"
       @click="onSubmit"
     >
       {{ `${merchantId ? 'Associate' : 'Create'}` }}
@@ -356,6 +429,12 @@ export default {
   line-height: rem(18px);
   text-align: center;
   word-break: break-word;
+}
+
+.inputIcon {
+  padding: 12px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .create {
