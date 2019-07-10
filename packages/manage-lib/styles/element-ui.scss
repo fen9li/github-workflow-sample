@@ -11,6 +11,7 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 
 $color-divider: var(--color-divider);
 $color-primary: var(--color-primary);
+$color-primary-lightest: var(--color-primary-lightest);
 $color-error: var(--color-error);
 $color-success: var(--color-success);
 $color-text: var(--color-text);
@@ -159,7 +160,7 @@ $size-card-spacing: var(--size-card-spacing);
   }
 
   &.is-active {
-    color: inherit;
+    color: $color-success;
   }
 }
 
@@ -213,6 +214,12 @@ $size-card-spacing: var(--size-card-spacing);
   .el-notification__icon {
     margin-right: 1.5rem;
     font-size: 1.6rem;
+  }
+
+  :global {
+    .el-icon-info {
+      color: $color-primary-lightest;
+    }
   }
 
   .el-notification__title {

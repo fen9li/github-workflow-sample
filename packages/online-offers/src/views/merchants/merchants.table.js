@@ -2,90 +2,83 @@ import ApiProcessor from '@lib/processors/api-processor'
 import merchantsStatus from './merchants-status'
 import cellRoute from '~/components/cells/cell-route.vue'
 
-const TABLE_FILTERS = [
-  {
-    attribute: 'status',
-    type: 'select',
-    icon: 'el-icon-document',
-    values: [
-      {
-        label: 'Enabled',
-        value: true,
-      },
-      {
-        label: 'Disabled',
-        value: false,
-      },
-    ],
-  },
-  {
-    attribute: 'merchant',
-    type: 'string',
-    icon: 'el-icon-document',
-  },
-  {
-    attribute: 'offers',
-    type: 'numeric',
-    icon: 'el-icon-document',
-  },
-  {
-    attribute: 'feed',
-    type: 'string',
-    icon: 'el-icon-document',
-  },
-  {
-    attribute: 'lastUpdated',
-    label: 'Last updated',
-    type: 'date',
-    icon: 'el-icon-document',
-  },
-]
+const TABLE_FILTERS = [{
+  attribute: 'status',
+  type: 'select',
+  icon: 'el-icon-document',
+  values: [{
+    label: 'Enabled',
+    value: true,
+  }, {
+    label: 'Disabled',
+    value: false,
+  }],
+}, {
+  attribute: 'merchant',
+  type: 'string',
+  icon: 'el-icon-document',
+}, {
+  attribute: 'total_offers',
+  type: 'numeric',
+  icon: 'el-icon-document',
+}, {
+  attribute: 'feeds',
+  type: 'string',
+  icon: 'el-icon-document',
+}, {
+  attribute: 'lastUpdated',
+  label: 'Last updated',
+  type: 'date',
+  icon: 'el-icon-document',
+}]
 
-const TABLE_COLUMNS = [
-  {
-    name: 'enabled',
-    icon: 'el-icon-document',
-    component: (_, __, { row }) => ({
-      is: merchantsStatus,
-      props: { row },
-    }),
-  },
-  {
-    name: 'name',
-    label: 'Merchant',
-    icon: 'el-icon-document',
-  },
-  {
-    name: 'total_offers',
-    label: 'Offers',
-    icon: 'el-icon-document',
-  },
-  {
-    name: 'feed',
-    icon: 'el-icon-document',
-  },
-  {
-    name: 'updated_at',
-    label: 'Last Updated',
-    icon: 'el-icon-document',
-    format: 'dateTime',
-  },
-  {
-    sortable: false,
-    width: 80,
-    component: {
-      is: cellRoute,
-      props: {
-        text: 'View Offers',
-        pathName: 'merchant-offers',
-        identifier: 'id',
-      },
+const TABLE_COLUMNS = [{
+  name: 'enabled',
+  icon: 'el-icon-document',
+  component: (_, __, {
+    row,
+  }) => ({
+    is: merchantsStatus,
+    props: {
+      row,
+    },
+  }),
+}, {
+  name: 'name',
+  label: 'Merchant',
+  icon: 'el-icon-document',
+}, {
+  name: 'total_offers',
+  label: 'Offers',
+  icon: 'el-icon-document',
+}, {
+  name: 'feeds',
+  label: 'Feed',
+  icon: 'el-icon-document',
+  format: 'arrayToString',
+}, {
+  name: 'updated_at',
+  label: 'Last Updated',
+  icon: 'el-icon-document',
+  format: 'dateTime',
+}, {
+  sortable: false,
+  width: 80,
+  component: {
+    is: cellRoute,
+    props: {
+      text: 'View Offers',
+      pathName: 'merchant-offers',
+      identifier: 'id',
     },
   },
-]
+}]
 
 export default component => ({
-  processor: new ApiProcessor({ component, path: 'merchants' }),
+  processor: new ApiProcessor({
+    component,
+    path: 'merchants',
+  }),
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
 })

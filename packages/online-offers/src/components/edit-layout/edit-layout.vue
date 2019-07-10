@@ -483,12 +483,12 @@ export default {
 
 .feedUpdated {
   position: relative;
-  top: rem(-2px);
-  padding: rem(2px 9px);
+  top: rem(-3px);
+  padding: rem(4px 12px);
   font-size: rem(12px);
   font-weight: normal;
   color: white;
   background-color: #14be21;
-  border-radius: rem(10px);
+  border-radius: rem(18px);
 }
 </style>
