@@ -25,23 +25,23 @@ const router = new VueRouter({
       component: () => lazy(import('~/views/home/home')),
     },
     {
-      path: '/payment/transactions',
+      path: '/transactions',
       name: 'payment-transactions',
       component: () => lazy(import('~/views/transactions')),
     },
     {
-      path: '/payment/transactions/:id',
+      path: '/transactions/:id',
       name: 'payment-transaction-details',
       component: () => lazy(import('~/views/transaction')),
       props: true,
     },
     {
-      path: '/payment/settlements',
+      path: '/settlements',
       name: 'payment-settlements',
       component: () => lazy(import('~/views/settlements')),
     },
     {
-      path: '/payment/settlements/:id',
+      path: '/settlements/:id',
       name: 'payment-settlement-details',
       component: () => lazy(import('~/views/settlement')),
       props: true,

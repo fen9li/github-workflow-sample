@@ -12,7 +12,7 @@ export default {
   },
   data() {
     return {
-      showWarning: true,
+      warning: true,
     }
   },
   computed: {
@@ -31,12 +31,12 @@ export default {
         failed: {
           icon: 'el-icon-close',
           value: 'Failed',
-          color: 'var(--color-error)',
+          color: '#f00',
         },
         5: {
           icon: 'el-icon-close',
           value: 'Failed',
-          color: 'var(--color-error)',
+          color: '#f00',
         },
       }
       return availableStatuses[this.settlement.status]
@@ -50,7 +50,12 @@ export default {
       }
     },
     dataReady() {
-      return Object.keys(this.settlement).length
+      return Object.keys(this.settlement).length > 0
+    },
+    showWarning() {
+      if (this.settlementStatus) {
+        return this.settlementStatus.value === 'Failed' && this.warning
+      } else return false
     },
   },
   methods: {
@@ -143,7 +148,7 @@ export default {
         </span>
         <i
           class="el-icon-close"
-          @click="showWarning = false"
+          @click="warning = false"
         />
       </div>
       <div :class="$style.warningBody">

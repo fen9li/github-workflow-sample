@@ -15,13 +15,13 @@ export default {
         },
         {
           title: 'Transactions',
-          path: '/payment/transactions',
+          path: '/transactions',
           icon: 'sort',
 
         },
         {
           title: 'Settlements',
-          path: '/payment/settlements',
+          path: '/settlements',
           icon: 'view',
         },
         {
