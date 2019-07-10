@@ -1,4 +1,4 @@
-const dateFormat = 'DD/MM/YYYY hh:mm A'
+import ElasticProcessor from '@lib/processors/elastic-processor'
 
 const TABLE_FILTERS = [
   {
@@ -77,10 +77,7 @@ const TABLE_COLUMNS = [
     name: 'createdAt',
     label: 'Date Created',
     icon: 'el-icon-document',
-    format: {
-      name: 'date',
-      params: [dateFormat],
-    },
+    format: 'dateTime',
   },
   {
     name: 'type',
@@ -204,7 +201,22 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default {
-  filters: TABLE_FILTERS,
-  columns: TABLE_COLUMNS,
+export default function(component) {
+  return {
+    processor: new ElasticProcessor({
+      component,
+      index: 'transactions',
+      staticQuery: {
+        filters: [
+          {
+            attribute: 'type',
+            comparison: 'not_eq',
+            value: 'settlement',
+          },
+        ],
+      },
+    }),
+    columns: TABLE_COLUMNS,
+    filters: TABLE_FILTERS,
+  }
 }

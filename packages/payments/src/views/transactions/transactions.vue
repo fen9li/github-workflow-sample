@@ -1,5 +1,4 @@
 <script>
-import ElasticProcessor from '@lib/processors/elastic-processor'
 import tableConfig from './transactions-table'
 import VirtualPos from './transactions-virtual-pos.vue'
 
@@ -13,21 +12,7 @@ export default {
   },
   data() {
     return {
-      processor: new ElasticProcessor({
-        component: this,
-        index: 'transactions',
-        staticQuery: {
-          filters: [
-            {
-              attribute: 'type',
-              comparison: 'not_eq',
-              value: 'settlement',
-            },
-          ],
-        },
-      }),
-      filters: tableConfig.filters,
-      columns: tableConfig.columns,
+      tableConfig: tableConfig(this),
       modal: {
         pos: false,
       },
@@ -37,7 +22,7 @@ export default {
     onRowClick(row) {
       this.$router.push({
         name: 'payment-transaction-details',
-        params: { id: row.id || 'unknown' },
+        params: { id: row.id },
       })
     },
   },
@@ -48,15 +33,16 @@ export default {
   <main-layout title="Transactions">
     <table-layout
       table-name="transactions"
-      :processor="processor"
-      :filters="filters"
-      :columns="columns"
+      :processor="tableConfig.processor"
+      :filters="tableConfig.filters"
+      :columns="tableConfig.columns"
       @row-click="onRowClick"
     />
     <el-button
       slot="header"
       type="primary"
       class="wide-button"
+      data-test="pos"
       @click="modal.pos = true"
     >
       Virtual POS

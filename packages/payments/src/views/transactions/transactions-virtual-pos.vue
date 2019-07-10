@@ -6,32 +6,95 @@ export default {
   directives: {
     mask,
   },
-  props: {
-    visible: {
-      type: Boolean,
-      required: true,
-    },
-  },
   data() {
     return {
       form: {
-        card: {
-          amount: '',
-          currency: 'aud',
-          holderName: '',
-          number: '',
-          expiry: '',
-          cvv: '',
-          email: '',
-        },
+        amount: '',
+        currency: 'aud',
+        name: '',
+        number: '',
+        expiry: '',
+        cvv: '',
+        email: '',
       },
-      disableSubmit: true,
-      rules: {},
+      disableSubmit: false,
+      showError: true,
+      error: 'Transaction Failed: Insufficient_Funds',
+      rules: {
+        amount: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+        name: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+        number: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+        expiry: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+        cvv: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+        email: [
+          {
+            required: true,
+            message: 'This field is required',
+            trigger: 'blur',
+          },
+        ],
+      },
     }
   },
   methods: {
     onSubmit() {
-      console.warn(this.form)
+      if (!this.validateAll().some(item => item === false)) {
+        // if (response) {
+        //   this.$notify({
+        //     type: 'success',
+        //     title: 'Saved',
+        //     message: 'Transactions successfully made',
+        //   })
+
+        //   this.$emit('update:visible', false)
+        //   this.$emit('edited')
+        // } else if (error) {
+        //   const firstError = error.violations[Object.keys(error.violations)[0]][0]
+        //   this.$notify({
+        //     type: 'error',
+        //     title: 'Error',
+        //     message: firstError,
+        //   })
+        // }
+        console.warn(this.form)
+      }
+    },
+    validateAll() {
+      const result = []
+      this.$refs.form.validate( valid => {
+        result.push(valid)
+      })
+      return result
     },
   },
 }
@@ -40,12 +103,13 @@ export default {
 <template>
   <el-dialog
     title="Virtual POS"
-    :visible="visible"
     :class="$style.modal"
-    @update:visible="$emit('update:visible', $event)"
+    v-bind="$attrs"
+    v-on="$listeners"
   >
     <el-form
-      :model="form.card"
+      ref="form"
+      :model="form"
       :rules="rules"
       label-position="top"
       label-width="200px"
@@ -53,18 +117,15 @@ export default {
     >
       <el-form-item
         label="Amount"
-        prop="amount"
-        required
       >
         <div
-          prop="amount"
           class="amount-form-item"
         >
           <el-form-item
             prop="amount"
           >
             <el-input
-              v-model="form.card.amount"
+              v-model="form.amount"
               v-mask="[
                 '#.##',
                 '##.##',
@@ -73,6 +134,7 @@ export default {
                 '#####.##'
               ]"
               placeholder="0.00"
+              data-test="amount"
             >
               <template #prepend>
                 $
@@ -80,7 +142,7 @@ export default {
             </el-input>
           </el-form-item>
           <el-select
-            v-model="form.card.currency"
+            v-model="form.currency"
           >
             <el-option
               label="AUD"
@@ -95,21 +157,24 @@ export default {
       </el-form-item>
       <el-form-item
         label="Card Holder Name"
-        required
+        prop="name"
       >
         <el-input
-          v-model="form.card.holderName"
+          v-model="form.name"
+          data-test="name"
         />
       </el-form-item>
       <el-form-item
         label="Card No."
         :class="$style.cardNumber"
+        prop="number"
       >
         <el-input
-          v-model="form.card.number"
+          v-model="form.number"
           v-mask="'#### #### #### ####'"
           placeholder="---- ---- ---- ----"
           :class="$style.short"
+          data-test="number"
         />
         <div :class="$style.cardLogos">
           <div :class="$style.logoWrapper">
@@ -138,39 +203,46 @@ export default {
       <div class="united-field">
         <el-form-item
           label="Expiry"
-          required
+          prop="expiry"
         >
           <el-input
-            v-model="form.card.expiry"
+            v-model="form.expiry"
             v-mask="'##/##'"
             :class="$style.short"
+            data-test="expiry"
           />
         </el-form-item>
         <el-form-item
           label="CVV"
-          required
+          prop="cvv"
         >
           <el-input
-            v-model="form.card.cvv"
+            v-model="form.cvv"
             v-mask="'###'"
             :class="$style.short"
+            data-test="cvv"
           />
         </el-form-item>
       </div>
       <el-form-item
         label="Email"
+        prop="email"
       >
         <el-input
-          v-model="form.card.email"
+          v-model="form.email"
+          data-test="email"
         />
       </el-form-item>
-      <div :class="$style.moreInfo">
-        <el-button
-          type="text"
-          :class="$style.moreBtn"
-        >
-          + Add more information
-        </el-button>
+      <div
+        v-if="error && showError"
+        :class="$style.error"
+      >
+        <i class="el-icon-error" />
+        <span> {{ error }}</span>
+        <i
+          :class="['el-icon-close']"
+          @click="showError = false"
+        />
       </div>
     </el-form>
     <div
@@ -180,6 +252,7 @@ export default {
         :disabled="disableSubmit"
         class="wide-button"
         :type="disableSubmit ? 'info' : 'primary'"
+        data-test="submit"
         @click="onSubmit"
       >
         Process Charge
@@ -220,8 +293,29 @@ export default {
   justify-content: flex-end;
 }
 
-.moreBtn {
-  padding-bottom: 0;
-  font-size: 1rem;
+.error {
+  display: flex;
+  align-items: center;
+  padding: .6rem 1rem;
+  color: var(--color-error);
+  background-color: #FEF0F0;
+  border-radius: rem(4px);
+
+  :global {
+    .el-icon-close,
+    .el-icon-error {
+      font-size: 1rem;
+    }
+    .el-icon-close {
+      margin-left: auto;
+      font-weight: 600;
+      color: var(--color-text);
+      cursor: pointer;
+    }
+
+    .el-icon-error {
+      margin-right: .5rem;
+    }
+  }
 }
 </style>
