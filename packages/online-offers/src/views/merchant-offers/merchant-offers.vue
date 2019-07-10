@@ -56,8 +56,8 @@ export default {
     },
     onRowClick(row) {
       this.$router.push({
-        name: 'merchant-offer',
-        params: { offerId: row.id },
+        name: 'offer-details',
+        params: { id: row.id },
       })
     },
     onTabClick() {

@@ -6,7 +6,7 @@ import MerchandUpdateModal from './modals/merchant-update'
 import EditLayout from '../../../components/edit-layout/edit-layout'
 
 export default {
-  name: 'MerchantDetailsEdit',
+  name: 'MerchantEdit',
   components: {
     EditLayout,
     MerchantRemoveModal,
@@ -42,7 +42,7 @@ export default {
       const commissions = []
 
       for (const feed of this.feeds) {
-        commissions.push(this.comissionForFeed(feed))
+        commissions.push(this.commissionForFeed(feed))
       }
 
       return commissions
@@ -54,18 +54,16 @@ export default {
           label: 'Merchant name',
           path: 'name',
           component: 'el-input',
-          rules: [
-            { required: true, message: 'merchant name is required' },
-          ],
-        }, {
+          rules: [{ required: true, message: 'merchant name is required' }],
+        },
+        {
           key: 'logo',
           label: 'Merchant Image',
           path: 'logo',
           component: 'edit-layout-image',
-          rules: [
-            { required: true, message: 'merchant logo is required' },
-          ],
-        }, {
+          rules: [{ required: true, message: 'merchant logo is required' }],
+        },
+        {
           key: 'summary',
           label: 'Summary',
           path: 'summary',
@@ -74,46 +72,45 @@ export default {
             type: 'textarea',
             rows: 3,
           },
-        }, {
+        },
+        {
           key: 'website',
           label: 'Merchant Website',
           path: 'website',
-          rules: [
-            { required: true, message: 'website url is required' },
-          ],
+          rules: [{ required: true, message: 'website url is required' }],
           component: 'el-input',
           componentSlots: [
             {
               name: 'prepend',
             },
           ],
-        }, {
+        },
+        {
           key: 'categories',
           label: 'Classification',
           path: 'categories',
-          rules: [
-            { required: true, message: 'classification is required' },
-          ],
+          rules: [{ required: true, message: 'classification is required' }],
           component: 'edit-layout-categories',
           componentBindings: {
             categories: this.categories,
           },
-        }, {
+        },
+        {
           key: 'terms',
           label: 'Terms & Conditions',
           path: 'terms',
-          rules: [
-            { required: true, message: 'terms is required' },
-          ],
+          rules: [{ required: true, message: 'terms is required' }],
           component: 'el-input',
           componentBindings: {
             type: 'textarea',
             rows: 3,
           },
-        }, {
+        },
+        {
           type: 'divider',
           slot: 'footerTitle',
-        }, {
+        },
+        {
           key: 'commission',
           label: 'Commission Rate',
           path: 'commission',
@@ -135,10 +132,17 @@ export default {
       const feedOffers = []
 
       for (const feed of this.feeds) {
+        const feedCategories = get(feed, 'map.categories', [])
+        let categoriesLabel = '—'
+
+        if (feedCategories.length) {
+          categoriesLabel = feedCategories.map(c => c.name).join(', ')
+        }
+
         const feedObject = {
           title: get(feed, 'map.feed'),
           selected: false,
-          updated: get(this.merchant, 'feed_updated', false),
+          updated: get(this.merchant, 'acknowledgement') === 'updated',
           items: {
             name: {
               selected: false,
@@ -159,18 +163,35 @@ export default {
             },
             categories: {
               selected: false,
-              value: this.categories,
-              label: this.categories.map(el => el.name).join(', '),
+              value: feedCategories,
+              label: categoriesLabel,
+              type: 'text',
             },
             terms: {
               selected: false,
               value: get(feed, 'map.terms', '-'),
             },
+            commission: {
+              selected: false,
+              component: 'edit-layout-table',
+              value: feed.feed,
+              label: false,
+              componentBindings: {
+                labels: {
+                  base: 'Base',
+                  min: 'Min',
+                  max: 'Max',
+                  type: 'Commission Type',
+                  url: 'Merchant Tracking URL',
+                },
+                values: this.commissions,
+              },
+            },
           },
         }
 
         if (this.commissions.length > 1) {
-          feedObject.commissions = this.comissionForFeed(feed)
+          feedObject.commissions = this.commissionForFeed(feed)
         }
 
         feedOffers.push(feedObject)
@@ -179,30 +200,31 @@ export default {
       return feedOffers
     },
   },
+  created() {
+    this.updateFeedMerchantsAck()
+  },
   methods: {
     ...mapActions('merchants', [
       'updateMerchant',
       'deleteMerchant',
+      'activateMerchant',
+      'setDefaultFeedMerchant',
     ]),
     formatCommissionType(type) {
-      switch (type) {
-        case 'PERCENTAGE':
-          return 'Percents'
-        case 'DOLLARS':
-        default:
-          return 'Dollars'
+      if (type === 'PERCENTAGE') {
+        return 'Percents'
       }
+
+      return 'Dollars'
     },
     formatCommissionValue(type, value) {
-      switch (type) {
-        case 'PERCENTAGE':
-          return `${ value }%`
-        case 'DOLLARS':
-        default:
-          return `$${ value }`
+      if (type === 'PERCENTAGE') {
+        return `${value}%`
       }
+
+      return `$${value}`
     },
-    comissionForFeed(feed) {
+    commissionForFeed(feed) {
       return {
         key: get(feed, 'map.feed'),
         items: {
@@ -222,8 +244,7 @@ export default {
             value: get(feed, 'map.commission.type', 'DOLLARS'),
             format: this.formatCommissionType,
           },
-          url: {
-          },
+          url: {},
         },
       }
     },
@@ -234,11 +255,22 @@ export default {
       const changedFields = this.fields.filter(field => field.changed)
 
       for (const field of changedFields) {
-        if (field.key === 'categories') {
-          payload[field.key] = field.value.map(el => el.id)
+        const { key, value } = field
+
+        if (key === 'categories') {
+          payload[key] = value.map(el => el.id)
+        } else if (key === 'commission') {
+          const newCommissionFeed = this.feeds.find(f => (f.feed = value))
+          const feedMerchantId = newCommissionFeed.id
+
+          this.setDefaultFeedMerchant({
+            merchantId: this.$route.params.id,
+            feedMerchantId: feedMerchantId,
+          })
         } else {
-          payload[field.key] = field.value
+          payload[key] = value
         }
+
         field.changed = false
       }
 
@@ -257,7 +289,7 @@ export default {
       this.$notify({
         type: 'success',
         title: 'Success',
-        message: 'Merchant details updated sussessfully.',
+        message: 'Merchant details updated successfully.',
       })
     },
     async submitDelete(notes) {
@@ -279,6 +311,14 @@ export default {
         message: 'Global merchant deleted successfully.',
       })
     },
+    updateFeedMerchantsAck() {
+      this.feeds.forEach(({ id }) =>
+        this.activateMerchant({
+          feedmerchantId: id,
+          payload: { acknowledgement: 'acknowledged' },
+        })
+      )
+    },
   },
 }
 </script>
@@ -293,18 +333,10 @@ export default {
       @update="modals.update = true"
       @remove="modals.remove = true"
     >
-      <template slot="removeButton">
-        <span>Delete Global Merchant</span>
-      </template>
-      <template slot="updateButton">
-        <span>Save Changes</span>
-      </template>
-      <template
-        v-slot:footerTitle="slotProps"
-      >
+      <template #footerTitle="{slotStyles}">
         <div
           :class="$style.editFooterTitle"
-          :style="slotProps.slotStyles"
+          :style="slotStyles"
         >
           <div>Commission Tracking Details</div>
           <div :class="$style.editFooterActive">
@@ -312,13 +344,21 @@ export default {
           </div>
         </div>
       </template>
+      <template #removeButton>
+        <span>Delete Global Merchant</span>
+      </template>
+      <template #updateButton>
+        <span>Save Changes</span>
+      </template>
     </edit-layout>
+
     <merchand-update-modal
       v-if="modals.update"
       :visible.sync="modals.update"
       :fields="fields"
       @submit="submitUpdate"
     />
+
     <merchant-remove-modal
       v-if="modals.remove"
       :visible.sync="modals.remove"

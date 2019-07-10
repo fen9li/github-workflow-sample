@@ -47,7 +47,7 @@ export default {
   computed: {
     dividerStyles() {
       return {
-        gridColumn: `1/${ 2 + this.presets.length }`,
+        gridColumn: `1/${2 + this.presets.length}`,
       }
     },
   },
@@ -138,12 +138,16 @@ export default {
             // check if field editable
             if (field.component) {
               if (checked) {
-                if (!has(preset, `items.${ field.key }.value`)) {
+                if (!has(preset, `items.${field.key}.value`)) {
                   continue
                 }
-                this.form[field.key] = { value: get(preset, `items.${ field.key }.value`) }
+                this.form[field.key] = {
+                  value: get(preset, `items.${field.key}.value`),
+                }
               } else {
-                this.form[field.key] = { value: cloneDeep(get(this.source, field.path)) }
+                this.form[field.key] = {
+                  value: cloneDeep(get(this.source, field.path)),
+                }
               }
 
               field.changed = checked
@@ -165,19 +169,6 @@ export default {
       }
 
       return false
-    },
-    isUpdated(preset) {
-      const { selected, items } = preset
-
-      if (selected) {
-        return true
-      }
-
-      for (const key of Object.keys(items)) {
-        if (get(items[key], 'selected', false)) {
-          return true
-        }
-      }
     },
     submitForm() {
       this.$refs.form.validate(valid => {
@@ -220,9 +211,7 @@ export default {
             Current Details
           </div>
         </div>
-        <template
-          v-for="(field, fieldIndex) in fields"
-        >
+        <template v-for="(field, fieldIndex) in fields">
           <template v-if="field.type === 'divider'">
             <div
               :key="fieldIndex"
@@ -272,7 +261,7 @@ export default {
                 v-for="slot in field.componentSlots"
                 :slot="slot.name"
               >
-                {{ getPath(slot.path) || 'http://' }}
+                {{ getPath(slot.path) || 'URL' }}
               </template>
             </component>
           </el-form-item>
@@ -280,15 +269,17 @@ export default {
         <!-- Feeds part -->
         <template v-for="(preset, index) in presets">
           <div
-            :key="`all.${ index }`"
+            :key="`all.${index}`"
             :class="[$style.columnHeader, $style.columnFeedHeader]"
           >
             <div :class="$style.columnTitle">
-              {{ isUpdated(preset) ? 'Updated - ' : null }}{{ preset.title }}
+              {{ preset.title }}
               <span
                 v-if="preset.updated"
                 :class="$style.feedUpdated"
-              >Updated</span>
+              >
+                Updated
+              </span>
             </div>
             <el-checkbox
               v-model="preset.selected"
@@ -296,55 +287,69 @@ export default {
               @input="selectAll($event, preset)"
             />
           </div>
-          <template
-            v-for="(field, fieldIndex) in fields"
-          >
-            <template
+          <template v-for="(field, fieldIndex) in fields">
+            <div
               v-if="preset.items[field.key]"
+              :key="`${index}-${fieldIndex}`"
+              :class="[$style.columnItem, $style.columnFeed]"
+              :style="{
+                gridRowStart: 3 + fieldIndex,
+              }"
             >
-              <div
-                :key="`${ index }-${ fieldIndex }`"
-                :class="[$style.columnItem, $style.columnFeed]"
-                :style="{
-                  gridRowStart: 3 + fieldIndex,
-                }"
+              <el-radio-group
+                v-if="preset.items[field.key].type === 'radio'"
+                v-model="preset.items[field.key].value"
+                @input="
+                  checkPresetField(
+                    $event,
+                    preset,
+                    field,
+                    preset.items[field.key].value
+                  )
+                "
               >
-                <el-radio-group
-                  v-if="preset.items[field.key].type === 'radio'"
-                  v-model="preset.items[field.key].value"
-                  @input="checkPresetField($event, preset, field, preset.items[field.key].value)"
-                >
-                  <el-radio
-                    :label="preset.items[field.key].value"
-                  />
-                </el-radio-group>
-                <el-checkbox
-                  v-else
-                  v-model="preset.items[field.key].selected"
-                  :label="field.label"
-                  @input="checkPresetField($event, preset, field, preset.items[field.key].value)"
-                />
-                <img
-                  v-if="preset.items[field.key].preview === 'image'"
-                  :src="preset.items[field.key].value"
-                  :alt="preset.items[field.key].label || preset.items[field.key].value"
-                  :class="$style.feedImage"
-                >
-                <component
-                  :is="preset.items[field.key].component"
-                  v-else-if="preset.items[field.key].component"
-                  v-model="preset.items[field.key].value"
-                  :class="$style.feedLabel"
-                  v-bind="preset.items[field.key].componentBindings"
-                />
-                <span
-                  v-if="preset.items[field.key].label !== false"
-                  :class="$style.feedLabel"
-                >
-                  {{ preset.items[field.key].label || preset.items[field.key].value }}
-                </span>
+                <el-radio :label="preset.items[field.key].value" />
+              </el-radio-group>
+              <div v-else-if="preset.items[field.key].type === 'text'">
+                {{ field.label }}
               </div>
-            </template>
+              <el-checkbox
+                v-else
+                v-model="preset.items[field.key].selected"
+                :label="field.label"
+                @input="
+                  checkPresetField(
+                    $event,
+                    preset,
+                    field,
+                    preset.items[field.key].value
+                  )
+                "
+              />
+              <img
+                v-if="preset.items[field.key].preview === 'image'"
+                :src="preset.items[field.key].value"
+                :alt="
+                  preset.items[field.key].label || preset.items[field.key].value
+                "
+                :class="$style.feedImage"
+              >
+              <component
+                :is="preset.items[field.key].component"
+                v-else-if="preset.items[field.key].component"
+                v-model="preset.items[field.key].value"
+                :class="$style.feedLabel"
+                v-bind="preset.items[field.key].componentBindings"
+              />
+              <span
+                v-if="preset.items[field.key].label !== false"
+                :class="$style.feedLabel"
+              >
+                {{
+                  preset.items[field.key].label || preset.items[field.key].value
+                }}
+              </span>
+            </div>
           </template>
         </template>
       </div>

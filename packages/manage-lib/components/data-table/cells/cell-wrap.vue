@@ -107,7 +107,6 @@ export default {
     cellComp() {
       const { is } = this.cellData
 
-      // @todo it would be nice to add some validation here
       if (is) {
         return is
       } else {

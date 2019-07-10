@@ -21,10 +21,10 @@ const actions = {
   async updateOffer({
     commit,
   }, {
-    offerId,
+    id,
     payload,
   }) {
-    return api.put(`/offers/${offerId}`, payload)
+    return api.put(`/offers/${id}`, payload)
   },
   async deleteOffer({
     commit,

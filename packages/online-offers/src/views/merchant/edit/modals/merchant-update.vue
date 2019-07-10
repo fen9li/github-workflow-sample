@@ -1,7 +1,11 @@
-
 <script>
+import EditLayoutTable from '~/components/edit-layout/components/edit-layout-table.vue'
+
 export default {
   name: 'MerchandUpdateModal',
+  components: {
+    EditLayoutTable,
+  },
   inheritAttrs: false,
   props: {
     fields: {
@@ -13,6 +17,13 @@ export default {
     return {
       form: {
         notes: '',
+      },
+      commissionTableLabels: {
+        base: 'Base',
+        min: 'Min',
+        max: 'Max',
+        type: 'Commission Type',
+        url: 'Merchant Tracking URL',
       },
     }
   },
@@ -65,8 +76,14 @@ export default {
         :key="index"
         :label="item.label"
       >
+        <edit-layout-table
+          v-if="item.key === 'commission'"
+          :value="item.value"
+          :values="item.componentBindings.values"
+          :labels="commissionTableLabels"
+        />
         <img
-          v-if="item.key === 'logo'"
+          v-else-if="item.key === 'logo'"
           :class="$style.preview"
           :src="item.value"
           :alt="item.value"
@@ -92,10 +109,7 @@ export default {
       </el-form-item>
       <el-button
         type="primary"
-        :class="[
-          $style.submit,
-          'wide-button',
-        ]"
+        :class="[$style.submit, 'wide-button']"
         @click="submit"
       >
         Update

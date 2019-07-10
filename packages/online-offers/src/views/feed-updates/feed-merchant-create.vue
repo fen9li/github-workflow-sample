@@ -216,7 +216,7 @@ export default {
         You want to associate <b>{{ row.name }}</b><br>with <b>{{ selectedItem.name }}</b>
       </template>
       <template v-else>
-        You want to create <b>{{ row.name }}</b><br>as new global merchant
+        You want to create <b>{{ row.name }}</b><br>as a new global merchant
       </template>
     </el-alert>
 

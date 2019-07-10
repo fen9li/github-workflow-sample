@@ -58,6 +58,10 @@ $size-card-spacing: var(--size-card-spacing);
   color: #2f3033 !important;
 }
 
+.el-table__header-wrapper thead th.gutter {
+  display: table-cell !important;
+}
+
 .el-table__empty-block {
   width: 100% !important;
 }

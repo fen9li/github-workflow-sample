@@ -2,7 +2,7 @@
 import merchantsTable from './merchants.table'
 
 export default {
-  name: 'Merchants',
+  name: 'GlobalMerchants',
   page: {
     title: '',
   },

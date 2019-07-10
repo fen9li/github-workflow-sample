@@ -4,6 +4,7 @@ import offersStatus from './offers-status'
 const TABLE_FILTERS = [
   {
     attribute: 'status',
+    label: 'Enabled',
     type: 'select',
     icon: 'el-icon-document',
     values: [
@@ -20,6 +21,17 @@ const TABLE_FILTERS = [
   {
     attribute: 'name',
     label: 'Offer Name',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'description',
+    label: 'Offer Description',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'global_merchant',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -56,6 +68,10 @@ const TABLE_COLUMNS = [
   {
     name: 'description',
     label: 'Offer Description',
+    icon: 'el-icon-document',
+  },
+  {
+    name: 'global_merchant',
     icon: 'el-icon-document',
   },
   {

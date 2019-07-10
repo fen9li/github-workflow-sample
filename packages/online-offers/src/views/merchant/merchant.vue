@@ -1,5 +1,5 @@
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import merchantDetails from './details/merchant-details'
 import merchantEdit from './edit/merchant-edit'
 
@@ -14,11 +14,11 @@ export default {
       loading: true,
       merchant: {},
       merchantFeeds: [],
-      categories: [],
       isEdit: this.$route.params.edit,
     }
   },
   computed: {
+    ...mapState('categories', ['categories']),
     merchantId() {
       return this.$route.params.id
     },
@@ -26,13 +26,9 @@ export default {
       return this.merchantFeeds[0] || {}
     },
     showAck() {
-      const { feed } = this
+      const { merchantFeeds } = this
 
-      if (feed) {
-        return this.feed.acknowledgement === 'created'
-      }
-
-      return false
+      return merchantFeeds.some(f => f.acknowledgement === 'updated')
     },
     back() {
       if (this.isEdit) {
@@ -62,14 +58,11 @@ export default {
   },
   methods: {
     ...mapActions('merchants', ['getMerchantFeeds', 'getGlobalMerchant']),
-    ...mapActions('categories', ['getCategories']),
     async fetchMerchant() {
       const [, merchant] = await this.getGlobalMerchant(this.merchantId)
       const [, { items: merchantFeeds }] = await this.getMerchantFeeds(
         this.merchantId
       )
-      // get all categories
-      this.categories = await this.getCategories()
       this.merchantFeeds = merchantFeeds
       this.merchant = merchant
       this.merchant.commission = merchantFeeds[0].map.feed
@@ -105,37 +98,35 @@ export default {
       @update="onUpdate"
       @cancel="onEdit(false)"
     />
-    <template v-else>
-      <el-card>
-        <div
-          slot="header"
-          :class="$style.header"
-        >
-          <span>
-            General Information
-          </span>
-          <div :class="$style.controls">
-            <div
-              v-if="showAck"
-              :class="$style.ack"
-            >
-              <el-icon name="info" />
-              New updates to be reviewed
-            </div>
-            <el-button
-              type="primary"
-              icon="el-icon-edit"
-              circle
-              @click="onEdit(true)"
-            />
+    <el-card v-else>
+      <div
+        slot="header"
+        :class="$style.header"
+      >
+        <span>
+          General Information
+        </span>
+        <div :class="$style.controls">
+          <div
+            v-if="showAck"
+            :class="$style.ack"
+          >
+            <el-icon name="info" />
+            New updates to be reviewed
           </div>
+          <el-button
+            type="primary"
+            icon="el-icon-edit"
+            circle
+            @click="onEdit(true)"
+          />
         </div>
-        <merchant-details
-          :merchant="merchant"
-          :feed="feed"
-        />
-      </el-card>
-    </template>
+      </div>
+      <merchant-details
+        :merchant="merchant"
+        :feed="feed"
+      />
+    </el-card>
   </main-layout>
 </template>
 

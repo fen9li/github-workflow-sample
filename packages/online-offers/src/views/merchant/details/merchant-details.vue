@@ -24,6 +24,15 @@ export default {
     commission() {
       return formatCommission(this.feed.map.commission)
     },
+    categories() {
+      const categories = this.merchant
+
+      if (categories && categories.length) {
+        return categories.map(this.capitalize).join(', ')
+      }
+
+      return '–'
+    },
   },
   methods: {
     capitalize,
@@ -77,27 +86,9 @@ export default {
           :class="[
             'datalist',
             $style.datalist,
-            !merchant.enabled && $style.inactive
+            !merchant.enabled && $style.inactive,
           ]"
         >
-          <dt>
-            Merchant ID
-          </dt>
-          <dd>
-            {{ merchant.id }}
-          </dd>
-          <dt>
-            Merchant Ext ID
-          </dt>
-          <dd>
-            {{ feed.external_id }}
-          </dd>
-          <dt>
-            Merchant Updated
-          </dt>
-          <dd>
-            {{ formatDate(merchant.updated_at) }}
-          </dd>
           <dt>Merchant ID</dt>
           <dd>{{ merchant.id }}</dd>
           <dt>Merchant Ext ID</dt>
@@ -126,19 +117,20 @@ export default {
           </template>
           <dt>Classifications</dt>
           <dd :class="$style.classifications">
-            <span
-              v-for="(item, index) in merchant.categories"
-              :key="index"
-            >
-              {{ capitalize(item.name) }}
-            </span>
+            {{ categories }}
           </dd>
           <dt>Summary</dt>
           <dd>{{ merchant.summary }}</dd>
           <dt>Merchant Website</dt>
           <dd>{{ merchant.website }}</dd>
           <dt>Terms & Conditions</dt>
-          <dd v-html="merchant.terms" />
+          <dd
+            v-if="merchant.terms"
+            v-html="merchant.terms"
+          />
+          <dd v-else>
+            –
+          </dd>
         </dl>
       </div>
     </div>

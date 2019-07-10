@@ -213,7 +213,7 @@ Must be one of the following types:
 | --- | --- |
 | `String` | name of predefined formatter function. Possible values: `date`, `dateTime`, `dayMonth`,`dollar`, `uppercase` |
 | `Object {name: String, params: Array}` | is used when predefined formatter function accepts arguments. `params` will be passed to `Function.prototype.apply` method |
-| `Function (rawValue) => formattedValue` | must accept value as a single argument and return formatted value or empty string. Note: `rawValue` may be `null`, `undefined` or empty string |
+| `Function (rawValue, row) => formattedValue` | must return formatted value or empty string. Note: `rawValue` may be `null`, `undefined` or empty string |
 
 ### Type `CellComponent`
 

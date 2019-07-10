@@ -30,10 +30,30 @@ export default {
           label: 'Offer Name',
           path: 'name',
           component: 'el-input',
-          rules: [
-            { required: true, message: 'offer name is required' },
-          ],
-        }, {
+          rules: [{ required: true, message: 'Offer name is required' }],
+        },
+        {
+          key: 'code',
+          label: 'Coupon Code',
+          path: 'feed_offer.map.code',
+          component: 'el-input',
+          rules: [{ required: true, message: 'Coupon Code name is required' }],
+        },
+        {
+          key: 'start_date',
+          label: 'Start Date',
+          path: 'feed_offer.map.start_date',
+          component: 'el-date-picker',
+          format: this.formatDate,
+        },
+        {
+          key: 'end_date',
+          label: 'End Date',
+          path: 'feed_offer.map.end_date',
+          component: 'el-date-picker',
+          format: this.formatDate,
+        },
+        {
           key: 'description',
           label: 'Descriptions',
           path: 'description',
@@ -42,36 +62,29 @@ export default {
             type: 'textarea',
             rows: 3,
           },
-        }, {
+        },
+        {
           key: 'terms',
           label: 'Terms & Conditions',
           path: 'terms',
-          rules: [
-            { required: true, message: 'terms is required' },
-          ],
+          rules: [{ required: true, message: 'Terms is required' }],
           component: 'el-input',
           componentBindings: {
             type: 'textarea',
             rows: 3,
           },
-        }, {
-          key: 'code',
-          label: 'Coupon Code',
-          path: 'feed_offer.map.code',
-        }, {
-          key: 'start_date',
-          label: 'Start Date',
-          path: 'feed_offer.map.start_date',
-          format: this.formatDate,
-        }, {
-          key: 'end_date',
-          label: 'End Date',
-          path: 'feed_offer.map.end_date',
-          format: this.formatDate,
-        }, {
+        },
+        {
           key: 'tracking_url',
           label: 'Tracking URL',
           path: 'tracking_url',
+          component: 'el-input',
+          rules: [{ required: true, message: 'Tracking URL is required' }],
+          componentSlots: [
+            {
+              name: 'prepend',
+            },
+          ],
         },
       ],
       feedOffers: [],
@@ -123,29 +136,62 @@ export default {
     },
   },
   watch: {
-    offer(val) {
-      this.feedOffers = [{
-        title: this.aggregator,
-        selected: false,
-        updated: get(this.offer, 'feed_updated', false),
-        items: {
-          name: {
-            selected: false,
-            value: get(this.offer, 'feed_offer.map.name', '-'),
-          },
-          description: {
-            selected: false,
-            value: get(this.offer, 'feed_offer.map.description', '-'),
-          },
-          terms: {
-            selected: false,
-            value: get(this.offer, 'feed_offer.map.terms', '-'),
+    offer() {
+      const startDate = get(this.offer, 'feed_offer.map.start_date', '')
+      const endDate = get(this.offer, 'feed_offer.map.end_date', '')
+      let startDateLabel = '-'
+      let endDateLabel = '-'
+
+      if (startDate) {
+        startDateLabel = this.formatDate(startDate)
+      }
+
+      if (endDate) {
+        endDateLabel = this.formatDate(endDate)
+      }
+
+      this.feedOffers = [
+        {
+          title: this.aggregator,
+          selected: false,
+          updated: get(this.feedOffer, 'acknowledgement') === 'updated',
+          items: {
+            name: {
+              selected: false,
+              value: get(this.offer, 'feed_offer.map.name', '-'),
+            },
+            code: {
+              selected: false,
+              value: get(this.offer, 'feed_offer.map.code', '-'),
+            },
+            start_date: {
+              selected: false,
+              label: startDateLabel,
+              value: startDate,
+            },
+            end_date: {
+              selected: false,
+              label: endDateLabel,
+              value: endDate,
+            },
+            description: {
+              selected: false,
+              value: get(this.offer, 'feed_offer.map.description', '-'),
+            },
+            terms: {
+              selected: false,
+              value: get(this.offer, 'feed_offer.map.terms', '-'),
+            },
+            tracking_url: {
+              selected: false,
+              value: get(this.offer, 'tracking_url', '-'),
+            },
           },
         },
-      }]
+      ]
       this.loading = false
     },
-    '$route'(route) {
+    $route(route) {
       if (!route.params.edit) {
         this.isEdit = false
       }
@@ -154,19 +200,17 @@ export default {
   async mounted() {
     this.offer = await this.getOffer(this.id)
     this.switcher = this.offer.enabled
+    this.updateFeedOfferAck()
     // parse url
     this.offer.tracking_url = get(this.offer, 'baseline_url', '')
-    // const url = get(this.offer, 'baseline_url')
-    // if (url) {
-    //   const urlComponents = url.split('://')
-    //   this.offer.tracking_url = {
-    //     prepend: `${ urlComponents[0] }://`,
-    //     value: urlComponents[1],
-    //   }
-    // }
   },
   methods: {
-    ...mapActions('offers', ['getOffer', 'updateOffer', 'deleteOffer']),
+    ...mapActions('offers', [
+      'getOffer',
+      'updateOffer',
+      'deleteOffer',
+      'activateOffer',
+    ]),
     formatDate(value, format) {
       return formatDate(value, format || 'DD/MM/YYYY', false)
     },
@@ -180,7 +224,9 @@ export default {
         this.$notify({
           type: 'success',
           title: 'Success',
-          message: `Status successfully changed to ${this.switcher ? 'enabled' : 'disabled'}`,
+          message: `Status successfully changed to ${
+            this.switcher ? 'enabled' : 'disabled'
+          }`,
         })
       })
     },
@@ -193,11 +239,6 @@ export default {
       for (const field of changedFields) {
         payload[field.key] = field.value
         field.changed = false
-        // TODO:
-        // code,
-        // start_date,
-        // end_date,
-        // track_url
       }
 
       const [error, response] = await this.updateOffer({
@@ -215,7 +256,7 @@ export default {
       this.$notify({
         type: 'success',
         title: 'Success',
-        message: 'Offer details updated sussessfully.',
+        message: 'Offer details updated successfully.',
       })
     },
     async submitDeleteOffer(notes) {
@@ -244,6 +285,12 @@ export default {
           params: { edit: 'edit' },
         })
       }
+    },
+    updateFeedOfferAck() {
+      return this.activateOffer({
+        feedOfferId: this.feedOfferId,
+        payload: { acknowledgement: 'acknowledged' },
+      })
     },
   },
 }
@@ -296,12 +343,7 @@ export default {
       </div>
 
       <div>
-        <dl
-          :class="[
-            'datalist',
-            $style.list
-          ]"
-        >
+        <dl :class="['datalist', $style.list]">
           <dt>Offer Associated Aggreg</dt>
           <dd>{{ aggregator || '-' }}</dd>
 
@@ -312,10 +354,14 @@ export default {
           <dd>{{ feedOffer.external_id || '-' }}</dd>
 
           <dt>Offer Created at</dt>
-          <dd>{{ formatDate(offer.created_at, 'DD/MM/YYYY hh:mm A') || '-' }}</dd>
+          <dd>
+            {{ formatDate(offer.created_at, 'DD/MM/YYYY hh:mm A') || '-' }}
+          </dd>
 
           <dt>Offer Updated</dt>
-          <dd>{{ formatDate(offer.updated_at, 'DD/MM/YYYY hh:mm A') || '-' }}</dd>
+          <dd>
+            {{ formatDate(offer.updated_at, 'DD/MM/YYYY hh:mm A') || '-' }}
+          </dd>
 
           <dt>Offer Name</dt>
           <dd>{{ offer.name || '-' }}</dd>
@@ -369,7 +415,11 @@ export default {
     color: black;
   }
 
-  h2, h3, h4, h5, h6 {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     padding: 0;
     margin: 0 0 1rem;
     font-size: 1rem;
