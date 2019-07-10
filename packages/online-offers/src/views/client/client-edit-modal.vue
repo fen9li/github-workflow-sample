@@ -69,18 +69,24 @@ export default {
     },
   },
   watch: {
-    client(client) {
-      if (client) {
-        (this.form.name = client.name),
-        (this.form.logo = client.logo),
-        (this.form.feeds = client.feeds.map(item => {
-          return item.name
-        }))
-      }
+    client() {
+      this.prefillFields()
     },
+  },
+  created() {
+    this.prefillFields()
   },
   methods: {
     ...mapActions('catalogues', ['createCatalog', 'updateCatalog']),
+    prefillFields() {
+      const { form, client } = this
+
+      if (client) {
+        form.name = client.name
+        form.logo = client.logo
+        form.feeds = client.feeds.map(i => i.name)
+      }
+    },
     onSuccessUploading(img) {
       this.form.logo = img.originalUrl
       this.logoName = img.name

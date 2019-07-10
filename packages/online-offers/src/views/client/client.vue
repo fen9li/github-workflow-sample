@@ -97,7 +97,7 @@ export default {
       <client-header
         :processor="table.processor"
         :client="client"
-        @catalogues-updated="getClient()"
+        @catalogues-updated="getClient"
       />
       <el-tabs
         v-model="activeTab"
