@@ -3,6 +3,7 @@ import { mapGetters, mapMutations } from 'vuex'
 import feedUpdatesTable from './feed-updates.table.js'
 import merchantUpdateModal from '../merchant-update'
 import ApiProcessor from '@lib/processors/api-processor'
+import get from 'lodash/get'
 
 export default {
   name: 'FeedUpdates',
@@ -35,8 +36,8 @@ export default {
       return this.$route.params.slug
     },
     name() {
-      const { name } = this.feeds.find(el => el.slug === this.slug)
-      return name
+      const feed = this.feeds.find(el => el.slug === this.slug)
+      return get(feed, 'name')
     },
     path() {
       const filter = this.slug ? `?filters[feeds]=${this.slug}` : ''
