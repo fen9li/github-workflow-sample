@@ -50,7 +50,7 @@ export default {
             :class="$style.infoValue"
           >
             <div>
-              Well madeindividual clothing for man women & children too.
+              Well-made individual clothing for man women & children too.
             </div>
             <div>
               Fashion

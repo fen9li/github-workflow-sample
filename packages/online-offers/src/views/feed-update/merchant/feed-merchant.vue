@@ -81,7 +81,7 @@ export default {
 <template>
   <main-layout
     :title="`${name} Feed Updates`"
-    :back="{name: 'feed-updates', params: {slug: slug}}"
+    :back="{name: 'feed-update', params: {slug: slug}}"
     :loading="loading"
   >
     <el-card

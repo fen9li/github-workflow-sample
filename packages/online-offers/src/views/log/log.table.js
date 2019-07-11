@@ -45,7 +45,7 @@ const TABLE_COLUMNS = [
 
 export default component => ({
   processor: new ApiProcessor({
-    path: '/feeds/logs',
+    path: '', // @todo actually there is no endpoint for logs
     component,
   }),
   filters: TABLE_FILTERS,

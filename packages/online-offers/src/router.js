@@ -48,9 +48,14 @@ const router = new Router({
     name: 'offer-details',
     component: () => lazy(import('./views/offer')),
   }, {
-    path: '/feed-updates/:slug/:tab?',
+    path: '/feed-updates',
     name: 'feed-updates',
     component: () => lazy(import('./views/feed-updates')),
+    props: true,
+  }, {
+    path: '/feed-updates/:slug/:tab?',
+    name: 'feed-update',
+    component: () => lazy(import('./views/feed-update')),
     props: true,
     meta: {
       nested: true,
@@ -58,7 +63,7 @@ const router = new Router({
   }, {
     path: '/feed-updates/merchant/:slug/:id',
     name: 'feed-merchant',
-    component: () => lazy(import('./views/feed-updates/merchant')),
+    component: () => lazy(import('./views/feed-update/merchant')),
     props: true,
     meta: {
       nested: true,
@@ -66,7 +71,7 @@ const router = new Router({
   }, {
     path: '/feed-updates/offer/:slug/:id',
     name: 'feed-offer',
-    component: () => lazy(import('./views/feed-updates/offer')),
+    component: () => lazy(import('./views/feed-update/offer')),
     props: true,
     meta: {
       nested: true,

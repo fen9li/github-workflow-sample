@@ -24,7 +24,7 @@ export default {
     },
     back() {
       return {
-        name: 'feed-updates',
+        name: 'feed-update',
         params: {
           slug: this.$attrs.slug,
           tab: 'offers',

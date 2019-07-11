@@ -46,19 +46,18 @@ export default {
                 expanded && 'menu__item--expanded'
               ]"
             >
-              <span
+              <router-link
+                :to="{ path: item.path }"
                 class="menu__link"
-                @click="onExpand"
               >
-                <i
-                  :class="`el-icon-${item.icon}`"
-                />
+                <i :class="`el-icon-${item.icon}`" />
                 {{ item.title }}
                 <i
-                  v-if="item.children"
+
                   class="el-icon-arrow-down"
+                  @click.prevent="onExpand"
                 />
-              </span>
+              </router-link>
               <ul class="submenu">
                 <router-link
                   v-for="children in item.children"
@@ -162,6 +161,8 @@ export default {
     position: absolute;
     top: .9rem;
     right: 1.25rem;
+    padding-right: 10px;
+    padding-left: 10px;
     font-weight: bold;
     transition: transform .5s cubic-bezier(0, 1, 0, 1);
     transform: rotate(0);

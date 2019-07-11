@@ -2,7 +2,7 @@
 const state = {}
 
 const getters = {
-  menu(s, g, rs, rg) {
+  menu(state, getters, rootState, rootGetters) {
     return [
       {
         title: 'Clients',
@@ -23,13 +23,11 @@ const getters = {
         title: 'Feed Updates',
         path: '/feed-updates',
         icon: 'refresh-right',
-        children: rg['feeds/feeds'].map(item => {
-          return {
-            title: item.name,
-            path: `/feed-updates/${item.slug}`,
-            slug: item.slug,
-          }
-        }),
+        children: rootGetters['feeds/feeds'].map(feed => ({
+          title: feed.name,
+          path: `/feed-updates/${feed.slug}`,
+          slug: feed.slug,
+        })),
       },
       {
         title: 'Feed Activity',
