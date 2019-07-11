@@ -1,4 +1,5 @@
 <script>
+import get from 'lodash/get'
 import { mapActions } from 'vuex'
 import { formatDate } from '@lib/utils/format-date'
 import capitalize from 'lodash/capitalize'
@@ -22,7 +23,8 @@ export default {
   },
   computed: {
     commission() {
-      return formatCommission(this.feed.map.commission)
+      const commission = get(this.feed, 'map.commission', {})
+      return formatCommission(commission) || {}
     },
     categories() {
       const categories = this.merchant

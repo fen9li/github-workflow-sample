@@ -183,6 +183,7 @@ export default {
     },
     onCreateClick() {
       this.selectedItem = this.newItem
+      this.search = this.newItem.name
       this.isCreate = true
     },
   },

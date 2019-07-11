@@ -13,6 +13,12 @@ const actions = {
     const [, result] = await api.get(`/offers/${offerId}`)
     return result
   },
+  async getFeedOffer({
+    commit,
+  }, externalId) {
+    const [, result] = await api.get(`/feedoffers/${externalId}`)
+    return result
+  },
   async createOffer({
     commit,
   }, payload) {

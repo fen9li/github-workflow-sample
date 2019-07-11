@@ -42,9 +42,6 @@ export default {
       const filter = this.slug ? `?filters[feeds]=${this.slug}` : ''
       return `feed${this.activeTab}${filter}`
     },
-    eventName() {
-      return this.activeTab === this.defaultActiveTab ? 'row-click' : null
-    },
   },
   watch: {
     '$route'(route, prevRoute) {
@@ -97,11 +94,18 @@ export default {
       this.getFeeds()
     },
     onRowClick(row, column, event) {
-      if (this.activeTab === this.defaultActiveTab) {
+      if (this.activeTab === 'merchants') {
         this.$router.push({
-          name: 'feed-details',
+          name: 'feed-merchant',
           params: {
             id: row.external_id,
+          },
+        })
+      } else if (this.activeTab === 'offers') {
+        this.$router.push({
+          name: 'feed-offer',
+          params: {
+            id: row.id,
           },
         })
       }
@@ -134,7 +138,7 @@ export default {
           :fragments="false"
           hider
           :quantity="false"
-          @[eventName]="onRowClick"
+          @row-click="onRowClick"
         />
       </el-tab-pane>
     </el-tabs>

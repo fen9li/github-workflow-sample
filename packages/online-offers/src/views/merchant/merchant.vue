@@ -65,7 +65,9 @@ export default {
       )
       this.merchantFeeds = merchantFeeds
       this.merchant = merchant
-      this.merchant.commission = merchantFeeds[0].map.feed
+      if (merchantFeeds.length > 0) {
+        this.merchant.commission = merchantFeeds[0].map.feed
+      }
       this.loading = false
     },
     async onEdit(value) {
