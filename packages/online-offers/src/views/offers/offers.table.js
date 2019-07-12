@@ -71,7 +71,8 @@ const TABLE_COLUMNS = [
     icon: 'el-icon-document',
   },
   {
-    name: 'global_merchant',
+    name: 'global_merchant.name',
+    label: 'Global Merchant',
     icon: 'el-icon-document',
   },
   {

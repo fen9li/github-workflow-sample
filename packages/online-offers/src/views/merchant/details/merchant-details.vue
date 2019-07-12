@@ -94,7 +94,7 @@ export default {
           <dt>Merchant ID</dt>
           <dd>{{ merchant.id }}</dd>
           <dt>Merchant Ext ID</dt>
-          <dd>{{ merchant.external_id }}</dd>
+          <dd>{{ merchant.external_id || '–' }}</dd>
           <dt>Merchant Updated</dt>
           <dd>{{ formatDate(merchant.updated_at) }}</dd>
           <dt>Merchant Name</dt>

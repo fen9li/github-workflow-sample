@@ -33,27 +33,6 @@ export default {
           rules: [{ required: true, message: 'Offer name is required' }],
         },
         {
-          key: 'code',
-          label: 'Coupon Code',
-          path: 'feed_offer.map.code',
-          component: 'el-input',
-          rules: [{ required: true, message: 'Coupon Code name is required' }],
-        },
-        {
-          key: 'start_date',
-          label: 'Start Date',
-          path: 'feed_offer.map.start_date',
-          component: 'el-date-picker',
-          format: this.formatDate,
-        },
-        {
-          key: 'end_date',
-          label: 'End Date',
-          path: 'feed_offer.map.end_date',
-          component: 'el-date-picker',
-          format: this.formatDate,
-        },
-        {
           key: 'description',
           label: 'Descriptions',
           path: 'description',
@@ -75,16 +54,28 @@ export default {
           },
         },
         {
+          key: 'code',
+          label: 'Coupon Code',
+          path: 'feed_offer.map.code',
+          rules: [{ required: true, message: 'Coupon Code name is required' }],
+        },
+        {
+          key: 'start_date',
+          label: 'Start Date',
+          path: 'feed_offer.map.start_date',
+          format: this.formatDate,
+        },
+        {
+          key: 'end_date',
+          label: 'End Date',
+          path: 'feed_offer.map.end_date',
+          format: this.formatDate,
+        },
+        {
           key: 'tracking_url',
           label: 'Tracking URL',
           path: 'tracking_url',
-          component: 'el-input',
-          rules: [{ required: true, message: 'Tracking URL is required' }],
-          componentSlots: [
-            {
-              name: 'prepend',
-            },
-          ],
+          format: v => (v ? v : '—'),
         },
       ],
       feedOffers: [],
@@ -137,19 +128,6 @@ export default {
   },
   watch: {
     offer() {
-      const startDate = get(this.offer, 'feed_offer.map.start_date', '')
-      const endDate = get(this.offer, 'feed_offer.map.end_date', '')
-      let startDateLabel = '-'
-      let endDateLabel = '-'
-
-      if (startDate) {
-        startDateLabel = this.formatDate(startDate)
-      }
-
-      if (endDate) {
-        endDateLabel = this.formatDate(endDate)
-      }
-
       this.feedOffers = [
         {
           title: this.aggregator,
@@ -158,33 +136,15 @@ export default {
           items: {
             name: {
               selected: false,
-              value: get(this.offer, 'feed_offer.map.name', '-'),
-            },
-            code: {
-              selected: false,
-              value: get(this.offer, 'feed_offer.map.code', '-'),
-            },
-            start_date: {
-              selected: false,
-              label: startDateLabel,
-              value: startDate,
-            },
-            end_date: {
-              selected: false,
-              label: endDateLabel,
-              value: endDate,
+              value: get(this.offer, 'feed_offer.map.name', '—'),
             },
             description: {
               selected: false,
-              value: get(this.offer, 'feed_offer.map.description', '-'),
+              value: get(this.offer, 'feed_offer.map.description', '—'),
             },
             terms: {
               selected: false,
-              value: get(this.offer, 'feed_offer.map.terms', '-'),
-            },
-            tracking_url: {
-              selected: false,
-              value: get(this.offer, 'tracking_url', '-'),
+              value: get(this.offer, 'feed_offer.map.terms', '—'),
             },
           },
         },
