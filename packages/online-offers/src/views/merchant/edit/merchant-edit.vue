@@ -129,6 +129,7 @@ export default {
       ]
     },
     feedOffers() {
+      const { commissions } = this
       const feedOffers = []
 
       for (const feed of this.feeds) {
@@ -142,7 +143,7 @@ export default {
         const feedObject = {
           title: get(feed, 'map.feed'),
           selected: false,
-          updated: get(this.merchant, 'acknowledgement') === 'updated',
+          updated: get(feed, 'acknowledgement') === 'updated',
           items: {
             name: {
               selected: false,
@@ -171,27 +172,26 @@ export default {
               selected: false,
               value: get(feed, 'map.terms', '-'),
             },
-            commission: {
-              selected: false,
-              component: 'edit-layout-table',
-              value: feed.feed,
-              label: false,
-              componentBindings: {
-                labels: {
-                  base: 'Base',
-                  min: 'Min',
-                  max: 'Max',
-                  type: 'Commission Type',
-                  url: 'Merchant Tracking URL',
-                },
-                values: this.commissions,
-              },
-            },
           },
         }
 
-        if (this.commissions.length > 1) {
-          feedObject.commissions = this.commissionForFeed(feed)
+        if (commissions.length > 1) {
+          feedObject.items.commission = {
+            selected: false,
+            component: 'edit-layout-table',
+            value: feed.feed,
+            label: false,
+            componentBindings: {
+              labels: {
+                base: 'Base',
+                min: 'Min',
+                max: 'Max',
+                type: 'Commission Type',
+                url: 'Merchant Tracking URL',
+              },
+              values: commissions,
+            },
+          }
         }
 
         feedOffers.push(feedObject)
