@@ -1,8 +1,9 @@
-const dateFormat = 'DD/MM/YYYY hh:mm A'
+import ElasticProcessor from '@lib/processors/elastic-processor'
 
 const TABLE_FILTERS = [
   {
     attribute: 'createdAt',
+    label: 'Date Created',
     icon: 'el-icon-date',
     type: 'date',
   },
@@ -15,6 +16,12 @@ const TABLE_FILTERS = [
   {
     attribute: 'fundingSource',
     label: 'Settlement Account',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'id',
+    label: 'Order ID',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -54,10 +61,7 @@ const TABLE_COLUMNS = [
     label: 'Date Created',
     icon: 'el-icon-document',
     width: 140,
-    format: {
-      name: 'date',
-      params: [dateFormat],
-    },
+    format: 'dateTime',
   },
   {
     name: 'amount.subtotal',
@@ -134,15 +138,27 @@ const TABLE_COLUMNS = [
     label: 'Date Finalised',
     icon: 'el-icon-document',
     width: 100,
-    format: {
-      name: 'date',
-      params: [dateFormat],
-    },
+    format: 'dateTime',
   },
 
 ]
 
-export default {
-  filters: TABLE_FILTERS,
-  columns: TABLE_COLUMNS,
+export default function(component) {
+  return {
+    processor: new ElasticProcessor({
+      component,
+      index: 'transactions',
+      staticQuery: {
+        filters: [
+          {
+            attribute: 'type',
+            comparison: 'eq',
+            value: 'settlement',
+          },
+        ],
+      },
+    }),
+    filters: TABLE_FILTERS,
+    columns: TABLE_COLUMNS,
+  }
 }

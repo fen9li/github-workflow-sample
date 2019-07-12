@@ -1,5 +1,4 @@
 <script>
-import ElasticProcessor from '@lib/processors/elastic-processor'
 import tableConfig from './settlements-table'
 
 export default {
@@ -9,21 +8,7 @@ export default {
   },
   data() {
     return {
-      processor: new ElasticProcessor({
-        component: this,
-        index: 'transactions',
-        staticQuery: {
-          filters: [
-            {
-              attribute: 'type',
-              comparison: 'eq',
-              value: 'settlement',
-            },
-          ],
-        },
-      }),
-      filters: tableConfig.filters,
-      columns: tableConfig.columns,
+      tableConfig: tableConfig(this),
     }
   },
   methods: {
@@ -41,9 +26,9 @@ export default {
   <main-layout title="Settlements">
     <table-layout
       table-name="settlements"
-      :processor="processor"
-      :filters="filters"
-      :columns="columns"
+      :processor="tableConfig.processor"
+      :filters="tableConfig.filters"
+      :columns="tableConfig.columns"
       :fragments="false"
       @row-click="onRowClick"
     />
