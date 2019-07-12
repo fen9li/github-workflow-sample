@@ -1,3 +1,5 @@
+import ElasticProcessor from '@lib/processors/elastic-processor'
+
 const TABLE_FILTERS = [
   {
     attribute: 'startAt',
@@ -101,6 +103,7 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'productName',
+    label: 'Product Name',
     icon: 'el-icon-document',
     width: 200,
   },
@@ -147,7 +150,13 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default {
-  filters: TABLE_FILTERS,
-  columns: TABLE_COLUMNS,
+export default function(component) {
+  return {
+    processor: new ElasticProcessor({
+      component,
+      index: 'subscriptions',
+    }),
+    filters: TABLE_FILTERS,
+    columns: TABLE_COLUMNS,
+  }
 }

@@ -1,5 +1,4 @@
 <script>
-import ElasticProcessor from '@lib/processors/elastic-processor'
 import tableConfig from './subscriptions-table'
 
 export default {
@@ -9,12 +8,7 @@ export default {
   },
   data() {
     return {
-      processor: new ElasticProcessor({
-        component: this,
-        index: 'subscriptions',
-      }),
-      filters: tableConfig.filters,
-      columns: tableConfig.columns,
+      tableConfig: tableConfig(this),
     }
   },
   methods: {
@@ -32,9 +26,10 @@ export default {
   <main-layout title="Subscriptions">
     <table-layout
       table-name="subscriptions"
-      :processor="processor"
-      :filters="filters"
-      :columns="columns"
+      :processor="tableConfig.processor"
+      :filters="tableConfig.filters"
+      :columns="tableConfig.columns"
+      :fragments="false"
       @row-click="onRowClick"
     />
   </main-layout>

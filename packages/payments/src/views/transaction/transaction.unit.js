@@ -50,7 +50,7 @@ describe('packages/payments/src/views/transaction/transaction.vue', () => {
   it('check that General info block is rendered', () => {
     const general = wrapper.find('.info-block')
     const list = wrapper.find('.datalist')
-    const listItems = wrapper.findAll('dd')
+    const listItems = wrapper.findAll('dt')
     expect(general.exists()).toBeTruthy()
     expect(list.exists()).toBeTruthy()
     expect(listItems.length).toBe(7)

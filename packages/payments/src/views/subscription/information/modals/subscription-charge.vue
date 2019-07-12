@@ -12,20 +12,16 @@ export default {
       type: Object,
       default: () => {},
     },
-    customerName: {
-      type: String,
-      required: true,
-    },
-    paymentMethods: {
-      type: Array,
-      default: () => [],
+    customer: {
+      type: Object,
+      default: () => {},
     },
   },
   data() {
     return {
       form: {
         amount: '',
-        selectedMethod: get(this.paymentMethods[0], 'value', ''),
+        selectedMethod: get(this.customer.paymentMethods[0], 'value', ''),
       },
       rules: {
         selectedMethod: [
@@ -47,7 +43,7 @@ export default {
   },
   computed: {
     displayMethodForm() {
-      return this.paymentMethods.length === 0 || this.showAddMethodForm
+      return this.customer.paymentMethods.length === 0 || this.showAddMethodForm
     },
   },
   methods: {
@@ -102,8 +98,9 @@ export default {
         label="Customer"
       >
         <el-input
-          :value="customerName"
+          :value="customer.fullName"
           disabled
+          data-test="customer"
         />
       </el-form-item>
       <el-form-item
@@ -117,6 +114,7 @@ export default {
             <el-input
               v-model="form.amount"
               placeholder="0.00"
+              data-test="amount"
             >
               <template #prepend>
                 $
@@ -134,7 +132,7 @@ export default {
       <hr :class="['divider-primary', $style.divider]">
       <payment-form-item
         :selected-method="form.selectedMethod"
-        :payment-methods="paymentMethods"
+        :payment-methods="customer.paymentMethods"
         :display-form="displayMethodForm"
         @showForm="showAddMethodForm = $event"
         @changeMethod="form.selectedMethod = $event"
@@ -145,6 +143,7 @@ export default {
         v-if="!displayMethodForm"
         type="primary"
         :class="$style.save"
+        data-test="submit"
         @click="onSubmit"
       >
         Charge Now

@@ -18,7 +18,7 @@ export default {
       form: {
         coupons: [],
       },
-      initialCoupon: '',
+      initialCoupon: null,
       couponsData: {
         data: [],
         loading: true,
@@ -46,24 +46,33 @@ export default {
       const { coupons } = this.form
       const { initialCoupon } = this
 
-      // TODO: New coupon
-      if (coupons.length && initialCoupon !== coupons[0]) {
-        // First we delete old coupon, then apply new
-        this.removeCoupon().then(() => {
+      if (initialCoupon) {
+        if (coupons.length && initialCoupon !== coupons[0]) {
+          // First we delete old coupon, then apply new
+          this.removeCoupon().then(resp => {
+            this.applyCoupon(coupons[0]).then(resp => {
+              this.notify(resp)
+            })
+          })
+        } else if (!coupons.length) {
+          this.removeCoupon().then(resp => {
+            this.notify(resp)
+          })
+        } else {
+          this.$emit('update:visible', false)
+        }
+      } else {
+        if (coupons.length) {
           this.applyCoupon(coupons[0]).then(resp => {
             this.notify(resp)
           })
-        })
-      } else if (initialCoupon && !coupons.length) {
-        this.removeCoupon().then(resp => {
-          this.notify(resp)
-        })
-      } else {
-        this.$emit('update:visible', false)
+        } else {
+          this.$emit('update:visible', false)
+        }
       }
     },
     async applyCoupon(coupon) {
-      return await this.$api.put(`/subscriptions/${this.subscription.id}/coupons/${coupon}`)
+      return this.$api.put(`/subscriptions/${this.subscription.id}/coupons/${coupon}`)
     },
     getCoupons() {
       this.couponsData = new ElasticProcessor({
@@ -72,7 +81,7 @@ export default {
       })
     },
     async removeCoupon() {
-      return await this.$api.delete(`/subscriptions/${this.subscription.id}/coupons/`)
+      return this.$api.delete(`/subscriptions/${this.subscription.id}/coupons`)
     },
     notify(data) {
       const [error] = data
@@ -117,6 +126,7 @@ export default {
         <el-input
           :value="customerName"
           disabled
+          data-test="customer"
         />
       </el-form-item>
       <el-form-item
@@ -128,6 +138,7 @@ export default {
           multiple
           :multiple-limit="1"
           placeholder="Select"
+          data-test="coupons"
         >
           <el-option
             v-for="item in allCoupons"
@@ -148,6 +159,7 @@ export default {
       <el-button
         type="primary"
         :class="$style.save"
+        data-test="submit"
         @click="onSubmit"
       >
         Save

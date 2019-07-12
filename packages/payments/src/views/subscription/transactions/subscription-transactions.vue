@@ -1,5 +1,4 @@
 <script>
-import ElasticProcessor from '@lib/processors/elastic-processor'
 import tableConfig from './transactions-table'
 
 export default {
@@ -15,20 +14,7 @@ export default {
   },
   data() {
     return {
-      processor: new ElasticProcessor({
-        index: 'transactions',
-        component: this,
-        staticQuery: {
-          filters: [
-            {
-              attribute: 'subscriptionId',
-              value: this.id,
-            },
-          ],
-        },
-      }),
-      filters: tableConfig.filters,
-      columns: tableConfig.columns,
+      tableConfig: tableConfig(this),
     }
   },
 }
@@ -37,8 +23,8 @@ export default {
 <template>
   <table-layout
     table-name="subscriptionTransactions"
-    :processor="processor"
-    :filters="filters"
-    :columns="columns"
+    :processor="tableConfig.processor"
+    :filters="tableConfig.filters"
+    :columns="tableConfig.columns"
   />
 </template>

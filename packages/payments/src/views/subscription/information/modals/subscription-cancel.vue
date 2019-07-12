@@ -115,7 +115,7 @@ export default {
         :class="$style.radios"
       >
         <el-radio label="now">
-          Cancel Immidiately
+          Cancel Immediately
         </el-radio>
         <el-radio label="after">
           Cancel at the end of the current period on {{ `${subscription.end_at || ''}` }}
@@ -136,12 +136,16 @@ export default {
           type="date"
           placeholder="Enter Date"
           :editable="false"
+          data-test="datepicker"
         />
       </el-form-item>
 
       <div v-if="type !== 'after'">
         <hr :class="['divider-primary', $style.divider]">
-        <el-checkbox v-model="refund">
+        <el-checkbox
+          v-model="refund"
+          data-test="refund"
+        >
           Refund remaining balance
         </el-checkbox>
         <payment-form-item
@@ -156,7 +160,7 @@ export default {
         />
 
         <el-form-item
-          v-if="refund"
+          v-if="refund && !displayMethodForm"
           label="Balance to be Refunded"
           prop="amount"
         >
@@ -167,6 +171,7 @@ export default {
               <el-input
                 v-model="form.amount"
                 placeholder="0.00"
+                data-test="amount"
               >
                 <template #prepend>
                   $
@@ -187,6 +192,7 @@ export default {
         v-if="!displayMethodForm"
         type="primary"
         :class="$style.save"
+        data-test="submit"
         @click="onSubmit"
       >
         Set Cancellation

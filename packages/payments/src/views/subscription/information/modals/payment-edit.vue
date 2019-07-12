@@ -8,23 +8,15 @@ export default {
     paymentFormItem,
   },
   props: {
-    subscription: {
-      type: Object,
-      default: () => {},
-    },
     customer: {
       type: Object,
       default: () => {},
-    },
-    paymentMethods: {
-      type: Array,
-      default: () => [],
     },
   },
   data() {
     return {
       form: {
-        selectedMethod: get(this.paymentMethods[0], 'value', ''),
+        selectedMethod: get(this.customer, 'paymentMethods[0].value', ''),
       },
       showAddMethodForm: false,
       rules: {
@@ -40,7 +32,7 @@ export default {
   },
   computed: {
     displayMethodForm() {
-      return this.paymentMethods.length === 0 || this.showAddMethodForm
+      return this.customer.paymentMethods.length === 0 || this.showAddMethodForm
     },
   },
   methods: {
@@ -95,12 +87,13 @@ export default {
         <el-input
           :value="customer.fullName"
           disabled
+          data-test="customer"
         />
       </el-form-item>
 
       <payment-form-item
         :selected-method="form.selectedMethod"
-        :payment-methods="paymentMethods"
+        :payment-methods="customer.paymentMethods"
         :display-form="displayMethodForm"
         @showForm="showAddMethodForm = $event"
         @changeMethod="form.selectedMethod = $event"
@@ -111,6 +104,7 @@ export default {
         v-if="!displayMethodForm"
         type="primary"
         :class="$style.save"
+        data-test="submit"
         @click="onSubmit"
       >
         Save

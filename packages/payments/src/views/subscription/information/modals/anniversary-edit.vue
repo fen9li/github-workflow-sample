@@ -84,6 +84,7 @@ export default {
         <el-input
           :value="customerName"
           disabled
+          data-test="customer"
         />
       </el-form-item>
 
@@ -98,6 +99,7 @@ export default {
             placeholder="Enter Date"
             :editable="false"
             disabled
+            data-test="currentAnniversary"
           />
           <el-tooltip
             placement="right"
@@ -123,6 +125,7 @@ export default {
             type="date"
             placeholder="Enter Date"
             :editable="false"
+            data-test="newAnniversary"
           />
           <el-tooltip
             placement="right"
@@ -149,6 +152,7 @@ export default {
       <el-button
         type="primary"
         :class="$style.save"
+        data-test="submit"
         @click="onSubmit"
       >
         Save

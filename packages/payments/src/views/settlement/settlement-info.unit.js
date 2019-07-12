@@ -34,7 +34,7 @@ describe('packages/payments/src/views/settlement/settlement-info.vue', () => {
 
   it('check that General info block is rendered', () => {
     const list = wrapper.find('.datalist')
-    const listItems = wrapper.findAll('dd')
+    const listItems = wrapper.findAll('dt')
     expect(list.exists()).toBeTruthy()
     expect(listItems.length).toBe(10)
   })

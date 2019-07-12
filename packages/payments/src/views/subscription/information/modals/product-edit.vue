@@ -133,6 +133,7 @@ export default {
         <el-input
           :value="customerName"
           disabled
+          data-test="customer"
         />
       </el-form-item>
       <el-form-item
@@ -179,6 +180,7 @@ export default {
       <el-button
         type="primary"
         :class="$style.save"
+        data-test="submit"
         @click="onSubmit"
       >
         Save

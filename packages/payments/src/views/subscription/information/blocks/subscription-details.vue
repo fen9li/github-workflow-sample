@@ -31,10 +31,6 @@ export default {
       type: Object,
       default: () => {},
     },
-    paymentMethods: {
-      type: Array,
-      default: () => [],
-    },
   },
   data() {
     return {
@@ -127,6 +123,7 @@ export default {
       <el-button
         v-if="isTransaction"
         type="primary"
+        data-test="details"
         @click="$router.push({name: 'subscription-details', params: {id: subscription.id}})"
       >
         View Subscription Details
@@ -137,6 +134,7 @@ export default {
       >
         <el-button
           type="primary"
+          data-test="anniversary"
           @click="modal.anniversary = true"
         >
           Edit Anniversary Date
@@ -144,6 +142,7 @@ export default {
 
         <el-button
           type="primary"
+          data-test="coupon"
           @click="modal.coupon = true"
         >
           Add or Remove Coupon
@@ -151,6 +150,7 @@ export default {
 
         <el-button
           type="primary"
+          data-test="payment"
           @click="modal.payment = true"
         >
           Change Payment Method
@@ -158,6 +158,7 @@ export default {
 
         <el-button
           type="primary"
+          data-test="product"
           @click="modal.product = true"
         >
           Change Subscription Product
@@ -165,6 +166,7 @@ export default {
 
         <el-button
           type="danger"
+          data-test="cancel"
           @click="modal.cancel = true"
         >
           Cancel Subscription
@@ -186,9 +188,7 @@ export default {
       <payment-edit
         v-if="modal.payment"
         :visible.sync="modal.payment"
-        :subscription="subscription"
         :customer="customer"
-        :payment-methods="customer.paymentMethods"
       />
       <product-edit
         v-if="modal.product"

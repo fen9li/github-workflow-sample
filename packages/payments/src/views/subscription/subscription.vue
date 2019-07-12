@@ -60,16 +60,13 @@ export default {
   },
   methods: {
     async getSubscription() {
-      const [error, response] = await this.$api.get(`/subscriptions/${this.id}`)
+      const [, response] = await this.$api.get(`/subscriptions/${this.id}`)
       if (response) {
         this.subscription = { ...response }
       }
-      console.warn(error, response)
-
       return response
     },
     async getCustomer(customerId) {
-      this.loading = true
       const [, response] = await this.$api.get(`/customers/${customerId}`)
       if (response) {
         this.customer = { ...response, fullName: `${response.first_name} ${response.last_name}` }
@@ -108,12 +105,14 @@ export default {
           v-if="tabKey === 'subscription-transactions'"
           type="primary"
           plain
+          data-test="cancel"
           @click="modal.cancel = true"
         >
           Cancel Subscription
         </el-button>
         <el-button
           type="primary"
+          data-test="charge"
           @click="modal.charge = true"
         >
           Charge Amount Owing
@@ -131,8 +130,7 @@ export default {
         v-if="modal.charge"
         :visible.sync="modal.charge"
         :subscription="subscription"
-        :customer-name="customer.fullName"
-        :payment-methods="customer.paymentMethods"
+        :customer="customer"
       />
 
       <small :class="$style.balanceLabel">
@@ -154,6 +152,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: -2.125rem;
   font-size: 1.1rem;
   color: var(--color-error);
 }
