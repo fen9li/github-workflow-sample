@@ -15,7 +15,10 @@ export default {
     return {
       details: {},
       loading: true,
-      form: {},
+      form: {
+        baseline_rate: '',
+        baseline_url: '',
+      },
       submitting: false,
     }
   },
@@ -33,16 +36,13 @@ export default {
       return this.ready ? this.details.map.name : ''
     },
   },
-  created() {
-    this.getDetails()
+  async created() {
+    await this.getDetails()
+    this.prefillForm()
   },
   methods: {
-    ...mapActions('merchants', [
-      'getMerchant',
-    ]),
-    ...mapActions('feedMerchants', [
-      'updateFeedMerchant',
-    ]),
+    ...mapActions('merchants', ['getMerchant']),
+    ...mapActions('feedMerchants', ['updateFeedMerchant']),
     capitalize,
     async getDetails() {
       try {
@@ -55,12 +55,24 @@ export default {
         this.loading = false
       }
     },
+    prefillForm() {
+      const { form } = this
+      const { metadata } = this.details
+
+      if (metadata) {
+        form.baseline_rate = metadata.baseline_rate
+        form.baseline_url = metadata.baseline_url
+      }
+    },
     formatDollar(value) {
       return formatDollar(value)
     },
     async onSubmit() {
       this.submitting = true
-      const [error, response] = await this.updateFeedMerchant({ payload: this.form, id: this.details.id })
+      const [error, response] = await this.updateFeedMerchant({
+        payload: this.form,
+        id: this.details.id,
+      })
       this.submitting = false
       if (error) {
         console.error('Error while requesting data', error.message)
@@ -81,7 +93,7 @@ export default {
 <template>
   <main-layout
     :title="`${name} Feed Updates`"
-    :back="{name: 'feed-update', params: {slug: slug}}"
+    :back="{ name: 'feed-update', params: { slug: slug } }"
     :loading="loading"
   >
     <el-card
@@ -92,12 +104,7 @@ export default {
         <div :class="$style.wrapTitle">
           General Information
         </div>
-        <dl
-          :class="[
-            'datalist',
-            $style.list
-          ]"
-        >
+        <dl :class="['datalist', $style.list]">
           <dt>Merchant ID</dt>
           <dd>{{ details.id }}</dd>
           <dt>Merchant Ext ID</dt>
@@ -123,11 +130,15 @@ export default {
           <dt>Summary</dt>
           <dd>{{ details.map.summary || '—' }}</dd>
 
-          <template
-            v-if="!rakuten"
-          >
+          <template v-if="!rakuten">
             <dt>Commission Rate</dt>
-            <dd>{{ details.map.comission ? formatDollar(details.map.comission.base) : '—' }}</dd>
+            <dd>
+              {{
+                details.map.comission
+                  ? formatDollar(details.map.comission.base)
+                  : '—'
+              }}
+            </dd>
 
             <dt>Merchant Tracking URL</dt>
             <dd>{{ details.map.TrackingUrl || '—' }}</dd>
@@ -135,7 +146,13 @@ export default {
           <template v-else>
             <template v-if="details.metadata && details.metadata.baseline_rate">
               <dt>Commission Rate</dt>
-              <dd>{{ details.metadata.baseline_rate ? formatDollar(details.metadata.baseline_rate) : '—' }}</dd>
+              <dd>
+                {{
+                  details.metadata.baseline_rate
+                    ? formatDollar(details.metadata.baseline_rate)
+                    : '—'
+                }}
+              </dd>
             </template>
 
             <template v-if="details.metadata && details.metadata.baseline_url">
@@ -184,11 +201,9 @@ export default {
               label="Baseline Tracking URL"
               :class="$style.input"
             >
-              <el-input
-                v-model="form.baseline_url"
-              >
+              <el-input v-model="form.baseline_url">
                 <template slot="prepend">
-                  http://
+                  URL
                 </template>
               </el-input>
             </el-form-item>
@@ -242,7 +257,7 @@ export default {
 
 .warnDescription {
   margin-top: 1rem;
-  font-size: .7rem;
+  font-size: 0.7rem;
 }
 
 .detailsBlock {
@@ -270,7 +285,7 @@ export default {
 }
 
 .statusIcon {
-  margin-right: .5rem;
+  margin-right: 0.5rem;
 }
 
 .refund {
@@ -287,7 +302,11 @@ export default {
     color: black;
   }
 
-  h2, h3, h4, h5, h6 {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     padding: 0;
     margin: 0 0 1rem;
     font-size: 1rem;
@@ -311,5 +330,4 @@ export default {
   justify-content: flex-end;
   width: 100%;
 }
-
 </style>

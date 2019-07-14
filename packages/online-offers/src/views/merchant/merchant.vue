@@ -50,6 +50,7 @@ export default {
     '$route'(route) {
       if (!route.params.edit) {
         this.isEdit = false
+        this.fetchMerchantFeeds()
       }
     },
   },
@@ -58,16 +59,23 @@ export default {
   },
   methods: {
     ...mapActions('merchants', ['getMerchantFeeds', 'getGlobalMerchant']),
-    async fetchMerchant() {
-      const [, merchant] = await this.getGlobalMerchant(this.merchantId)
+    async fetchMerchantFeeds() {
       const [, { items: merchantFeeds }] = await this.getMerchantFeeds(
         this.merchantId
       )
+
       this.merchantFeeds = merchantFeeds
+    },
+    async fetchMerchant() {
+      const [, merchant] = await this.getGlobalMerchant(this.merchantId)
+      await this.fetchMerchantFeeds()
+
       this.merchant = merchant
-      if (merchantFeeds.length > 0) {
-        this.merchant.commission = merchantFeeds[0].map.feed
+
+      if (this.merchantFeeds.length > 0) {
+        this.merchant.commission = this.merchantFeeds[0].map.feed
       }
+
       this.loading = false
     },
     async onEdit(value) {
