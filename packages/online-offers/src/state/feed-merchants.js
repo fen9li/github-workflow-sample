@@ -11,7 +11,7 @@ const mutations = {
 
 const actions = {
   async updateFeedMerchant({ commit }, { payload, id }) {
-    return await api.put(`/feedmerchants/${id}`, {
+    return api.put(`/feedmerchants/${id}`, {
       metadata: { ...payload },
       enabled: true,
     })

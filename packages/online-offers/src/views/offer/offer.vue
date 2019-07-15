@@ -75,7 +75,7 @@ export default {
           key: 'tracking_url',
           label: 'Tracking URL',
           path: 'tracking_url',
-          format: v => (v ? v : '—'),
+          format: v => (v || '—'),
         },
       ],
       feedOffers: [],
