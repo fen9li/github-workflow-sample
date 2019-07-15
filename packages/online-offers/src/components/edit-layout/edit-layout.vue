@@ -176,7 +176,6 @@ export default {
           return false
         }
         this.$emit('update')
-        this.isChanged = false
       })
     },
     getPath(path, def = '') {
@@ -194,7 +193,7 @@ export default {
 </script>
 
 <template>
-  <el-card>
+  <el-card :class="$style.card">
     <el-form
       ref="form"
       :model="form"
@@ -388,6 +387,10 @@ export default {
 </template>
 
 <style lang="scss" module>
+.card {
+  overflow: unset; // NOTE: fix scroll perfomance
+}
+
 .form {
   overflow-x: auto;
   overflow-y: hidden;

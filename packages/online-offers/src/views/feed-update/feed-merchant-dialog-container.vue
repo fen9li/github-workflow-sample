@@ -80,8 +80,8 @@ export default {
         class="modal__footer"
       >
         <el-button
-          class="wide-button"
           type="danger"
+          class="el-button--wide"
           @click.stop.prevent="onDetach"
         >
           Detach

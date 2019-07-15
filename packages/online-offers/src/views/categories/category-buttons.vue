@@ -77,8 +77,8 @@ export default {
       </div>
       <div class="modal__footer">
         <el-button
-          class="wide-button"
           type="danger"
+          class="el-button--wide"
           @click="onDelete"
         >
           Delete

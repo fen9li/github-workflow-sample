@@ -90,30 +90,39 @@ export default {
     onSuccessUploading(img) {
       this.form.logo = img.originalUrl
       this.logoName = img.name
+      this.$refs.form.validateField('logo')
     },
     onSubmit() {
-      const feeds = this.form.feeds.map(item => {
-        const feed = find(this.feeds, { name: item })
+      this.$refs.form.validate(valid => {
+        if (!valid) {
+          return false
+        }
 
-        return feed.slug
+        const feeds = this.form.feeds.map(item => {
+          const feed = find(this.feeds, { name: item })
+
+          return feed.slug
+        })
+
+        if (this.client) {
+          this.updateCatalog({
+            ...this.form,
+            feeds,
+            id: this.client.id,
+          })
+            .then(() => this.processor.getData())
+            .then(() => this.$emit('catalogues-updated'))
+        } else {
+          this.createCatalog({
+            ...this.form,
+            feeds,
+          })
+            .then(() => this.processor.getData())
+            .then(() => this.$emit('catalogues-created'))
+        }
+
+        this.$emit('submit', this.form.notes)
       })
-
-      if (this.client) {
-        this.updateCatalog({
-          ...this.form,
-          feeds,
-          id: this.client.id,
-        })
-          .then(() => this.processor.getData())
-          .then(() => this.$emit('catalogues-updated'))
-      } else {
-        this.createCatalog({
-          ...this.form,
-          feeds,
-        })
-          .then(() => this.processor.getData())
-          .then(() => this.$emit('catalogues-created'))
-      }
     },
   },
 }
@@ -128,6 +137,7 @@ export default {
     >
       <div>
         <el-form
+          ref="form"
           :model="form"
           :rules="rules"
           label-width="180px"
@@ -190,12 +200,12 @@ export default {
               />
             </el-checkbox-group>
           </el-form-item>
-          <el-form-item
+          <!-- <el-form-item
             v-if="client"
             label="Notes"
           >
             <el-input type="textarea" />
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
 
         <div
@@ -204,6 +214,7 @@ export default {
         >
           <el-button
             type="primary"
+            class="el-button--wide"
             @click="onSubmit"
           >
             Save

@@ -95,7 +95,7 @@ export default {
           {{ updateLabel(item) }}
         </span>
       </el-form-item>
-      <el-form-item
+      <!-- <el-form-item
         label="Notes"
         prop="notes"
         required
@@ -106,10 +106,11 @@ export default {
           type="textarea"
           :rows="4"
         />
-      </el-form-item>
+      </el-form-item> -->
       <el-button
         type="primary"
-        :class="[$style.submit, 'wide-button']"
+        class="el-button--wide"
+        :class="$style.submit"
         @click="submit"
       >
         Update
@@ -160,7 +161,6 @@ export default {
 }
 
 .submit {
-  width: 50%;
   margin: 2rem auto 0;
 }
 </style>

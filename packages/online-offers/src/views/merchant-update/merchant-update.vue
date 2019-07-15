@@ -52,13 +52,14 @@ export default {
       <div :class="$style.controls">
         <el-button
           type="danger"
-          class="wide-button"
+          class="el-button--wide"
         >
           Disregard
         </el-button>
         <el-button
           type="primary"
-          :class="['wide-button', $style.editBtn]"
+          class="el-button--wide"
+          :class="$style.editBtn"
         >
           Review and Edit
         </el-button>

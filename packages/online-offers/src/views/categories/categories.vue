@@ -36,6 +36,7 @@ export default {
     <el-button
       slot="header"
       type="primary"
+      class="el-button--wide"
       @click="showAddModal = true"
     >
       Add Category

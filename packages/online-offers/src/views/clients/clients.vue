@@ -65,6 +65,7 @@ export default {
     <el-button
       slot="header"
       type="primary"
+      class="el-button--wide"
       @click="modal.add = true"
     >
       Add Client

@@ -58,7 +58,10 @@ export default {
     this.fetchMerchant()
   },
   methods: {
-    ...mapActions('merchants', ['getMerchantFeeds', 'getGlobalMerchant']),
+    ...mapActions('merchants', [
+      'getMerchantFeeds',
+      'getGlobalMerchant',
+    ]),
     async fetchMerchantFeeds() {
       const [, { items: merchantFeeds }] = await this.getMerchantFeeds(
         this.merchantId

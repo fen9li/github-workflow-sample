@@ -88,7 +88,7 @@ export default {
         <el-button
           v-if="!activated"
           type="primary"
-          :class="$style.acitvateBtn"
+          class="el-button--wide"
           @click="activate"
         >
           Activate
@@ -151,9 +151,5 @@ export default {
     margin: 0 0 1rem;
     font-size: 1rem;
   }
-}
-
-.acitvateBtn {
-  width: rem(200px);
 }
 </style>

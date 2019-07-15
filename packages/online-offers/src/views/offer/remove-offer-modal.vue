@@ -42,7 +42,7 @@ export default {
         <br>
         This action can not be undone.
       </p>
-      <el-form-item
+      <!-- <el-form-item
         label="Notes"
         prop="notes"
         required
@@ -53,13 +53,11 @@ export default {
           type="textarea"
           :rows="4"
         />
-      </el-form-item>
+      </el-form-item> -->
       <el-button
         type="danger"
-        :class="[
-          $style.submit,
-          'wide-button',
-        ]"
+        class="el-button--wide"
+        :class="$style.submit"
         @click="submit"
       >
         Remove Offer

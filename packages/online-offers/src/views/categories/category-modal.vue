@@ -82,6 +82,7 @@ export default {
       <el-button
         type="primary"
         :class="$style.button"
+        class="el-button--wide"
         @click.stop="onSubmit"
       >
         Save

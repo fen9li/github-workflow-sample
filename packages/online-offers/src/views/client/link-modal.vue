@@ -91,6 +91,7 @@ export default {
     <div :class="$style.buttonWrapper">
       <el-button
         type="primary"
+        class="el-button--wide"
         :disabled="!items || !items.length"
         @click="showModal = true"
       >
@@ -124,6 +125,7 @@ export default {
       <div :class="$style.link">
         <el-button
           type="primary"
+          class="el-button--wide"
           @click="onClick"
         >
           {{ link ? 'Link' : 'Unlink' }}

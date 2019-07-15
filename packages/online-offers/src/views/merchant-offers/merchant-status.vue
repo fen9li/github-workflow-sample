@@ -45,8 +45,8 @@ export default {
         class="modal__footer"
       >
         <el-button
-          class="wide-button"
           type="primary"
+          class="el-button--wide"
           @click.stop="onSubmit"
         >
           Associate

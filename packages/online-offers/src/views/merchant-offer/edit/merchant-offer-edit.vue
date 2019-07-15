@@ -90,7 +90,7 @@ export default {
       <div class="online-offers__edit-controls">
         <el-button
           type="danger"
-          class="wide-button"
+          class="el-button--wide"
           @click="removeOffer"
         >
           Remove Offer
@@ -102,7 +102,7 @@ export default {
           </div>
           <el-button
             type="primary"
-            class="wide-button save-button"
+            class="el-button--wide save-button"
             @click="saveChanges"
           >
             Save Changes

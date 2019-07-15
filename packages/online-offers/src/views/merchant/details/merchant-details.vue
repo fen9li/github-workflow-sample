@@ -152,7 +152,6 @@ export default {
 
 .imageWrapper {
   width: 12rem;
-  height: 12rem;
   overflow: hidden;
   box-shadow: 0 0 15px -5px rgba(0, 0, 0, 0.75);
 }
