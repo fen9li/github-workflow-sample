@@ -6,12 +6,12 @@ import find from 'lodash/find'
 import ApiProcessor from '@lib/processors/api-processor'
 
 export default {
-  name: 'EditClientModal',
+  name: 'EditCatalogueModal',
   components: {
     uploadcare,
   },
   props: {
-    client: {
+    catalogue: {
       type: Object,
       default: null,
     },
@@ -69,7 +69,7 @@ export default {
     },
   },
   watch: {
-    client() {
+    catalogue() {
       this.prefillFields()
     },
   },
@@ -79,12 +79,12 @@ export default {
   methods: {
     ...mapActions('catalogues', ['createCatalog', 'updateCatalog']),
     prefillFields() {
-      const { form, client } = this
+      const { form, catalogue } = this
 
-      if (client) {
-        form.name = client.name
-        form.logo = client.logo
-        form.feeds = client.feeds.map(i => i.name)
+      if (catalogue) {
+        form.name = catalogue.name
+        form.logo = catalogue.logo
+        form.feeds = catalogue.feeds.map(i => i.name)
       }
     },
     onSuccessUploading(img) {
@@ -104,11 +104,11 @@ export default {
           return feed.slug
         })
 
-        if (this.client) {
+        if (this.catalogue) {
           this.updateCatalog({
             ...this.form,
             feeds,
-            id: this.client.id,
+            id: this.catalogue.id,
           })
             .then(() => this.processor.getData())
             .then(() => this.$emit('catalogues-updated'))
@@ -131,7 +131,7 @@ export default {
 <template>
   <div :class="$style.wrapper">
     <el-dialog
-      :title="client ? 'Edit Client Details' : 'New Client Setup'"
+      :title="catalogue ? 'Edit Client Details' : 'New Client Setup'"
       v-bind="$attrs"
       v-on="$listeners"
     >
@@ -176,7 +176,7 @@ export default {
               </uploadcare>
               <div
                 slot="tip"
-                :class="$style['form-uploader-tip']"
+                :class="$style.formUploaderTip"
               >
                 {{ uploaderPlaceholder }}
               </div>
@@ -184,14 +184,14 @@ export default {
           </el-form-item>
 
           <el-form-item
-            :class="$style['form-item']"
+            :class="$style.formItem"
             label-width="70px"
             label="Feeds"
             prop="feeds"
           >
             <el-checkbox-group
               v-model="form.feeds"
-              :class="$style['form-feeds']"
+              :class="$style.formFeeds"
             >
               <el-checkbox
                 v-for="(feed, index) in feeds"
@@ -240,7 +240,7 @@ export default {
   }
 }
 
-.form-uploader-tip {
+.formUploaderTip {
   width: calc(100% + 2px);
   height: 40px;
   padding: 0 1rem 0 0;
@@ -253,7 +253,7 @@ export default {
   border-radius: 0 4px 4px 0;
 }
 
-.form-feeds {
+.formFeeds {
   display: flex;
 
   :global {

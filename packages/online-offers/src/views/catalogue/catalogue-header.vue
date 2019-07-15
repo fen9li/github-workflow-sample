@@ -1,16 +1,16 @@
 <script>
 import { mapActions } from 'vuex'
 import get from 'lodash/get'
-import ClientEditModal from './client-edit-modal.vue'
+import CatalogueEditModal from './catalogue-edit-modal.vue'
 import ApiProcessor from '@lib/processors/api-processor'
 
 export default {
-  name: 'ClientHeader',
+  name: 'CatalogueHeader',
   components: {
-    ClientEditModal,
+    CatalogueEditModal,
   },
   props: {
-    client: {
+    catalogue: {
       type: Object,
       default: () => {},
     },
@@ -27,14 +27,17 @@ export default {
   },
   computed: {
     feeds() {
-      return get(this.client, 'feeds', []).map(item => item.name)
+      return get(this.catalogue, 'feeds', []).map(item => item.name)
     },
   },
   async created() {
-    this.form = await this.getMerchant(this.$route.params.id)
+    const [, result] = await this.getCatalogueMerchant(this.$route.params.id)
+    if (result) {
+      this.form = result
+    }
   },
   methods: {
-    ...mapActions('catalogues', ['getMerchant']),
+    ...mapActions('catalogues', ['getCatalogueMerchant']),
     cataloguesUpdated() {
       this.$emit('catalogues-updated')
       this.showEditModal = false
@@ -48,40 +51,40 @@ export default {
     <div :class="$style.header">
       <div :class="$style.logo">
         <img
-          :class="$style['logo-image']"
-          :src="client.logo"
+          :class="$style.logoImage"
+          :src="catalogue.logo"
         >
       </div>
 
       <div :class="$style.form">
-        <div :class="$style['form-inner']">
-          <div :class="$style['form-inner-left']">
-            <div :class="$style['form-row']">
-              <div :class="$style['form-row-label']">
+        <div :class="$style.formInner">
+          <div :class="$style.formInnerLeft">
+            <div :class="$style.formRow">
+              <div :class="$style.formRowLabel">
                 Client Name
               </div>
-              <div :class="$style['form-row-value']">
-                {{ client.name }}
+              <div :class="$style.formRowValue">
+                {{ catalogue.name }}
               </div>
             </div>
 
-            <div :class="$style['form-row']">
-              <div :class="$style['form-row-label']">
+            <div :class="$style.formRow">
+              <div :class="$style.formRowLabel">
                 Aggregators
               </div>
-              <div :class="$style['form-row-value']">
+              <div :class="$style.formRowValue">
                 <div
                   v-if="!!feeds.length"
-                  :class="$style['client-feeds']"
+                  :class="$style.catalogueFeeds"
                 >
                   {{ feeds.join(', ') }}
                 </div>
 
                 <div
                   v-else
-                  :class="$style['client-feeds']"
+                  :class="$style.catalogueFeeds"
                 >
-                  <span :class="$style['client-feeds-item']">
+                  <span :class="$style.catalogueFeedsItem">
                     There are no feeds
                   </span>
                 </div>
@@ -89,7 +92,7 @@ export default {
             </div>
           </div>
 
-          <div :class="$style['form-inner-right']">
+          <div :class="$style.formInnerRight">
             <el-button
               type="primary"
               icon="el-icon-edit"
@@ -97,10 +100,10 @@ export default {
               @click="showEditModal = true"
             />
           </div>
-          <client-edit-modal
+          <catalogue-edit-modal
             :visible.sync="showEditModal"
             :processor="processor"
-            :client="client"
+            :catalogue="catalogue"
             modal-append-to-body
             append-to-body
             @catalogues-updated="cataloguesUpdated"
@@ -130,7 +133,7 @@ export default {
   }
 }
 
-.logo-image {
+.logoImage {
   width: auto;
   max-width: 20rem;
   height: auto;
@@ -139,69 +142,35 @@ export default {
   object-fit: contain;
 }
 
-.logo-change {
-  margin: 1.5rem 0 -1rem;
-  text-align: center;
-}
-
-.logo-change-btn {
-  padding: 0;
-  font-size: 1rem;
-}
-
-.uploader {
-  display: flex;
-  width: 100%;
-  padding-left: rem(15px);
-  border: rem(1px) solid #dcdfe6;
-  border-radius: rem(4px);
-}
-
-.uploadcare {
-  order: 2;
-}
-
-.uploadButton {
-  height: 100%;
-  background-color: #dcdfe6;
-  border-width: 0 0 0 1px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-
-  &:hover {
-    border-color: #dcdfe6 !important;
-  }
-}
-
 .form {
   display: flex;
   width: 100%;
 }
 
-.form-inner {
+.formInner {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
 
-.form-inner-left {
+.formInnerLeft {
   width: calc(100% - 10rem);
 }
 
-.form-inner-right {
+.formInnerRight {
   flex-shrink: 0;
   width: 10rem;
   text-align: right;
 }
 
-.form-row {
+.formRow {
   display: flex;
   align-items: center;
   width: 100%;
   min-height: 2.5rem;
 }
 
-.form-row-label {
+.formRowLabel {
   display: flex;
   flex-shrink: 0;
   align-items: center;
@@ -210,16 +179,16 @@ export default {
   height: 2.5rem;
 }
 
-.form-row-value,
-.form-row-field {
+.formRowValue,
+.formRowField {
   width: calc(100% - 8rem);
 }
 
-.form-row-value {
+.formRowValue {
   padding-left: 75px;
 }
 
-.form-feeds {
+.formFeeds {
   display: flex;
   flex-wrap: wrap;
   margin-top: 0.6rem;

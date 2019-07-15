@@ -14,12 +14,12 @@ const router = new Router({
     component: () => lazy(import('./views/Home')),
   }, {
     path: '/clients',
-    name: 'clients',
-    component: () => lazy(import('./views/clients')),
+    name: 'catalogues',
+    component: () => lazy(import('./views/catalogues')),
   }, {
     path: '/clients/:id/:tab?',
-    name: 'client-details',
-    component: () => lazy(import('./views/client')),
+    name: 'catalogue-details',
+    component: () => lazy(import('./views/catalogue')),
   }, {
     path: '/merchants',
     name: 'merchants',

@@ -12,49 +12,29 @@ const actions = {
 
     return result
   },
-  async updateCatalog({ commit }, payload) {
-    const [, result] = await api.put(`/catalogues/${payload.id}`, payload)
 
-    return result
+  async updateCatalog({ commit }, payload) {
+    return api.put(`/catalogues/${payload.id}`, payload)
   },
-  deleteCatalog({ commit }, id) {
+
+  async deleteCatalog({ commit }, id) {
     return api.delete(`/catalogues/${id}`)
   },
 
-  async getMerchant({ commit }, merchantId) {
-    const [, result] = await api.get(`/catalogues/${merchantId}`)
-
-    return result
+  async getCatalogueMerchant({ commit }, merchantId) {
+    return api.get(`/catalogues/${merchantId}`)
   },
-  async attachMerchant({ commit }, { catalogueId, merchantId }) {
-    const [, result] = await api.post(
-      `/catalogues/${catalogueId}/merchants/${merchantId}`
-    )
 
-    return result
-  },
-  async attachMerchantsBulk({ commit }, { catalogueId, merchants }) {
-    const [, result] = await api.put(`/catalogues/${catalogueId}/merchants`, {
+  async attachCatalogueMerchants({ commit }, { catalogueId, merchants }) {
+    return api.put(`/catalogues/${catalogueId}/merchants`, {
       merchants,
     })
-
-    return result
-  },
-  async detachMerchant({ commit }, { catalogueId, merchantId }) {
-    const [, result] = await api.delete(
-      `/catalogues/${catalogueId}/merchants/${merchantId}`
-    )
-
-    return result
   },
 
-  async detachMerchantsBulk({ commit }, { catalogueId, merchants }) {
-    const [, result] = await api.delete(
-      `/catalogues/${catalogueId}/merchants`,
+  async detachCatalogueMerchants({ commit }, { catalogueId, merchants }) {
+    return api.delete(`/catalogues/${catalogueId}/merchants`,
       { data: { merchants } }
     )
-
-    return result
   },
 }
 

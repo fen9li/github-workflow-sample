@@ -2,16 +2,16 @@
 import { mapActions } from 'vuex'
 import ApiProcessor from '@lib/processors/api-processor'
 import merchantsTable from './merchants.table.js'
-import ClientHeader from './client-header.vue'
+import CatalogueHeader from './catalogue-header.vue'
 import LinkModal from './link-modal.vue'
 
 export default {
-  name: 'Client',
+  name: 'Catalogue',
   page: {
     title: 'Client',
   },
   components: {
-    ClientHeader,
+    CatalogueHeader,
     LinkModal,
   },
   data() {
@@ -19,7 +19,7 @@ export default {
       loading: true,
       table: merchantsTable,
       isEdit: false,
-      client: {},
+      catalogue: {},
       selectedItems: [],
       activeTab: 'linked',
       tabs: [
@@ -44,12 +44,15 @@ export default {
   created() {
     this.activeTab = this.$route.params.tab || 'linked'
     this.getMerchantOffers()
-    this.getClient()
+    this.getCatalogue()
   },
   methods: {
-    ...mapActions('catalogues', ['getMerchant']),
-    async getClient() {
-      this.client = await this.getMerchant(this.$route.params.id)
+    ...mapActions('catalogues', ['getCatalogueMerchant']),
+    async getCatalogue() {
+      const [, result] = await this.getCatalogueMerchant(this.$route.params.id)
+      if (result) {
+        this.catalogue = result
+      }
       this.loading = false
     },
     getMerchantOffers() {
@@ -67,7 +70,7 @@ export default {
     onTabClick() {
       this.selectedItems = []
       this.$router.push({
-        name: 'client-details',
+        name: 'catalogue-details',
         params: {
           id: this.$route.params.id,
           tab: this.activeTab === 'linked' ? null : this.activeTab,
@@ -86,18 +89,18 @@ export default {
 
 <template>
   <main-layout
-    :title="client.name"
+    :title="catalogue.name"
     :loading="loading"
-    :back="{ name: 'clients' }"
+    :back="{ name: 'catalogues' }"
   >
     <el-card
       :class="$style.card"
       body-style="padding: 0"
     >
-      <client-header
+      <catalogue-header
         :processor="table.processor"
-        :client="client"
-        @catalogues-updated="getClient"
+        :catalogue="catalogue"
+        @catalogues-updated="getCatalogue"
       />
       <el-tabs
         v-model="activeTab"
@@ -113,7 +116,7 @@ export default {
           <table-layout
             :class="$style.table"
             shadow="never"
-            :table-name="`clients-details-${tab.name}`"
+            :table-name="`catalogues-details-${tab.name}`"
             :processor="table.processor"
             :filters="table[activeTab].filters"
             :columns="table[activeTab].columns"
@@ -133,9 +136,9 @@ export default {
           </table-layout>
 
           <link-modal
-            :id="client.id"
+            :id="catalogue.id"
             :items="selectedItems"
-            :name="client.name"
+            :name="catalogue.name"
             :merchants-processor="table.processor"
             :link="tab.name !== 'linked'"
           />
