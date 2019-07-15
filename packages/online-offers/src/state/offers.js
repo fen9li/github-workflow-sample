@@ -10,14 +10,7 @@ const actions = {
   async getOffer({
     commit,
   }, offerId) {
-    const [, result] = await api.get(`/offers/${offerId}`)
-    return result
-  },
-  async getFeedOffer({
-    commit,
-  }, externalId) {
-    const [, result] = await api.get(`/feedoffers/${externalId}`)
-    return result
+    return api.get(`/offers/${offerId}`)
   },
   async createOffer({
     commit,
@@ -37,17 +30,7 @@ const actions = {
   }, offerId) {
     return api.delete(`/offers/${offerId}`)
   },
-
-  async activateOffer({
-    commit,
-  }, {
-    feedOfferId,
-    payload,
-  }) {
-    return api.put(`/feedoffers/${feedOfferId}`, payload)
-  },
-
-  async activateOffersBulk({
+  async activateOffers({
     commit,
   }, payload) {
     // this action also serves as bulk deactivate

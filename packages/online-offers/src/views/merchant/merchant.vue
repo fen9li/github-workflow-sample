@@ -60,7 +60,7 @@ export default {
   methods: {
     ...mapActions('merchants', [
       'getMerchantFeeds',
-      'getGlobalMerchant',
+      'getMerchant',
     ]),
     async fetchMerchantFeeds() {
       const [, { items: merchantFeeds }] = await this.getMerchantFeeds(
@@ -70,7 +70,7 @@ export default {
       this.merchantFeeds = merchantFeeds
     },
     async fetchMerchant() {
-      const [, merchant] = await this.getGlobalMerchant(this.merchantId)
+      const [, merchant] = await this.getMerchant(this.merchantId)
       await this.fetchMerchantFeeds()
 
       this.merchant = merchant

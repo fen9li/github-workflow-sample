@@ -41,12 +41,14 @@ export default {
     this.prefillForm()
   },
   methods: {
-    ...mapActions('merchants', ['getMerchant']),
-    ...mapActions('feedMerchants', ['updateFeedMerchant']),
+    ...mapActions('feedMerchants', [
+      'getFeedMerchant',
+      'updateFeedMerchant',
+    ]),
     capitalize,
     async getDetails() {
       try {
-        const [, response] = await this.getMerchant({ merchantId: this.id })
+        const [, response] = await this.getFeedMerchant({ merchantId: this.id })
         this.details = response
       } catch (error) {
         this.$router.push('/merchants')
