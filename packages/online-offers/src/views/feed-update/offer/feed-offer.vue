@@ -33,9 +33,7 @@ export default {
     },
   },
   async created() {
-    this.fetchFeedOffer()
-  },
-  async mounted() {
+    await this.fetchFeedOffer()
     this.loading = false
   },
   methods: {
