@@ -1,19 +1,19 @@
 {
   "name": "manage-online-offers",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.1.0",
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:ci": "cross-env ANALYZE=true vue-cli-service build"
   },
   "dependencies": {
-    "@loyalty-corp/manage-lib": "0.0.1",
+    "@loyalty-corp/manage-lib": "0.1.0",
+    "axios": "^0.19.0",
+    "uploadcare-vue": "^1.0.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.7",
-    "vuex": "^3.1.1",
-    "axios": "^0.19.0",
-    "uploadcare-vue": "^1.0.0"
+    "vuex": "^3.1.1"
   },
   "browserslist": [
     "> 1%",
