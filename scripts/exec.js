@@ -1,18 +1,15 @@
 const shell = require('shelljs')
 const { getAliases } = require('./utils')
 
-const command = process.argv[2]
+const [, , command, target, ...restArgs] = process.argv
 
 if (!command) {
-  return console.log('no command')
+  // console.log('no command')
+  process.exit(1)
 }
-
-let target = process.argv[3] || 'super'
 
 const ALIASES = getAliases()
 
-target = ALIASES[target] || target
-
 if (target) {
-  shell.exec(`lerna exec --scope ${target} -- yarn ${command} --color=always`)
+  shell.exec(`lerna exec --scope ${ALIASES[target] || target || 'super'} --yarn ${command} --color=always ${restArgs.join(' ')}` )
 }
