@@ -1,18 +1,18 @@
 <script>
-import clientsTable from './clients.table'
-import ClientAddModal from '../client/client-edit-modal.vue'
+import cataloguesTable from './catalogues.table'
+import CatalogueAddModal from '../catalogue/catalogue-edit-modal.vue'
 
 export default {
-  name: 'Clients',
+  name: 'Catalogues',
   page: {
     title: 'Clients',
   },
   components: {
-    ClientAddModal,
+    CatalogueAddModal,
   },
   data() {
     return {
-      table: clientsTable(this),
+      table: cataloguesTable(this),
       modal: {
         add: false,
       },
@@ -26,7 +26,7 @@ export default {
     },
     onRowClick(row) {
       this.$router.push({
-        name: 'client-details',
+        name: 'catalogue-details',
         params: {
           id: row.id,
         },
@@ -39,7 +39,7 @@ export default {
 <template>
   <main-layout title="Clients">
     <table-layout
-      table-name="clients"
+      table-name="catalogue"
       :fragments="false"
       hider
       :quantity="false"
@@ -71,7 +71,7 @@ export default {
       Add Client
     </el-button>
 
-    <client-add-modal
+    <catalogue-add-modal
       v-if="modal.add"
       slot="header"
       :visible.sync="modal.add"

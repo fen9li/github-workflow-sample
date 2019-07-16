@@ -110,7 +110,9 @@ export default {
       'createMerchant',
       'searchMerchants',
       'associateMerchant',
-      'activateMerchant',
+    ]),
+    ...mapActions('feedMerchants', [
+      'activateFeedMerchant',
     ]),
     async querySearch(queryString = null, cb) {
       let result = this.suggestions
@@ -155,7 +157,7 @@ export default {
           merchantId: this.merchantId,
           feedmerchantId: this.row.id,
         })
-          .then(() => this.activateMerchant({
+          .then(() => this.activateFeedMerchant({
             feedmerchantId: this.row.id,
             payload: {
               acknowledgement: 'acknowledged',

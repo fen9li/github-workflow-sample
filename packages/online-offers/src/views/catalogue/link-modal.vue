@@ -49,7 +49,7 @@ export default {
     this.getData()
   },
   methods: {
-    ...mapActions('catalogues', ['attachMerchantsBulk', 'detachMerchantsBulk']),
+    ...mapActions('catalogues', ['attachCatalogueMerchants', 'detachCatalogueMerchants']),
     getData() {
       this.table.processor = new StaticProcessor({
         component: this,
@@ -59,10 +59,10 @@ export default {
     onClick() {
       const { merchantsCount } = this
       const merchants = this.items.map(i => i.id)
-      let operation = 'attachMerchantsBulk'
+      let operation = 'attachCatalogueMerchants'
 
       if (!this.link) {
-        operation = 'detachMerchantsBulk'
+        operation = 'detachCatalogueMerchants'
       }
 
       this[operation]({
@@ -114,7 +114,7 @@ export default {
       <table-layout
         :class="$style.table"
         shadow="never"
-        table-name="clients-details"
+        table-name="catalogues-details"
         :processor="table.processor"
         :columns="table.columns"
         :fragments="false"

@@ -36,13 +36,13 @@ export default {
   },
   created() {
     this.activeTab = this.$route.params.tab || 'active'
-    this.getMerchant()
+    this.fetchMerchant()
     this.getMerchantOffers()
   },
   methods: {
-    ...mapActions('merchants', ['getGlobalMerchant']),
-    async getMerchant() {
-      const [, response] = await this.getGlobalMerchant(this.$route.params.id)
+    ...mapActions('merchants', ['getMerchant']),
+    async fetchMerchant() {
+      const [, response] = await this.getMerchant(this.$route.params.id)
 
       if (response) {
         this.merchant = response

@@ -32,37 +32,41 @@ export default {
       }
     },
   },
-  async mounted() {
-    await this.getOffer()
+  async created() {
+    await this.fetchFeedOffer()
     this.loading = false
   },
   methods: {
     ...mapActions('offers', [
-      'getFeedOffer',
       'createOffer',
-      'activateOffer',
+    ]),
+    ...mapActions('feedOffers', [
+      'getFeedOffer',
+      'activateFeedOffer',
     ]),
     capitalize,
-    async getOffer() {
-      this.offer = await this.getFeedOffer(this.$attrs.id) || {}
+    async fetchFeedOffer() {
+      const [, result] = await this.getFeedOffer(this.$attrs.id)
+      if (result) {
+        this.offer = result
+      }
     },
     async activate() {
       await this.createOffer({
         feed_offer: this.offer.external_id,
         name: this.advertiserName,
       })
-      await this.activateOffer({
+      await this.activateFeedOffer({
         feedOfferId: this.offer.id,
         payload: {
           acknowledgement: 'acknowledged',
         },
       })
-      await this.getOffer()
-      this.$notify({
+      this.getOffer().then(() => this.$notify({
         type: 'success',
         title: 'Success',
         message: 'Successfuly activated',
-      })
+      }))
     },
     formatDate(value, format) {
       return formatDate(value, format || 'DD/MM/YYYY', false)

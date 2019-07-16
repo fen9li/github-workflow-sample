@@ -49,7 +49,7 @@ export default {
     this.getData()
   },
   methods: {
-    ...mapActions('offers', ['activateOffersBulk']),
+    ...mapActions('offers', ['activateOffers']),
     getData() {
       this.table.processor = new StaticProcessor({
         component: this,
@@ -62,7 +62,7 @@ export default {
 
       // there is a single endpoint
       // for bulk activation and deactivation
-      this.activateOffersBulk({
+      this.activateOffers({
         offers,
         enabled: this.activate,
       })

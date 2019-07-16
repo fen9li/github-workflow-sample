@@ -207,8 +207,10 @@ export default {
     ...mapActions('merchants', [
       'updateMerchant',
       'deleteMerchant',
-      'activateMerchant',
       'setDefaultFeedMerchant',
+    ]),
+    ...mapActions('feedMerchants', [
+      'activateFeedMerchant',
     ]),
     formatCommissionType(type) {
       if (type === 'PERCENTAGE') {
@@ -313,7 +315,7 @@ export default {
     },
     updateFeedMerchantsAck() {
       this.feeds.forEach(({ id }) =>
-        this.activateMerchant({
+        this.activateFeedMerchant({
           feedmerchantId: id,
           payload: { acknowledgement: 'acknowledged' },
         })

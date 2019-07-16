@@ -157,10 +157,14 @@ export default {
       }
     },
   },
+  async created() {
+    const [, result] = await this.getOffer(this.id)
+    if (result) {
+      this.offer = result
+    }
+  },
   async mounted() {
-    this.offer = await this.getOffer(this.id)
     this.switcher = this.offer.enabled
-    this.updateFeedOfferAck()
     // parse url
     this.offer.tracking_url = get(this.offer, 'baseline_url', '')
   },
@@ -169,7 +173,9 @@ export default {
       'getOffer',
       'updateOffer',
       'deleteOffer',
-      'activateOffer',
+    ]),
+    ...mapActions('feedOffers', [
+      'activateFeedOffer',
     ]),
     formatDate(value, format) {
       return formatDate(value, format || 'DD/MM/YYYY', false)
@@ -218,6 +224,10 @@ export default {
         title: 'Success',
         message: 'Offer details updated successfully.',
       })
+      await this.activateFeedOffer({
+        feedOfferId: this.feedOfferId,
+        payload: { acknowledgement: 'acknowledged' },
+      })
     },
     async submitDeleteOffer(notes) {
       this.modals.remove = false
@@ -245,12 +255,6 @@ export default {
           params: { edit: 'edit' },
         })
       }
-    },
-    updateFeedOfferAck() {
-      return this.activateOffer({
-        feedOfferId: this.feedOfferId,
-        payload: { acknowledgement: 'acknowledged' },
-      })
     },
   },
 }

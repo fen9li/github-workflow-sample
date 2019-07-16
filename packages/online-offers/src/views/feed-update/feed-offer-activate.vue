@@ -28,14 +28,16 @@ export default {
   methods: {
     ...mapActions('offers', [
       'createOffer',
-      'activateOffer',
+    ]),
+    ...mapActions('feedOffers', [
+      'activateFeedOffer',
     ]),
     onSubmit() {
       this.createOffer({
         feed_offer: this.row.external_id,
         name: this.row.name,
       })
-        .then(() => this.activateOffer({
+        .then(() => this.activateFeedOffer({
           feedOfferId: this.row.id,
           payload: {
             acknowledgement: 'acknowledged',

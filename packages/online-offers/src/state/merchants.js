@@ -17,14 +17,11 @@ const actions = {
       return api.get('/merchants')
     }
   },
-  async getGlobalMerchant({ commit }, merchantId) {
+  async getMerchant({ commit }, merchantId) {
     return api.get(`/merchants/${merchantId}`)
   },
   async getMerchantFeeds({ commit }, merchantId) {
     return api.get(`/merchants/${merchantId}/feeds`)
-  },
-  async getMerchant({ commit }, { merchantId }) {
-    return api.get(`/feedmerchants/${merchantId}`)
   },
   async getMerchantOffers({ commit }, merchantId) {
     return api.get(`/merchants/${merchantId}/offers`)
@@ -39,9 +36,6 @@ const actions = {
     return api.delete(
       `/merchants/${merchantId}/feedmerchants/${feedmerchantId}`
     )
-  },
-  async activateMerchant({ commit }, { feedmerchantId, payload }) {
-    return api.put(`/feedmerchants/${feedmerchantId}`, payload)
   },
   async updateMerchant({ commit }, { merchantId, payload }) {
     return api.put(`/merchants/${merchantId}`, payload)
