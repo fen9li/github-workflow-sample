@@ -22,26 +22,16 @@ export default {
         product: '',
         frequency: '',
         coupon: '',
-        selectedMethod: '',
+        endpoint: '',
       },
       productsData: {
         data: [],
         loading: true,
       },
       couponsData: {
-        date: [],
+        data: [],
         loading: true,
       },
-      paymentMethods: [
-        {
-          value: 1,
-          label: '**** 7493 MasterCard',
-        },
-        {
-          value: 2,
-          label: '**** 7493 ',
-        },
-      ],
       rules: {
         start_at: [
           {
@@ -86,24 +76,47 @@ export default {
     this.getProductsCoupons()
   },
   methods: {
-    onSubmit() {
+    async onSubmit() {
       this.showAddMethodForm = false
-      this.$refs.form.validate(valid => {
-        console.warn(this.form)
+      if (!this.validateAll().some(item => item === false)) {
 
-        // Add method here
+        // TODO: Update method with new API
 
-        if (valid) {
+        const { form, customer } = this
+        const [error, response] = await this.$api.post(`/customers/${customer.id}/subscriptions`, {
+          coupon: form.coupon,
+          end_at: form.end_at,
+          endpoint: form.endpoint,
+          frequency: form.frequency,
+          product: {
+            id: form.product
+          },
+          start_at: form.start_at
+        })
+
+        if (response) {
           this.$notify({
             type: 'success',
             title: 'Success',
-            message: 'Subscription successfully added.',
+            message: `Changes saved successfully`,
           })
-          // this.$emit('update:visible', false)
-        } else {
-          return false
+          this.$emit('update:visible', false)
+        } else if (error) {
+          const firstError = error.violations[Object.keys(error.violations)[0]][0]
+          this.$notify({
+            type: 'error',
+            title: 'Error',
+            message: firstError,
+          })
         }
+      }
+    },
+    validateAll() {
+      const result = []
+      this.$refs.form.validate( valid => {
+        result.push(valid)
       })
+      return result
     },
     getProductsCoupons() {
       this.productsData = new ElasticProcessor({
@@ -132,7 +145,7 @@ export default {
         label-position="top"
         :model="form"
         :rules="rules"
-        :class="[$style.form]"
+        class="modal-form"
       >
         <el-form-item
           label="Customer"
@@ -140,11 +153,11 @@ export default {
           <el-input
             :value="customer.fullName"
             disabled
+            data-test="customer"
           />
         </el-form-item>
 
-
-        <el-col :span="11">
+        <div class="united-field">
           <el-form-item
             label="Start Date"
             prop="start_at"
@@ -155,14 +168,7 @@ export default {
               placeholder="Enter Date"
             />
           </el-form-item>
-        </el-col>
-        <el-col
-          class="line"
-          :span="2"
-        >
-          &nbsp;
-        </el-col>
-        <el-col :span="11">
+
           <el-form-item
             label="End Date"
           >
@@ -172,7 +178,7 @@ export default {
               placeholder="Enter Date"
             />
           </el-form-item>
-        </el-col>
+        </div>
 
         <el-form-item
           label="Subscription Product"
@@ -236,17 +242,18 @@ export default {
         <hr :class="['divider-primary', $style.divider]">
 
         <payment-form-item
-          :selected-method="form.selectedMethod"
+          :selected-method="form.endpoint"
           :payment-methods="customer.paymentMethods"
           :display-form="displayMethodForm"
           @showForm="showAddMethodForm = $event"
-          @changeMethod="form.selectedMethod = $event"
+          @changeMethod="form.endpoint = $event"
         />
       </el-form>
       <el-button
         v-if="!displayMethodForm"
         type="primary"
         :class="[$style.save, 'wide-button']"
+        data-test="submit"
         @click="onSubmit"
       >
         Save
@@ -258,6 +265,13 @@ export default {
 <style lang="scss" module>
 .wrapper {
   width: 32rem;
+  margin-top: 12vh !important;
+
+  :global {
+    .el-dialog__body {
+      max-height: 80vh;
+    }
+  }
 }
 
 .save {

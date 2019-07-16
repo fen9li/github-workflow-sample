@@ -15,9 +15,6 @@ export default {
   data() {
     return {
       table: table(this),
-      modal: {
-        add: false,
-      },
     }
   },
   methods: {
@@ -32,12 +29,14 @@ export default {
 </script>
 
 <template>
-  <table-layout
-    table-name="subscriptions"
-    :processor="table.processor"
-    :filters="table.filters"
-    :columns="table.columns"
-    :fragments="false"
-    @row-click="onRowClick"
-  />
+  <div>
+    <table-layout
+      table-name="customerSubscriptions"
+      :processor="table.processor"
+      :filters="table.filters"
+      :columns="table.columns"
+      :fragments="false"
+      @row-click="onRowClick"
+    />
+  </div>
 </template>

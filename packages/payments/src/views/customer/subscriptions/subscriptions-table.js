@@ -1,5 +1,4 @@
 import ElasticProcessor from '@lib/processors/elastic-processor'
-// import CustomerInformationCharge from './customer-charge.vue'
 
 const TABLE_FILTERS = [
   {

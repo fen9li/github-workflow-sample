@@ -28,7 +28,7 @@ function createWrapper() {
   return wrapper
 }
 
-describe('packages/payments/src/views/subscription/information/modals/subscription-charge', () => {
+describe('packages/payments/src/views/subscription/information/modals/subscription-charge.vue', () => {
   let wrapper
   let methods
 

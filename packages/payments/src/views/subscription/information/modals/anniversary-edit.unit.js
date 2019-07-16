@@ -35,7 +35,7 @@ function createWrapper() {
   return wrapper
 }
 
-describe('packages/payments/src/views/subscription/information/modals/anniversary-edit', () => {
+describe('packages/payments/src/views/subscription/information/modals/anniversary-edit.vue', () => {
   let wrapper
 
   beforeEach(() => {

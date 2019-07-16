@@ -1,17 +1,26 @@
 <script>
-import EditModal from './customer-edit'
-import DeleteModal from './customer-delete'
+import appConfig from '~/app.config'
+import CustomerDetails from './customer-details'
+import PaymentMethods from '../payment-methods/customer-methods'
 
 export default {
   name: 'CustomerInformation',
+  page: {
+    title: 'Customer Information',
+    meta: [{ name: 'description', content: appConfig.description }],
+  },
   components: {
-    EditModal,
-    DeleteModal,
+    CustomerDetails,
+    PaymentMethods,
   },
   props: {
+    id: {
+      type: String,
+      required: true,
+    },
     customer: {
       type: Object,
-      default: () => ({}),
+      required: true,
     },
     loading: {
       type: Boolean,
@@ -30,63 +39,29 @@ export default {
 </script>
 
 <template>
-  <el-card v-loading="loading">
-    <el-row
-      slot="header"
-      type="flex"
-      justify="space-between"
-      align="middle"
-    >
-      <span>Information</span>
-    </el-row>
+  <div :class="$style.root">
+    <el-card v-loading="loading">
+      <customer-details
+        :customer="customer"
+        :loading="loading"
+      />
 
-    <dl
-      v-if="customer.id"
-      class="datalist"
-    >
-      <dt>Date Created</dt>
-      <dd>{{ customer.created_at | dateTime }}</dd>
+      <hr :class="['divider-primary', $style.divider]">
 
-      <dt>Customer ID</dt>
-      <dd>{{ customer.id }}</dd>
-
-      <dt>First Name</dt>
-      <dd>{{ customer.first_name }}</dd>
-
-      <dt>Last Name</dt>
-      <dd>{{ customer.last_name }}</dd>
-
-      <dt>Email</dt>
-      <dd>{{ customer.email }}</dd>
-
-      <dt>Telephone</dt>
-      <dd>{{ customer.mobile || '-' }}</dd>
-
-      <dt>Address</dt>
-      <dd>{{ customer.address || '-' }}</dd>
-    </dl>
-
-    <edit-modal
-      v-if="modal.edit"
-      :visible.sync="modal.edit"
-      :customer="customer"
-    />
-    <delete-modal
-      v-if="modal.delete"
-      :visible.sync="modal.delete"
-      :customer="customer"
-    />
-  </el-card>
+      <payment-methods
+        :customer="customer"
+        :loading="loading"
+      />
+    </el-card>
+  </div>
 </template>
 
 <style lang="scss" module>
-
-
 .subscriptions {
   margin: 1rem 0;
 }
 
 .divider {
-  margin: 0 var(--size-card-spacing);
+  margin: var(--size-card-spacing) 0;
 }
 </style>

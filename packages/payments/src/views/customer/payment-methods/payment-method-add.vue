@@ -22,10 +22,10 @@ export default {
           number: '',
         },
         card: {
-          name: '1',
-          number: '1111 1111 1111',
-          expiry: '11/20',
-          cvv: '111',
+          name: '',
+          number: '',
+          expiry: '',
+          cvv: '',
         },
       },
     }

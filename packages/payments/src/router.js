@@ -31,7 +31,7 @@ const router = new VueRouter({
     },
     {
       path: '/transactions/:id',
-      name: 'payment-transaction-details',
+      name: 'transaction-details',
       component: () => lazy(import('~/views/transaction')),
       props: true,
     },
@@ -66,7 +66,7 @@ const router = new VueRouter({
           path: 'details',
           name: 'customer-information',
           component: () => lazy(
-            import('~/views/customer/customer-information')
+            import('~/views/customer/information')
           ),
           props: true,
         },
@@ -74,15 +74,7 @@ const router = new VueRouter({
           path: 'subscriptions',
           name: 'customer-subscriptions',
           component: () => lazy(
-            import('~/views/customer/subscriptions/customer-subscriptions')
-          ),
-          props: true,
-        },
-        {
-          path: 'products',
-          name: 'customer-products',
-          component: () => lazy(
-            import('~/views/customer/products/customer-products')
+            import('~/views/customer/subscriptions')
           ),
           props: true,
         },
@@ -90,7 +82,7 @@ const router = new VueRouter({
           path: 'transactions',
           name: 'customer-transactions',
           component: () => lazy(
-            import('~/views/customer/transactions/customer-transactions')
+            import('~/views/customer/transactions')
           ),
           props: true,
         },

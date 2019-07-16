@@ -1,6 +1,6 @@
 <script>
 import { mask } from 'vue-the-mask'
-import paymentFormItem from '../payment-methods/payment-form-item'
+import paymentFormItem from './payment-methods/payment-form-item'
 import ElasticProcessor from '@lib/processors/elastic-processor'
 
 export default {
@@ -23,7 +23,7 @@ export default {
       form: {
         product: '',
         amount: '',
-        selectedMethod: '',
+        endpoint: '',
       },
       productsData: {
         data: [],
@@ -44,7 +44,7 @@ export default {
             trigger: 'blur',
           },
         ],
-        selectedMethod: [
+        endpoint: [
           {
             required: true,
             message: 'This field is required',
@@ -65,25 +65,42 @@ export default {
     },
   },
   created() {
-    this.getProductsCoupons()
+    this.getProducts()
   },
   methods: {
-    onSubmit() {
+    async onSubmit() {
       this.showAddMethodForm = false
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.$notify({
-            type: 'success',
-            title: 'Success',
-            message: 'Product successfully added.',
-          })
-          // this.$emit('update:visible', false)
-        } else {
-          return false
-        }
-      })
+      if (!this.validateAll().some(item => item === false)) {
+
+        // TODO: Update method with new API
+
+        // const [error, response] = await this.$api.
+
+      //   if (response) {
+      //     this.$notify({
+      //       type: 'success',
+      //       title: 'Success',
+      //       message: `Changes saved successfully`,
+      //     })
+      //     this.$emit('update:visible', false)
+      //   } else if (error) {
+      //     const firstError = error.violations[Object.keys(error.violations)[0]][0]
+      //     this.$notify({
+      //       type: 'error',
+      //       title: 'Error',
+      //       message: firstError,
+      //     })
+      //   }
+      }
     },
-    getProductsCoupons() {
+    validateAll() {
+      const result = []
+      this.$refs.form.validate( valid => {
+        result.push(valid)
+      })
+      return result
+    },
+    getProducts() {
       this.productsData = new ElasticProcessor({
         component: this,
         index: 'single-products',
@@ -105,7 +122,7 @@ export default {
         :model="form"
         :rules="rules"
         label-position="top"
-        :class="[$style.form]"
+        class="modal-form"
       >
         <el-form-item
           label="Customer"
@@ -113,6 +130,7 @@ export default {
           <el-input
             :value="customer.fullName"
             disabled
+            data-test="customer"
           />
         </el-form-item>
 
@@ -124,6 +142,7 @@ export default {
             v-model="form.product"
             v-loading="productsData.loading"
             placeholder="Please select"
+            data-test="product"
           >
             <el-option
               v-for="product in allProducts"
@@ -136,10 +155,8 @@ export default {
 
         <el-form-item
           label="Amount"
-          prop="amount"
         >
           <div
-            prop="amount"
             class="amount-form-item"
           >
             <el-form-item
@@ -155,6 +172,7 @@ export default {
                   '#####.##'
                 ]"
                 placeholder="$0.00"
+                data-test="amount"
               >
                 <template #prepend>
                   $
@@ -172,17 +190,18 @@ export default {
         <hr :class="['divider-primary', $style.divider]">
 
         <payment-form-item
-          :selected-method="form.selectedMethod"
+          :selected-method="form.endpoint"
           :payment-methods="customer.paymentMethods"
           :display-form="displayMethodForm"
           @showForm="showAddMethodForm = $event"
-          @changeMethod="form.selectedMethod = $event"
+          @changeMethod="form.endpoint = $event"
         />
       </el-form>
       <el-button
         v-if="!displayMethodForm"
         type="primary"
         :class="[$style.save, 'wide-button']"
+        data-test="submit"
         @click="onSubmit"
       >
         Save

@@ -44,7 +44,7 @@ function createWrapper() {
   return wrapper
 }
 
-describe('packages/payments/src/views/subscription/information/modals/product-edit', () => {
+describe('packages/payments/src/views/subscription/information/modals/product-edit.vue', () => {
   let wrapper
   let submit
   let refund

@@ -17,7 +17,7 @@ export default {
     },
   },
   methods: {
-    submit() {
+    onSubmit() {
       this.$emit('close')
     },
   },
@@ -49,7 +49,8 @@ export default {
         $style.submit,
         'wide-button',
       ]"
-      @click="submit"
+      data-test="submit"
+      @click="onSubmit"
     >
       Delete
     </el-button>

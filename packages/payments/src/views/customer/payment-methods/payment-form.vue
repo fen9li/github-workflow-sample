@@ -204,6 +204,7 @@ export default {
     <el-button
       type="primary"
       :class="$style.saveButton"
+      data-test="save"
       @click="onSave"
     >
       Save

@@ -45,7 +45,7 @@ function createWrapper(coupons = []) {
   return wrapper
 }
 
-describe('packages/payments/src/views/subscription/information/modals/coupons-edit', () => {
+describe('packages/payments/src/views/subscription/information/modals/coupons-edit.vue', () => {
   let wrapper
   let submit
 
@@ -107,7 +107,7 @@ describe('packages/payments/src/views/subscription/information/modals/coupons-ed
   })
 })
 
-describe('packages/payments/src/views/subscription/information/modals/coupons-edit', () => {
+describe('packages/payments/src/views/subscription/information/modals/coupons-edit.vue', () => {
   let wrapper
   let appliedCoupon
 

@@ -20,8 +20,8 @@ export default {
   methods: {
     onRowClick(row) {
       this.$router.push({
-        name: 'payment-transaction-details',
-        params: { id: row.id || 'unknown' },
+        name: 'transaction-details',
+        params: { id: row.id },
       })
     },
   },
@@ -29,12 +29,14 @@ export default {
 </script>
 
 <template>
-  <table-layout
-    table-name="customerTransactions"
-    :processor="table.processor"
-    :filters="table.filters"
-    :columns="table.columns"
-    :fragments="false"
-    @row-click="onRowClick"
-  />
+  <div>
+    <table-layout
+      table-name="customerTransactions"
+      :processor="table.processor"
+      :filters="table.filters"
+      :columns="table.columns"
+      :fragments="false"
+      @row-click="onRowClick"
+    />
+  </div>
 </template>

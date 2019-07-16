@@ -1,7 +1,6 @@
 <script>
 import AddModal from './payment-method-add'
 import DeleteModal from './payment-method-delete'
-import MockData from '@tests/__fixtures__/customer'
 
 export default {
   name: 'CustomerPaymentMethods',
@@ -29,7 +28,7 @@ export default {
   },
   computed: {
     methods() {
-      return MockData.methods
+      return this.customer.endpoints
     },
   },
   methods: {
@@ -44,33 +43,28 @@ export default {
 </script>
 
 <template>
-  <el-card
-    v-loading="loading"
-  >
-    <el-row
-      slot="header"
-      type="flex"
-      justify="space-between"
-      align="middle"
-    >
-      <span>Payment Methods</span>
+  <div class="info-block">
+    <div :class="$style.header">
+      <span class="info-block__title">
+        Payment Methods
+      </span>
 
-      <el-row type="flex">
-        <el-button
-          class="wide-button"
-          type="primary"
-          size="small"
-          @click="modal.add = true"
-        >
-          Add
-        </el-button>
-      </el-row>
-    </el-row>
+      <el-button
+        class="wide-button"
+        type="primary"
+        size="small"
+        data-test="add"
+        @click="modal.add = true"
+      >
+        Add
+      </el-button>
+    </div>
 
     <div
-      v-if="methods.length"
+      v-if="methods"
       :class="$style.cards"
     >
+      <!-- TODO: Adjust to updated format (after backend adds data) -->
       <div
         v-for="(method, idx) in methods"
         :key="idx"
@@ -84,7 +78,7 @@ export default {
           >
         </div>
         <div :class="$style.cardHolder">
-          {{ method.firstName }} {{ method.lastName }}
+          {{ method.name }}
         </div>
         <div v-if="method.bsb">
           BSB {{ method.bsb }}
@@ -93,7 +87,7 @@ export default {
           v-else
           :class="$style.cardNumber"
         >
-          {{ method.cardNumber }}
+          {{ method.pan }}
         </div>
         <div
           v-if="method.expiry"
@@ -101,7 +95,7 @@ export default {
         >
           {{ method.expiry }}
         </div>
-        <div v-else>
+        <div v-if="method.acc">
           ACC {{ method.accountNumber }}
         </div>
         <el-button
@@ -110,11 +104,17 @@ export default {
           icon="el-icon-delete"
           size="small"
           circle
+          data-test="delete"
           @click="deleteCard(method)"
         />
       </div>
     </div>
+
+    <span v-else>
+      No payment methods
+    </span>
     <add-modal
+      v-if="modal.add"
       :visible.sync="modal.add"
       :customer="customer"
     />
@@ -124,11 +124,17 @@ export default {
       :method="methodToRemove"
       @close="methodToRemove = null"
     />
-  </el-card>
+  </div>
 </template>
 
 <style lang="scss" module>
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.8rem;
+}
 
 .cards {
   display: flex;

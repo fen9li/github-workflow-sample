@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      newMethodForm: {
+      form: {
         account: {
           name: '',
           bsb: '',
@@ -43,15 +43,16 @@ export default {
     }
   },
   computed: {
-    displayClose() {
-      return this.paymentMethods.length > 0 && this.displayForm
+    showCloseIcon() {
+      return this.paymentMethods.length && this.displayForm
     },
   },
   methods: {
     updateValue({ fieldName, type, newVal }) {
-      this.newMethodForm[type][fieldName] = newVal
+      this.form[type][fieldName] = newVal
     },
     saveMethod() {
+      // TODO: Add api method call when new method should be added, then emit close event
       this.$emit('showForm', false)
     },
   },
@@ -71,6 +72,7 @@ export default {
           <el-button
             type="text"
             :class="$style.newMethod"
+            data-test="add"
             @click="$emit('showForm', true)"
           >
             <i class="el-icon-plus" />
@@ -89,9 +91,10 @@ export default {
           </el-select>
         </template>
         <el-button
-          v-if="displayClose"
+          v-if="showCloseIcon"
           type="text"
           :class="$style.formClose"
+          data-test="close"
           @click="$emit('showForm', false)"
         >
           <i class="el-icon-plus" />
@@ -101,7 +104,7 @@ export default {
 
     <payment-form
       v-if="displayForm"
-      :form="newMethodForm"
+      :form="form"
       @changeValue="updateValue"
       @save="saveMethod"
     />

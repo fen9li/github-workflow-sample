@@ -28,7 +28,8 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'mobile',
+    attribute: 'phoneNumbers',
+    label: 'Telephone',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -87,7 +88,8 @@ const TABLE_COLUMNS = [
     width: 200,
   },
   {
-    name: 'mobile',
+    name: 'phoneNumbers[0]',
+    label: 'Telephone',
     type: 'string',
     width: 140,
   },

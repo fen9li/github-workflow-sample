@@ -3,13 +3,14 @@ import MainLayout from '@lib/layouts/main'
 import { Button, Tabs, TabPane } from '@lib/node_modules/element-ui'
 import subscriptionData from '@tests/__fixtures__/subscription'
 import customerData from '@tests/__fixtures__/customer'
+import formatDollar from '@lib/utils/format-dollar'
 
 const localVue = createLocalVue()
 localVue.use(Button)
 localVue.use(Tabs)
 localVue.use(TabPane)
 
-localVue.filter('dollar', v => v)
+localVue.filter('dollar', formatDollar)
 
 
 function createWrapper(route = 'subscription-information') {
@@ -64,7 +65,7 @@ describe('packages/payments/src/views/subscription/subscription.vue', () => {
   it('check that Charge Amount Owing value is rendered', () => {
     const amount = wrapper.find('.balanceCount')
     expect(amount.exists()).toBeTruthy()
-    expect(amount.text()).toBe(wrapper.vm.subscription.outstanding.total)
+    expect(amount.text()).toBe(formatDollar(wrapper.vm.subscription.outstanding.total))
   })
 
   it('check that Charge Amount Owing button is rendered and opens the modal', () => {

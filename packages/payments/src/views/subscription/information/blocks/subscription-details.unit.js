@@ -34,7 +34,7 @@ function createWrapper() {
   return wrapper
 }
 
-describe('packages/payments/src/views/subscription/information/blocks/subscription-details.unit.js', () => {
+describe('packages/payments/src/views/subscription/information/blocks/subscription-details.vue', () => {
   let wrapper
 
   beforeEach(() => {

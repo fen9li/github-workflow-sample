@@ -21,7 +21,7 @@ function createWrapper() {
   return wrapper
 }
 
-describe('packages/payments/src/views/subscription/information/blocks/customer-details.unit.js', () => {
+describe('packages/payments/src/views/subscription/information/blocks/customer-details.vue', () => {
   let wrapper
 
   beforeEach(() => {

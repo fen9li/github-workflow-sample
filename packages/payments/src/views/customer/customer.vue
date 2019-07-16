@@ -1,7 +1,7 @@
 <script>
 import appConfig from '~/app.config'
-import AddProduct from './products/product-add'
-import AddSubscription from './subscriptions/subscription-add'
+import AddProduct from './product-add'
+import AddSubscription from './subscriptions/customer-subscription-add'
 import formatMethod from '@lib/utils/format-payment-method'
 
 export default {
@@ -22,7 +22,7 @@ export default {
   },
   data() {
     return {
-      modals: {
+      modal: {
         addSubscription: false,
         addProduct: false,
       },
@@ -54,10 +54,10 @@ export default {
       ]
     },
     title() {
-      return `${this.customer.first_name || ''} ${this.customer.last_name || ''}`
+      return !this.loading ? `${this.customer.first_name || ''} ${this.customer.last_name || ''}` : ''
     },
     subtitle() {
-      return 'Customer ID ' + this.customer.id
+      return !this.loading ? 'Customer ID ' + this.customer.id : ''
     },
   },
   created() {
@@ -102,7 +102,8 @@ export default {
         <el-button
           type="primary"
           class="wide-button"
-          @click="modals.addSubscription = true"
+          data-test="add-subscription"
+          @click="modal.addSubscription = true"
         >
           Add Subscription
         </el-button>
@@ -110,7 +111,8 @@ export default {
           type="primary"
           plain
           class="wide-button"
-          @click="modals.addProduct = true"
+          data-test="add-product"
+          @click="modal.addProduct = true"
         >
           Add Product
         </el-button>
@@ -126,6 +128,7 @@ export default {
           <strong
             v-if="!loading"
             :class="$style.balanceCount"
+            data-test="owing"
           >
             {{ customer.total_amount_outstanding | dollar }}
           </strong>
@@ -137,6 +140,7 @@ export default {
           <strong
             v-if="!loading"
             :class="$style.balanceCount"
+            data-test="transacted"
           >
             {{ customer.total_amount_transacted | dollar }}
           </strong>
@@ -150,14 +154,14 @@ export default {
     />
 
     <add-product
-      v-if="modals.addProduct"
-      :visible.sync="modals.addProduct"
+      v-if="modal.addProduct"
+      :visible.sync="modal.addProduct"
       :customer="customer"
     />
 
     <add-subscription
-      v-if="modals.addSubscription"
-      :visible.sync="modals.addSubscription"
+      v-if="modal.addSubscription"
+      :visible.sync="modal.addSubscription"
       :customer="customer"
     />
   </main-layout>

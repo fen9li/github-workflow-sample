@@ -46,9 +46,10 @@ export default {
             if (data.length) {
               const total = data
                 .map(item => Number(item[column.property]))
-                .reduce((total, value) => total += value)
+                .reduce((total, value) => {
+                  total += value
+                })
               sums[index] = formatDollar(total)
-              return
             }
           }
         })
@@ -81,7 +82,7 @@ export default {
     },
     onTransactionsRowClick(row) {
       this.$router.push({
-        name: 'payment-transaction-details',
+        name: 'transaction-details',
         params: { id: row.id },
       })
     },
