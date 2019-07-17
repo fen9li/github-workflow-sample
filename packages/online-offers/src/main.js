@@ -15,7 +15,7 @@ new Vue({
   router,
   store,
   created() {
-    this.$store.dispatch('feeds/getFeeds')
+    this.$store.dispatch('feeds/getFeedUpdates')
     this.$store.dispatch('categories/getCategories')
   },
   render: h => h(App),

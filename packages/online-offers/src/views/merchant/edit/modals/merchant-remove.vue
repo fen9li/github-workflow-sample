@@ -3,6 +3,12 @@
 export default {
   name: 'MerchandRemoveModal',
   inheritAttrs: false,
+  props: {
+    progress: {
+      type: Boolean,
+      default: false,
+    }
+  },
   data() {
     return {
       form: {
@@ -58,6 +64,7 @@ export default {
         type="danger"
         class="el-button--wide"
         :class="$style.submit"
+        :loading="progress"
         @click="submit"
       >
         Delete Global Merchant

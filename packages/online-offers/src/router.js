@@ -11,7 +11,9 @@ const router = new Router({
   routes: [{
     path: '/',
     name: 'home',
-    component: () => lazy(import('./views/Home')),
+    redirect: {
+      name: 'catalogues',
+    },
   }, {
     path: '/clients',
     name: 'catalogues',

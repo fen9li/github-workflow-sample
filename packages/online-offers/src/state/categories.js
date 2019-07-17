@@ -18,23 +18,25 @@ const actions = {
     commit,
   }) {
     const [, response] = await api.get(`/categories`)
-
     const items = get(response, 'items', [])
     if (response) {
       commit('SET_CATEGORIES', items)
     }
     return items
   },
+
   createCategory({
     commit,
   }, payload) {
     return api.post('/categories', payload)
   },
+
   updateCategory({
     commit,
   }, payload) {
     return api.put(`/categories/${payload.id}`, payload)
   },
+
   deleteCategory({
     commit,
   }, id) {

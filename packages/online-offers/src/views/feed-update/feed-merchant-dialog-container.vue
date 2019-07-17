@@ -23,6 +23,7 @@ export default {
     return {
       showCreate: false,
       showDetachDialog: false,
+      progress: false
     }
   },
   computed: {
@@ -31,20 +32,24 @@ export default {
     },
   },
   methods: {
-    ...mapActions('merchants', ['detachMerchant']),
+    ...mapActions('feedMerchants', [
+      'detachFeedMerchantFromGlobamMerchant'
+    ]),
     onDetach() {
-      this.detachMerchant({
+      this.progress = true
+      this.detachFeedMerchantFromGlobamMerchant({
         merchantId: this.merchant.id,
         feedmerchantId: this.row.id,
-      }).then(() => this.processor.getData())
-        .then(() => {
-          this.showDetachDialog = false
-          this.$notify({
-            type: 'info',
-            title: 'Detached',
-            message: 'Successfuly detached',
-          })
+      }).then(() => {
+        this.progress = false
+        this.showDetachDialog = false
+        this.$notify({
+          type: 'info',
+          title: 'Detached',
+          message: 'Successfuly detached',
         })
+        this.processor.getData()
+      })
     },
   },
 }
@@ -81,6 +86,7 @@ export default {
       >
         <el-button
           type="danger"
+          :loading="progress"
           class="el-button--wide"
           @click.stop.prevent="onDetach"
         >

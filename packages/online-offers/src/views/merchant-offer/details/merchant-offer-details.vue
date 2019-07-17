@@ -13,7 +13,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('offers', ['updateOffer']),
+    ...mapActions('offers', ['updateGlobalOffer']),
     capitalize,
     formatDollar,
     formatDate(value, format) {
@@ -23,7 +23,7 @@ export default {
       this.$emit('editOffer')
     },
     async onSwitch() {
-      this.updateOffer({
+      this.updateGlobalOffer({
         id: this.details.id,
         payload: {
           enabled: !this.details.enabled,

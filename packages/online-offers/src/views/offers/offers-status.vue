@@ -19,11 +19,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions('offers', ['updateOffer']),
+    ...mapActions('offers', ['updateGlobalOffer']),
     onSwitch() {
       this.enabled = !this.enabled
 
-      this.updateOffer({
+      this.updateGlobalOffer({
         id: this.row.id,
         payload: {
           enabled: !this.row.enabled,

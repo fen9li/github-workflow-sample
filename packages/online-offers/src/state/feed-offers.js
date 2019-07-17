@@ -12,6 +12,7 @@ const actions = {
   }, externalId) {
     return api.get(`/feedoffers/${externalId}`)
   },
+
   async activateFeedOffer({
     commit,
   }, {

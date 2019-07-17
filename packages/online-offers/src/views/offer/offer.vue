@@ -17,7 +17,6 @@ export default {
   data() {
     return {
       isEdit: this.$route.params.edit,
-      switcher: false,
       loading: true,
       offer: {},
       modals: {
@@ -158,21 +157,20 @@ export default {
     },
   },
   async created() {
-    const [, result] = await this.getOffer(this.id)
+    const [, result] = await this.getGlobalOffer(this.id)
     if (result) {
       this.offer = result
     }
   },
   async mounted() {
-    this.switcher = this.offer.enabled
     // parse url
     this.offer.tracking_url = get(this.offer, 'baseline_url', '')
   },
   methods: {
     ...mapActions('offers', [
-      'getOffer',
-      'updateOffer',
-      'deleteOffer',
+      'getGlobalOffer',
+      'updateGlobalOffer',
+      'deleteGlobalOffer',
     ]),
     ...mapActions('feedOffers', [
       'activateFeedOffer',
@@ -181,17 +179,17 @@ export default {
       return formatDate(value, format || 'DD/MM/YYYY', false)
     },
     async onSwitch() {
-      this.updateOffer({
+      this.updateGlobalOffer({
         id: this.id,
         payload: {
-          enabled: this.switcher,
+          enabled: this.offer.enabled,
         },
       }).then(() => {
         this.$notify({
           type: 'success',
           title: 'Success',
           message: `Status successfully changed to ${
-            this.switcher ? 'enabled' : 'disabled'
+            this.offer.enabled ? 'enabled' : 'disabled'
           }`,
         })
       })
@@ -207,7 +205,7 @@ export default {
         field.changed = false
       }
 
-      const [error, response] = await this.updateOffer({
+      const [error, response] = await this.updateGlobalOffer({
         id: this.id,
         payload,
       })
@@ -232,7 +230,7 @@ export default {
     async submitDeleteOffer(notes) {
       this.modals.remove = false
       // TODO: send notes
-      const [error] = await this.deleteOffer(this.id)
+      const [error] = await this.deleteGlobalOffer(this.id)
 
       if (error) {
         console.error(error)
@@ -301,7 +299,7 @@ export default {
 
       <div @click="onSwitch">
         <el-switch
-          v-model="switcher"
+          v-model="offer.enabled"
           active-text="Active"
         />
       </div>

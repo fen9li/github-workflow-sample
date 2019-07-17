@@ -32,6 +32,7 @@ export default {
         remove: false,
         update: false,
       },
+      progress: false,
     }
   },
   computed: {
@@ -205,12 +206,12 @@ export default {
   },
   methods: {
     ...mapActions('merchants', [
-      'updateMerchant',
-      'deleteMerchant',
-      'setDefaultFeedMerchant',
+      'updateGlobalMerchant',
+      'deleteGlobalMerchant',
     ]),
     ...mapActions('feedMerchants', [
       'activateFeedMerchant',
+      'setDefaultFeedMerchant',
     ]),
     formatCommissionType(type) {
       if (type === 'PERCENTAGE') {
@@ -251,7 +252,7 @@ export default {
       }
     },
     async submitUpdate(notes) {
-      this.modals.update = false
+      this.progress = true
 
       const payload = {}
       const changedFields = this.fields.filter(field => field.changed)
@@ -276,28 +277,30 @@ export default {
         field.changed = false
       }
 
-      const [error, response] = await this.updateMerchant({
+      this.updateGlobalMerchant({
         merchantId: this.merchant.id,
         payload,
       })
-
-      if (error) {
-        console.error(error)
-        return
-      }
-
-      this.$emit('cancel')
-      this.$emit('update', response)
-      this.$notify({
-        type: 'success',
-        title: 'Success',
-        message: 'Merchant details updated successfully.',
-      })
+        .then(([error, response]) => {
+          if (error) {
+            console.error(error)
+            return
+          }
+          this.progress = false
+          this.modals.update = false
+          this.$emit('cancel')
+          this.$emit('update', response)
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: 'Merchant details updated successfully.',
+          })
+        })
     },
     async submitDelete(notes) {
       this.modals.remove = false
       // TODO: send notes
-      const [error] = await this.deleteMerchant({
+      const [error] = await this.deleteGlobalMerchant({
         merchantId: this.merchant.id,
       })
 
@@ -358,12 +361,14 @@ export default {
       v-if="modals.update"
       :visible.sync="modals.update"
       :fields="fields"
+      :progress="progress"
       @submit="submitUpdate"
     />
 
     <merchant-remove-modal
       v-if="modals.remove"
       :visible.sync="modals.remove"
+      :progress="progress"
       @submit="submitDelete"
     />
   </div>

@@ -12,6 +12,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    progress: {
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {
@@ -111,6 +115,7 @@ export default {
         type="primary"
         class="el-button--wide"
         :class="$style.submit"
+        :loading="progress"
         @click="submit"
       >
         Update

@@ -10,6 +10,7 @@ export default {
     return {
       loading: true,
       offer: {},
+      progress: false,
     }
   },
   computed: {
@@ -38,7 +39,8 @@ export default {
   },
   methods: {
     ...mapActions('offers', [
-      'createOffer',
+      'getGlobalOffer',
+      'createGlobalOffer',
     ]),
     ...mapActions('feedOffers', [
       'getFeedOffer',
@@ -52,7 +54,8 @@ export default {
       }
     },
     async activate() {
-      await this.createOffer({
+      this.progress = true
+      await this.createGlobalOffer({
         feed_offer: this.offer.external_id,
         name: this.advertiserName,
       })
@@ -62,11 +65,14 @@ export default {
           acknowledgement: 'acknowledged',
         },
       })
-      this.getOffer().then(() => this.$notify({
-        type: 'success',
-        title: 'Success',
-        message: 'Successfuly activated',
-      }))
+      this.getGlobalOffer().then(() => {
+        this.progress = false
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: 'Successfuly activated',
+        })
+      })
     },
     formatDate(value, format) {
       return formatDate(value, format || 'DD/MM/YYYY', false)
@@ -91,6 +97,7 @@ export default {
         </span>
         <el-button
           v-if="!activated"
+          :loading="progress"
           type="primary"
           class="el-button--wide"
           @click="activate"

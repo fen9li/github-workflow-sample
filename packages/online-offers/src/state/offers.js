@@ -7,17 +7,19 @@ const getters = {}
 const mutations = {}
 
 const actions = {
-  async getOffer({
+  async getGlobalOffer({
     commit,
   }, offerId) {
     return api.get(`/offers/${offerId}`)
   },
-  async createOffer({
+
+  async createGlobalOffer({
     commit,
   }, payload) {
     return api.post('/offers', payload)
   },
-  async updateOffer({
+
+  async updateGlobalOffer({
     commit,
   }, {
     id,
@@ -25,15 +27,16 @@ const actions = {
   }) {
     return api.put(`/offers/${id}`, payload)
   },
-  async deleteOffer({
+
+  async deleteGlobalOffer({
     commit,
   }, offerId) {
     return api.delete(`/offers/${offerId}`)
   },
-  async activateOffers({
+
+  async toggleGlobalOffersActive({
     commit,
   }, payload) {
-    // this action also serves as bulk deactivate
     return api.patch(`/offers`, payload)
   },
 }

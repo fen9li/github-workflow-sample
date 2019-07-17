@@ -31,6 +31,7 @@ export default {
     return {
       table: merchantsModalTable,
       showModal: false,
+      progress: false,
     }
   },
   computed: {
@@ -49,7 +50,10 @@ export default {
     this.getData()
   },
   methods: {
-    ...mapActions('catalogues', ['attachCatalogueMerchants', 'detachCatalogueMerchants']),
+    ...mapActions('catalogues', [
+      'linkMerchantToCatalogue',
+      'unlinkMerchantFromCatalogue',
+    ]),
     getData() {
       this.table.processor = new StaticProcessor({
         component: this,
@@ -59,18 +63,22 @@ export default {
     onClick() {
       const { merchantsCount } = this
       const merchants = this.items.map(i => i.id)
-      let operation = 'attachCatalogueMerchants'
+      let operation = 'linkMerchantToCatalogue'
 
       if (!this.link) {
-        operation = 'detachCatalogueMerchants'
+        operation = 'unlinkMerchantFromCatalogue'
       }
+
+      this.progress = true
 
       this[operation]({
         catalogueId: this.id,
         merchants,
       })
-        .then(() => this.merchantsProcessor.getData())
         .then(() => {
+          this.showModal = false
+          this.progress = false
+          this.merchantsProcessor.getData()
           this.$notify({
             type: 'success',
             title: 'Success',
@@ -78,8 +86,6 @@ export default {
               this.link ? 'linked' : 'unlinked'
             }`,
           })
-
-          this.showModal = false
         })
     },
   },
@@ -126,6 +132,7 @@ export default {
         <el-button
           type="primary"
           class="el-button--wide"
+          :loading="progress"
           @click="onClick"
         >
           {{ link ? 'Link' : 'Unlink' }}

@@ -10,41 +10,54 @@ const actions = {
   async getMerchants() {
     return api.get('/merchants')
   },
-  async searchMerchants({ commit }, search) {
+
+  async searchGlobalMerchants({
+    commit
+  }, search) {
     if (search) {
       return api.get(`/merchants?search=${search}`)
     } else {
       return api.get('/merchants')
     }
   },
-  async getMerchant({ commit }, merchantId) {
+
+  async getGlobalMerchant({
+    commit,
+  }, merchantId) {
     return api.get(`/merchants/${merchantId}`)
   },
-  async getMerchantFeeds({ commit }, merchantId) {
+
+  async getGlobalMerchantFeeds({
+    commit
+  }, merchantId) {
     return api.get(`/merchants/${merchantId}/feeds`)
   },
-  async getMerchantOffers({ commit }, merchantId) {
+
+  async getGlobalMerchantOffers({
+    commit,
+  }, merchantId) {
     return api.get(`/merchants/${merchantId}/offers`)
   },
-  async createMerchant({ commit }, payload) {
+
+  async createGlobalMerchant({
+    commit,
+  }, payload) {
     return api.post('/merchants', payload)
   },
-  async associateMerchant({ commit }, { merchantId, feedmerchantId }) {
-    return api.post(`/merchants/${merchantId}/feedmerchants/${feedmerchantId}`)
-  },
-  async detachMerchant({ commit }, { merchantId, feedmerchantId }) {
-    return api.delete(
-      `/merchants/${merchantId}/feedmerchants/${feedmerchantId}`
-    )
-  },
-  async updateMerchant({ commit }, { merchantId, payload }) {
+
+  async updateGlobalMerchant({
+    commit,
+  }, {
+    merchantId,
+    payload,
+  }) {
     return api.put(`/merchants/${merchantId}`, payload)
   },
-  async deleteMerchant({ commit }, { merchantId }) {
+
+  async deleteGlobalMerchant({
+    commit,
+  }, { merchantId }) {
     return api.delete(`/merchants/${merchantId}`)
-  },
-  async setDefaultFeedMerchant(_, { merchantId, feedMerchantId }) {
-    return api.patch(`/merchants/${merchantId}/feedmerchants/${feedMerchantId}`)
   },
 }
 

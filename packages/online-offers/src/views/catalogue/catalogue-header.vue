@@ -31,13 +31,13 @@ export default {
     },
   },
   async created() {
-    const [, result] = await this.getCatalogueMerchant(this.$route.params.id)
+    const [, result] = await this.getMerchantFromCatalogue(this.$route.params.id)
     if (result) {
       this.form = result
     }
   },
   methods: {
-    ...mapActions('catalogues', ['getCatalogueMerchant']),
+    ...mapActions('catalogues', ['getMerchantFromCatalogue']),
     cataloguesUpdated() {
       this.$emit('catalogues-updated')
       this.showEditModal = false

@@ -40,9 +40,9 @@ export default {
     this.getMerchantOffers()
   },
   methods: {
-    ...mapActions('merchants', ['getMerchant']),
+    ...mapActions('merchants', ['getGlobalMerchant']),
     async fetchMerchant() {
-      const [, response] = await this.getMerchant(this.$route.params.id)
+      const [, response] = await this.getGlobalMerchant(this.$route.params.id)
 
       if (response) {
         this.merchant = response

@@ -59,18 +59,11 @@ export default {
   },
   methods: {
     ...mapActions('merchants', [
-      'getMerchantFeeds',
-      'getMerchant',
+      'getGlobalMerchant',
+      'getGlobalMerchantFeeds',
     ]),
-    async fetchMerchantFeeds() {
-      const [, { items: merchantFeeds }] = await this.getMerchantFeeds(
-        this.merchantId
-      )
-
-      this.merchantFeeds = merchantFeeds
-    },
     async fetchMerchant() {
-      const [, merchant] = await this.getMerchant(this.merchantId)
+      const [, merchant] = await this.getGlobalMerchant(this.merchantId)
       await this.fetchMerchantFeeds()
 
       this.merchant = merchant
@@ -80,6 +73,13 @@ export default {
       }
 
       this.loading = false
+    },
+    async fetchMerchantFeeds() {
+      const [, { items: merchantFeeds }] = await this.getGlobalMerchantFeeds(
+        this.merchantId
+      )
+
+      this.merchantFeeds = merchantFeeds
     },
     async onEdit(value) {
       this.isEdit = value

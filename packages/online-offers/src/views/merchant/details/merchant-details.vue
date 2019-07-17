@@ -39,14 +39,14 @@ export default {
   methods: {
     capitalize,
     formatCommission,
-    ...mapActions('merchants', ['updateMerchant']),
+    ...mapActions('merchants', ['updateGlobalMerchant']),
     formatDate(value) {
       return formatDate(value, 'DD/MM/YYYY hh:mm A')
     },
     async onSwitch(event) {
       this.merchant.enabled = !this.merchant.enabled
       await this.$nextTick()
-      this.updateMerchant({
+      this.updateGlobalMerchant({
         merchantId: this.merchant.id,
         payload: {
           enabled: this.merchant.enabled,

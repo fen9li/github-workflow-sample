@@ -18,6 +18,7 @@ export default {
   data() {
     return {
       showDialog: false,
+      progress: false
     }
   },
   computed: {
@@ -27,13 +28,14 @@ export default {
   },
   methods: {
     ...mapActions('offers', [
-      'createOffer',
+      'createGlobalOffer',
     ]),
     ...mapActions('feedOffers', [
       'activateFeedOffer',
     ]),
-    onSubmit() {
-      this.createOffer({
+    onSubmit(event) {
+      this.progress = true
+      this.createGlobalOffer({
         feed_offer: this.row.external_id,
         name: this.row.name,
       })
@@ -44,6 +46,7 @@ export default {
           },
         }))
         .then(() => {
+          this.progress = false
           this.$notify({
             type: 'success',
             title: 'Success',
@@ -58,19 +61,29 @@ export default {
 
 <template>
   <div>
-    <div
+    <el-button
       v-if="!activated"
+      type="text"
       :class="$style.link"
+      :loading="progress"
       @click.stop.prevent="onSubmit"
     >
-      Associate
-    </div>
+      {{ `${progress ? '' : 'Associate'}` }}
+    </el-button>
   </div>
 </template>
 
 <style lang="scss" module>
 .link {
-  color: var(--color-primary);
-  cursor: pointer;
+  display: inline-block;
+  width: 100%;
+  padding: 0;
+  background: none !important;
+
+  :global {
+    [class^="el-icon-"] {
+      margin: 0 auto;
+    }
+  }
 }
 </style>

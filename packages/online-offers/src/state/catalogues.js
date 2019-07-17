@@ -7,31 +7,47 @@ const getters = {}
 const mutations = {}
 
 const actions = {
-  async createCatalog({ commit }, payload) {
-    const [, result] = await api.post('/catalogues', payload)
-
-    return result
+  async createCatalogue({
+    commit,
+  }, payload) {
+    return api.post('/catalogues', payload)
   },
 
-  async updateCatalog({ commit }, payload) {
+  async updateCatalogue({
+    commit,
+  }, payload) {
     return api.put(`/catalogues/${payload.id}`, payload)
   },
 
-  async deleteCatalog({ commit }, id) {
+  async deleteCatalogue({
+    commit,
+  }, id) {
     return api.delete(`/catalogues/${id}`)
   },
 
-  async getCatalogueMerchant({ commit }, merchantId) {
+  async getMerchantFromCatalogue({
+    commit,
+  }, merchantId) {
     return api.get(`/catalogues/${merchantId}`)
   },
 
-  async attachCatalogueMerchants({ commit }, { catalogueId, merchants }) {
+  async linkMerchantToCatalogue({
+    commit
+  }, {
+    catalogueId,
+    merchants
+  }) {
     return api.put(`/catalogues/${catalogueId}/merchants`, {
       merchants,
     })
   },
 
-  async detachCatalogueMerchants({ commit }, { catalogueId, merchants }) {
+  async unlinkMerchantFromCatalogue({
+    commit,
+  }, {
+    catalogueId,
+    merchants,
+  }) {
     return api.delete(`/catalogues/${catalogueId}/merchants`,
       { data: { merchants } }
     )

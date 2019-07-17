@@ -29,6 +29,7 @@ export default {
   },
   data() {
     return {
+      progress: false,
       table: merchantModalTable,
       showModal: false,
     }
@@ -49,7 +50,7 @@ export default {
     this.getData()
   },
   methods: {
-    ...mapActions('offers', ['activateOffers']),
+    ...mapActions('offers', ['toggleGlobalOffersActive']),
     getData() {
       this.table.processor = new StaticProcessor({
         component: this,
@@ -60,14 +61,15 @@ export default {
       const { offersCount } = this
       const offers = this.items.map(i => i.id)
 
-      // there is a single endpoint
-      // for bulk activation and deactivation
-      this.activateOffers({
+      this.progress = true
+
+      this.toggleGlobalOffersActive({
         offers,
         enabled: this.activate,
       })
-        .then(() => this.offersProcessor.getData())
         .then(() => {
+          this.progress = false
+          this.showModal = false
           this.$notify({
             type: 'success',
             title: 'Success',
@@ -75,8 +77,7 @@ export default {
               this.activate ? 'activated' : 'deactivated'
             }`,
           })
-
-          this.showModal = false
+          this.offersProcessor.getData()
         })
     },
   },
@@ -121,6 +122,7 @@ export default {
       <div :class="$style.link">
         <el-button
           type="primary"
+          :loading="progress"
           @click="onClick"
         >
           {{ activate ? 'Activate' : 'Deactivate' }}

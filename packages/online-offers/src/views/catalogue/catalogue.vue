@@ -47,9 +47,9 @@ export default {
     this.getCatalogue()
   },
   methods: {
-    ...mapActions('catalogues', ['getCatalogueMerchant']),
+    ...mapActions('catalogues', ['getMerchantFromCatalogue']),
     async getCatalogue() {
-      const [, result] = await this.getCatalogueMerchant(this.$route.params.id)
+      const [, result] = await this.getMerchantFromCatalogue(this.$route.params.id)
       if (result) {
         this.catalogue = result
       }

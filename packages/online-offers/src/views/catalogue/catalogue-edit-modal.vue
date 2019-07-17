@@ -52,6 +52,7 @@ export default {
           },
         ],
       },
+      progress: false,
       uploadcare: {
         expire: new Date(new Date() + 60 * 60 * 12).getTime(),
         publicKey: process.env.VUE_APP_UPLOADCARE_PUBLIC_KEY,
@@ -77,7 +78,10 @@ export default {
     this.prefillFields()
   },
   methods: {
-    ...mapActions('catalogues', ['createCatalog', 'updateCatalog']),
+    ...mapActions('catalogues', [
+      'createCatalogue',
+      'updateCatalogue',
+    ]),
     prefillFields() {
       const { form, catalogue } = this
 
@@ -93,6 +97,8 @@ export default {
       this.$refs.form.validateField('logo')
     },
     onSubmit() {
+      const operation = this.catalogue ? 'updateCatalogue' : 'createCatalogue'
+
       this.$refs.form.validate(valid => {
         if (!valid) {
           return false
@@ -100,26 +106,25 @@ export default {
 
         const feeds = this.form.feeds.map(item => {
           const feed = find(this.feeds, { name: item })
-
           return feed.slug
         })
 
-        if (this.catalogue) {
-          this.updateCatalog({
-            ...this.form,
-            feeds,
-            id: this.catalogue.id,
-          })
-            .then(() => this.processor.getData())
-            .then(() => this.$emit('catalogues-updated'))
-        } else {
-          this.createCatalog({
-            ...this.form,
-            feeds,
-          })
-            .then(() => this.processor.getData())
-            .then(() => this.$emit('catalogues-created'))
+        const payload = {
+          ...this.form,
+          feeds,
         }
+
+        if (this.catalogue) {
+          payload.id = this.catalogue.id
+        }
+
+        this.progress = true
+
+        this[operation](payload).then(() => {
+          this.progress = false
+          this.$emit(this.catalogue ? 'catalogues-updated' : 'catalogues-created')
+          this.processor.getData()
+        })
 
         this.$emit('submit', this.form.notes)
       })
@@ -215,6 +220,7 @@ export default {
           <el-button
             type="primary"
             class="el-button--wide"
+            :loading="progress"
             @click="onSubmit"
           >
             Save

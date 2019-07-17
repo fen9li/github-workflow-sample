@@ -7,7 +7,7 @@ const state = {
 }
 
 const getters = {
-  feeds: s => s.feeds,
+  feeds: state => state.feeds,
 }
 
 const mutations = {
@@ -17,7 +17,7 @@ const mutations = {
 }
 
 const actions = {
-  async getFeeds({ commit }) {
+  async getFeedUpdates({ commit }) {
     const [, response] = await api.get('/feeds')
 
     if (response) {

@@ -31,6 +31,7 @@ export default {
         website: this.row.map.website,
         terms: this.row.map.terms,
       },
+      progress: false,
       rules: {
         name: [
           {
@@ -107,11 +108,11 @@ export default {
   },
   methods: {
     ...mapActions('merchants', [
-      'createMerchant',
-      'searchMerchants',
-      'associateMerchant',
+      'createGlobalMerchant',
+      'searchGlobalMerchants',
     ]),
     ...mapActions('feedMerchants', [
+      'attachFeedMerchantToGlobalMerchant',
       'activateFeedMerchant',
     ]),
     async querySearch(queryString = null, cb) {
@@ -122,7 +123,7 @@ export default {
       cb(result)
     },
     async fetchSuggestions(queryString = null) {
-      const [, { items = [] }] = await this.searchMerchants(queryString)
+      const [, { items = [] }] = await this.searchGlobalMerchants(queryString)
       const result = concat([this.newItem], sortBy(items, 'name'))
       return result.map((item, index) => {
         return {
@@ -152,8 +153,9 @@ export default {
       this.form.logo = img.cdnUrl
     },
     onSubmit() {
+      this.progress = true
       if (this.merchantId) {
-        this.associateMerchant({
+        this.attachFeedMerchantToGlobalMerchant({
           merchantId: this.merchantId,
           feedmerchantId: this.row.id,
         })
@@ -170,12 +172,13 @@ export default {
           feed_merchant: this.row.external_id,
           ...this.form,
         }
-        this.createMerchant(payload)
+        this.createGlobalMerchant(payload)
           .then(() => this.onSubmitResponse())
           .then(() => this.processor.getData())
       }
     },
     onSubmitResponse() {
+      this.progress = false
       this.$emit('close-dialog')
       this.$notify({
         type: 'success',
@@ -418,6 +421,7 @@ export default {
       type="primary"
       :class="$style.submit"
       :disabled="submitDisabled"
+      :loading="progress"
       @click="onSubmit"
     >
       {{ `${merchantId ? 'Associate' : 'Create'}` }}
