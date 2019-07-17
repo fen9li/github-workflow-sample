@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-online-offers@0.1.0...manage-online-offers@0.1.1) (2019-07-17)
+
+### Bug Fixes
+
+- **feed offer:** page loading indicator ([92e8f1c](https://github.com/loyaltycorp/manage-v2-frontend/commit/92e8f1c))
+
 # 0.1.0 (2019-07-16)
 
 ### Bug Fixes
