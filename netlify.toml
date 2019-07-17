@@ -27,7 +27,10 @@
   # been specified, include it in the publish directory path.
   publish = "./packages/online-offers/dist"
 
+  environment = { VUE_APP_API_URL = "https://api.dev.oo.eonx.com", VUE_APP_AUTH0_AUDIENCE="https://api.dev.online-offers.com.au"}
+
 
 [context."release/payments-test"]
   command = "yarn clean && lerna exec --scope manage-payments -- yarn build"
   publish = "./packages/payments/dist"
+  environment = { VUE_APP_API_URL = "http://pa-fe-dev.clients.test.ewallet.com.au", VUE_APP_AUTH0_AUDIENCE="https://api.dev.payments.eonx.com/", VUE_APP_ELASTIC_HOST="http://pa-fe-dev.clients.test.ewallet.com.au/search" }
