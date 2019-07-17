@@ -11,5 +11,5 @@ if (!command) {
 const ALIASES = getAliases()
 
 if (target) {
-  shell.exec(`lerna exec --scope ${ALIASES[target] || target || 'super'} --yarn ${command} --color=always ${restArgs.join(' ')}` )
+  shell.exec(`lerna exec --scope ${ALIASES[target] || target || 'super'} -- yarn ${command} --color=always ${restArgs.join(' ')}` )
 }
