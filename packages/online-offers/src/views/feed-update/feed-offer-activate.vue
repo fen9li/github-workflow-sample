@@ -18,12 +18,15 @@ export default {
   data() {
     return {
       showDialog: false,
-      progress: false
+      progress: false,
+      activated: false,
     }
   },
   computed: {
-    activated() {
-      return this.row.offer_id !== null
+    notActivated() {
+      return this.row.offer_id === null
+        && this.row.acknowledgement !== 'deleted'
+        && !this.activated
     },
   },
   methods: {
@@ -39,38 +42,37 @@ export default {
         feed_offer: this.row.external_id,
         name: this.row.name,
       })
-        .then(() => this.activateFeedOffer({
-          feedOfferId: this.row.id,
-          payload: {
-            acknowledgement: 'acknowledged',
-          },
-        }))
         .then(() => {
+          this.activated = true
           this.progress = false
+          this.activateFeedOffer({
+            feedOfferId: this.row.id,
+            payload: {
+              acknowledgement: 'acknowledged',
+            },
+          })
           this.$notify({
             type: 'success',
             title: 'Success',
             message: 'Successfuly activated',
           })
+          this.processor.getData()
         })
-        .then(() => this.processor.getData())
-    },
+    }
   },
 }
 </script>
 
 <template>
-  <div>
-    <el-button
-      v-if="!activated"
-      type="text"
-      :class="$style.link"
-      :loading="progress"
-      @click.stop.prevent="onSubmit"
-    >
-      {{ `${progress ? '' : 'Associate'}` }}
-    </el-button>
-  </div>
+  <el-button
+    v-if="notActivated"
+    type="text"
+    :class="$style.link"
+    :loading="progress"
+    @click.stop.prevent="onSubmit"
+  >
+    {{ `${progress ? '' : 'Associate'}` }}
+  </el-button>
 </template>
 
 <style lang="scss" module>
