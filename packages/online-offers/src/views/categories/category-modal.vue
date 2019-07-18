@@ -19,6 +19,7 @@ export default {
         group_name: 'Classifications',
         name: '',
       },
+      progress: false,
     }
   },
   created() {
@@ -40,6 +41,7 @@ export default {
     onSubmit() {
       const { item, form } = this
       let request
+      this.progress = true
 
       if (this.item) {
         request = this.updateCategory({
@@ -50,11 +52,13 @@ export default {
         request = this.createCategory(form)
       }
 
-      request.then(() =>
+      request.then(() => {
         this.processor.getData()
-          .then(data => this.setCategories(data)))
+          .then(data => this.setCategories(data))
+      })
 
       this.$emit('close-modal')
+      this.progress = false
     },
   },
 }
@@ -82,6 +86,7 @@ export default {
       <el-button
         type="primary"
         :class="$style.button"
+        :loading="progress"
         class="el-button--wide"
         @click.stop="onSubmit"
       >

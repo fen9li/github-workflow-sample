@@ -12,6 +12,7 @@ export default {
     return {
       showEditModal: false,
       showDeleteDialog: false,
+      progress: false,
     }
   },
   methods: {
@@ -20,10 +21,12 @@ export default {
       setCategories: 'SET_CATEGORIES',
     }),
     onDelete() {
+      this.progress = true
       this.deleteCategory(this.row.id).then(() => {
+        this.progress = false
+        this.showDeleteDialog = false
         this.processor.getData()
           .then(data => this.setCategories(data))
-        this.showDeleteDialog = false
       })
     },
   },
@@ -78,6 +81,7 @@ export default {
       <div class="modal__footer">
         <el-button
           type="danger"
+          :loading="progress"
           class="el-button--wide"
           @click="onDelete"
         >
