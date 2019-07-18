@@ -17,19 +17,23 @@ export default {
     }
   },
   methods: {
-    onRowClick(row, column, event) {
-      if (this.activeTab === 'merchants') {
+    onRowClick(row) {
+      const { type } = row
+
+      if (type === 'merchant') {
         this.$router.push({
           name: 'feed-merchant',
           params: {
-            id: row.external_id,
+            slug: row.feed_merchant.feed,
+            id: row.feed_merchant.external_id,
           },
         })
-      } else if (this.activeTab === 'offers') {
+      } else if (type === 'offer') {
         this.$router.push({
           name: 'feed-offer',
           params: {
-            id: row.id,
+            slug: row.feed_offer.feed,
+            id: row.feed_offer.id,
           },
         })
       }
