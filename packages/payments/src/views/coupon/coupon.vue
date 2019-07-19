@@ -40,8 +40,8 @@ export default {
   },
   computed: {
     formattedCoupon() {
-      const { coupon, discount } = this
-      return { ...coupon, ...{ discount_type: discount.type.raw, amount: discount.amount.raw } }
+      const { coupon, discount, extractValidity } = this
+      return { ...coupon, ...{ discount_type: discount.type.raw, amount: discount.amount.raw }, validity_period: extractValidity() }
     },
     discount() {
       const { coupon } = this
@@ -56,6 +56,7 @@ export default {
         },
       }
     },
+
   },
   created() {
     this.getCouponDetails()
@@ -73,6 +74,14 @@ export default {
     formatDate(value, format) {
       return formatDate(value, format)
     },
+    extractValidity(months = false) {
+      const period = this.coupon.validity_period
+
+      if(period) {
+        const formatted = parseInt(period.replace(/[^\d]/g, ''))
+        return months ? `${formatted} Months` : formatted
+      } else return ''
+    },
     formatDollar,
   },
 
@@ -84,7 +93,7 @@ export default {
     title="Coupon Details"
     back
   >
-    <el-card v-if="coupon.id && !loading">
+    <el-card v-loading="loading">
       <el-row
         slot="header"
         type="flex"
@@ -93,7 +102,10 @@ export default {
       >
         <span>Information</span>
 
-        <el-row type="flex">
+        <el-row
+          v-if="!loading"
+          type="flex"
+        >
           <el-button
             type="primary"
             size="small"
@@ -111,7 +123,10 @@ export default {
         </el-row>
       </el-row>
 
-      <dl class="datalist">
+      <dl
+        v-if="!loading"
+        class="datalist"
+      >
         <dt>Date Created</dt>
         <dd>{{ formatDate(coupon.created_at, 'DD/MM/YYYY hh:mm') }}</dd>
 
@@ -134,17 +149,12 @@ export default {
         <dd>{{ formatDate(coupon.end_at, 'DD/MM/YYYY') }}</dd>
 
         <dt>Validity Period</dt>
-        <dd>{{ coupon.validity_period }}</dd>
+        <dd>{{ `${extractValidity('months')}` || '-' }}</dd>
 
         <dt>No. in use</dt>
         <dd>{{ coupon.useCount }}</dd>
       </dl>
     </el-card>
-
-    <div v-else>
-      Coupon not found
-    </div>
-
 
     <coupon-form-modal
       v-if="modal.edit"

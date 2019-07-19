@@ -1,5 +1,6 @@
 <script>
 import { mask } from 'vue-the-mask'
+import { datePickerFormat } from '@lib/utils/date-helper'
 
 export default {
   name: 'CouponForm',
@@ -18,6 +19,7 @@ export default {
   },
   data() {
     return {
+      datePickerFormat,
       rules: {
         name: {
           required: true,
@@ -97,6 +99,7 @@ export default {
           :value="coupon.start_at"
           :disabled="edit"
           type="date"
+          :value-format="datePickerFormat"
           placeholder="Pick a date"
           @input="changeValue('start_at', $event)"
         />
@@ -105,6 +108,7 @@ export default {
         <el-date-picker
           :value="coupon.end_at"
           type="date"
+          :value-format="datePickerFormat"
           placeholder="Pick a date"
           @input="changeValue('end_at', $event)"
         />
@@ -116,30 +120,11 @@ export default {
         label="Validity Period (Months)"
         :prop="edit ? '' : 'validity_period'"
       >
-        <!-- TODO: Check the required format with business -->
-        <el-select
-          :value="coupon.validity_period"
-          :disabled="edit"
-          @input="changeValue('validity_period', $event.replace('#', ''))"
-        >
-          <el-option
-            value="P1M"
-            label="1 Month"
-          />
-          <el-option
-            value="P3M"
-            label="3 Months"
-          />
-          <el-option
-            value="P1Y"
-            label="12 Months"
-          />
-        </el-select>
-        <!-- <el-input
+        <el-input
           :value="`#${coupon.validity_period || ''}`"
           :disabled="edit"
           @input="changeValue('validity_period', $event.replace('#', ''))"
-        /> -->
+        />
       </el-form-item>
       <div :class="$style.validityNote">
         The validity period represents <br>

@@ -1,27 +1,35 @@
+import ElasticProcessor from '@lib/processors/elastic-processor'
+
 const TABLE_FILTERS = [
   {
     attribute: 'createdAt',
-    label: 'dateCreated',
-    icon: 'el-icon-date',
-    type: 'date',
-  },
-  {
-    attribute: 'startAt',
-    label: 'effectiveStartDate',
+    label: 'Date Created',
     icon: 'el-icon-date',
     type: 'date',
   },
   {
     attribute: 'name',
-    label: 'couponName',
+    label: 'Coupon Name',
+    icon: 'el-icon-document',
+    type: 'date',
+  },
+  {
+    attribute: 'id',
+    label: 'Coupon Code',
     type: 'string',
     icon: 'el-icon-document',
   },
   {
-    attribute: 'id',
-    label: 'couponCode',
-    type: 'string',
-    icon: 'el-icon-document',
+    attribute: 'startAt',
+    label: 'Effective Start Date',
+    icon: 'el-icon-date',
+    type: 'date',
+  },
+  {
+    attribute: 'endAt',
+    label: 'End Date',
+    icon: 'el-icon-date',
+    type: 'date',
   },
   {
     attribute: 'validityPeriod',
@@ -93,12 +101,11 @@ const TABLE_COLUMNS = [
     component: {
       props: {
         format(value) {
-          switch (value) {
-            case 'P1m': return '1 Month'
-            case 'P3m': return '3 Months'
-            case 'P1y': return '12 Months'
-            default: return ''
-          }
+          const count = parseInt(value.replace(/[^\d]/g, ''))
+
+          if (value) {
+            return `${count} ${count === 1 ? 'Month' : 'Months'}`
+          } else return ''
         },
       },
     },
@@ -132,7 +139,13 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default {
-  filters: TABLE_FILTERS,
-  columns: TABLE_COLUMNS,
+export default function(component){
+  return {
+    processor: new ElasticProcessor({
+      component,
+      index: 'coupons',
+    }),
+    filters: TABLE_FILTERS,
+    columns: TABLE_COLUMNS,
+  }
 }

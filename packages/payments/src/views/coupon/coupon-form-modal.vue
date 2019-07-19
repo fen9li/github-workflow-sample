@@ -27,18 +27,17 @@ export default {
         code: '',
         start_at: '',
         end_at: '',
-        validity_period: 'P1M',
+        validity_period: '',
         discount_type: 'fixed_amount',
         amount: '',
       },
     }
   },
   computed: {
-    // formatedValidityPeriod() {
-    //   const { validity_period } = this.form
-    //   // TODO: Check with business all possible periods
-    //   return validity_period ? `P${validity_period}M` : ''
-    // },
+    formatedValidityPeriod() {
+      const period = this.form.validity_period
+      return period ? `P${period}M` : ''
+    },
   },
   created() {
     if (this.edit) {
@@ -74,9 +73,7 @@ export default {
             name: form.name,
             start_at: form.start_at,
             end_at: form.end_at,
-            validity_period: form.validity_period,
-            // TODO: Check with business
-            // validity_period: this.formatedValidityPeriod,
+            validity_period: this.formatedValidityPeriod,
           }
         }
 
