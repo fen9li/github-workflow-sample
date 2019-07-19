@@ -7,6 +7,7 @@ import EditLayoutImage from './components/edit-layout-image'
 import EditLayoutCategories from './components/edit-layout-categories'
 import EditLayoutTable from './components/edit-layout-table'
 import Uploadcare from 'uploadcare-vue'
+import PresetField from './preset-field.vue'
 
 export default {
   name: 'EditLayout',
@@ -15,6 +16,7 @@ export default {
     EditLayoutImage,
     EditLayoutCategories,
     EditLayoutTable,
+    PresetField,
   },
   props: {
     source: {
@@ -41,7 +43,6 @@ export default {
   data() {
     return {
       form: {},
-      isChanged: false,
     }
   },
   computed: {
@@ -50,26 +51,32 @@ export default {
         gridColumn: `1/${2 + this.presets.length}`,
       }
     },
-  },
-  watch: {
-    source() {
-      this.offerToForm()
+    isChanged() {
+      return this.fields.some(f => f.changed)
     },
   },
-  created() {
-    this.offerToForm()
+  watch: {
+    source: {
+      handler() {
+        this.fillFormFromSource()
+      },
+      immediate: true,
+    },
   },
   methods: {
-    offerToForm() {
+    fillFormFromSource() {
+      const { source, fields } = this
       const newForm = {}
 
-      for (const field of this.fields) {
-        if (field.key) {
-          newForm[field.key] = {
-            value: cloneDeep(get(this.source, field.path, '')),
+      fields.forEach(field => {
+        const { key, path } = field
+
+        if (key) {
+          newForm[key] = {
+            value: cloneDeep(get(source, path, '')),
           }
         }
-      }
+      })
 
       this.form = newForm
     },
@@ -79,7 +86,6 @@ export default {
     changeField(field) {
       field.changed = true
       field.value = this.form[field.key].value
-      this.isChanged = true
     },
     checkChanged(values, field) {
       this.form[field.key].value = values
@@ -91,36 +97,53 @@ export default {
     },
     checkPresetField(checked, sourcePreset, field, value) {
       const { key, path } = field
+      const { form, presets } = this
+
       if (checked) {
-        this.form[key] = { value }
-        this.presets.forEach(preset => {
+        form[key] = { value }
+
+        // uncheck all other presets
+        presets.forEach(preset => {
           if (preset !== sourcePreset) {
             preset.selected = false
             preset.items[key].selected = false
           }
         })
 
-        // check if all items in preset is selected
+        // check if all items in preset are selected
         let isAllSelected = true
-        for (const key of Object.keys(sourcePreset.items)) {
-          if (!sourcePreset.items[key].selected) {
+        const sourcePresetItems = sourcePreset.items
+
+        for (const itemKey in sourcePresetItems) {
+          const item = sourcePresetItems[itemKey]
+
+          if (
+            sourcePresetItems.hasOwnProperty(itemKey) &&
+            item.type !== 'text' &&
+            !item.selected
+          ) {
             isAllSelected = false
             break
           }
         }
+
         if (isAllSelected) {
           sourcePreset.selected = true
         }
+
+        // mark the field as changed
+        field.changed = true
       } else {
-        this.form[key] = { value: cloneDeep(get(this.source, path, '')) }
-        this.presets.forEach(preset => {
+        // return source values
+        form[key] = { value: cloneDeep(get(this.source, path, '')) }
+        presets.forEach(preset => {
           preset.selected = false
         })
+
+        field.changed = false
       }
 
-      field.changed = true
-      field.value = this.form[field.key].value
-      this.isChanged = true
+      field.value = form[key].value
     },
     selectAll(checked, sourcePreset) {
       for (const preset of this.presets) {
@@ -156,8 +179,6 @@ export default {
           }
         }
       }
-
-      this.isChanged = true
     },
     isSelected(field) {
       const { key } = field
@@ -172,10 +193,9 @@ export default {
     },
     submitForm() {
       this.$refs.form.validate(valid => {
-        if (!valid) {
-          return false
+        if (valid) {
+          this.$emit('update')
         }
-        this.$emit('update')
       })
     },
     getPath(path, def = '') {
@@ -184,9 +204,6 @@ export default {
     formatValue(field) {
       const format = get(field, 'format', el => el)
       return format(this.form[field.key].value)
-    },
-    presetItem(preset, key) {
-      return preset.items[key]
     },
   },
 }
@@ -240,15 +257,9 @@ export default {
               gridRowStart: 3 + fieldIndex,
             }"
           >
-            <div
-              v-if="!field.component"
-              :class="$style.contentValue"
-            >
-              {{ formatValue(field) }}
-            </div>
             <component
               :is="field.component"
-              v-else
+              v-if="field.component"
               v-model="form[field.key].value"
               v-bind="field.componentBindings"
               :disabled="isSelected(field)"
@@ -263,6 +274,12 @@ export default {
                 {{ getPath(slot.path) || 'URL' }}
               </template>
             </component>
+            <div
+              v-else
+              :class="$style.contentValue"
+            >
+              {{ formatValue(field) }}
+            </div>
           </el-form-item>
         </template>
         <!-- Feeds part -->
@@ -295,59 +312,11 @@ export default {
                 gridRowStart: 3 + fieldIndex,
               }"
             >
-              <el-radio-group
-                v-if="preset.items[field.key].type === 'radio'"
-                v-model="preset.items[field.key].value"
-                @input="
-                  checkPresetField(
-                    $event,
-                    preset,
-                    field,
-                    preset.items[field.key].value
-                  )
-                "
-              >
-                <el-radio :label="preset.items[field.key].value" />
-              </el-radio-group>
-              <div v-else-if="preset.items[field.key].type === 'text'">
-                {{ field.label }}
-              </div>
-              <el-checkbox
-                v-else
-                v-model="preset.items[field.key].selected"
-                :label="field.label"
-                @input="
-                  checkPresetField(
-                    $event,
-                    preset,
-                    field,
-                    preset.items[field.key].value
-                  )
-                "
+              <preset-field
+                :preset="preset"
+                :field="field"
+                @checked="checkPresetField"
               />
-              <img
-                v-if="preset.items[field.key].preview === 'image'"
-                :src="preset.items[field.key].value"
-                :alt="
-                  preset.items[field.key].label || preset.items[field.key].value
-                "
-                :class="$style.feedImage"
-              >
-              <component
-                :is="preset.items[field.key].component"
-                v-else-if="preset.items[field.key].component"
-                v-model="preset.items[field.key].value"
-                :class="$style.feedLabel"
-                v-bind="preset.items[field.key].componentBindings"
-              />
-              <span
-                v-if="preset.items[field.key].label !== false"
-                :class="$style.feedLabel"
-              >
-                {{
-                  preset.items[field.key].label || preset.items[field.key].value
-                }}
-              </span>
             </div>
           </template>
         </template>
@@ -370,7 +339,6 @@ export default {
               Cancel
             </slot>
           </el-button>
-          <slot name="cancelButton" />
           <el-button
             type="primary"
             :disabled="!isChanged"
@@ -466,21 +434,11 @@ export default {
   }
 }
 
-.columnFeed > span,
-.columnFeed > div,
+.columnFeed > section > span,
+.columnFeed > section > div,
 .contentValue {
   font-size: rem(14px);
   color: var(--color-dark-gray);
-}
-
-.feedLabel {
-  max-height: rem(200px);
-  overflow-y: auto;
-  line-height: normal;
-}
-
-.feedImage {
-  max-width: rem(100px);
 }
 
 .footer {

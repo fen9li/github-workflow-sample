@@ -4,6 +4,7 @@ import get from 'lodash/get'
 import MerchantRemoveModal from './modals/merchant-remove'
 import MerchandUpdateModal from './modals/merchant-update'
 import EditLayout from '../../../components/edit-layout/edit-layout'
+import Vue from 'vue'
 
 export default {
   name: 'MerchantEdit',
@@ -49,8 +50,9 @@ export default {
       return commissions
     },
     fields() {
-      return [
+      return Vue.observable([
         {
+          changed: false,
           key: 'name',
           label: 'Merchant name',
           path: 'name',
@@ -58,6 +60,7 @@ export default {
           rules: [{ required: true, message: 'merchant name is required' }],
         },
         {
+          changed: false,
           key: 'logo',
           label: 'Merchant Image',
           path: 'logo',
@@ -65,6 +68,7 @@ export default {
           rules: [{ required: true, message: 'merchant logo is required' }],
         },
         {
+          changed: false,
           key: 'summary',
           label: 'Summary',
           path: 'summary',
@@ -75,6 +79,7 @@ export default {
           },
         },
         {
+          changed: false,
           key: 'website',
           label: 'Merchant Website',
           path: 'website',
@@ -87,6 +92,7 @@ export default {
           ],
         },
         {
+          changed: false,
           key: 'categories',
           label: 'Classification',
           path: 'categories',
@@ -97,6 +103,7 @@ export default {
           },
         },
         {
+          changed: false,
           key: 'terms',
           label: 'Terms & Conditions',
           path: 'terms',
@@ -112,6 +119,7 @@ export default {
           slot: 'footerTitle',
         },
         {
+          changed: false,
           key: 'commission',
           label: 'Commission Rate',
           path: 'commission',
@@ -127,13 +135,13 @@ export default {
             values: this.commissions,
           },
         },
-      ]
+      ])
     },
     feedOffers() {
       const { commissions } = this
       const feedOffers = []
 
-      for (const feed of this.feeds) {
+      this.feeds.forEach(feed => {
         const feedCategories = get(feed, 'map.categories', [])
         let categoriesLabel = '—'
 
@@ -196,9 +204,9 @@ export default {
         }
 
         feedOffers.push(feedObject)
-      }
+      })
 
-      return feedOffers
+      return Vue.observable(feedOffers)
     },
   },
   created() {

@@ -25,6 +25,7 @@ export default {
       },
       fields: [
         {
+          changed: false,
           key: 'name',
           label: 'Offer Name',
           path: 'name',
@@ -32,6 +33,7 @@ export default {
           rules: [{ required: true, message: 'Offer name is required' }],
         },
         {
+          changed: false,
           key: 'description',
           label: 'Descriptions',
           path: 'description',
@@ -42,6 +44,7 @@ export default {
           },
         },
         {
+          changed: false,
           key: 'terms',
           label: 'Terms & Conditions',
           path: 'terms',
@@ -53,24 +56,28 @@ export default {
           },
         },
         {
+          changed: false,
           key: 'code',
           label: 'Coupon Code',
           path: 'feed_offer.map.code',
           rules: [{ required: true, message: 'Coupon Code name is required' }],
         },
         {
+          changed: false,
           key: 'start_date',
           label: 'Start Date',
           path: 'feed_offer.map.start_date',
           format: this.formatDate,
         },
         {
+          changed: false,
           key: 'end_date',
           label: 'End Date',
           path: 'feed_offer.map.end_date',
           format: this.formatDate,
         },
         {
+          changed: false,
           key: 'tracking_url',
           label: 'Tracking URL',
           path: 'tracking_url',
@@ -274,10 +281,10 @@ export default {
       @update="modals.update = true"
       @remove="modals.remove = true"
     >
-      <template slot="removeButton">
+      <template #removeButton>
         <span>Remove Offer</span>
       </template>
-      <template slot="updateButton">
+      <template #updateButton>
         <span>Update Offer</span>
       </template>
     </edit-layout>
