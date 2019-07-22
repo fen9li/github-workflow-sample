@@ -16,7 +16,7 @@ export default {
       return columnNames.filter(x => visibleList.indexOf(x) === -1)
     },
     realColumns() {
-      return this.columns.filter(c => Boolean(c.name))
+      return this.columns.filter(c => c.name !== 'expandable' && Boolean(c.name))
     },
     columnNames() {
       return this.realColumns.map(c => c.name)
