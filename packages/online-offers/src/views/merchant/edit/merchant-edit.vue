@@ -1,6 +1,7 @@
 <script>
 import { mapActions } from 'vuex'
 import get from 'lodash/get'
+import capitalize from 'lodash/capitalize'
 import MerchantRemoveModal from './modals/merchant-remove'
 import MerchandUpdateModal from './modals/merchant-update'
 import EditLayout from '../../../components/edit-layout/edit-layout'
@@ -222,11 +223,7 @@ export default {
       'setDefaultFeedMerchant',
     ]),
     formatCommissionType(type) {
-      if (type === 'PERCENTAGE') {
-        return 'Percents'
-      }
-
-      return 'Dollars'
+      return capitalize(type)
     },
     formatCommissionValue(type, value) {
       if (type === 'PERCENTAGE') {
