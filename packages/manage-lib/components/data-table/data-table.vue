@@ -51,7 +51,7 @@ export default {
 
           if (
             hide.indexOf(column.name) === -1 &&
-            column.name !== 'expanded'
+            column.type !== 'expand'
           ) {
             readyColumns.push({
               label: startCase(column.name),
@@ -82,7 +82,7 @@ export default {
       return this.summaryMethod() !== null
     },
     isExpanding() {
-      return this.columns.some(item => item.name === 'expanded')
+      return this.columns.some(item => item.type === 'expand')
     },
   },
   watch: {

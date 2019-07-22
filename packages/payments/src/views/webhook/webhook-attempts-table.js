@@ -39,7 +39,7 @@ const TABLE_COLUMNS = [
     },
     width: 100,
   },
-  { name: 'expanded' },
+  { type: 'expand' },
 ]
 
 export default function(component) {

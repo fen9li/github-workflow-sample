@@ -9,7 +9,7 @@ export default {
   },
   methods: {
     isColumnService(column) {
-      return (column || {}).name === 'expandable'
+      return (column || {}).type === 'expand'
     },
   },
 }

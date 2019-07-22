@@ -37,6 +37,7 @@ const TABLE_COLUMNS = [
     name: 'updated_at',
     label: 'Last Updated',
     format: 'dateTime',
+    icon: 'el-icon-document',
     sortable: false,
   },
 ]
