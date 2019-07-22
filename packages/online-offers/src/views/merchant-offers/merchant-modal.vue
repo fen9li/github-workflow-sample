@@ -55,6 +55,7 @@ export default {
       this.table.processor = new StaticProcessor({
         component: this,
         data: this.items,
+        disableQueryString: true,
       })
     },
     onClick() {
