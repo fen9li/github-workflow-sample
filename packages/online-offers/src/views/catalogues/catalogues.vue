@@ -42,7 +42,7 @@ export default {
       table-name="catalogue"
       :fragments="false"
       hider
-      :quantity="false"
+      :quantity="[25, 50, 100, 200]"
       :processor="table.processor"
       :filters="table.filters"
       :columns="table.columns"

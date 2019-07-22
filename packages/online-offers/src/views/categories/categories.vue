@@ -30,6 +30,7 @@ export default {
       :filters="false"
       :columns="table.columns"
       :fragments="false"
+      :quantity="[25, 50, 100, 200]"
       :hider="false"
     />
 

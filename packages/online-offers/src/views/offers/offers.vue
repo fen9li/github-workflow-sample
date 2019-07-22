@@ -29,7 +29,7 @@ export default {
       :fragments="false"
       :hider="false"
       :class="$style.table"
-      quantity
+      :quantity="[25, 50, 100, 200]"
       @row-click="onRowClick"
     />
   </main-layout>

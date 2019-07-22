@@ -27,7 +27,7 @@ export default {
       default: false,
     },
     quantity: {
-      type: Boolean,
+      type: [Boolean, Array],
       default: false,
     },
     hider: {
@@ -92,6 +92,7 @@ export default {
         />
         <quantity-picker
           v-if="quantity"
+          :quantity="quantity"
           v-bind="$attrs"
         />
         <data-exporter

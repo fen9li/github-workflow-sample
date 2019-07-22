@@ -27,7 +27,7 @@ export default {
       :filters="table.filters"
       :columns="table.columns"
       :fragments="false"
-      :quantity="false"
+      :quantity="[25, 50, 100, 200]"
     >
       <template
         slot="expandedRow"

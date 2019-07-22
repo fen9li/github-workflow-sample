@@ -5,14 +5,28 @@ export default {
   name: 'QuantityPicker',
   mixins: [FeaturesMixin],
   props: {
-    options: {
-      type: Array,
-      default: () => [15, 20, 25, 50, 100],
+    quantity: {
+      type: [Boolean, Array],
+      default: true
     },
   },
   data() {
     return {
       activeCount: -1,
+    }
+  },
+  computed: {
+    options() {
+      const { quantity } = this
+      if (typeof quantity === 'boolean') {
+        if (quantity) {
+          return [15, 20, 25, 50, 100]
+        } else {
+          return []
+        }
+      }
+
+      return quantity
     }
   },
   watch: {
@@ -24,6 +38,9 @@ export default {
       },
       immediate: true,
     },
+  },
+  created() {
+    this.activeCount = this.options[0]
   },
   methods: {
     onCountChange(newCount) {
