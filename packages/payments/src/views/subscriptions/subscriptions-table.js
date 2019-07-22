@@ -27,7 +27,7 @@ const TABLE_FILTERS = [
   },
   {
     attribute: 'productName',
-    label: 'Subscription Product',
+    label: 'Product Name',
     type: 'string',
     icon: 'el-icon-document',
   },

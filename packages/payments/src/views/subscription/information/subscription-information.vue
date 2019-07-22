@@ -28,6 +28,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {
@@ -42,9 +46,9 @@ export default {
 </script>
 
 <template>
-  <el-card>
+  <el-card v-loading="loading">
     <div
-      v-if="subscription.id"
+      v-if="!loading"
     >
       <subscription-details
         :subscription="subscription"

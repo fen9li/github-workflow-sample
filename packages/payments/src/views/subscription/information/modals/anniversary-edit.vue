@@ -1,4 +1,6 @@
 <script>
+import { datePickerFormat } from '@lib/utils/date-helper'
+
 export default {
   name: 'EditSubscriptionAnniversaryModal',
   props: {
@@ -13,6 +15,8 @@ export default {
   },
   data() {
     return {
+      processing: false,
+      datePickerFormat,
       form: {
         newDate: '',
       },
@@ -30,10 +34,13 @@ export default {
   methods: {
     async onSubmit() {
       if (!this.validateAll().some(item => item === false)) {
+        this.processing = true
         const { newDate } = this.form
         const [error, response] = await this.$api.put(`/subscriptions/${this.subscription.id}/anniversary`, {
           new_anniversary_date: newDate,
         })
+
+        this.processing = false
 
         if (response) {
           this.$notify({
@@ -129,6 +136,7 @@ export default {
             type="date"
             placeholder="Enter Date"
             :editable="false"
+            :value-format="datePickerFormat"
             data-test="newAnniversary"
           />
           <el-tooltip
@@ -157,6 +165,7 @@ export default {
         type="primary"
         :class="$style.save"
         data-test="submit"
+        :loading="processing"
         @click="onSubmit"
       >
         Save

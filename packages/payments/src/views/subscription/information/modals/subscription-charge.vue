@@ -1,9 +1,13 @@
 <script>
 import paymentFormItem from '../../../customer/payment-methods/payment-form-item'
 import get from 'lodash/get'
+import { mask } from 'vue-the-mask'
 
 export default {
   name: 'AmountChargeOwingModal',
+  directives: {
+    mask,
+  },
   components: {
     paymentFormItem,
   },
@@ -19,6 +23,7 @@ export default {
   },
   data() {
     return {
+      processing: false,
       form: {
         amount: '',
         selectedMethod: get(this.customer.paymentMethods[0], 'value', ''),
@@ -49,28 +54,36 @@ export default {
   methods: {
     async onSubmit() {
       if (!this.validateAll().some(item => item === false)) {
-        const [error, response] = await this.$api.post(`/subscriptions/${this.subscription.id}`)
-        if (response) {
-          this.$notify({
-            type: 'success',
-            title: 'Saved',
-            message: 'Changes saved successfully.',
-          })
 
-          this.$emit('update:visible', false)
-          this.$emit('edited')
-        } else if (error) {
-          const violations = Object.keys(error.violations)
-          violations.forEach(violation => {
-            setTimeout(() => {
-              this.$notify({
-                type: 'error',
-                title: 'Error',
-                message: `${violation}: ${error.violations[violation][0]}`,
-              })
-            }, 50)
-          })
-        }
+        // this.processing = true
+
+        // TODO: Add proper api request
+
+        // const [error, response] = await this.$api.post(`/subscriptions/${this.subscription.id}`)
+
+        // this.processing = true
+
+        // if (response) {
+        //   this.$notify({
+        //     type: 'success',
+        //     title: 'Saved',
+        //     message: 'Changes saved successfully.',
+        //   })
+
+        //   this.$emit('update:visible', false)
+        //   this.$emit('edited')
+        // } else if (error) {
+        //   const violations = Object.keys(error.violations)
+        //   violations.forEach(violation => {
+        //     setTimeout(() => {
+        //       this.$notify({
+        //         type: 'error',
+        //         title: 'Error',
+        //         message: `${violation}: ${error.violations[violation][0]}`,
+        //       })
+        //     }, 50)
+        //   })
+        // }
       }
     },
     validateAll() {
@@ -107,6 +120,17 @@ export default {
           data-test="customer"
         />
       </el-form-item>
+
+      <!-- <el-form-item
+        label="Subscription"
+      >
+        <el-input
+          :value="subscription.current_product.name"
+          disabled
+          data-test="subscription"
+        />
+      </el-form-item> -->
+
       <el-form-item
         label="Amount to Pay"
         prop="amount"
@@ -117,6 +141,7 @@ export default {
           <el-form-item>
             <el-input
               v-model="form.amount"
+              v-mask="['#.##', '##.##', '###.##', '####.##', '#####.##']"
               placeholder="0.00"
               data-test="amount"
             >
@@ -148,6 +173,7 @@ export default {
         type="primary"
         :class="$style.save"
         data-test="submit"
+        :loading="processing"
         @click="onSubmit"
       >
         Charge Now

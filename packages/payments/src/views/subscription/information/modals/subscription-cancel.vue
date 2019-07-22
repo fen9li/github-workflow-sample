@@ -1,9 +1,13 @@
 <script>
 import paymentFormItem from '../../../customer/payment-methods/payment-form-item'
 import get from 'lodash/get'
+import { mask } from 'vue-the-mask'
 
 export default {
   name: 'EditSubscriptionCancelModal',
+  directives: {
+    mask,
+  },
   components: {
     paymentFormItem,
   },
@@ -19,6 +23,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       type: 'now',
       refund: true,
       form: {
@@ -60,11 +65,28 @@ export default {
   methods: {
     async onSubmit() {
       if (!this.validateAll().some(item => item === false)) {
-        const [error, response] = await this.$api.delete(`/subscriptions/${this.subscription.id}`)
+        this.loading = true
 
-        // const [error, response] = await this.$api.post(`/subscriptions/${this.subscription.id}/refund`, {
-        //   amount: this.form.amount,
-        // })
+        const { type, refund, form } = this
+
+        const requestData = {}
+
+        // TODO: Adjust requestData for real payload when postman docs is updated
+        if(type !== 'end') {
+
+          if(refund) {
+            await this.refundSubscruption()
+          }
+
+          if(type === 'specific') {
+            requestData.cancelDate = form.cancelDate
+          }
+        }
+
+        const [error, response] = await this.$api.delete(`/subscriptions/${this.subscription.id}`,
+          { data: requestData || {} })
+
+        this.loading = true
 
         if (response) {
           this.$notify({
@@ -74,7 +96,6 @@ export default {
           })
 
           this.$emit('update:visible', false)
-          this.$emit('edited')
         } else if (error) {
           const violations = Object.keys(error.violations)
           violations.forEach(violation => {
@@ -96,6 +117,19 @@ export default {
       })
       return result
     },
+    async refundSubscruption() {
+      const { form, subscription } = this
+
+      const refundData = {
+        amount: form.amount
+      }
+
+      const [error, response] = await this.$api.post(`/subscriptions/${subscription.id}/refund`, refundData)
+
+      console.warn(error, response)
+
+      return [error, response]
+    }
   },
 }
 </script>
@@ -121,7 +155,7 @@ export default {
         <el-radio label="now">
           Cancel Immediately
         </el-radio>
-        <el-radio label="after">
+        <el-radio label="end">
           Cancel at the end of the current period on {{ `${subscription.end_at || ''}` }}
         </el-radio>
         <el-radio label="specific">
@@ -144,7 +178,7 @@ export default {
         />
       </el-form-item>
 
-      <div v-if="type !== 'after'">
+      <div v-if="type !== 'end'">
         <hr :class="['divider-primary', $style.divider]">
         <el-checkbox
           v-model="refund"
@@ -174,6 +208,7 @@ export default {
             <el-form-item prop="amount">
               <el-input
                 v-model="form.amount"
+                v-mask="['#.##', '##.##', '###.##', '####.##', '#####.##']"
                 placeholder="0.00"
                 data-test="amount"
               >
@@ -197,6 +232,7 @@ export default {
         type="primary"
         :class="$style.save"
         data-test="submit"
+        :loading="loading"
         @click="onSubmit"
       >
         Set Cancellation

@@ -12,9 +12,14 @@ export default {
       type: Object,
       default: () => {},
     },
+    subscription: {
+      type: Object,
+      default: () => {}
+    }
   },
   data() {
     return {
+      processing: false,
       form: {
         selectedMethod: get(this.customer, 'paymentMethods[0].value', ''),
       },
@@ -109,6 +114,7 @@ export default {
         type="primary"
         :class="$style.save"
         data-test="submit"
+        :loading="processing"
         @click="onSubmit"
       >
         Save

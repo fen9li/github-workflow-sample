@@ -16,6 +16,7 @@ export default {
   },
   data() {
     return {
+      processing: false,
       form: {
         product: '',
         frequency: '',
@@ -24,6 +25,7 @@ export default {
         data: [],
         loading: true,
       },
+      subscriptioHistory: {},
       frequencies: [
         {
           label: 'Monthly',
@@ -65,6 +67,7 @@ export default {
   },
   created() {
     this.getAllProducts()
+    this.getSubscriptioHistory()
 
     const { form, subscription } = this
     const currentFrequency = subscription.current_frequency
@@ -74,6 +77,7 @@ export default {
   },
   methods: {
     async onSubmit() {
+      this.processing = true
       const { form, subscription } = this
 
       const requestData = {
@@ -85,6 +89,8 @@ export default {
       }
 
       const [error, response] = await this.$api.put(`/subscriptions/${subscription.id}/upgrade`, requestData)
+
+      this.processing = false
 
       if (response) {
         this.$notify({
@@ -112,6 +118,11 @@ export default {
         index: 'subscription-products',
       })
     },
+    async getSubscriptioHistory() {
+      const [error, response] = await this.$api.get(`/subscriptions/${this.subscription.id}/history`)
+
+      console.warn(error, response)
+    }
   },
 }
 </script>
@@ -185,6 +196,7 @@ export default {
         type="primary"
         :class="$style.save"
         data-test="submit"
+        :loading="processing"
         @click="onSubmit"
       >
         Save

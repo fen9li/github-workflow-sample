@@ -367,10 +367,6 @@
   .datalist {
     flex: 1 0 50%;
     margin-top: 1.8rem;
-
-    dt {
-      color: black;
-    }
   }
 
   &__flex-list {
@@ -432,6 +428,7 @@
 
 .modal-note {
   display: flex;
+  align-items: center;
   width: 100%;
   padding: 0.6rem;
   color: var(--color-text-light);

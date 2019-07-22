@@ -1,5 +1,6 @@
 <script>
 import ElasticProcessor from '@lib/processors/elastic-processor'
+import { formatDate } from '@lib/utils/format-date'
 
 export default {
   name: 'EditSubscriptionEditCouponsModal',
@@ -15,6 +16,7 @@ export default {
   },
   data() {
     return {
+      processing: false,
       form: {
         coupons: [],
       },
@@ -31,6 +33,9 @@ export default {
         return { value: coupon.code, label: coupon.name }
       })
     },
+    appliedCoupon() {
+      return this.subscription.coupons[0] || {}
+    }
   },
   created() {
     this.getCoupons()
@@ -38,25 +43,23 @@ export default {
     if (coupons.length) {
       const applied = coupons[0].coupon.code
       this.initialCoupon = applied
-      this.form.coupons.push(applied)
+      this.form.coupons.push(coupons[0].coupon.code)
     }
   },
   methods: {
+    formatDate(value, format) {
+      return formatDate(value, format || 'DD/MM/YYYY')
+    },
     async onSubmit() {
+      this.processing = true
       const { coupons } = this.form
-      const { initialCoupon } = this
+      const { appliedCoupon } = this
 
-      if (initialCoupon) {
-        if (coupons.length && initialCoupon !== coupons[0]) {
-          // First we delete old coupon, then apply new
-          this.removeCoupon().then(resp => {
-            this.applyCoupon(coupons[0]).then(resp => {
-              this.notify(resp)
-            })
-          })
-        } else if (!coupons.length) {
+      if (appliedCoupon.coupon) {
+        if (!coupons.length) {
           this.removeCoupon().then(resp => {
             this.notify(resp)
+            this.processing = false
           })
         } else {
           this.$emit('update:visible', false)
@@ -65,14 +68,13 @@ export default {
         if (coupons.length) {
           this.applyCoupon(coupons[0]).then(resp => {
             this.notify(resp)
+            this.processing = false
           })
-        } else {
-          this.$emit('update:visible', false)
         }
       }
     },
     async applyCoupon(coupon) {
-      return this.$api.put(`/subscriptions/${this.subscription.id}/coupons/${coupon}`)
+      return this.$api.put(`/subscriptions/${this.subscription.id}/coupons/${coupon}`, { data: {} })
     },
     getCoupons() {
       this.couponsData = new ElasticProcessor({
@@ -81,7 +83,7 @@ export default {
       })
     },
     async removeCoupon() {
-      return this.$api.delete(`/subscriptions/${this.subscription.id}/coupons`)
+      return this.$api.delete(`/subscriptions/${this.subscription.id}/coupons`, { data: {} })
     },
     notify(data) {
       const [error] = data
@@ -106,6 +108,10 @@ export default {
         this.$emit('updated')
       }
     },
+    disableCoupon(coupon) {
+      const { appliedCoupon } = this
+      return appliedCoupon && appliedCoupon.coupon.code !== coupon.value
+    }
   },
 }
 </script>
@@ -143,15 +149,23 @@ export default {
           :multiple-limit="1"
           placeholder="Select"
           data-test="coupons"
+          :disabled="!!appliedCoupon.end_at"
         >
           <el-option
             v-for="item in allCoupons"
             :key="item.value"
             :label="item.label"
             :value="item.value"
+            :disabled="disableCoupon(item)"
           />
         </el-select>
       </el-form-item>
+      <div
+        v-if="appliedCoupon.end_at && !couponsData.loading"
+        :class="$style.removeNote"
+      >
+        This coupon will be removed at the end of the current billing cycle schedule on {{ formatDate(appliedCoupon.end_at) }}
+      </div>
     </el-form>
     <div class="modal-note">
       <i class="el-icon-info" />
@@ -164,6 +178,7 @@ export default {
         type="primary"
         :class="$style.save"
         data-test="submit"
+        :loading="processing"
         @click="onSubmit"
       >
         Save
@@ -179,5 +194,11 @@ export default {
 
 .save {
   width: 15rem !important;
+}
+
+.removeNote {
+  padding-bottom: 1.2rem;
+  color: var(--color-error);
+  word-break: normal !important;
 }
 </style>

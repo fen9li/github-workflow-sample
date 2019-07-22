@@ -2,7 +2,9 @@
 import appConfig from '~/app.config'
 import amountCharge from './information/modals/subscription-charge'
 import subscriptionCancel from './information/modals/subscription-cancel'
+import revertCancellation from './information/modals/revert-cancellation'
 import formatMethod from '@lib/utils/format-payment-method'
+import isPast from '@lib/utils/date-is-past'
 
 export default {
   name: 'Subscription',
@@ -13,6 +15,7 @@ export default {
   components: {
     amountCharge,
     subscriptionCancel,
+    revertCancellation,
   },
   props: {
     id: {
@@ -27,7 +30,9 @@ export default {
       modal: {
         charge: false,
         cancel: false,
+        revert: false,
       },
+      loading: false,
     }
   },
   computed: {
@@ -60,9 +65,13 @@ export default {
   },
   methods: {
     async getSubscription() {
+      this.loading = true
       const [, response] = await this.$api.get(`/subscriptions/${this.id}`)
       if (response) {
         this.subscription = { ...response }
+        if(response.cancellation_at && isPast(response.cancellation_at)) {
+          this.subscription.isCancelled = true
+        }
       }
       return response
     },
@@ -71,6 +80,7 @@ export default {
       if (response) {
         this.customer = { ...response, fullName: `${response.first_name} ${response.last_name}` }
         this.adjustPaymentMethods()
+        this.loading = false
       }
     },
     adjustPaymentMethods() {
@@ -95,53 +105,82 @@ export default {
     <div
       v-if="subscription.id"
       slot="header"
+      v-loading="loading"
       :class="[
         $style.header,
         subscription.outstanding.total < 0 && $style.balanceNegative
       ]"
     >
-      <div :class="$style.headerBtns">
-        <el-button
-          v-if="tabKey === 'subscription-transactions'"
-          type="primary"
-          plain
-          data-test="cancel"
-          @click="modal.cancel = true"
+      <div v-if="!loading">
+        <div
+          v-if="!subscription.isCancelled"
+          :class="$style.headerBtns"
         >
-          Cancel Subscription
-        </el-button>
-        <el-button
-          type="primary"
-          data-test="charge"
-          @click="modal.charge = true"
-        >
-          Charge Amount Owing
-        </el-button>
+          <div
+            v-if="tabKey === 'subscription-transactions'"
+            :class="$style.cancellation"
+          >
+            <el-button
+              v-if="!subscription.cancellation_at"
+              type="primary"
+              plain
+              data-test="cancel"
+              @click="modal.cancel = true"
+            >
+              Cancel Subscription
+            </el-button>
+
+            <el-button
+              v-else
+              plain
+              type="primary"
+              data-test="revert"
+              @click="modal.revert = true"
+            >
+              Revert Cancellation
+            </el-button>
+          </div>
+
+          <el-button
+            type="primary"
+            data-test="charge"
+            @click="modal.charge = true"
+          >
+            Charge Amount Owing
+          </el-button>
+        </div>
+
+        <subscription-cancel
+          v-if="modal.cancel && tabKey === 'subscription-transactions'"
+          :visible.sync="modal.cancel"
+          :subscription="subscription"
+          :payment-methods="customer.paymentMethods"
+        />
+
+        <revert-cancellation
+          v-if="modal.revert"
+          :visible.sync="modal.revert"
+          :subscription="subscription"
+        />
+
+        <amount-charge
+          v-if="modal.charge"
+          :visible.sync="modal.charge"
+          :subscription="subscription"
+          :customer="customer"
+        />
+
+        <small :class="$style.balanceLabel">
+          Amount Owing
+          <b :class="$style.balanceCount">{{ subscription.outstanding.total | dollar }}</b>
+        </small>
       </div>
-
-      <subscription-cancel
-        v-if="modal.cancel && tabKey === 'subscription-transactions'"
-        :visible.sync="modal.cancel"
-        :subscription="subscription"
-        :payment-methods="customer.paymentMethods"
-      />
-
-      <amount-charge
-        v-if="modal.charge"
-        :visible.sync="modal.charge"
-        :subscription="subscription"
-        :customer="customer"
-      />
-
-      <small :class="$style.balanceLabel">
-        Amount Owing
-        <b :class="$style.balanceCount">{{ subscription.outstanding.total | dollar }}</b>
-      </small>
     </div>
 
     <router-view
       :subscription="subscription"
       :customer="customer"
+      :loading="loading"
     />
   </main-layout>
 </template>
@@ -172,5 +211,9 @@ export default {
 
 .headerBtns {
   display: flex;
+}
+
+.cancellation {
+  padding-right: 1rem;
 }
 </style>
