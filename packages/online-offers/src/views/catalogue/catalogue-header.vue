@@ -186,6 +186,7 @@ export default {
 
 .formRowValue {
   padding-left: 75px;
+  font-weight: bold;
 }
 
 .formFeeds {

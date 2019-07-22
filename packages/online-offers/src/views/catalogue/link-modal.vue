@@ -43,21 +43,19 @@ export default {
   },
   watch: {
     items() {
-      this.getData()
+      this.getTableData()
     },
-  },
-  mounted() {
-    this.getData()
   },
   methods: {
     ...mapActions('catalogues', [
       'linkMerchantToCatalogue',
       'unlinkMerchantFromCatalogue',
     ]),
-    getData() {
+    getTableData() {
       this.table.processor = new StaticProcessor({
         component: this,
         data: this.items,
+        disableQueryString: true,
       })
     },
     onClick() {
