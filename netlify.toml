@@ -33,4 +33,4 @@
 [context."release/payments-test"]
   command = "yarn clean && lerna exec --scope manage-payments -- yarn build"
   publish = "./packages/payments/dist"
-  environment = { VUE_APP_API_URL = "http://pa-fe-dev.clients.test.ewallet.com.au", VUE_APP_AUTH0_AUDIENCE="https://api.dev.payments.eonx.com/", VUE_APP_ELASTIC_HOST="https://api.dev.payments.eonx.com/search" }
+  environment = { VUE_APP_API_URL = "https://api.dev.payments.eonx.com/", VUE_APP_AUTH0_AUDIENCE="https://api.dev.payments.eonx.com/", VUE_APP_ELASTIC_HOST="https://api.dev.payments.eonx.com/search" }
