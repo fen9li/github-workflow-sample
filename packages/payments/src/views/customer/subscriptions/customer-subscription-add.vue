@@ -1,6 +1,7 @@
 <script>
 import paymentFormItem from '../payment-methods/payment-form-item'
 import ElasticProcessor from '@lib/processors/elastic-processor'
+import { datePickerFormat } from '@lib/utils/date-helper'
 
 export default {
   name: 'CustomerDetailsAddSubscription',
@@ -15,14 +16,16 @@ export default {
   },
   data() {
     return {
+      datePickerFormat,
+      processing: false,
       showAddMethodForm: false,
       form: {
         start_at: '',
-        end_at: '',
+        end_at: null,
         product: '',
         frequency: '',
-        coupon: '',
-        endpoint: '',
+        coupon: null,
+        endpoint: null,
       },
       productsData: {
         data: [],
@@ -79,8 +82,7 @@ export default {
     async onSubmit() {
       this.showAddMethodForm = false
       if (!this.validateAll().some(item => item === false)) {
-
-        // TODO: Update method with new API
+        this.processing = true
 
         const { form, customer } = this
         const [error, response] = await this.$api.post(`/customers/${customer.id}/subscriptions`, {
@@ -93,6 +95,8 @@ export default {
           },
           start_at: form.start_at
         })
+
+        this.processing = false
 
         if (response) {
           this.$notify({
@@ -170,6 +174,7 @@ export default {
               v-model="form.start_at"
               type="date"
               placeholder="Enter Date"
+              :value-format="datePickerFormat"
             />
           </el-form-item>
 
@@ -180,6 +185,7 @@ export default {
               v-model="form.end_at"
               type="date"
               placeholder="Enter Date"
+              :value-format="datePickerFormat"
             />
           </el-form-item>
         </div>
@@ -258,6 +264,7 @@ export default {
         type="primary"
         :class="[$style.save, 'wide-button']"
         data-test="submit"
+        :loading="processing"
         @click="onSubmit"
       >
         Save

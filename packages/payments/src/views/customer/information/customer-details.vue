@@ -32,6 +32,9 @@ export default {
       <dt>First Name</dt>
       <dd>{{ customer.first_name }}</dd>
 
+      <dt>Preferred Name</dt>
+      <dd>{{ customer.preferred_name || '-' }}</dd>
+
       <dt>Last Name</dt>
       <dd>{{ customer.last_name }}</dd>
 
@@ -39,7 +42,7 @@ export default {
       <dd>{{ customer.email }}</dd>
 
       <dt>Telephone</dt>
-      <dd>{{ customer.mobile || '-' }}</dd>
+      <dd>{{ customer.phone_numbers[0] || '-' }}</dd>
 
       <dt>Address</dt>
       <dd>{{ customer.address || '-' }}</dd>

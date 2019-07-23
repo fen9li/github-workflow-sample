@@ -96,6 +96,7 @@ export default {
   >
     <div
       slot="header"
+      v-loading="loading"
       :class="$style.top"
     >
       <div :class="$style.buttons">
@@ -117,10 +118,7 @@ export default {
           Add Product
         </el-button>
       </div>
-      <div
-        v-loading="loading"
-        :class="$style.balance"
-      >
+      <div :class="$style.balance">
         <div :class="$style.owing">
           <small :class="$style.balanceLabel">
             Amount Owing
