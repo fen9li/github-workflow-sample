@@ -1,7 +1,5 @@
 <script>
 import get from 'lodash/get'
-import md5 from 'md5'
-import uploadcare from 'uploadcare-vue'
 import { mapActions, mapState } from 'vuex'
 import DataProcessor from '@lib/processors/data-processor'
 import formatCommission from '@lib/utils/format-commission'
@@ -9,9 +7,6 @@ import sortBy from 'lodash/sortBy'
 import concat from 'lodash/concat'
 
 export default {
-  components: {
-    uploadcare,
-  },
   props: {
     row: {
       type: Object,
@@ -63,11 +58,6 @@ export default {
         ],
       },
       suggestions: [],
-      uploadcare: {
-        expire: new Date(new Date + 60 * 60 * 12).getTime(),
-        publicKey: process.env.VUE_APP_UPLOADCARE_PUBLIC_KEY,
-        secretKey: process.env.VUE_APP_UPLOADCARE_SECRET_KEY,
-      },
       search: '',
       selectedItem: null,
       isCreate: false,
@@ -95,9 +85,6 @@ export default {
     },
     trackingLing() {
       return get(this.row, 'payload.TrackingLink')
-    },
-    uploadcareSignature() {
-      return md5(this.uploadcare.secretKey + this.uploadcare.expire)
     },
     isSearchEmpty() {
       return !this.search.length
@@ -336,36 +323,11 @@ export default {
         prop="logo"
       >
         <!-- <el-input v-model="form.image" /> -->
-        <div :class="$style.uploader">
-          <uploadcare
-            :public-key="uploadcare.publicKey"
-            :secure-signature="uploadcareSignature"
-            :secure-expire="uploadcare.expire"
-            :class="$style.uploadcare"
-            crop="160x60"
-            @success="onSuccessUploading"
-          >
-            <el-button
-              plain
-              :class="$style.uploadButton"
-            >
-              Upload
-            </el-button>
-          </uploadcare>
-          <div
-            slot="tip"
-            :class="$style.formUploaderTip"
-          >
-            <img
-              v-if="form.logo"
-              :src="form.logo"
-              :class="$style.formLogo"
-            >
-            <span v-else>
-              Select file
-            </span>
-          </div>
-        </div>
+        <image-uploader
+          :image="form.logo"
+          theme="input"
+          @onUpload="onSuccessUploading"
+        />
       </el-form-item>
 
       <el-form-item

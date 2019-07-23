@@ -3,6 +3,7 @@ import DataFilter from './data-filter/data-filter'
 import DataTable from './data-table/data-table'
 import StateDialog from './state-dialog'
 import AsCode from './as-code'
+import ImageUploader from './image-uploader'
 
 export default {
   install(Vue, options) {
@@ -11,5 +12,6 @@ export default {
     Vue.component('data-table', DataTable)
     Vue.component('state-dialog', StateDialog)
     Vue.component('as-code', AsCode)
+    Vue.component('image-uploader', ImageUploader)
   },
 }

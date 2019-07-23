@@ -43,7 +43,9 @@ export default {
       <el-radio :label="itemValue" />
     </el-radio-group>
     <div v-else-if="item.type === 'text'">
-      {{ field.label }}
+      <span :class="$style.checkboxLabel">
+        {{ field.label }}
+      </span>
     </div>
     <el-checkbox
       v-else
@@ -76,11 +78,21 @@ export default {
 
 <style lang="scss" module>
   .label {
+    display: inline-block;
     max-height: rem(200px);
+    padding-left: rem(38px);
     overflow-y: auto;
     line-height: normal;
+    vertical-align: top;
+  }
+  .checkboxLabel {
+    padding-left: rem(38px);
+    font-size: 1rem;
+    color: var(--color-text);
   }
   .image {
     max-width: rem(100px);
+    padding-left: rem(38px);
+    margin-bottom: rem(10px);
   }
 </style>

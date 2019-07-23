@@ -1,15 +1,10 @@
 <script>
-import md5 from 'md5'
-import uploadcare from 'uploadcare-vue'
 import { mapActions, mapGetters } from 'vuex'
 import find from 'lodash/find'
 import ApiProcessor from '@lib/processors/api-processor'
 
 export default {
   name: 'EditCatalogueModal',
-  components: {
-    uploadcare,
-  },
   props: {
     catalogue: {
       type: Object,
@@ -27,7 +22,6 @@ export default {
         logo: null,
         feeds: [],
       },
-      logoName: null,
       rules: {
         name: [
           {
@@ -53,21 +47,10 @@ export default {
         ],
       },
       progress: false,
-      uploadcare: {
-        expire: new Date(new Date() + 60 * 60 * 12).getTime(),
-        publicKey: process.env.VUE_APP_UPLOADCARE_PUBLIC_KEY,
-        secretKey: process.env.VUE_APP_UPLOADCARE_SECRET_KEY,
-      },
     }
   },
   computed: {
     ...mapGetters('feeds', ['feeds']),
-    uploaderPlaceholder() {
-      return this.form.logo || '160px - 60px'
-    },
-    uploadcareSignature() {
-      return md5(this.uploadcare.secretKey + this.uploadcare.expire)
-    },
   },
   watch: {
     catalogue() {
@@ -92,8 +75,7 @@ export default {
       }
     },
     onSuccessUploading(img) {
-      this.form.logo = img.originalUrl
-      this.logoName = img.name
+      this.form.logo = img.cdnUrl
       this.$refs.form.validateField('logo')
     },
     onSubmit() {
@@ -162,30 +144,11 @@ export default {
             label="Client logo"
             prop="logo"
           >
-            <div :class="$style.uploader">
-              <uploadcare
-                :public-key="uploadcare.publicKey"
-                :secure-signature="uploadcareSignature"
-                :secure-expire="uploadcare.expire"
-                crop="160x60"
-                :class="$style.uploadcare"
-                @success="onSuccessUploading"
-              >
-                <el-button
-                  type="primary"
-                  plain
-                  :class="$style.uploadButton"
-                >
-                  Select File
-                </el-button>
-              </uploadcare>
-              <div
-                slot="tip"
-                :class="$style.formUploaderTip"
-              >
-                {{ uploaderPlaceholder }}
-              </div>
-            </div>
+            <image-uploader
+              :image="form.logo"
+              theme="input"
+              @onUpload="onSuccessUploading"
+            />
           </el-form-item>
 
           <el-form-item
@@ -243,55 +206,6 @@ export default {
         width: 100%;
       }
     }
-  }
-}
-
-.formUploaderTip {
-  width: calc(100% + 2px);
-  height: 40px;
-  padding: 0 1rem 0 0;
-  margin-left: -2px;
-  overflow: hidden;
-  color: #c0c4cb;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  border-left: none;
-  border-radius: 0 4px 4px 0;
-}
-
-.formFeeds {
-  display: flex;
-
-  :global {
-    .el-checkbox {
-      &__label {
-        padding-left: 0.5rem;
-      }
-    }
-  }
-}
-
-.uploader {
-  display: flex;
-  width: 100%;
-  padding-left: rem(15px);
-  border: rem(1px) solid #dcdfe6;
-  border-radius: rem(4px);
-}
-
-.uploadcare {
-  order: 2;
-}
-
-.uploadButton {
-  height: 100%;
-  background-color: #dcdfe6;
-  border-width: 0 0 0 1px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-
-  &:hover {
-    border-color: #dcdfe6 !important;
   }
 }
 </style>

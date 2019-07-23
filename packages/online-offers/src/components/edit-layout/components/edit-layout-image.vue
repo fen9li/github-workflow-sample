@@ -1,12 +1,6 @@
 <script>
-import md5 from 'md5'
-import uploadcare from 'uploadcare-vue'
-
 export default {
   name: 'EditLayoutImage',
-  components: {
-    uploadcare,
-  },
   props: {
     value: {
       type: String,
@@ -17,20 +11,6 @@ export default {
       default: false,
     },
   },
-  data() {
-    return {
-      uploadcare: {
-        expire: new Date(new Date + 60 * 60 * 12).getTime(),
-        publicKey: process.env.VUE_APP_UPLOADCARE_PUBLIC_KEY,
-        secretKey: process.env.VUE_APP_UPLOADCARE_SECRET_KEY,
-      },
-    }
-  },
-  computed: {
-    uploadcareSignature() {
-      return md5(this.uploadcare.secretKey + this.uploadcare.expire)
-    },
-  },
   methods: {
     onSuccessUploading(img) {
       this.$emit('imageLoaded', img.cdnUrl)
@@ -39,41 +19,11 @@ export default {
 }
 </script>
 <template>
-  <div :class="$style.container">
-    <img
-      :src="value"
-      :alt="value"
-      :class="$style.preview"
-    >
-    <uploadcare
-      :public-key="uploadcare.publicKey"
-      :secure-signature="uploadcareSignature"
-      :secure-expire="uploadcare.expire"
-      crop="200x200"
-      :class="[
-        $style.uploader,
-        disabled && $style.uploaderDisabled,
-      ]"
-      :value="value"
-      @success="onSuccessUploading"
-    >
-      <el-button
-        plain
-        :disabled="disabled"
-      >
-        Upload
-      </el-button>
-      <div
-        :class="[
-          $style.uploaderTip,
-          !value && $style.uploaderTipPlaceholder,
-          disabled && $style.uploaderTipDisabled,
-        ]"
-      >
-        {{ value || 'Select file' }}
-      </div>
-    </uploadcare>
-  </div>
+  <image-uploader
+    :image="value"
+    theme="input"
+    @onUpload="onSuccessUploading"
+  />
 </template>
 
 <style lang="scss" module>
