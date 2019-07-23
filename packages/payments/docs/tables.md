@@ -183,6 +183,7 @@ Describes each column in the table.
 | Property | Type | Description | Default |
 | --- | --- | --- | --- |
 | `name` | `String` | name/key of the column | - |
+| `type` | `String` | **(optional)** use instead a 'name' property for expandable row mode | 'expand' |
 | `label` | `String` | column name to display in column's header | - |
 | `icon` | `String` | icon class name from Element UI. Is used only in the **columns-hider** component | - |
 | `format` | `FormatDescriptor` | **(optional)** formatter that will be applied to each value in the current column | `{}` |
