@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyalty-corp/manage-lib@0.1.0...@loyalty-corp/manage-lib@0.2.0) (2019-07-23)
+
+### Bug Fixes
+
+- **online-offers:** add type key for expand column instead name ([6eca824](https://github.com/loyaltycorp/manage-v2-frontend/commit/6eca824))
+- **online-offers:** exlude column with reserve name from column hiders ([854fabe](https://github.com/loyaltycorp/manage-v2-frontend/commit/854fabe))
+- **online-offers:** override default quantity options ([e01646b](https://github.com/loyaltycorp/manage-v2-frontend/commit/e01646b))
+- **online-offers:** redirect from root to clients ([f334c12](https://github.com/loyaltycorp/manage-v2-frontend/commit/f334c12))
+
+### Features
+
+- **coupons:** update coupons with new api ([7547804](https://github.com/loyaltycorp/manage-v2-frontend/commit/7547804))
+
 # 0.1.0 (2019-07-16)
 
 ### Bug Fixes

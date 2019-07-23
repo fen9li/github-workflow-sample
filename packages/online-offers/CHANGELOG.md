@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-online-offers@0.1.1...manage-online-offers@0.2.0) (2019-07-23)
+
+### Bug Fixes
+
+- **online-offers:** add csv worker to public dir ([0fef4bf](https://github.com/loyaltycorp/manage-v2-frontend/commit/0fef4bf))
+- **online-offers:** add missing component ([89b7a37](https://github.com/loyaltycorp/manage-v2-frontend/commit/89b7a37))
+- **online-offers:** add type key for expand column instead name ([6eca824](https://github.com/loyaltycorp/manage-v2-frontend/commit/6eca824))
+- **online-offers:** consistent display comission type ([e56174f](https://github.com/loyaltycorp/manage-v2-frontend/commit/e56174f))
+- **online-offers:** display progress on categories change ([4053436](https://github.com/loyaltycorp/manage-v2-frontend/commit/4053436))
+- **online-offers:** exlude column with reserve name from column hiders ([854fabe](https://github.com/loyaltycorp/manage-v2-frontend/commit/854fabe))
+- **online-offers:** hide associate button for deleted offers ([06d93fc](https://github.com/loyaltycorp/manage-v2-frontend/commit/06d93fc))
+- **online-offers:** override default quantity options ([e01646b](https://github.com/loyaltycorp/manage-v2-frontend/commit/e01646b))
+- **online-offers:** redirect from root to clients ([f334c12](https://github.com/loyaltycorp/manage-v2-frontend/commit/f334c12))
+- **online-offets:** isolate modal table from parent table params ([24bc6ad](https://github.com/loyaltycorp/manage-v2-frontend/commit/24bc6ad))
+
+### Features
+
+- **online-offers:** apply new api for feed updates view ([49cda7e](https://github.com/loyaltycorp/manage-v2-frontend/commit/49cda7e))
+
 ## [0.1.1](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-online-offers@0.1.0...manage-online-offers@0.1.1) (2019-07-17)
 
 ### Bug Fixes
