@@ -49,24 +49,28 @@ export default {
   methods: {
     async onSubmit() {
       if (!this.validateAll().some(item => item === false)) {
-        // const [error, response] = await this.$api.post(`/subscriptions/${this.subscription.id}`)
-        // if (response) {
-        //   this.$notify({
-        //     type: 'success',
-        //     title: 'Saved',
-        //     message: 'Changes saved successfully.',
-        //   })
+        const [error, response] = await this.$api.post(`/subscriptions/${this.subscription.id}`)
+        if (response) {
+          this.$notify({
+            type: 'success',
+            title: 'Saved',
+            message: 'Changes saved successfully.',
+          })
 
-        //   this.$emit('update:visible', false)
-        //   this.$emit('edited')
-        // } else if (error) {
-        //   const firstError = error.violations[Object.keys(error.violations)[0]][0]
-        //   this.$notify({
-        //     type: 'error',
-        //     title: 'Error',
-        //     message: firstError,
-        //   })
-        // }
+          this.$emit('update:visible', false)
+          this.$emit('edited')
+        } else if (error) {
+          const violations = Object.keys(error.violations)
+          violations.forEach(violation => {
+            setTimeout(() => {
+              this.$notify({
+                type: 'error',
+                title: 'Error',
+                message: `${violation}: ${error.violations[violation][0]}`,
+              })
+            }, 50)
+          })
+        }
       }
     },
     validateAll() {

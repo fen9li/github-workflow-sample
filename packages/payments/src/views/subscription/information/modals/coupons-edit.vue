@@ -86,11 +86,15 @@ export default {
     notify(data) {
       const [error] = data
       if (error) {
-        const firstError = error.violations[Object.keys(error.violations)[0]][0]
-        this.$notify({
-          type: 'error',
-          title: 'Error',
-          message: firstError,
+        const violations = Object.keys(error.violations)
+        violations.forEach(violation => {
+          setTimeout(() => {
+            this.$notify({
+              type: 'error',
+              title: 'Error',
+              message: `${violation}: ${error.violations[violation][0]}`,
+            })
+          }, 50)
         })
       } else {
         this.$notify({
