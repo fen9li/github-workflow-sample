@@ -14,6 +14,7 @@ export default {
       modal: {
         create: false,
       },
+      updateTable: false,
     }
   },
   computed: {
@@ -69,9 +70,14 @@ export default {
       >
         Create Product
       </el-button>
-      <products-create :visible.sync="modal.create" />
+      <products-create
+        :visible.sync="modal.create"
+        :update-table.sync="updateTable"
+      />
     </template>
-    <router-view />
+    <router-view
+      :update-table.sync="updateTable"
+    />
   </main-layout>
 </template>
 

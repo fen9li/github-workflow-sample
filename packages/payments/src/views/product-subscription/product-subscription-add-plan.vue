@@ -15,11 +15,12 @@ export default {
   },
   data() {
     return {
-      planDetails: {
+      processing: false,
+      form: {
         name: '',
         id: '',
         frequency: '',
-        start_on: '',
+        start_at: '',
         amount: '',
         currency: 'aud',
       },
@@ -27,18 +28,22 @@ export default {
   },
   methods: {
     updateValue({ fieldName, newVal }) {
-      this.planDetails[fieldName] = newVal
+      this.form[fieldName] = newVal
     },
     validateAll() {
       const result = []
-      this.$refs.addPlanForm.$children[0].validate( valid => {
+      this.$refs.form.$children[0].validate( valid => {
         result.push(valid)
       })
       return result
     },
-    async savePlan() {
+    async onSubmit() {
       if (!this.validateAll().some(item => item === false)) {
-        const [error, response] = await this.$api.post(`/products/${this.productId}/plans`, this.planDetails)
+        this.processing = true
+
+        const [error, response] = await this.$api.post(`/products/${this.productId}/plans`, this.form)
+
+        this.processing = true
 
         if (response) {
           this.$notify({
@@ -48,6 +53,8 @@ export default {
           })
 
           this.$emit('update:visible', false)
+          this.clearForm()
+
         } else if (error) {
           const violations = Object.keys(error.violations)
           violations.forEach(violation => {
@@ -62,6 +69,17 @@ export default {
         }
       }
     },
+    clearForm() {
+      const { form } = this
+      const keys = Object.keys(form)
+
+      keys.forEach(key => {
+        form[key] = ''
+        form.currency = 'aud'
+      })
+
+      this.$refs.form.$children[0].clearValidate()
+    }
   },
 }
 </script>
@@ -73,8 +91,8 @@ export default {
     v-on="$listeners"
   >
     <products-pricing-form
-      ref="addPlanForm"
-      :data="planDetails"
+      ref="form"
+      :data="form"
       :modal-form="true"
       @changeValue="updateValue"
     />
@@ -82,7 +100,8 @@ export default {
       <el-button
         class="wide-button"
         type="primary"
-        @click="savePlan"
+        :loading="processing"
+        @click="onSubmit"
       >
         Save
       </el-button>

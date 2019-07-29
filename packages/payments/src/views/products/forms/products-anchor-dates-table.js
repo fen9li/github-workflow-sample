@@ -10,7 +10,7 @@ const TABLE_COLUMNS = [
     icon: 'el-icon-document',
   },
   {
-    name: 'anchorOn',
+    name: 'anchorAt',
     icon: 'el-icon-document',
     width: 90,
     format: 'dayMonthShort',

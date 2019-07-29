@@ -1,7 +1,6 @@
 <script>
 import appConfig from '~/app.config'
-import ElasticProcessor from '@lib/processors/elastic-processor'
-import tableConfig from './product-subscription-table'
+import table from './product-subscription-plans-table'
 import ProductSubscriptionAddPlan from './product-subscription-add-plan'
 import ProductSubscriptionDeletePlan from './product-subscription-delete-plan'
 import ProductSubscriptionEdit from './product-subscription-edit'
@@ -28,22 +27,17 @@ export default {
   },
   data() {
     return {
+      loading: false,
       details: {
         name: '',
         id: '',
-        start_on: '',
-        end_on: '',
+        sunset_at: '',
         group: {
           billing_type: '',
           anchor_on: '',
         },
       },
-      processor: new ElasticProcessor({
-        component: this,
-        index: 'subscription-product-pricing-plans',
-        // TODO: Add filtering by productId (currently PP productId and subsc. id do not match: UUID vs user-input-id )
-      }),
-      columns: tableConfig.columns,
+      table: table(this),
       modal: {
         delete: false,
         edit: false,
@@ -63,10 +57,12 @@ export default {
       return formatDate(value, format || 'DD/MM/YYYY')
     },
     async getSubscriptionDetails() {
+      this.loading = true
       const [error, response] = await this.$api.get(`/products/${this.id}`)
       if (response) {
         this.details = { ...this.details, ...response }
       }
+      this.loading = false
       console.warn(error, response)
     },
   },
@@ -79,6 +75,7 @@ export default {
     back
   >
     <el-card
+      v-loading="loading"
       :class="$style.detailsBlock"
     >
       <div
@@ -99,31 +96,31 @@ export default {
           @edited="getSubscriptionDetails"
         />
       </div>
-      <dl class="datalist">
+      <dl
+        v-if="!loading"
+        class="datalist"
+      >
         <dt>Name</dt>
         <dd>{{ details.name }}</dd>
 
         <dt>Product Code</dt>
         <dd>{{ details.id }}</dd>
 
-        <dt>Start Date</dt>
-        <dd>{{ formatDate(details.start_on) }}</dd>
-
         <dt>End Date</dt>
-        <dd>{{ formatDate(details.end_on) }}</dd>
+        <dd>{{ formatDate(details.sunset_at) }}</dd>
 
         <dt>Billing Cycle</dt>
         <dd>{{ formatBillingCycle(details.group.billing_type) }}</dd>
 
         <dt>Anchor Date</dt>
-        <dd>{{ formatDate(details.group.anchor_on, 'DD/MM') }}</dd>
+        <dd>{{ formatDate(details.group.anchor_at, 'DD/MM') }}</dd>
       </dl>
     </el-card>
     <table-layout
       title="Pricing Plans"
       table-name="plans"
-      :processor="processor"
-      :columns="columns"
+      :processor="table.processor"
+      :columns="table.columns"
       :table-controls="false"
     >
       <div

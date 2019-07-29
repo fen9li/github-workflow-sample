@@ -1,5 +1,7 @@
 <script>
 import { mask } from 'vue-the-mask'
+import { datePickerFormat } from '@lib/utils/date-helper'
+
 
 export default {
   name: 'ProductsPricingForm',
@@ -22,6 +24,7 @@ export default {
   },
   data() {
     return {
+      datePickerFormat,
       rules: {
         name: [
           {
@@ -44,7 +47,7 @@ export default {
             trigger: 'blur',
           },
         ],
-        start_on: [
+        start_at: [
           {
             required: true,
             message: 'This field is required',
@@ -134,14 +137,15 @@ export default {
       <div class="united-field">
         <el-form-item
           label="Start Date"
-          prop="start_on"
+          prop="start_at"
         >
           <el-date-picker
-            :value="data.start_on"
-            type="datetime"
+            :value="data.start_at"
+            type="date"
             placeholder="DD/MM/YYYY"
             :editable="false"
-            @input="changeValue('start_on', $event)"
+            :value-format="datePickerFormat"
+            @input="changeValue('start_at', $event)"
           />
         </el-form-item>
         <el-form-item

@@ -1,6 +1,7 @@
 <script>
 import ProductsSubscriptionForm from
   '../products/forms/products-subscription-form.vue'
+import cloneDeep from 'lodash/cloneDeep'
 
 export default {
   name: 'ProductSubscriptionEdit',
@@ -16,29 +17,36 @@ export default {
   },
   data() {
     return {
-      formData: {
-        name: '',
-        billing_type: '',
-        id: '',
-        start_on: '',
-      },
+      processing: false,
+      form: {},
     }
   },
   watch: {
-    currentProduct() {
-      this.formatData()
-    },
+    currentProduct(newVal){
+      this.form = cloneDeep(newVal)
+    }
   },
-  created() {
-    this.formatData()
+  mounted() {
+    this.form = cloneDeep(this.currentProduct)
   },
   methods: {
     updateDetailsValue({ fieldName, newVal }) {
-      this.formData[fieldName] = newVal
+      this.form[fieldName] = newVal
     },
     async onSubmit() {
       if (!this.validateAll().some(item => item === false)) {
-        const [error, response] = await this.$api.put(`/products/${this.currentProduct.id}`, { name: this.formData.name })
+        const { form } = this
+
+        this.processing= true
+
+        const [error, response] = await this.$api.put(`/products/${this.currentProduct.id}`,
+          {
+            name: form.name,
+            sunset_at: form.sunset_at
+          })
+
+        this.processing = false
+
         if (response) {
           this.$notify({
             type: 'success',
@@ -69,14 +77,6 @@ export default {
       })
       return result
     },
-    formatData() {
-      // Formatting temporary while API subscription product works only with groups
-      const { formData, currentProduct } = this
-      formData.name = currentProduct.name
-      formData.billing_type = currentProduct.group.billing_type
-      formData.id = currentProduct.id
-      formData.start_on = currentProduct.start_on
-    },
   },
 }
 </script>
@@ -90,7 +90,7 @@ export default {
   >
     <products-subscription-form
       ref="form"
-      :data="formData"
+      :data="form"
       :edit="true"
       :class="$style.form"
       @changeValue="updateDetailsValue"
@@ -101,6 +101,7 @@ export default {
       <el-button
         type="primary"
         class="wide-button"
+        :loading="processing"
         @click="onSubmit"
       >
         Save

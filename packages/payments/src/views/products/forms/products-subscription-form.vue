@@ -1,6 +1,8 @@
 <script>
 import ProductsAnchorDates from './products-anchor-dates'
 import { mask } from 'vue-the-mask'
+import { datePickerFormat } from '@lib/utils/date-helper'
+
 
 export default {
   name: 'ProductsSubscriptionForm',
@@ -22,6 +24,7 @@ export default {
   },
   data() {
     return {
+      datePickerFormat,
       rules: {
         name: [
           {
@@ -44,14 +47,7 @@ export default {
             trigger: 'blur',
           },
         ],
-        anchor_on: [
-          {
-            required: true,
-            message: 'This field is required',
-            trigger: 'blur',
-          },
-        ],
-        start_on: [
+        anchor_at: [
           {
             required: true,
             message: 'This field is required',
@@ -131,7 +127,7 @@ export default {
         :class="[$style.billing, {[$style.disabled]: edit}]"
       >
         <el-radio-group
-          :value="data.billing_type"
+          :value="edit ? data.group.billing_type : data.billing_type"
           :disabled="edit"
           @input="changeValue('billing_type', $event)"
         >
@@ -145,33 +141,31 @@ export default {
       </el-form-item>
 
       <div class="united-field">
-        <el-form-item
-          label="Start Date"
-          :prop="data.billing_type === 'anniversary' && !edit ? 'start_on' : ''"
-        >
+        <el-form-item label="End Date">
           <el-date-picker
-            :value="data.start_on"
+            :value="data.sunset_at"
             type="date"
             placeholder="Enter Date"
             :editable="false"
-            :disabled="edit"
-            @input="changeValue('start_on', $event)"
+            :value-format="datePickerFormat"
+            @input="changeValue('sunset_at', $event)"
           />
         </el-form-item>
 
         <el-form-item
           v-if="data.billing_type === 'prorata'"
           label="Anchor Date"
-          :prop="edit ? '': 'anchor_on'"
+          :prop="edit ? '': 'anchor_at'"
           :class="[{[$style.disabled]: edit}, 'form-tooltip-field']"
         >
           <el-date-picker
-            :value="data.anchor_on"
+            :value="data.anchor_at"
             type="date"
             placeholder="Enter Date"
             :editable="false"
             :disabled="edit"
-            @input="changeValue('anchor_on', $event)"
+            :value-format="datePickerFormat"
+            @input="changeValue('anchor_at', $event)"
           />
           <el-tooltip
             placement="right"
@@ -192,7 +186,7 @@ export default {
     <products-anchor-dates
       v-if="!edit && data.billing_type === 'prorata'"
       :class="$style.anchor"
-      :selected-anchor-date="data.anchor_on"
+      :selected-anchor-date="data.anchor_at"
     />
   </div>
 </template>
@@ -217,6 +211,7 @@ export default {
 
 .billing {
   display: flex;
+  margin-bottom: .2rem;
 
   :global {
     .el-form-item__content {

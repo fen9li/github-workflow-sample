@@ -18,26 +18,25 @@ export default {
   inheritAttrs: false,
   data() {
     return {
-      product: {
-        type: 'subscription',
-        details: {
-          name: '',
-          id: '',
-          start_on: '',
-          end_on: '',
-          anchor_on: '',
-          billing_type: 'anniversary',
-          price: {
-            total: '',
-            currency: 'aud',
-          },
+      type: 'subscription',
+      form: {
+        name: null,
+        id: null,
+        billing_type: 'anniversary',
+        start_at: null,
+        end_at: null,
+        anchor_at: null,
+        sunset_at: null,
+        price: {
+          total: null,
+          currency: 'aud',
         },
       },
     }
   },
   methods: {
     async createProduct() {
-      const { details, type } = this.product
+      const { form, type } = this
 
       if (!this.validateAll().some(item => item === false)) {
         const productType = `${capitalize(type)} Product`
@@ -46,22 +45,19 @@ export default {
 
         if (type === 'single') {
           requestData = {
-            name: details.name,
-            price: details.price.total,
-            id: details.id,
-            start_on: details.start_on,
-            active: true,
+            name: form.name,
+            price: form.price.total,
+            id: form.id,
+            start_at: form.start_at,
+            end_at: form.end_at,
           }
         } else {
           requestData = {
-            group: {
-              id: details.billing_type === 'anniversary' ? 'DEMO_GROUP_ONE' : 'DEMO_GROUP_THREE',
-            },
-            name: details.name,
-            id: details.id,
-            billing_type: details.billing_type,
-            anchor_on: details.anchor_on,
-            start_on: details.start_on,
+            name: form.name,
+            id: form.id,
+            billing_type: form.billing_type,
+            anchor_at: form.anchor_at,
+            sunset_at: form.sunset_at,
           }
         }
 
@@ -74,6 +70,7 @@ export default {
             message: `${productType} created.`,
           })
           this.$emit('update:visible', false)
+          this.$emit('update:update-table', true)
         } else if (error) {
           const violations = Object.keys(error.violations)
           violations.forEach(violation => {
@@ -89,26 +86,27 @@ export default {
       }
     },
     updateDetailsValue({ fieldName, newVal }) {
-      set(this.product.details, fieldName, newVal )
+      set(this.form, fieldName, newVal )
     },
     clearDetails() {
-      this.product.details = {
-        name: '',
-        id: '',
-        start_on: '',
-        end_on: '',
+      this.form = {
+        name: null,
+        id: null,
         billing_type: 'anniversary',
-        anchor_on: '',
+        start_at: null,
+        end_at: null,
+        anchor_at: null,
+        sunset_at: null,
         price: {
-          total: '',
+          total: null,
           currency: 'aud',
         },
       }
     },
     validateAll() {
       const result = []
-      const { $refs, product } = this
-      $refs[product.type].$children[0].validate( valid => {
+      const { $refs, type } = this
+      $refs[type].$children[0].validate( valid => {
         result.push(valid)
       })
       return result
@@ -126,7 +124,7 @@ export default {
   >
     <div :class="$style.types">
       <el-radio-group
-        v-model="product.type"
+        v-model="type"
         @change="clearDetails"
       >
         <el-radio
@@ -165,15 +163,15 @@ export default {
     </div>
 
     <products-subscription-form
-      v-if="product.type === 'subscription'"
+      v-if="type === 'subscription'"
       ref="subscription"
-      :data="product.details"
+      :data="form"
       @changeValue="updateDetailsValue"
     />
     <products-single-form
       v-else
       ref="single"
-      :data="product.details"
+      :data="form"
       @changeValue="updateDetailsValue"
     />
 
@@ -228,7 +226,6 @@ export default {
 
 .radioTitle {
   color: var(--color-text) !important;
-  // font-size: 1rem;
 }
 
 .radioText {

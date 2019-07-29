@@ -22,13 +22,14 @@ export default {
   },
   data() {
     return {
+      loading: false,
       productDetails: {
         id: '',
         name: '',
         active: '',
-        end_on: '',
+        end_at: '',
         price: '',
-        start_on: '',
+        start_at: '',
       },
       modal: {
         singleEdit: false,
@@ -46,10 +47,12 @@ export default {
       return formatDate(value, format || 'DD/MM/YYYY')
     },
     async getProductDetails() {
+      this.loading = true
       const [error, response] = await this.$api.get(`/single-products/${this.id}`)
       if (response) {
         this.productDetails = { ...this.productDetails, ...response }
       }
+      this.loading = false
       console.warn(error, response)
     },
   },
@@ -62,7 +65,7 @@ export default {
     title="Single Product"
     back
   >
-    <el-card>
+    <el-card v-loading="loading">
       <div
         slot="header"
         :class="$style.detailsHeader"
@@ -82,7 +85,7 @@ export default {
         />
       </div>
       <dl
-        v-if="productDetails"
+        v-if="!loading"
         class="datalist"
       >
         <dt>Name</dt>
@@ -92,10 +95,10 @@ export default {
         <dd>{{ productDetails.id }}</dd>
 
         <dt>Effective Start Date</dt>
-        <dd>{{ formatDate(productDetails.start_on) }}</dd>
+        <dd>{{ formatDate(productDetails.start_at) }}</dd>
 
         <dt>End Date</dt>
-        <dd>{{ formatDate(productDetails.end_on) }}</dd>
+        <dd>{{ formatDate(productDetails.end_at) }}</dd>
 
         <dt>Amount</dt>
         <dd>{{ formatDollar(productDetails.price.total) }}</dd>

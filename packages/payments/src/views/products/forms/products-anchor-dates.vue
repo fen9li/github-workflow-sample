@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      activeNames: [1],
+      activeNames: [],
       columns: tableConfig.columns,
       processor: new ElasticProcessor({
         component: this,
@@ -26,7 +26,7 @@ export default {
   methods: {
     hightlightRow(value, current) {
       const format = formatDate
-      if (value && current) return format(value, 'DD/MMM') === format(current.anchorOn, 'DD/MMM')
+      if (value && current) return format(value, 'DD/MMM', false) === format(current.anchorAt, 'DD/MMM', false)
     },
   },
 }

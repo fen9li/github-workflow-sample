@@ -1,11 +1,16 @@
+import ElasticProcessor from '@lib/processors/elastic-processor'
+import isPast from '@lib/utils/date-is-past'
+
 const TABLE_FILTERS = [
   {
     attribute: 'createdAt',
+    label: 'Date Created',
     icon: 'el-icon-date',
     type: 'date',
   },
   {
-    attribute: 'externalId',
+    attribute: 'id',
+    label: 'Code',
     icon: 'el-icon-document',
     type: 'string',
   },
@@ -22,7 +27,7 @@ const TABLE_FILTERS = [
     type: 'string',
   },
   {
-    attribute: 'anchorOn',
+    attribute: 'anchorAt',
     label: 'Anchor Date',
     icon: 'el-icon-date',
     type: 'date',
@@ -34,7 +39,8 @@ const TABLE_FILTERS = [
     type: 'date',
   },
   {
-    attribute: 'productCount',
+    attribute: 'pricingPlanCount',
+    label: 'Plans',
     icon: 'el-icon-document',
     type: 'numeric',
   },
@@ -59,13 +65,11 @@ const TABLE_COLUMNS = [
   {
     name: 'createdAt',
     label: 'Date Created',
-    icon: 'el-icon-document',
     format: 'dateTime',
   },
   {
-    name: 'externalId',
+    name: 'id',
     label: 'Code',
-    format: 'uppercase',
     width: 140,
   },
   {
@@ -78,31 +82,41 @@ const TABLE_COLUMNS = [
     format: 'capital',
   },
   {
-    name: 'anchorOn',
+    name: 'anchorAt',
     label: 'Anchor Date',
     format: 'dayMonthShort',
   },
   {
-    name: 'endDate',
+    name: 'sunsetAt',
     label: 'End Date',
     format: 'date',
   },
   {
-    name: 'productCount',
+    name: 'pricingPlanCount',
     label: 'Plans',
   },
   {
-    name: 'status',
+    name: '',
     label: 'Status',
-    icon: 'el-icon-document',
     format: 'capital',
     component: {
       is: 'cell-activity',
+      props: {
+        value: (_, row) => {
+          return row.sunsetAt && !isPast(row.sunsetAt) ? 'active' : 'inactive'
+        }
+      }
     },
   },
 ]
 
-export default {
-  filters: TABLE_FILTERS,
-  columns: TABLE_COLUMNS,
+export default function(component){
+  return {
+    processor: new ElasticProcessor({
+      index: 'subscription-products',
+      component,
+    }),
+    filters: TABLE_FILTERS,
+    columns: TABLE_COLUMNS,
+  }
 }

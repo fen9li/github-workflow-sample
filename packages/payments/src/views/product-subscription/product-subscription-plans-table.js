@@ -1,3 +1,5 @@
+import ElasticProcessor from '@lib/processors/elastic-processor'
+
 const TABLE_COLUMNS = [
   {
     name: 'createdAt',
@@ -11,7 +13,7 @@ const TABLE_COLUMNS = [
     icon: 'el-icon-document',
   },
   {
-    name: 'startOn',
+    name: 'startAt',
     label: 'Start Date',
     icon: 'el-icon-document',
     format: 'dateTime',
@@ -45,6 +47,21 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default {
-  columns: TABLE_COLUMNS,
+export default function(component){
+  return {
+    processor: new ElasticProcessor({
+      component,
+      index: 'subscription-product-pricing-plans',
+      staticQuery: {
+        filters: [
+          {
+            attribute: 'productId',
+            comparison: 'eq',
+            value: component.id,
+          },
+        ],
+      },
+    }),
+    columns: TABLE_COLUMNS,
+  }
 }

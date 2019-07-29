@@ -16,44 +16,46 @@ export default {
   },
   data() {
     return {
-      formData: {
-        name: '',
-        start_on: '',
-        end_on: '',
+      processing: false,
+      form: {
+        name: null,
+        start_at: null,
+        end_at: null,
         price: {
-          total: '',
+          total: null,
           currency: 'aud',
         },
-        active: null,
         id: null,
       },
     }
   },
   watch: {
     currentProduct(newVal) {
-      this.formData = { ...newVal }
+      this.form = { ...newVal }
     },
   },
   created() {
-    this.formData = { ...this.currentProduct }
+    this.form = { ...this.currentProduct }
   },
   methods: {
     updateDetailsValue({ fieldName, newVal }) {
-      set(this.formData, fieldName, newVal)
+      set(this.form, fieldName, newVal)
     },
     async onSubmit() {
-      const { formData } = this
+      const { form } = this
       if (!this.validateAll().some(item => item === false)) {
+        this.processing = true
+
         const requestData = {
-          name: formData.name,
-          price: formData.price.total,
-          start_on: formData.start_on,
-          end_on: formData.end_on,
-          // Temporary transform to Boolean value for current API requirements
-          active: formData.active === 'active',
+          name: form.name,
+          price: form.price.total,
+          start_at: form.start_at,
+          end_at: form.end_at,
         }
 
-        const [error, response] = await this.$api.put(`/single-products/${formData.id}`, requestData)
+        const [error, response] = await this.$api.put(`/single-products/${form.id}`, requestData)
+
+        this.processing = false
 
         if (response) {
           this.$notify({
@@ -97,7 +99,7 @@ export default {
   >
     <products-single-form
       ref="form"
-      :data="formData"
+      :data="form"
       :edit="true"
       :class="$style.form"
       @changeValue="updateDetailsValue"
@@ -108,6 +110,7 @@ export default {
       <el-button
         type="primary"
         class="wide-button"
+        :loading="processing"
         @click="onSubmit"
       >
         Save

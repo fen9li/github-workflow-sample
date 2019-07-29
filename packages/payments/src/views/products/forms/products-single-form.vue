@@ -1,5 +1,6 @@
 <script>
 import { mask } from 'vue-the-mask'
+import { datePickerFormat } from '@lib/utils/date-helper'
 
 export default {
   name: 'ProductsSingleForm',
@@ -18,6 +19,7 @@ export default {
   },
   data() {
     return {
+      datePickerFormat,
       rules: {
         name: [
           {
@@ -33,7 +35,7 @@ export default {
             trigger: 'blur',
           },
         ],
-        start_on: [
+        start_at: [
           {
             required: true,
             message: 'This field is required',
@@ -41,14 +43,14 @@ export default {
           },
         ],
 
-        end_on: [
+        end_at: [
           {
             required: true,
             message: 'This field is required',
             trigger: 'blur',
           },
         ],
-        price: [
+        'price.total': [
           {
             required: true,
             message: 'This field is required',
@@ -100,38 +102,36 @@ export default {
       <div class="united-field">
         <el-form-item
           label="Effective Start Date"
-          prop="start_on"
+          prop="start_at"
         >
           <el-date-picker
-            :value="data.start_on"
+            :value="data.start_at"
             type="date"
             placeholder="Enter Date"
             :editable="false"
-            @input="changeValue('start_on', $event)"
+            :value-format="datePickerFormat"
+            @input="changeValue('start_at', $event)"
           />
         </el-form-item>
 
         <el-form-item label="End Date">
           <el-date-picker
-            :value="data.end_on"
+            :value="data.end_at"
             type="date"
             placeholder="Enter Date"
             :editable="false"
-            @input="changeValue('end_on', $event)"
+            :value-format="datePickerFormat"
+            @input="changeValue('end_at', $event)"
           />
         </el-form-item>
       </div>
 
-      <el-form-item
-        label="Amount"
-        prop="price"
-      >
+      <el-form-item label="Amount">
         <div
-          prop="amount"
           class="amount-form-item"
         >
           <el-form-item
-            prop="price"
+            prop="price.total"
           >
             <el-input
               v-mask="[
@@ -166,22 +166,6 @@ export default {
           </el-select>
         </div>
       </el-form-item>
-
-      <el-form-item
-        v-if="edit"
-        :class="$style.active"
-      >
-        <span :class="{[$style.inactive]: data.active === 'inactive' }">
-          Active
-        </span>
-        <el-switch
-          active-color="#13ce66"
-          active-value="active"
-          inactive-value="inactive"
-          :value="data.active"
-          @input="changeValue('active', $event)"
-        />
-      </el-form-item>
     </el-form>
   </div>
 </template>
@@ -192,25 +176,5 @@ export default {
   display: flex;
   flex-direction: column;
   margin-bottom: -1rem;
-}
-
-.unitedField {
-  display: flex;
-  justify-content: space-between;
-}
-
-.active {
-  display: flex;
-  align-items: center;
-
-  span {
-    padding-right: 1rem;
-    font-size: initial;
-    color: #13ce66;
-  }
-}
-
-.inactive {
-  color: #C0C4CC !important;
 }
 </style>
