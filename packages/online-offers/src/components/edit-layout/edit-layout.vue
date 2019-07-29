@@ -6,13 +6,11 @@ import { formatDate } from '@lib/utils/format-date'
 import EditLayoutImage from './components/edit-layout-image'
 import EditLayoutCategories from './components/edit-layout-categories'
 import EditLayoutTable from './components/edit-layout-table'
-import Uploadcare from 'uploadcare-vue'
 import PresetField from './preset-field.vue'
 
 export default {
   name: 'EditLayout',
   components: {
-    Uploadcare,
     EditLayoutImage,
     EditLayoutCategories,
     EditLayoutTable,

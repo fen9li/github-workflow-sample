@@ -10,7 +10,6 @@
   "dependencies": {
     "@loyalty-corp/manage-lib": "0.2.0",
     "axios": "^0.19.0",
-    "uploadcare-vue": "^1.0.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.7",
     "vuex": "^3.1.1"
