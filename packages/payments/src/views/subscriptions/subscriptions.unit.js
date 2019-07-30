@@ -1,6 +1,6 @@
 import Subscriptions from './subscriptions'
 import MainLayout from '@lib/layouts/main'
-import tableConfig from '@tests/__fixtures__/tableDataMock'
+import table from '@tests/__fixtures__/tableDataMock'
 
 jest.mock('./subscriptions-table')
 
@@ -15,7 +15,7 @@ function createWrapper() {
     },
     data: function() {
       return {
-        tableConfig: tableConfig(),
+        table: table(),
       }
     },
   })

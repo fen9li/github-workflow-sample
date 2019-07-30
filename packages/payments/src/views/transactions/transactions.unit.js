@@ -1,7 +1,7 @@
 import Transactions from './transactions'
 import MainLayout from '@lib/layouts/main'
 import { Button } from '@lib/node_modules/element-ui'
-import tableConfig from '@tests/__fixtures__/tableDataMock'
+import table from '@tests/__fixtures__/tableDataMock'
 
 jest.mock('./transactions-table')
 
@@ -18,7 +18,7 @@ function createWrapper() {
     },
     data: function() {
       return {
-        tableConfig: tableConfig(),
+        table: table(),
       }
     },
   })

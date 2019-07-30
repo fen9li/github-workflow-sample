@@ -1,5 +1,5 @@
 <script>
-import tableConfig from './settlements-table'
+import table from './settlements-table'
 
 export default {
   name: 'PaymentSettlements',
@@ -8,7 +8,7 @@ export default {
   },
   data() {
     return {
-      tableConfig: tableConfig(this),
+      table: table(this),
     }
   },
   methods: {
@@ -26,9 +26,9 @@ export default {
   <main-layout title="Settlements">
     <table-layout
       table-name="settlements"
-      :processor="tableConfig.processor"
-      :filters="tableConfig.filters"
-      :columns="tableConfig.columns"
+      :processor="table.processor"
+      :filters="table.filters"
+      :columns="table.columns"
       :fragments="false"
       @row-click="onRowClick"
     />

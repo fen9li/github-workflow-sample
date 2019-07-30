@@ -1,6 +1,6 @@
 <script>
 import StaticProcessor from '@lib/processors/static-processor'
-import tableConfig from './events-table'
+import table from './events-table'
 
 const eventsMock = require('@tests/__fixtures__/events')
 
@@ -15,8 +15,8 @@ export default {
         component: this,
         data: eventsMock.table,
       }),
-      filters: tableConfig.filters,
-      columns: tableConfig.columns,
+      filters: table.filters,
+      columns: table.columns,
     }
   },
   methods: {

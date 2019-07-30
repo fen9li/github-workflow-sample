@@ -14,7 +14,7 @@ export default {
       modal: {
         create: false,
       },
-      updateTable: false,
+      shouldUpdate: false,
     }
   },
   computed: {
@@ -72,11 +72,11 @@ export default {
       </el-button>
       <products-create
         :visible.sync="modal.create"
-        :update-table.sync="updateTable"
+        :should-update.sync="shouldUpdate"
       />
     </template>
     <router-view
-      :update-table.sync="updateTable"
+      :should-update.sync="shouldUpdate"
     />
   </main-layout>
 </template>

@@ -23,13 +23,13 @@ export default {
     return {
       dialogVisible: false,
       form: {
-        name: '',
-        code: '',
-        start_at: '',
-        end_at: '',
-        validity_period: '',
+        name: null,
+        code: null,
+        start_at: null,
+        end_at: null,
+        validity_period: null,
         discount_type: 'fixed_amount',
-        amount: '',
+        amount: null,
       },
     }
   },

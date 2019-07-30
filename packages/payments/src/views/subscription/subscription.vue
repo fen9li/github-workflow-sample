@@ -33,6 +33,7 @@ export default {
         revert: false,
       },
       loading: false,
+      shouldUpdate: false,
     }
   },
   computed: {
@@ -168,6 +169,7 @@ export default {
           :visible.sync="modal.charge"
           :subscription="subscription"
           :customer="customer"
+          :should-update.sync="shouldUpdate"
         />
 
         <small :class="$style.balanceLabel">
@@ -181,6 +183,7 @@ export default {
       :subscription="subscription"
       :customer="customer"
       :loading="loading"
+      :should-update.sync="shouldUpdate"
     />
   </main-layout>
 </template>

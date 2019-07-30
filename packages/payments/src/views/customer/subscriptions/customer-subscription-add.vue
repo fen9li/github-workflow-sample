@@ -105,6 +105,7 @@ export default {
             message: `Changes saved successfully`,
           })
           this.$emit('update:visible', false)
+          this.$emit('update:should-update', true)
         } else if (error) {
           const violations = Object.keys(error.violations)
           violations.forEach(violation => {

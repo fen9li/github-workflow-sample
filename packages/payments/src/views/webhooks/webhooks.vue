@@ -1,6 +1,6 @@
 <script>
 import StaticProcessor from '@lib/processors/static-processor'
-import tableConfig from './webhooks-table'
+import table from './webhooks-table'
 import webhooksMock from '@tests/__fixtures__/webhooks'
 
 export default {
@@ -14,8 +14,8 @@ export default {
         component: this,
         data: webhooksMock.table,
       }),
-      filters: tableConfig.filters,
-      columns: tableConfig.columns,
+      filters: table.filters,
+      columns: table.columns,
       modal: {
         add: false,
       },

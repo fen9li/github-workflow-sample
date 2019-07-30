@@ -1,5 +1,5 @@
 <script>
-import tableConfig from './webhook-attempts-table'
+import table from './webhook-attempts-table'
 import webhooksRetry from './webhooks-retry'
 
 export default {
@@ -12,7 +12,7 @@ export default {
   },
   data() {
     return {
-      tableConfig: tableConfig(this),
+      table: table(this),
       modal: {
         retry: false,
       },
@@ -48,9 +48,9 @@ export default {
     </div>
     <table-layout
       table-name="webhookAttempts"
-      :processor="tableConfig.processor"
-      :columns="tableConfig.columns"
-      :filters="tableConfig.filters"
+      :processor="table.processor"
+      :columns="table.columns"
+      :filters="table.filters"
       :fragments="false"
       @row-click="onRowClick"
     />

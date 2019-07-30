@@ -98,6 +98,7 @@ export default {
         <el-date-picker
           :value="coupon.start_at"
           :disabled="edit"
+          :editable="false"
           type="date"
           :value-format="datePickerFormat"
           placeholder="Pick a date"
@@ -108,6 +109,7 @@ export default {
         <el-date-picker
           :value="coupon.end_at"
           type="date"
+          :editable="false"
           :value-format="datePickerFormat"
           placeholder="Pick a date"
           @input="changeValue('end_at', $event)"
@@ -121,6 +123,7 @@ export default {
         :prop="edit ? '' : 'validity_period'"
       >
         <el-input
+          v-mask="['#', '##']"
           :value="`#${coupon.validity_period || ''}`"
           :disabled="edit"
           @input="changeValue('validity_period', $event.replace('#', ''))"

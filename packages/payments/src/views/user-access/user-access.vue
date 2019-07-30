@@ -1,6 +1,6 @@
 <script>
 import ElasticProcessor from '@lib/processors/elastic-processor'
-import tableConfig from './user-access-table'
+import table from './user-access-table'
 import UserAccessAdd from './user-access-add.vue'
 
 export default {
@@ -18,8 +18,8 @@ export default {
         index: 'users',
       }),
 
-      filters: tableConfig.filters,
-      columns: tableConfig.columns,
+      filters: table.filters,
+      columns: table.columns,
     }
   },
 }

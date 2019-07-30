@@ -1,5 +1,5 @@
 <script>
-import tableConfig from './subscriptions-table'
+import table from './subscriptions-table'
 
 export default {
   name: 'Subscriptions',
@@ -8,7 +8,7 @@ export default {
   },
   data() {
     return {
-      tableConfig: tableConfig(this),
+      table: table(this),
     }
   },
   methods: {
@@ -26,9 +26,9 @@ export default {
   <main-layout title="Subscriptions">
     <table-layout
       table-name="subscriptions"
-      :processor="tableConfig.processor"
-      :filters="tableConfig.filters"
-      :columns="tableConfig.columns"
+      :processor="table.processor"
+      :filters="table.filters"
+      :columns="table.columns"
       :fragments="false"
       @row-click="onRowClick"
     />

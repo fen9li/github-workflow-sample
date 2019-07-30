@@ -1,6 +1,7 @@
 <script>
 import CouponFormModal from '../coupon/coupon-form-modal'
 import table from './coupons-table'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Coupons',
@@ -21,6 +22,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('ui', ['UPDATE_TABLE']),
     onRowClick(row) {
       this.$router.push({
         name: 'coupon-details',
@@ -52,6 +54,7 @@ export default {
     <coupon-form-modal
       v-if="modal.create"
       :visible.sync="modal.create"
+      @updated="UPDATE_TABLE(table)"
     />
   </main-layout>
 </template>

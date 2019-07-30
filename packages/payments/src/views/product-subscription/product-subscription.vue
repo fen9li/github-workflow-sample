@@ -6,7 +6,7 @@ import ProductSubscriptionDeletePlan from './product-subscription-delete-plan'
 import ProductSubscriptionEdit from './product-subscription-edit'
 import capitalize from 'lodash/capitalize'
 import { formatDate } from '@lib/utils/format-date'
-
+import { mapActions } from 'vuex'
 
 export default {
   name: 'ProductSubscription',
@@ -49,6 +49,7 @@ export default {
     this.getSubscriptionDetails()
   },
   methods: {
+    ...mapActions('ui', ['UPDATE_TABLE']),
     // TODO: Adjust the formatter
     formatBillingCycle(name) {
       return name === 'anniversary' ? capitalize(name) : 'Pro rata'
@@ -139,6 +140,7 @@ export default {
         <product-subscription-add-plan
           :visible.sync="modal.add"
           :product-id="id"
+          @updated="UPDATE_TABLE(table)"
         />
       </div>
     </table-layout>

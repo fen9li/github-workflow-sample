@@ -17,11 +17,11 @@ export default {
     return {
       processing: false,
       form: {
-        name: '',
-        id: '',
-        frequency: '',
-        start_at: '',
-        amount: '',
+        name: null,
+        id: null,
+        frequency: null,
+        start_at: null,
+        amount: null,
         currency: 'aud',
       },
     }
@@ -43,7 +43,7 @@ export default {
 
         const [error, response] = await this.$api.post(`/products/${this.productId}/plans`, this.form)
 
-        this.processing = true
+        this.processing = false
 
         if (response) {
           this.$notify({
@@ -53,8 +53,8 @@ export default {
           })
 
           this.$emit('update:visible', false)
+          this.$emit('updated')
           this.clearForm()
-
         } else if (error) {
           const violations = Object.keys(error.violations)
           violations.forEach(violation => {

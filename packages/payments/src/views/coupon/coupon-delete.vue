@@ -8,9 +8,18 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      processing: false,
+    }
+  },
   methods: {
     async onSubmit() {
+      this.processing = true
+
       const [error] = await this.$api.delete(`/coupons/${this.id}`)
+
+      this.processing = false
 
       if (error) {
         const violations = Object.keys(error.violations)
@@ -64,6 +73,7 @@ export default {
         $style.submit,
         'wide-button',
       ]"
+      :loading="processing"
       @click="onSubmit"
     >
       Delete Coupon

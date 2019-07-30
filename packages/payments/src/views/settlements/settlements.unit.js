@@ -1,7 +1,7 @@
 import Settlements from './settlements'
 import MainLayout from '@lib/layouts/main'
 import { Button } from '@lib/node_modules/element-ui'
-import tableConfig from '@tests/__fixtures__/tableDataMock'
+import table from '@tests/__fixtures__/tableDataMock'
 
 jest.mock('./settlements-table')
 
@@ -18,7 +18,7 @@ function createWrapper() {
     },
     data: function() {
       return {
-        tableConfig: tableConfig(),
+        table: table(),
       }
     },
   })

@@ -1,5 +1,5 @@
 <script>
-import tableConfig from './webhook-attempts-table'
+import table from './webhook-attempts-table'
 import webhookMock from '@tests/__fixtures__/webhook'
 import webhookSummary from './webhook-summary'
 
@@ -13,7 +13,7 @@ export default {
   },
   data() {
     return {
-      tableConfig: tableConfig(this),
+      table: table(this),
       endpoint: webhookMock.details,
     }
   },
@@ -32,8 +32,8 @@ export default {
     <table-layout
       title="Webhook Attempts"
       table-name="webhookAttempts"
-      :processor="tableConfig.processor"
-      :columns="tableConfig.columns"
+      :processor="table.processor"
+      :columns="table.columns"
       :table-controls="false"
     >
       <template

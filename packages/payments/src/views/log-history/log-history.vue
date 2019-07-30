@@ -1,6 +1,6 @@
 <script>
 import StaticProcessor from '@lib/processors/static-processor'
-import tableConfig from './log-history-table'
+import table from './log-history-table'
 
 const logHistoryMock = require('@tests/__fixtures__/log-history-mock')
 
@@ -15,8 +15,8 @@ export default {
         component: this,
         data: logHistoryMock.table,
       }),
-      filters: tableConfig.filters,
-      columns: tableConfig.columns,
+      filters: table.filters,
+      columns: table.columns,
     }
   },
   methods: {

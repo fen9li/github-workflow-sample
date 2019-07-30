@@ -28,6 +28,7 @@ export default {
       },
       customer: {},
       loading: false,
+      shouldUpdate: false,
     }
   },
   computed: {
@@ -149,6 +150,7 @@ export default {
     <router-view
       :customer="customer"
       :loading="loading"
+      :should-update.sync="shouldUpdate"
     />
 
     <add-product
@@ -161,6 +163,7 @@ export default {
       v-if="modal.addSubscription"
       :visible.sync="modal.addSubscription"
       :customer="customer"
+      :should-update.sync="shouldUpdate"
     />
   </main-layout>
 </template>

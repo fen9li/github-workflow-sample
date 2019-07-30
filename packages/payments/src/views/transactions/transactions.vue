@@ -1,6 +1,7 @@
 <script>
-import tableConfig from './transactions-table'
+import table from './transactions-table'
 import VirtualPos from './transactions-virtual-pos.vue'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'PaymentTransactions',
@@ -12,13 +13,14 @@ export default {
   },
   data() {
     return {
-      tableConfig: tableConfig(this),
+      table: table(this),
       modal: {
         pos: false,
       },
     }
   },
   methods: {
+    ...mapActions('ui', ['UPDATE_TABLE']),
     onRowClick(row) {
       this.$router.push({
         name: 'transaction-details',
@@ -33,9 +35,9 @@ export default {
   <main-layout title="Transactions">
     <table-layout
       table-name="transactions"
-      :processor="tableConfig.processor"
-      :filters="tableConfig.filters"
-      :columns="tableConfig.columns"
+      :processor="table.processor"
+      :filters="table.filters"
+      :columns="table.columns"
       @row-click="onRowClick"
     />
     <el-button
@@ -50,6 +52,7 @@ export default {
     <virtual-pos
       v-if="modal.pos"
       :visible.sync="modal.pos"
+      @updated="UPDATE_TABLE(table)"
     />
   </main-layout>
 </template>

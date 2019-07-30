@@ -1,5 +1,6 @@
 <script>
 import table from './products-subscription-table'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'ProductsSubscription',
@@ -7,9 +8,9 @@ export default {
     title: 'Subscription Products',
   },
   props: {
-    updateTable: {
+    shouldUpdate: {
       type: Boolean,
-      required: true,
+      default: false,
     }
   },
   data() {
@@ -18,14 +19,15 @@ export default {
     }
   },
   watch: {
-    updateTable(newVal) {
+    shouldUpdate(newVal) {
       if(newVal) {
-        this.table.processor.getData()
-        this.$emit('update:updateTable', false)
+        this.UPDATE_TABLE(this.table)
+        this.$emit('update:shouldUpdate', false)
       }
     }
   },
   methods: {
+    ...mapActions('ui', ['UPDATE_TABLE']),
     onRowClick(row) {
       this.$router.push({
         name: 'products-subscription-details',

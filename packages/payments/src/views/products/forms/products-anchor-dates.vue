@@ -1,5 +1,5 @@
 <script>
-import tableConfig from './products-anchor-dates-table.js'
+import table from './products-anchor-dates-table.js'
 import ElasticProcessor from '@lib/processors/elastic-processor'
 import { formatDate } from '@lib/utils/format-date'
 
@@ -16,7 +16,7 @@ export default {
     return {
       dialogVisible: false,
       activeNames: [],
-      columns: tableConfig.columns,
+      columns: table.columns,
       processor: new ElasticProcessor({
         component: this,
         index: 'subscription-product-groups',
