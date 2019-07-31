@@ -74,6 +74,7 @@ export default {
         'wide-button',
       ]"
       :loading="processing"
+      data-test="submit"
       @click="onSubmit"
     >
       Delete Coupon

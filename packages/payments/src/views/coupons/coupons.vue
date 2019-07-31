@@ -15,8 +15,6 @@ export default {
     return {
       table: table(this),
       modal: {
-        edit: false,
-        delete: false,
         create: false,
       },
     }
@@ -47,6 +45,7 @@ export default {
     <el-button
       slot="header"
       type="primary"
+      data-test="add-coupon"
       @click="modal.create = true"
     >
       Create coupon

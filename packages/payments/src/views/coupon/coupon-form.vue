@@ -162,31 +162,28 @@ export default {
       <div
         prop="amount"
         class="amount-form-item"
+        data-test="amount"
       >
-        <el-form-item
-          prop="amount"
+        <el-input
+          v-mask="inputMask"
+          :value="coupon.amount"
+          :placeholder="discountFixed ? '0.00' : '0'"
+          :disabled="edit"
+          @input="changeValue('amount', $event)"
         >
-          <el-input
-            v-mask="inputMask"
-            :value="coupon.amount"
-            :placeholder="discountFixed ? '0.00' : '0'"
-            :disabled="edit"
-            @input="changeValue('amount', $event)"
+          <template
+            v-if="discountFixed"
+            #prepend
           >
-            <template
-              v-if="discountFixed"
-              #prepend
-            >
-              $
-            </template>
-            <template
-              v-if="!discountFixed"
-              #append
-            >
-              %
-            </template>
-          </el-input>
-        </el-form-item>
+            $
+          </template>
+          <template
+            v-if="!discountFixed"
+            #append
+          >
+            %
+          </template>
+        </el-input>
         <el-select
           v-if="discountFixed"
           value="AUD"

@@ -21,7 +21,7 @@ export default {
   },
   data() {
     return {
-      dialogVisible: false,
+      processing: false,
       form: {
         name: null,
         code: null,
@@ -48,10 +48,12 @@ export default {
     updateCouponValue({ fieldName, newVal }) {
       set(this.form, fieldName, newVal )
     },
-    async onSave() {
+    async onSubmit() {
       const { form, edit } = this
 
       if (!this.validateAll().some(item => item === false)) {
+        this.processing = true
+
         const request = {
           method: edit ? 'put' : 'post',
           url: edit ? `/coupons/${this.coupon.id}` : '/coupons',
@@ -78,6 +80,8 @@ export default {
         }
 
         const [error, response] = await this.$api[request.method](request.url, request.data )
+
+        this.processing = false
 
         if (response) {
           this.$notify({
@@ -128,7 +132,9 @@ export default {
     <el-button
       type="primary"
       :class="$style.saveButton"
-      @click="onSave"
+      :loading="processing"
+      data-test="submit"
+      @click="onSubmit"
     >
       Save
     </el-button>

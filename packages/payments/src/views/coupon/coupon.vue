@@ -1,6 +1,6 @@
 <script>
 import CouponFormModal from './coupon-form-modal'
-import DeleteModal from './coupon-delete'
+import CouponDelete from './coupon-delete'
 import { formatDate } from '@lib/utils/format-date'
 import formatDollar from '@lib/utils/format-dollar'
 
@@ -8,7 +8,7 @@ export default {
   name: 'Coupon',
   components: {
     CouponFormModal,
-    DeleteModal,
+    CouponDelete,
   },
   props: {
     id: {
@@ -27,13 +27,13 @@ export default {
       },
       loading: false,
       coupon: {
-        created_at: '',
-        name: '',
-        code: '',
-        start_at: '',
-        end_at: '',
+        created_at: null,
+        name: null,
+        code: null,
+        start_at: null,
+        end_at: null,
         fixed_amount: {},
-        validity_period: '',
+        validity_period: null,
         useCount: 0,
       },
     }
@@ -64,12 +64,13 @@ export default {
   methods: {
     async getCouponDetails() {
       this.loading = true
-      const [error, response] = await this.$api.get(`/coupons/${this.id}`)
+      const [, response] = await this.$api.get(`/coupons/${this.id}`)
+
+      this.loading = false
+
       if (response) {
         this.coupon = { ...this.coupon, ...response }
-        this.loading = false
       }
-      console.warn(error, response)
     },
     formatDate(value, format) {
       return formatDate(value, format)
@@ -94,34 +95,31 @@ export default {
     back
   >
     <el-card v-loading="loading">
-      <el-row
+      <div
         slot="header"
-        type="flex"
-        justify="space-between"
-        align="middle"
+        :class="$style.header"
       >
         <span>Information</span>
 
-        <el-row
+        <div
           v-if="!loading"
-          type="flex"
         >
           <el-button
             type="primary"
-            size="small"
             icon="el-icon-edit"
             circle
+            data-test="edit"
             @click="modal.edit = true"
           />
           <el-button
             type="danger"
             icon="el-icon-delete"
-            size="small"
             circle
+            data-test="delete"
             @click="modal.delete = true"
           />
-        </el-row>
-      </el-row>
+        </div>
+      </div>
 
       <dl
         v-if="!loading"
@@ -137,10 +135,14 @@ export default {
         <dd>{{ coupon.code }}</dd>
 
         <dt>Discount Type</dt>
-        <dd>{{ discount.type.formatted }}</dd>
+        <dd data-test="type">
+          {{ discount.type.formatted }}
+        </dd>
 
         <dt>Amount</dt>
-        <dd>{{ discount.amount.formatted }}</dd>
+        <dd data-test="amount">
+          {{ discount.amount.formatted }}
+        </dd>
 
         <dt>Effective Start Date</dt>
         <dd>{{ formatDate(coupon.start_at, 'DD/MM/YYYY') }}</dd>
@@ -149,7 +151,9 @@ export default {
         <dd>{{ formatDate(coupon.end_at, 'DD/MM/YYYY') }}</dd>
 
         <dt>Validity Period</dt>
-        <dd>{{ `${extractValidity('months')}` || '-' }}</dd>
+        <dd data-test="validity">
+          {{ `${extractValidity('months')}` || '-' }}
+        </dd>
 
         <dt>No. in use</dt>
         <dd>{{ coupon.useCount }}</dd>
@@ -163,10 +167,18 @@ export default {
       edit
       @updated="getCouponDetails"
     />
-    <delete-modal
+    <coupon-delete
       v-if="modal.delete"
       :id="coupon.id"
       :visible.sync="modal.delete"
     />
   </main-layout>
 </template>
+
+<style lang="scss" module>
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+</style>
