@@ -1,5 +1,6 @@
 <script>
 import FeaturesMixin from './features.mixin.js'
+import startCase from 'lodash/startCase'
 
 export default {
   name: 'ColumnsHider',
@@ -67,6 +68,7 @@ export default {
     onChange() {
       this.processor.updateHide(this.hideList)
     },
+    startCase
   },
 }
 </script>
@@ -105,7 +107,7 @@ export default {
                 ]"
               />
               <span>
-                {{ column.label }}
+                {{ column.label || startCase(column.name) }}
               </span>
             </el-checkbox>
           </el-checkbox-group>

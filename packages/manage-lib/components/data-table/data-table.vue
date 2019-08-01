@@ -7,6 +7,32 @@ import CellWrap from './cells/cell-wrap'
 const SORT_ORDERS = ['asc', 'desc', '']
 const noop = () => {}
 
+export function getReadyColumns (dataQuery, columns = []) {
+  const columnsCount = columns.length
+  const readyColumns = []
+
+  if (dataQuery !== null) {
+    const hide = dataQuery.hide || []
+
+    for (let i=0; i<columnsCount; i++) {
+      const column = columns[i]
+
+      if (
+        hide.indexOf(column.name) === -1 &&
+        column.type !== 'expand'
+      ) {
+        readyColumns.push({
+          label: startCase(column.name),
+          width: 180,
+          ...column,
+        })
+      }
+    }
+  }
+
+  return readyColumns
+}
+
 export default {
   name: 'DataTable',
   components: {
@@ -38,32 +64,9 @@ export default {
   },
   computed: {
     readyColumns() {
-      const { dataQuery } = this
-      const columns = this.columns || []
-      const columnsCount = columns.length
-      const readyColumns = []
+      const { dataQuery, columns } = this
 
-      if (dataQuery !== null) {
-        const hide = dataQuery.hide || []
-
-        for (let i=0; i<columnsCount; i++) {
-          const column = columns[i]
-
-          if (
-            hide.indexOf(column.name) === -1 &&
-            column.type !== 'expand'
-          ) {
-            readyColumns.push({
-              label: startCase(column.name),
-              key: column.name,
-              width: 180,
-              ...column,
-            })
-          }
-        }
-      }
-
-      return readyColumns
+      return getReadyColumns(dataQuery, columns)
     },
     showRowLink() {
       const listener = this.$listeners['row-click']
@@ -167,18 +170,18 @@ export default {
     >
       <el-table-column
         v-for="column in readyColumns"
-        :key="column.key"
+        :key="column.name"
         :align="column.align || 'left'"
         :label="column.label"
-        :column-key="column.key"
-        :prop="column.key"
+        :column-key="column.name"
+        :prop="column.name"
         :sortable="sortType(column)"
         :min-width="column.width"
         :show-overflow-tooltip="showOverflowTooltip(column)"
       >
         <template #default="scope">
           <cell-wrap
-            :attribute="column.key"
+            :attribute="column.name"
             :cell="scope"
             :column="column"
             :processor="processor"

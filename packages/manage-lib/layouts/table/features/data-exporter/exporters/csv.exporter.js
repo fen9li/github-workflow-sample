@@ -25,12 +25,12 @@ function getSanitizedValue(value) {
   return value
 }
 
-function serializeRow(columnNames, row) {
-  const columnsCount = columnNames.length
+function serializeRow(columnLabels, row) {
+  const columnsCount = columnLabels.length
   let serializedRow = '\n'
 
   for (let colIdx=0; colIdx<columnsCount; colIdx++) {
-    const colName = columnNames[colIdx]
+    const colName = columnLabels[colIdx]
 
     if (colIdx>0) {
       serializedRow += ','
@@ -42,14 +42,14 @@ function serializeRow(columnNames, row) {
   return serializedRow
 }
 
-export function serializeToCSV(data, columnNames) {
+export function serializeToCSV(data, columnLabels) {
   const rowCount = data.length
-  let fileContent = columnNames.toString()
+  let fileContent = columnLabels.toString()
 
   for (let rowIdx=0; rowIdx<rowCount; rowIdx++) {
     const row = data[rowIdx]
 
-    fileContent += serializeRow(columnNames, row)
+    fileContent += serializeRow(columnLabels, row)
   }
 
   // Wrap result in array coz strings
@@ -57,7 +57,7 @@ export function serializeToCSV(data, columnNames) {
   return [fileContent]
 }
 
-function workerSerializeToCSV(data, columnNames) {
+function workerSerializeToCSV(data, columnLabels) {
   return new Promise(resolve => {
     const worker = new Worker('/workers/csv.worker.js')
 
@@ -67,28 +67,27 @@ function workerSerializeToCSV(data, columnNames) {
       worker.terminate()
     }
 
-    worker.postMessage({ data, columnNames })
+    worker.postMessage({ data, columnLabels })
   })
 }
 
-export default async function exporter({ data }, columns) {
-  const columnNames = columns.map(c => c.name)
+export default async function exporter(data, columnLabels) {
   let serialized
 
   if (!window.Worker) {
-    serialized = serializeToCSV(data, columnNames)
+    serialized = serializeToCSV(data, columnLabels)
   } else {
     try {
-      serialized = await workerSerializeToCSV(data, columnNames)
+      serialized = await workerSerializeToCSV(data, columnLabels)
     } catch (e) {
       console.error(
         'Error while worker serialization. '+
-        'Data will be serialized in main thread.'
+        'Data will be serialized in the main thread.'
       )
       console.error( e)
 
-      // Fallback to serialization in main thread
-      serialized = serializeToCSV(data, columnNames)
+      // Fallback to serialization in the main thread
+      serialized = serializeToCSV(data, columnLabels)
     }
   }
 

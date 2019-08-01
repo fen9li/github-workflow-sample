@@ -27,12 +27,12 @@ function getSanitizedValue(value) {
   return value
 }
 
-function serializeRow(columnNames, row) {
-  var columnsCount = columnNames.length
+function serializeRow(columnLabels, row) {
+  var columnsCount = columnLabels.length
   var serializedRow = '\n'
 
   for (var colIdx=0; colIdx<columnsCount; colIdx++) {
-    var colName = columnNames[colIdx]
+    var colName = columnLabels[colIdx]
 
     if (colIdx>0) {
       serializedRow += ','
@@ -44,14 +44,14 @@ function serializeRow(columnNames, row) {
   return serializedRow
 }
 
-function serializeToCSV(data, columnNames) {
+function serializeToCSV(data, columnLabels) {
   var rowCount = data.length
-  var fileContent = columnNames.toString()
+  var fileContent = columnLabels.toString()
 
   for (var rowIdx=0; rowIdx<rowCount; rowIdx++) {
     var row = data[rowIdx]
 
-    fileContent += serializeRow(columnNames, row)
+    fileContent += serializeRow(columnLabels, row)
   }
 
   // Wrap result in array coz strings
@@ -62,8 +62,8 @@ function serializeToCSV(data, columnNames) {
 onmessage = function(e) {
   var eventPayload = e.data
   var data = eventPayload.data
-  var columnNames = eventPayload.columnNames
-  var serialized = serializeToCSV(data, columnNames)
+  var columnLabels = eventPayload.columnLabels
+  var serialized = serializeToCSV(data, columnLabels)
   var blob = new Blob(serialized, { type: 'text/plain;charset=utf-8' })
 
   var reader = new FileReader()

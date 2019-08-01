@@ -2,6 +2,7 @@ import ApiProcessor from '@lib/processors/api-processor'
 import MerchantDialog from '../feed-update/feed-merchant-dialog-container.vue'
 import OfferActivate from '../feed-update/feed-offer-activate.vue'
 import capitalize from 'lodash/capitalize'
+import get from 'lodash/get'
 
 const TABLE_FILTERS = [
   {
@@ -66,10 +67,10 @@ const TABLE_COLUMNS = [
       const { type } = row
 
       if (type === 'offer') {
-        return row.feed_offer.feed_merchant.map.name
+        return get(row,'feed_offer.feed_merchant.map.name', '')
       }
       else if (type === 'merchant') {
-        return row.feed_merchant.map.name
+        return get(row, 'feed_merchant.map.name', '')
       }
       else {
         throw new Error(`Wrong record type: ${type}`)
@@ -84,10 +85,10 @@ const TABLE_COLUMNS = [
       const { type } = row
 
       if (type === 'offer') {
-        return row.feed_offer.map.feed
+        return get(row, 'feed_offer.map.feed', '')
       }
       else if(type === 'merchant') {
-        return row.feed_merchant.map.feed
+        return get(row, 'feed_merchant.map.feed', '')
       }
       else {
         throw new Error(`Wrong record type: ${type}`)

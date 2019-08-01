@@ -1,6 +1,5 @@
 <script>
 import get from 'lodash/get'
-import formatters from './formatters'
 import DataProcessor from '../../../processors/data-processor.js'
 import CellDefault from './cell-default'
 import CellLink from './cell-link'
@@ -9,6 +8,7 @@ import CellActivity from './cell-activity'
 import CellTag from './cell-tag'
 import CellUserAvatar from './cell-user-avatar'
 import CellToggle from './cell-toggle'
+import { getFormattedValue, getCellData } from './utils.js'
 
 export default {
   name: 'CellWrap',
@@ -42,67 +42,13 @@ export default {
   computed: {
     cellData() {
       const { attribute, cell, column } = this
-      const value = get(cell.row, attribute)
-      const { component } = column
 
-      if (typeof component === 'function') {
-        return component(value, attribute, cell)
-      } else if (component instanceof Object) {
-        return component
-      }
-
-      return {}
+      return getCellData(attribute, cell, column)
     },
     formattedValue() {
-      const { attribute, cell, column } = this
-      let value = get(cell.row, attribute) || get(this.cellData, 'props.value')
+      const { attribute, cell, cellData, column } = this
 
-      if (typeof value === 'function') {
-        value = value(null, cell.row)
-      }
-
-      if (!column.hasOwnProperty('format')) {
-        return value || ''
-      }
-
-      const { format } = column
-      const isFn = typeof format === 'function'
-      const isString = typeof format === 'string'
-      const isObj = format instanceof Object
-
-      if (isFn) {
-        return format(value, cell.row)
-      } else if (isString || isObj) {
-        let formatName = format
-        const params = [value]
-
-        if (isObj) {
-          formatName = format.name
-          const givenParams = format.params
-
-          if (givenParams instanceof Array) {
-            params.push(...givenParams)
-          }
-        }
-
-        const formatter = formatters[formatName]
-
-        if (formatter) {
-          // eslint-disable-next-line
-          let formatted = formatter.apply(null, params)
-
-          const propsFormatter = get(this.cellData, 'props.format')
-
-          if (propsFormatter) {
-            return propsFormatter(formatted, this.cell.row)
-          }
-          return formatted
-        } else {
-          throw Error(`There is no such predefined formatter: ${format}`)
-        }
-      }
-
-      throw Error('"format" key must be function|string|object{name,params}.')
+      return getFormattedValue(attribute, cell, cellData, column)
     },
     cellComp() {
       const { is } = this.cellData
