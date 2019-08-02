@@ -105,6 +105,7 @@ export default {
         <el-input
           :value="data.id"
           :disabled="edit"
+          data-test="id"
           @input="changeValue('id', $event)"
         />
         <el-tooltip
@@ -127,6 +128,7 @@ export default {
         :class="[$style.billing, {[$style.disabled]: edit}]"
       >
         <el-radio-group
+          v-if="data.group || data.billing_type"
           :value="edit ? data.group.billing_type : data.billing_type"
           :disabled="edit"
           @input="changeValue('billing_type', $event)"

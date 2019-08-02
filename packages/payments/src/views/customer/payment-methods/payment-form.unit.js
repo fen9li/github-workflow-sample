@@ -64,7 +64,9 @@ describe('packages/payments/src/views/customer/payment-methods/payment-form.vue'
     expect(events.length).toBe(4)
 
     for(const key in keys) {
-      expect(events).toContainEqual([{ fieldName: keys[key], newVal: testVal, type: 'card' }])
+      if(keys.hasOwnProperty(key)) {
+        expect(events).toContainEqual([{ fieldName: keys[key], newVal: testVal, type: 'card' }])
+      }
     }
   })
 
@@ -86,7 +88,9 @@ describe('packages/payments/src/views/customer/payment-methods/payment-form.vue'
     expect(events.length).toBe(3)
 
     for(const key in keys) {
-      expect(events).toContainEqual([{ fieldName: keys[key], newVal: testVal, type: 'account' }])
+      if(keys.hasOwnProperty(key)) {
+        expect(events).toContainEqual([{ fieldName: keys[key], newVal: testVal, type: 'account' }])
+      }
     }
   })
 

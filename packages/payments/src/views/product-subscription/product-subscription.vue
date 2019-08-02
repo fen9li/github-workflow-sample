@@ -2,7 +2,6 @@
 import appConfig from '~/app.config'
 import table from './product-subscription-plans-table'
 import ProductSubscriptionAddPlan from './product-subscription-add-plan'
-import ProductSubscriptionDeletePlan from './product-subscription-delete-plan'
 import ProductSubscriptionEdit from './product-subscription-edit'
 import capitalize from 'lodash/capitalize'
 import { formatDate } from '@lib/utils/format-date'
@@ -16,7 +15,6 @@ export default {
   },
   components: {
     ProductSubscriptionAddPlan,
-    ProductSubscriptionDeletePlan,
     ProductSubscriptionEdit,
   },
   props: {
@@ -59,12 +57,11 @@ export default {
     },
     async getSubscriptionDetails() {
       this.loading = true
-      const [error, response] = await this.$api.get(`/products/${this.id}`)
+      const [, response] = await this.$api.get(`/products/${this.id}`)
       if (response) {
         this.details = { ...this.details, ...response }
       }
       this.loading = false
-      console.warn(error, response)
     },
   },
 }
@@ -89,12 +86,14 @@ export default {
           icon="el-icon-edit"
           :class="$style.editBtn"
           circle
+          data-test="edit"
           @click="modal.edit = true"
         />
         <product-subscription-edit
+          v-if="modal.edit"
           :visible.sync="modal.edit"
           :current-product="details"
-          @edited="getSubscriptionDetails"
+          @updated="getSubscriptionDetails"
         />
       </div>
       <dl
@@ -133,21 +132,19 @@ export default {
           type="primary"
           size="small"
           class="wide-button"
+          data-test="add"
           @click="modal.add = true"
         >
           Add
         </el-button>
         <product-subscription-add-plan
+          v-if="modal.add"
           :visible.sync="modal.add"
           :product-id="id"
           @updated="UPDATE_TABLE(table)"
         />
       </div>
     </table-layout>
-    <product-subscription-delete-plan
-      v-if="modal.delete"
-      :visible.sync="modal.delete"
-    />
   </main-layout>
 </template>
 

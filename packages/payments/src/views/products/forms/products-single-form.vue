@@ -95,6 +95,7 @@ export default {
         <el-input
           :value="data.id"
           :disabled="edit"
+          data-test="id"
           @input="changeValue('id', $event)"
         />
       </el-form-item>

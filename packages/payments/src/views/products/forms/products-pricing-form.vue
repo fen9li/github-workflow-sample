@@ -66,8 +66,7 @@ export default {
   },
   methods: {
     changeValue(fieldName, newVal) {
-      const { id } = this.data
-      this.$emit('changeValue', { fieldName, newVal, id })
+      this.$emit('changeValue', { fieldName, newVal })
     },
   },
 }

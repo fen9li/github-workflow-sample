@@ -1,3 +1,5 @@
+import ElasticProcessor from '@lib/processors/elastic-processor'
+
 const TABLE_COLUMNS = [
   {
     name: 'id',
@@ -17,6 +19,13 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default {
-  columns: TABLE_COLUMNS,
+export default function(component){
+  return {
+    processor: new ElasticProcessor({
+      component,
+      index: 'subscription-product-groups',
+    }),
+    columns: TABLE_COLUMNS,
+
+  }
 }

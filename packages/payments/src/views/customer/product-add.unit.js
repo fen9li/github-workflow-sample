@@ -69,7 +69,9 @@ describe('packages/payments/src/views/customer/product-add.vue', () => {
     const keys = Object.keys(form)
 
     for(const key in keys) {
-      expect(form[keys[key]]).toBe('')
+      if(keys.hasOwnProperty(key)) {
+        expect(form[keys[key]]).toBe('')
+      }
     }
 
     product.vm.$emit('input', filledForm.product)

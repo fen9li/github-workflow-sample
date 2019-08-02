@@ -41,7 +41,10 @@ export default {
       if (!this.validateAll().some(item => item === false)) {
         this.processing = true
 
-        const [error, response] = await this.$api.post(`/products/${this.productId}/plans`, this.form)
+        const requestData = { ...this.form }
+        delete requestData.currency
+
+        const [error, response] = await this.$api.post(`/products/${this.productId}/plans`, requestData)
 
         this.processing = false
 
@@ -101,6 +104,7 @@ export default {
         class="wide-button"
         type="primary"
         :loading="processing"
+        data-test="submit"
         @click="onSubmit"
       >
         Save

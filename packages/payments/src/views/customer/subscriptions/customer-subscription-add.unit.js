@@ -79,7 +79,9 @@ describe('packages/payments/src/views/customer/subscriptions/customer-subscripti
     const keys = Object.keys(form)
 
     for(const key in keys) {
-      expect(form[keys[key]]).toBe('')
+      if(keys.hasOwnProperty(key)) {
+        expect(form[keys[key]]).toBe('')
+      }
     }
 
     pickers.at(0).vm.$emit('input', filledForm.start_at)

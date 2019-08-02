@@ -39,12 +39,14 @@ export default {
 </script>
 
 <template>
-  <table-layout
-    table-name="SubscriptioProducts"
-    :processor="table.processor"
-    :filters="table.filters"
-    :columns="table.columns"
-    :fragments="false"
-    @row-click="onRowClick"
-  />
+  <div>
+    <table-layout
+      table-name="SubscriptionProducts"
+      :processor="table.processor"
+      :filters="table.filters"
+      :columns="table.columns"
+      :fragments="false"
+      @row-click="onRowClick"
+    />
+  </div>
 </template>

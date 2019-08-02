@@ -111,6 +111,7 @@ export default {
         type="primary"
         class="wide-button"
         :loading="processing"
+        data-test="submit"
         @click="onSubmit"
       >
         Save

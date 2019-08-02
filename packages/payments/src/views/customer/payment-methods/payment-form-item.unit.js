@@ -135,7 +135,9 @@ describe('packages/payments/src/views/customer/payment-methods/payment-form-item
     expect(wrapper.vm.form.card).toMatchObject(emptyCard)
 
     for(const item in filledCard) {
-      form.vm.$emit('changeValue', { fieldName: item, newVal: filledCard[item], type: 'card' })
+      if(filledCard.hasOwnProperty(item)) {
+        form.vm.$emit('changeValue', { fieldName: item, newVal: filledCard[item], type: 'card' })
+      }
     }
     expect(wrapper.vm.form.card).toMatchObject(filledCard)
   })
@@ -146,7 +148,9 @@ describe('packages/payments/src/views/customer/payment-methods/payment-form-item
     expect(wrapper.vm.form.card).toMatchObject(emptyCard)
 
     for(const item in filledAccount) {
-      form.vm.$emit('changeValue', { fieldName: item, newVal: filledAccount[item], type: 'account' })
+      if(filledAccount.hasOwnProperty(item)) {
+        form.vm.$emit('changeValue', { fieldName: item, newVal: filledAccount[item], type: 'account' })
+      }
     }
     expect(wrapper.vm.form.account).toMatchObject(filledAccount)
   })

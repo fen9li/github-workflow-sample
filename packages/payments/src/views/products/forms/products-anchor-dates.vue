@@ -1,8 +1,6 @@
 <script>
 import table from './products-anchor-dates-table.js'
-import ElasticProcessor from '@lib/processors/elastic-processor'
 import { formatDate } from '@lib/utils/format-date'
-
 
 export default {
   name: 'ProductsAnchorDates',
@@ -14,13 +12,8 @@ export default {
   },
   data() {
     return {
-      dialogVisible: false,
       activeNames: [],
-      columns: table.columns,
-      processor: new ElasticProcessor({
-        component: this,
-        index: 'subscription-product-groups',
-      }),
+      table: table(this)
     }
   },
   methods: {
@@ -43,8 +36,9 @@ export default {
     >
       <data-table
         ref="table"
-        :columns="columns"
-        :processor="processor"
+        name="productsAnchorDates"
+        :columns="table.columns"
+        :processor="table.processor"
         :highlight-row="hightlightRow.bind(null, selectedAnchorDate)"
       />
     </el-collapse-item>

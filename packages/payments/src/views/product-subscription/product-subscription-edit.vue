@@ -55,7 +55,7 @@ export default {
           })
 
           this.$emit('update:visible', false)
-          this.$emit('edited')
+          this.$emit('updated')
         } else if (error) {
           const violations = Object.keys(error.violations)
           violations.forEach(violation => {
@@ -102,6 +102,7 @@ export default {
         type="primary"
         class="wide-button"
         :loading="processing"
+        data-test="submit"
         @click="onSubmit"
       >
         Save

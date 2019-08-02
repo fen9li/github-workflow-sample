@@ -48,12 +48,11 @@ export default {
     },
     async getProductDetails() {
       this.loading = true
-      const [error, response] = await this.$api.get(`/single-products/${this.id}`)
+      const [, response] = await this.$api.get(`/single-products/${this.id}`)
       if (response) {
         this.productDetails = { ...this.productDetails, ...response }
       }
       this.loading = false
-      console.warn(error, response)
     },
   },
 
@@ -75,9 +74,11 @@ export default {
           type="primary"
           icon="el-icon-edit"
           circle
+          data-test="edit"
           @click="modal.singleEdit = true"
         />
         <product-single-edit
+          v-if="modal.singleEdit"
           :visible.sync="modal.singleEdit"
           :edit="true"
           :current-product="productDetails"

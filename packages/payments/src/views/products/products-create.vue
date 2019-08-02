@@ -181,6 +181,7 @@ export default {
       <el-button
         type="primary"
         class="wide-button"
+        data-test="submit"
         @click="createProduct"
       >
         Save
