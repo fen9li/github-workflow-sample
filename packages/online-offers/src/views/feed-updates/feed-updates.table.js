@@ -36,13 +36,16 @@ const TABLE_COLUMNS = [
     name: 'action',
     label: 'Update',
     icon: 'el-icon-document',
-    format (_, row) {
+    format(_, row) {
       const { type, action } = row
 
-      switch(action) {
-        case 'create': return `New ${type}`
-        case 'update': return `${capitalize(type)} update`
-        default: return `Deleted ${type}`
+      switch (action) {
+        case 'create':
+          return `New ${type}`
+        case 'update':
+          return `${capitalize(type)} update`
+        default:
+          return `Deleted ${type}`
       }
     },
     component: {
@@ -51,9 +54,12 @@ const TABLE_COLUMNS = [
           const { action } = row
 
           switch (action) {
-            case 'create': return { color: '#29d737' }
-            case 'update': return {}
-            default: return { color: '#fc7168' }
+            case 'create':
+              return { color: '#29d737' }
+            case 'update':
+              return {}
+            default:
+              return { color: '#fc7168' }
           }
         },
       },
@@ -63,41 +69,37 @@ const TABLE_COLUMNS = [
     name: 'feed_merchant.map.name',
     label: 'Merchant',
     icon: 'el-icon-document',
-    format (_, row) {
+    format(_, row) {
       const { type } = row
 
       if (type === 'offer') {
-        return get(row,'feed_offer.feed_merchant.map.name', '')
-      }
-      else if (type === 'merchant') {
+        return get(row, 'feed_offer.feed_merchant.map.name', '')
+      } else if (type === 'merchant') {
         return get(row, 'feed_merchant.map.name', '')
-      }
-      else {
+      } else {
         throw new Error(`Wrong record type: ${type}`)
       }
-    }
+    },
   },
   {
     name: 'feed',
     label: 'Feed',
     icon: 'el-icon-document',
-    format (_, row) {
+    format(_, row) {
       const { type } = row
 
       if (type === 'offer') {
         return get(row, 'feed_offer.map.feed', '')
-      }
-      else if(type === 'merchant') {
+      } else if (type === 'merchant') {
         return get(row, 'feed_merchant.map.feed', '')
-      }
-      else {
+      } else {
         throw new Error(`Wrong record type: ${type}`)
       }
-    }
+    },
   },
   {
-    name: 'created_at',
-    label: 'Date Created',
+    name: 'updated_at',
+    label: 'Last Updated',
     icon: 'el-icon-date',
     format: 'date',
   },
@@ -110,7 +112,6 @@ const TABLE_COLUMNS = [
 
       switch (type) {
         case 'merchant':
-
           return {
             is: MerchantDialog,
             props: {
