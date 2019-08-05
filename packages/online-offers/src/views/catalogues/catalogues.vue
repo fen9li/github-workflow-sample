@@ -47,21 +47,7 @@ export default {
       :filters="table.filters"
       :columns="table.columns"
       @row-click="onRowClick"
-    >
-      <el-table-column
-        label="Logo"
-        fixed="left"
-        width="100"
-      >
-        <template slot-scope="scope">
-          <img
-            v-if="scope.row.logo"
-            :src="formatImage(scope.row.logo)"
-            :alt="scope.row.name"
-          >
-        </template>
-      </el-table-column>
-    </table-layout>
+    />
     <el-button
       slot="header"
       type="primary"
