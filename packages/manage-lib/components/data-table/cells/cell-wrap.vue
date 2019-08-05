@@ -6,6 +6,7 @@ import CellLink from './cell-link'
 import CellButton from './cell-button'
 import CellActivity from './cell-activity'
 import CellTag from './cell-tag'
+import CellImage from './cell-image'
 import CellUserAvatar from './cell-user-avatar'
 import CellToggle from './cell-toggle'
 import { getFormattedValue, getCellData } from './utils.js'
@@ -18,6 +19,7 @@ export default {
     CellButton,
     CellActivity,
     CellTag,
+    CellImage,
     CellUserAvatar,
     CellToggle,
   },
@@ -175,5 +177,14 @@ export default {
   &_inactive {
     background-color: #bbb;
   }
+}
+
+.cell-image {
+  width: 100px;
+  height: 30px;
+  padding: 0;
+  background-repeat: no-repeat;
+  background-position: 0;
+  background-size: contain;
 }
 </style>
