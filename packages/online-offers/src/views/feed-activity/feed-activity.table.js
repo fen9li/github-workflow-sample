@@ -104,7 +104,9 @@ const TABLE_COLUMNS = [
     icon: 'el-icon-date',
     format: 'dateTime',
   },
-  { type: 'expand' },
+  {
+    type: 'expand',
+  },
 ]
 
 export default component => ({

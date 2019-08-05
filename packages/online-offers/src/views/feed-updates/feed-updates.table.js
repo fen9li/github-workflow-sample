@@ -107,6 +107,7 @@ const TABLE_COLUMNS = [
     sortable: false,
     overflowTooltip: false,
     width: 100,
+    fixed: 'right',
     component: (_, __, { row }) => {
       const { type } = row
 
