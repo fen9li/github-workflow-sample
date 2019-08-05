@@ -131,7 +131,7 @@ export default {
           label-position="top"
         >
           <el-form-item
-            label="Client name"
+            label="Client Name"
             prop="name"
           >
             <el-input
@@ -141,7 +141,7 @@ export default {
           </el-form-item>
 
           <el-form-item
-            label="Client logo"
+            label="Client Logo"
             prop="logo"
           >
             <image-uploader
@@ -154,7 +154,7 @@ export default {
           <el-form-item
             :class="$style.formItem"
             label-width="70px"
-            label="Feeds"
+            label="Aggregator Feeds"
             prop="feeds"
           >
             <el-checkbox-group
