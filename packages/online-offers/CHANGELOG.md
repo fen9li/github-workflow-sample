@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-online-offers@0.2.0...manage-online-offers@0.3.0) (2019-08-05)
+
+### Bug Fixes
+
+- **data-exporter:** parse nested fields ([c518fdc](https://github.com/loyaltycorp/manage-v2-frontend/commit/c518fdc))
+- **manage-lib:** cell component for image ([f378d7a](https://github.com/loyaltycorp/manage-v2-frontend/commit/f378d7a))
+- **manage-lib:** replace uploadcare to image uploader ([f1953e9](https://github.com/loyaltycorp/manage-v2-frontend/commit/f1953e9))
+- **online-offers:** add global merchants offer status ([02df789](https://github.com/loyaltycorp/manage-v2-frontend/commit/02df789))
+- **online-offers:** change cta button label ([ee4b341](https://github.com/loyaltycorp/manage-v2-frontend/commit/ee4b341))
+- **online-offers:** display client merchants quantity picker ([b068737](https://github.com/loyaltycorp/manage-v2-frontend/commit/b068737))
+- **online-offers:** fix client modal labels ([7472e28](https://github.com/loyaltycorp/manage-v2-frontend/commit/7472e28))
+- **online-offers:** fix client view label ([9ba7894](https://github.com/loyaltycorp/manage-v2-frontend/commit/9ba7894))
+- **online-offers:** fix issue with categories in merge screen ([3e6eeae](https://github.com/loyaltycorp/manage-v2-frontend/commit/3e6eeae))
+- **online-offers:** make tables and aside more responsive ([38e896d](https://github.com/loyaltycorp/manage-v2-frontend/commit/38e896d))
+- **online-offets:** isolate modal table from parent table params ([bb3fea0](https://github.com/loyaltycorp/manage-v2-frontend/commit/bb3fea0))
+
+### Features
+
+- **online-offers:** change feed updates column label ([e0b7b40](https://github.com/loyaltycorp/manage-v2-frontend/commit/e0b7b40))
+
 # [0.2.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-online-offers@0.1.1...manage-online-offers@0.2.0) (2019-07-23)
 
 ### Bug Fixes

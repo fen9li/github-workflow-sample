@@ -1,6 +1,6 @@
 {
   "name": "@loyalty-corp/manage-lib",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "scripts": {
     "unit": "vue-cli-service test:unit"
   },
@@ -18,9 +18,9 @@
     "nprogress": "^0.2.0",
     "register-service-worker": "^1.6.2",
     "sass-mq": "^5.0.0",
+    "uploadcare-vue": "^1.0.0",
     "vue": "^2.6.10",
     "vue-codemirror": "^4.0.6",
-    "uploadcare-vue": "^1.0.0",
     "vue-meta": "^1.6.0",
     "vue-router": "^3.0.6",
     "vue-the-mask": "^0.11.1",

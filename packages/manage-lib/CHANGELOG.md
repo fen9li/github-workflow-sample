@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyalty-corp/manage-lib@0.2.0...@loyalty-corp/manage-lib@0.3.0) (2019-08-05)
+
+### Bug Fixes
+
+- **data-exporter:** parse nested fields ([c518fdc](https://github.com/loyaltycorp/manage-v2-frontend/commit/c518fdc))
+- **manage-lib:** cell component for image ([f378d7a](https://github.com/loyaltycorp/manage-v2-frontend/commit/f378d7a))
+- **manage-lib:** replace uploadcare to image uploader ([f1953e9](https://github.com/loyaltycorp/manage-v2-frontend/commit/f1953e9))
+- **online-offers:** make tables and aside more responsive ([38e896d](https://github.com/loyaltycorp/manage-v2-frontend/commit/38e896d))
+
+### Features
+
+- **subscription:** update view with new api ([eb6eae7](https://github.com/loyaltycorp/manage-v2-frontend/commit/eb6eae7))
+
 # [0.2.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyalty-corp/manage-lib@0.1.0...@loyalty-corp/manage-lib@0.2.0) (2019-07-23)
 
 ### Bug Fixes

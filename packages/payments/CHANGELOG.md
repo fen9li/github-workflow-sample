@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-payments@0.2.0...manage-payments@0.3.0) (2019-08-05)
+
+### Bug Fixes
+
+- **data-exporter:** parse nested fields ([c518fdc](https://github.com/loyaltycorp/manage-v2-frontend/commit/c518fdc))
+- **online-offers:** add type key for expand column instead name ([e937588](https://github.com/loyaltycorp/manage-v2-frontend/commit/e937588))
+
+### Features
+
+- **customer:** update customer with new api ([dfdf03c](https://github.com/loyaltycorp/manage-v2-frontend/commit/dfdf03c))
+- **payments:** update error notifications ([5fea927](https://github.com/loyaltycorp/manage-v2-frontend/commit/5fea927))
+- **payments:** update tables after create entity ([eeabc25](https://github.com/loyaltycorp/manage-v2-frontend/commit/eeabc25))
+- **products:** update products view new api ([9735da2](https://github.com/loyaltycorp/manage-v2-frontend/commit/9735da2))
+- **subscription:** update view with new api ([eb6eae7](https://github.com/loyaltycorp/manage-v2-frontend/commit/eb6eae7))
+
 # [0.2.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-payments@0.1.0...manage-payments@0.2.0) (2019-07-23)
 
 ### Bug Fixes
