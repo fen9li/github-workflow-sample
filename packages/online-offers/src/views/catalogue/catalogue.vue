@@ -122,7 +122,7 @@ export default {
             :columns="table[activeTab].columns"
             :fragments="false"
             hider
-            :quantity="false"
+            :quantity="[25, 50, 100, 200]"
             @row-click="onRowClick"
             @selection-change="handleSelectionChange"
           >
