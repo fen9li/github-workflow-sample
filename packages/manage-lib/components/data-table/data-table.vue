@@ -175,6 +175,7 @@ export default {
         :label="column.label"
         :column-key="column.name"
         :prop="column.name"
+        :fixed="column.fixed"
         :sortable="sortType(column)"
         :min-width="column.width"
         :show-overflow-tooltip="showOverflowTooltip(column)"
@@ -204,6 +205,7 @@ export default {
       <el-table-column
         v-if="isExpanding"
         type="expand"
+        fixed="right"
       >
         <template slot-scope="props">
           <slot

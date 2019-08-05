@@ -99,7 +99,7 @@ export default {
 /* stylelint-disable no-descending-specificity */
 
 .app-sidebar {
-  width: 300px;
+  width: 100%;
   height: 100%;
   padding: 1.6rem 0;
   overflow-y: auto;

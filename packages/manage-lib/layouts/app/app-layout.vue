@@ -24,7 +24,10 @@ export default {
         <app-header v-bind="$attrs" />
       </el-header>
       <el-container :class="$style.main">
-        <el-aside width="300px">
+        <el-aside
+          :class="$style.aside"
+          width="null"
+        >
           <app-sidebar v-bind="$attrs" />
         </el-aside>
         <el-main>
@@ -48,5 +51,14 @@ export default {
 
 .main {
   height: calc(100vh - 72px);
+}
+
+.aside {
+  width: 300px;
+  transition: width .15s;
+
+  @include mq($until: lg) {
+    width: 210px;
+  }
 }
 </style>

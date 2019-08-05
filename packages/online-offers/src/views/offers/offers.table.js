@@ -52,6 +52,7 @@ const TABLE_FILTERS = [
 const TABLE_COLUMNS = [
   {
     name: 'enabled',
+    width: 70,
     icon: 'el-icon-document',
     component: (_, __, { row }) => ({
       is: offersStatus,
@@ -72,6 +73,7 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'global_merchant.name',
+    width: 130,
     label: 'Global Merchant',
     icon: 'el-icon-document',
   },

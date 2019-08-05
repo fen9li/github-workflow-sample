@@ -44,6 +44,7 @@ const TABLE_FILTERS = [
 const TABLE_COLUMNS = [
   {
     name: 'enabled',
+    width: 70,
     icon: 'el-icon-document',
     component: (_, __, { row }) => ({
       is: merchantsStatus,
@@ -54,11 +55,13 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'name',
+    width: 140,
     label: 'Merchant',
     icon: 'el-icon-document',
   },
   {
     name: 'total_offers',
+    width: 70,
     label: 'Offers',
     icon: 'el-icon-document',
   },
@@ -77,6 +80,7 @@ const TABLE_COLUMNS = [
   {
     sortable: false,
     width: 80,
+    fixed: 'right',
     component: (_, __, { row }) => {
       const offersCount = row.total_offers
 

@@ -49,6 +49,7 @@ const TABLE_COLUMNS_MERCHANTS = [{
   sortable: false,
   overflowTooltip: false,
   width: 180,
+  fixed: 'right',
   component: (_, __, {
     row,
   }) => ({
