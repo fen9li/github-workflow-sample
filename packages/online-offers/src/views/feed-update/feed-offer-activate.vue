@@ -71,7 +71,7 @@ export default {
     :loading="progress"
     @click.stop.prevent="onSubmit"
   >
-    {{ `${progress ? '' : 'Associate'}` }}
+    {{ `${progress ? '' : 'Activate'}` }}
   </el-button>
 </template>
 
