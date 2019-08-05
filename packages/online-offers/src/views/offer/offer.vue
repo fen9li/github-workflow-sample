@@ -142,14 +142,17 @@ export default {
           items: {
             name: {
               selected: false,
+              isSelectable: true,
               value: get(this.offer, 'feed_offer.map.name', '—'),
             },
             description: {
               selected: false,
+              isSelectable: true,
               value: get(this.offer, 'feed_offer.map.description', '—'),
             },
             terms: {
               selected: false,
+              isSelectable: true,
               value: get(this.offer, 'feed_offer.map.terms', '—'),
             },
           },

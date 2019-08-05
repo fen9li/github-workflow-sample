@@ -118,6 +118,7 @@ export default {
           if (
             sourcePresetItems.hasOwnProperty(itemKey) &&
             item.type !== 'text' &&
+            item.isSelectable &&
             !item.selected
           ) {
             isAllSelected = false
@@ -144,45 +145,62 @@ export default {
       field.value = form[key].value
     },
     selectAll(checked, sourcePreset) {
-      for (const preset of this.presets) {
+      const { form, presets } = this
+
+      for (const preset of presets) {
         const { items } = preset
         const isChecked = checked && preset === sourcePreset
 
         preset.selected = isChecked
 
         for (const key of Object.keys(items)) {
-          items[key].selected = isChecked
+          const item = items[key]
+
+          if (item.isSelectable) {
+            item.selected = isChecked
+          }
         }
 
         if (preset === sourcePreset) {
           for (const field of this.fields) {
+            const { key, path } = field
+
             // check if field editable
             if (field.component) {
               if (checked) {
-                if (!has(preset, `items.${field.key}.value`)) {
+                if (!has(preset, `items.${key}.value`)) {
                   continue
                 }
-                this.form[field.key] = {
-                  value: get(preset, `items.${field.key}.value`),
+
+                form[key] = {
+                  value: get(preset, `items.${key}.value`),
                 }
               } else {
-                this.form[field.key] = {
-                  value: cloneDeep(get(this.source, field.path)),
+                form[key] = {
+                  value: cloneDeep(get(this.source, path)),
                 }
               }
 
-              field.changed = checked
-              field.value = this.form[field.key].value
+              if (get(preset, `items.${key}.isSelectable`, true)) {
+                field.changed = checked
+                field.value = form[key].value
+              }
             }
           }
         }
       }
     },
     isSelected(field) {
+      const { presets } = this
       const { key } = field
+      const presetsCount = presets.length
 
-      for (const preset of this.presets) {
-        if (get(preset.items[key], 'selected', false)) {
+      for (let i = 0; i < presetsCount; i++) {
+        const fieldInPreset = presets[i].items[key]
+        const selected = get(fieldInPreset, 'selected', false)
+        const isSelectable = get(fieldInPreset, 'isSelectable', true)
+
+        if (selected && isSelectable) {
           return true
         }
       }

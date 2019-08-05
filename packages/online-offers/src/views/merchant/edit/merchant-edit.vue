@@ -157,29 +157,35 @@ export default {
           items: {
             name: {
               selected: false,
+              isSelectable: true,
               value: get(feed, 'map.name', '-'),
             },
             website: {
               selected: false,
+              isSelectable: true,
               value: get(feed, 'map.website', '-'),
             },
             logo: {
               selected: false,
+              isSelectable: true,
               value: get(feed, 'map.logo', '-'),
               preview: 'image',
             },
             summary: {
               selected: false,
+              isSelectable: true,
               value: get(feed, 'map.summary', '-'),
             },
             categories: {
               selected: false,
+              isSelectable: false,
               value: feedCategories,
               label: categoriesLabel,
               type: 'text',
             },
             terms: {
               selected: false,
+              isSelectable: true,
               value: get(feed, 'map.terms', '-'),
             },
           },
@@ -188,6 +194,7 @@ export default {
         if (commissions.length > 1) {
           feedObject.items.commission = {
             selected: false,
+            isSelectable: true,
             component: 'edit-layout-table',
             value: feed.feed,
             label: false,
