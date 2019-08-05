@@ -70,7 +70,7 @@ export default {
 
             <div :class="$style.formRow">
               <div :class="$style.formRowLabel">
-                Aggregators
+                Aggregator Feeds
               </div>
               <div :class="$style.formRowValue">
                 <div
