@@ -116,11 +116,11 @@ export default {
           <table-layout
             :class="$style.table"
             shadow="never"
-            :table-name="`catalogues-details-${tab.name}`"
             :processor="table.processor"
             :filters="table[activeTab].filters"
             :columns="table[activeTab].columns"
             :fragments="false"
+            table-name="catalogue-details"
             hider
             :quantity="[25, 50, 100, 200]"
             @row-click="onRowClick"

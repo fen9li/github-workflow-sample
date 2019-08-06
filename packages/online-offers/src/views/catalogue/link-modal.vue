@@ -91,8 +91,10 @@ export default {
 </script>
 
 <template>
-  <div>
-    <div :class="$style.buttonWrapper">
+  <div data-test="link">
+    <div
+      :class="$style.buttonWrapper"
+    >
       <el-button
         type="primary"
         class="el-button--wide"

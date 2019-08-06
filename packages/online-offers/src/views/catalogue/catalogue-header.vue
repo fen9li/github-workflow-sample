@@ -47,7 +47,7 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div data-test="catalogue-header">
     <div :class="$style.header">
       <div :class="$style.logo">
         <img
@@ -97,6 +97,7 @@ export default {
               type="primary"
               icon="el-icon-edit"
               circle
+              data-test="edit"
               @click="showEditModal = true"
             />
           </div>

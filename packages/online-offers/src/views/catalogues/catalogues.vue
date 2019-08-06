@@ -1,6 +1,6 @@
 <script>
 import cataloguesTable from './catalogues.table'
-import CatalogueAddModal from '../catalogue/catalogue-edit-modal.vue'
+import EditCatalogueModal from '../catalogue/catalogue-edit-modal.vue'
 
 export default {
   name: 'Catalogues',
@@ -8,7 +8,7 @@ export default {
     title: 'Clients',
   },
   components: {
-    CatalogueAddModal,
+    EditCatalogueModal,
   },
   data() {
     return {
@@ -51,13 +51,14 @@ export default {
     <el-button
       slot="header"
       type="primary"
+      data-test="add"
       class="el-button--wide"
       @click="modal.add = true"
     >
       Add Client
     </el-button>
 
-    <catalogue-add-modal
+    <edit-catalogue-modal
       v-if="modal.add"
       slot="header"
       :visible.sync="modal.add"
