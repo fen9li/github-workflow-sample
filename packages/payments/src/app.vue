@@ -8,11 +8,12 @@ export default {
     ]),
     menu() {
       return [
-        {
-          title: 'Dashboard',
-          path: '/',
-          icon: 'odometer',
-        },
+        // temporary hide dashboard and make transactions as home page
+        // {
+        //   title: 'Dashboard',
+        //   path: '/',
+        //   icon: 'odometer',
+        // },
         {
           title: 'Transactions',
           path: '/transactions',

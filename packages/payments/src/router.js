@@ -22,7 +22,11 @@ const router = new VueRouter({
     {
       path: '/',
       name: 'home',
-      component: () => lazy(import('~/views/home/home')),
+      // component: () => lazy(import('~/views/home/home')),
+      // temporary make transactions as home page
+      redirect : {
+        name: 'payment-transactions'
+      }
     },
     {
       path: '/transactions',
