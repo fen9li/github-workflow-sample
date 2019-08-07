@@ -61,6 +61,7 @@ export default {
       <hr :class="['divider-primary', 'info-block__divider']">
       <payment-details
         :customer="customer"
+        :payment-source="subscription.payment_source"
       />
     </div>
   </el-card>

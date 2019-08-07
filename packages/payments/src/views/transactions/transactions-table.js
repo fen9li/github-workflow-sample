@@ -13,9 +13,9 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'amount',
+    attribute: 'amount.total',
     type: 'numeric',
-    icon: 'el-icon-star-off',
+    icon: 'el-icon-document',
   },
   {
     attribute: 'customerId',
@@ -172,6 +172,7 @@ const TABLE_COLUMNS = [
             case 'completed': return { color: '#29d737' }
             case 'failed': return { color: '#fc7168' }
             case 'refunded': return { color: '#fc7168' }
+            case 'finalised': return { color: '#fc7168' }
             default: return {}
           }
         },

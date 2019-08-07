@@ -48,6 +48,7 @@ const TABLE_COLUMNS = [
 ]
 
 export default function(component){
+
   return {
     processor: new ElasticProcessor({
       component,
@@ -56,7 +57,6 @@ export default function(component){
         filters: [
           {
             attribute: 'productId',
-            comparison: 'eq',
             value: component.id,
           },
         ],

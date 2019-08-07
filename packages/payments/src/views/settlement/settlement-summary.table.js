@@ -5,30 +5,35 @@ const TABLE_COLUMNS = [
     name: 'type',
     label: '',
     format: 'capital',
+    icon: 'el-icon-document',
     sortable: false,
   },
   {
     name: 'count',
     label: 'Count',
     align: 'right',
+    icon: 'el-icon-document',
   },
   {
     name: 'amount',
     label: 'Amount',
     format: 'dollar',
     align: 'right',
+    icon: 'el-icon-document',
   },
   {
     name: 'fee',
     label: 'Fee',
     format: 'dollar',
     align: 'right',
+    icon: 'el-icon-document',
   },
   {
     name: 'net',
     label: 'NET',
     format: 'dollar',
     align: 'right',
+    icon: 'el-icon-document',
   },
 ]
 

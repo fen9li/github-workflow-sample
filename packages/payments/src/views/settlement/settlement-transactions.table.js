@@ -4,6 +4,7 @@ const TABLE_COLUMNS = [
   {
     name: 'createdAt',
     label: 'Date Created',
+    icon: 'el-icon-document',
     format: {
       name: 'date',
       params: ['DD/MM/YYYY hh:mm A'],
@@ -12,6 +13,8 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'type',
+    label: 'Type',
+    icon: 'el-icon-document',
     width: 140,
     format: 'capital',
     component: {
@@ -29,6 +32,7 @@ const TABLE_COLUMNS = [
   {
     name: 'amount.total',
     label: 'Amount',
+    icon: 'el-icon-document',
     format: 'dollar',
     width: 100,
     component: {
@@ -49,23 +53,27 @@ const TABLE_COLUMNS = [
   {
     name: 'amount.fees',
     label: 'Fee',
+    icon: 'el-icon-document',
     format: 'dollar',
     width: 100,
   },
   {
     name: 'amount.subtotal',
     label: 'NET',
+    icon: 'el-icon-document',
     format: 'dollar',
     width: 100,
   },
   {
     name: 'id',
     label: 'Transaction ID',
+    icon: 'el-icon-document',
     width: 300,
   },
   {
     name: 'status',
     label: 'Status',
+    icon: 'el-icon-document',
     format: 'capital',
     width: 120,
     component: {

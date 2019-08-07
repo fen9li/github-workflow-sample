@@ -1,5 +1,6 @@
 <script>
 import { datePickerFormat } from '@lib/utils/date-helper'
+import get from 'lodash/get'
 
 export default {
   name: 'EditSubscriptionAnniversaryModal',
@@ -36,20 +37,21 @@ export default {
       if (!this.validateAll().some(item => item === false)) {
         this.processing = true
         const { newDate } = this.form
-        const [error, response] = await this.$api.put(`/subscriptions/${this.subscription.id}/anniversary`, {
-          new_anniversary_date: newDate,
-        })
+
+        const requestData = {
+          frequency: get(this.subscription, 'current_frequency.frequency', null),
+          product: {
+            id: get(this.subscription, 'current_product.id', null),
+          },
+          start_at: newDate,
+        }
+
+
+        const [error,] = await this.$api.put(`/subscriptions/${this.subscription.id}/upgrade`, requestData)
 
         this.processing = false
 
-        if (response) {
-          this.$notify({
-            type: 'success',
-            title: 'Success',
-            message: `Changes saved successfully`,
-          })
-          this.$emit('update:visible', false)
-        } else if (error) {
+        if (error) {
           const violations = Object.keys(error.violations)
           violations.forEach(violation => {
             setTimeout(() => {
@@ -60,6 +62,14 @@ export default {
               })
             }, 50)
           })
+        } else {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: `Changes saved successfully`,
+          })
+          this.$emit('update:visible', false)
+
         }
       }
     },

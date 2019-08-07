@@ -21,7 +21,7 @@ export default {
     return {
       processing: false,
       form: {
-        selectedMethod: get(this.customer, 'paymentMethods[0].value', ''),
+        selectedMethod: get(this.customer, 'payment_sources[0].token', ''),
       },
       showAddMethodForm: false,
       rules: {
@@ -37,7 +37,7 @@ export default {
   },
   computed: {
     displayMethodForm() {
-      return this.customer.paymentMethods.length === 0 || this.showAddMethodForm
+      return !get(this.customer.payment_sources, 'length') || this.showAddMethodForm
     },
   },
   methods: {
@@ -102,7 +102,7 @@ export default {
 
       <payment-form-item
         :selected-method="form.selectedMethod"
-        :payment-methods="customer.paymentMethods"
+        :payment-methods="customer.payment_sources"
         :display-form="displayMethodForm"
         @showForm="showAddMethodForm = $event"
         @changeMethod="form.selectedMethod = $event"

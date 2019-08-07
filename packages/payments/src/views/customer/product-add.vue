@@ -2,6 +2,7 @@
 import { mask } from 'vue-the-mask'
 import paymentFormItem from './payment-methods/payment-form-item'
 import ElasticProcessor from '@lib/processors/elastic-processor'
+import get from 'lodash/get'
 
 export default {
   name: 'CustomerDetailsAddProductModal',
@@ -20,10 +21,11 @@ export default {
   data() {
     return {
       showAddMethodForm: false,
+      processing: false,
       form: {
-        product: '',
-        amount: '',
-        endpoint: '',
+        product: null,
+        amount: null,
+        payment_source: get(this.customer, 'payment_sources[0].token', null),
       },
       productsData: {
         data: [],
@@ -44,7 +46,7 @@ export default {
             trigger: 'blur',
           },
         ],
-        endpoint: [
+        payment_source: [
           {
             required: true,
             message: 'This field is required',
@@ -56,7 +58,7 @@ export default {
   },
   computed: {
     displayMethodForm() {
-      return this.customer.paymentMethods.length === 0 || this.showAddMethodForm
+      return !get(this.customer.payment_sources, 'length') || this.showAddMethodForm
     },
     allProducts() {
       return this.productsData.data.map(product => {
@@ -71,30 +73,45 @@ export default {
     async onSubmit() {
       this.showAddMethodForm = false
       if (!this.validateAll().some(item => item === false)) {
+        const { customer, form } = this
+        this.processing = true
 
-        // TODO: Update method with new API
+        const requestData = {
+          amount: form.amount,
+          customer: {
+            id: customer.id
+          },
+          payment_source: {
+            token: form.payment_source,
+          },
+          single_product: {
+            id: form.product
+          },
+        }
 
-        // const [error, response] = await this.$api
+        const [error, response] = await this.$api.post('/orders', requestData)
 
-        // if (response) {
-        //   this.$notify({
-        //     type: 'success',
-        //     title: 'Success',
-        //     message: `Changes saved successfully`,
-        //   })
-        //   this.$emit('update:visible', false)
-        // } else if (error) {
-        //   const violations = Object.keys(error.violations)
-        //   violations.forEach(violation => {
-        //     setTimeout(() => {
-        //       this.$notify({
-        //         type: 'error',
-        //         title: 'Error',
-        //         message: `${violation}: ${error.violations[violation][0]}`,
-        //       })
-        //     }, 50)
-        //   })
-        // }
+        this.processing = false
+
+        if (response) {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: `Changes saved successfully`,
+          })
+          this.$emit('update:visible', false)
+        } else if (error) {
+          const violations = Object.keys(error.violations)
+          violations.forEach(violation => {
+            setTimeout(() => {
+              this.$notify({
+                type: 'error',
+                title: 'Error',
+                message: `${violation}: ${error.violations[violation][0]}`,
+              })
+            }, 50)
+          })
+        }
       }
     },
     validateAll() {
@@ -194,11 +211,11 @@ export default {
         <hr :class="['divider-primary', $style.divider]">
 
         <payment-form-item
-          :selected-method="form.endpoint"
-          :payment-methods="customer.paymentMethods"
+          :selected-method="form.payment_source"
+          :payment-methods="customer.payment_sources"
           :display-form="displayMethodForm"
           @showForm="showAddMethodForm = $event"
-          @changeMethod="form.endpoint = $event"
+          @changeMethod="form.payment_source = $event"
         />
       </el-form>
       <el-button
@@ -206,6 +223,7 @@ export default {
         type="primary"
         :class="[$style.save, 'wide-button']"
         data-test="submit"
+        :loading="processing"
         @click="onSubmit"
       >
         Save

@@ -232,7 +232,7 @@ export default {
           v-if="modal.cancel"
           :visible.sync="modal.cancel"
           :subscription="subscription"
-          :payment-methods="customer.paymentMethods"
+          :payment-methods="customer.payment_sources"
         />
 
         <revert-cancellation

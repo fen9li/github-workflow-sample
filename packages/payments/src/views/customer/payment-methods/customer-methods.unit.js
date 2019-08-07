@@ -35,7 +35,7 @@ describe('packages/payments/src/views/customer/information/customer-details.vue'
 
   it('check that all payment methods are rendered', () => {
     const methods = wrapper.findAll('.card')
-    expect(methods.length).toBe(wrapper.vm.customer.endpoints.length)
+    expect(methods.length).toBe(wrapper.vm.customer.payment_sources.length)
   })
 
   it('check that Add button is rendered and opens the modal', () => {
@@ -52,7 +52,7 @@ describe('packages/payments/src/views/customer/information/customer-details.vue'
   })
 
   it('check that click on method delete icon open the modal and passes the method', () => {
-    const customerMethods = wrapper.vm.customer.endpoints
+    const customerMethods = wrapper.vm.customer.payment_sources
     expect(customerMethods.length).toBeTruthy()
     const deleteBtns = wrapper.findAll('[data-test="delete"]')
     const deleteBtn = deleteBtns.at(0)

@@ -52,31 +52,37 @@ const TABLE_COLUMNS = [
   {
     name: 'createdAt',
     label: 'Date Created',
+    icon: 'el-icon-document',
     format: 'dateTime',
   },
   {
     name: 'name',
     label: 'Product Name',
+    icon: 'el-icon-document',
     width: 300,
   },
   {
     name: 'price.total',
     label: 'Amount',
+    icon: 'el-icon-document',
     format: 'dollar',
   },
   {
     name: 'startAt',
     label: 'Effective Start Date',
+    icon: 'el-icon-document',
     format: 'dayMonth',
   },
   {
     name: 'endAt',
     label: 'End Date',
+    icon: 'el-icon-document',
     format: 'date',
   },
   {
     name: 'status',
     label: 'Status',
+    icon: 'el-icon-document',
     format: 'capital',
     component: {
       is: 'cell-activity',

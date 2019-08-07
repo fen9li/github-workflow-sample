@@ -110,7 +110,7 @@ export default {
     },
     disableCoupon(coupon) {
       const { appliedCoupon } = this
-      return appliedCoupon && appliedCoupon.coupon.code !== coupon.value
+      return appliedCoupon.coupon && appliedCoupon.coupon.code !== coupon.value
     }
   },
 }

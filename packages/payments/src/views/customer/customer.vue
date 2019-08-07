@@ -2,7 +2,7 @@
 import appConfig from '~/app.config'
 import AddProduct from './product-add'
 import AddSubscription from './subscriptions/customer-subscription-add'
-import formatMethod from '@lib/utils/format-payment-method'
+import formatDollar from '@lib/utils/format-dollar'
 
 export default {
   name: 'CustomerProfile',
@@ -62,9 +62,7 @@ export default {
     },
   },
   created() {
-    this.getInformation().then(() => {
-      this.adjustPaymentMethods()
-    })
+    this.getInformation()
   },
   methods: {
     async getInformation() {
@@ -75,15 +73,9 @@ export default {
       this.loading = false
       return response
     },
-    adjustPaymentMethods() {
-      const { endpoints } = this.customer
-
-      if (endpoints) {
-        this.customer.paymentMethods = endpoints.map(item => {
-          return { value: item.pan, label: formatMethod(item) }
-        })
-      }
-    },
+    formatDollar(value) {
+      return formatDollar(value)
+    }
   },
 }
 </script>
@@ -129,7 +121,7 @@ export default {
             :class="$style.balanceCount"
             data-test="owing"
           >
-            {{ customer.total_amount_outstanding | dollar }}
+            {{ formatDollar(customer.total_amount_outstanding.total) }}
           </strong>
         </div>
         <div :class="$style.total">
@@ -141,7 +133,7 @@ export default {
             :class="$style.balanceCount"
             data-test="transacted"
           >
-            {{ customer.total_amount_transacted | dollar }}
+            {{ formatDollar(customer.total_amount_transacted.total) }}
           </strong>
         </div>
       </div>

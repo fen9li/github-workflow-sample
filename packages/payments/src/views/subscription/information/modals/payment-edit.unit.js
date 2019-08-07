@@ -33,7 +33,7 @@ describe('packages/payments/src/views/subscription/information/modals/payment-ed
 
   beforeEach(() => {
     wrapper = createWrapper()
-    methods = wrapper.vm.customer.paymentMethods
+    methods = wrapper.vm.customer.payment_sources
   })
 
   it('exports a valid component', () => {

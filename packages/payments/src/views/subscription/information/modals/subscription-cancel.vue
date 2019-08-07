@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     displayMethodForm() {
-      return this.paymentMethods.length === 0 || this.showAddMethodForm
+      return !get(this.customer.payment_sources, 'length') || this.showAddMethodForm
     },
   },
   methods: {

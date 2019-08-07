@@ -1,3 +1,3 @@
-export default function formatAccount(value) {
-  return `*** ${value.toString().slice(-3)}`
+export default function formatAccount(value, count = 3) {
+  return `*** ${value.toString().slice(-count)}`
 }

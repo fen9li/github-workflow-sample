@@ -10,15 +10,20 @@ import capitalize from 'lodash/capitalize'
 import get from 'lodash/get'
 
 const availableStatuses = {
-  1: {
+  pending: {
     icon: 'el-icon-time',
     color: '#fbb241',
     label: 'Pending',
   },
-  4: {
+  completed: {
     icon: 'el-icon-check',
     color: '#29d737',
     label: 'Successful',
+  },
+  finalised: {
+    icon: 'el-icon-check',
+    color: '#29d737',
+    label: 'Finalised',
   },
   refund: {
     icon: 'el-icon-close',
@@ -71,11 +76,7 @@ export default {
     },
   },
   created() {
-    this.getTransactionDetails().then(response => {
-      if (get(response, 'order.subscription')) {
-        this.getSubscriptionDetails(response.order.subscription.id)
-      }
-    })
+    this.getAllData()
   },
   methods: {
     capitalize,
@@ -101,6 +102,16 @@ export default {
       this.loading = false
       this.ready = true
     },
+    getAllData() {
+      this.getTransactionDetails().then(response => {
+        if (get(response, 'order.subscription')) {
+          this.getSubscriptionDetails(response.order.subscription.id)
+        } else {
+          this.loading = false
+          this.ready = true
+        }
+      })
+    }
   },
 }
 </script>
@@ -114,6 +125,7 @@ export default {
       v-if="modal.refund"
       :visible.sync="modal.refund"
       :transaction="transaction"
+      @updated="getAllData"
     />
     <el-button
       v-if="transactionStatus.label === 'Successful'"
@@ -166,7 +178,7 @@ export default {
             <dd>{{ formatDate(transaction.created_at) }}</dd>
 
             <dt>Description</dt>
-            <dd>{{ transaction.statement_description }}</dd>
+            <dd>{{ transaction.statement_description || '-' }}</dd>
 
             <dt>Amount</dt>
             <dd>{{ formatDollar(transaction.amount.total) }}</dd>
@@ -192,16 +204,18 @@ export default {
 
         <hr :class="['divider-primary', 'info-block__divider']">
 
-        <subscription-details
-          v-if="transaction.order.subscription"
-          :subscription="subscription"
-          is-transaction
-        />
+        <div v-if="transaction.order.subscription">
+          <subscription-details
+            :subscription="subscription"
+            is-transaction
+          />
 
-        <hr :class="['divider-primary', 'info-block__divider']">
+          <hr :class="['divider-primary', 'info-block__divider']">
+        </div>
 
         <payment-details
           :customer="transaction.order.customer"
+          token
         />
       </div>
     </el-card>

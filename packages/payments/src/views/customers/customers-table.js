@@ -18,6 +18,11 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
+    attribute: 'preferredName',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
     attribute: 'lastName',
     type: 'string',
     icon: 'el-icon-document',
@@ -70,27 +75,38 @@ const TABLE_COLUMNS = [
     name: 'id',
     label: 'Customer ID',
     type: 'string',
+    icon: 'el-icon-document',
     width: 140,
   },
   {
     name: 'firstName',
     type: 'string',
+    icon: 'el-icon-document',
+    width: 140,
+  },
+  {
+    name: 'preferredName',
+    type: 'string',
+    icon: 'el-icon-document',
     width: 140,
   },
   {
     name: 'lastName',
     type: 'string',
+    icon: 'el-icon-document',
     width: 140,
   },
   {
     name: 'email',
     type: 'string',
+    icon: 'el-icon-document',
     width: 200,
   },
   {
     name: 'phoneNumbers[0]',
     label: 'Telephone',
     type: 'string',
+    icon: 'el-icon-document',
     width: 140,
   },
   {

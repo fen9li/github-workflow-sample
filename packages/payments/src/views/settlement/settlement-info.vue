@@ -23,9 +23,9 @@ export default {
           value: 'Pending',
           color: '#fbb241',
         },
-        successful: {
+        completed: {
           icon: 'el-icon-check',
-          value: 'Successfull',
+          value: 'Successful',
           color: '#29d737',
         },
         failed: {
@@ -33,13 +33,13 @@ export default {
           value: 'Failed',
           color: '#f00',
         },
-        5: {
+        refunded: {
           icon: 'el-icon-close',
           value: 'Failed',
           color: '#f00',
         },
       }
-      return availableStatuses[this.settlement.status]
+      return availableStatuses[this.settlement.status] || {}
     },
     customerName() {
       if (this.settlement) {
@@ -48,6 +48,10 @@ export default {
       } else {
         return ''
       }
+    },
+    settlementAccount() {
+      const { funding_source: source } = this.settlement
+      return source ? source.total : '-'
     },
     dataReady() {
       return Object.keys(this.settlement).length > 0
@@ -116,7 +120,7 @@ export default {
       <dd>{{ customerName }}</dd>
 
       <dt>Settlement Account</dt>
-      <dd>{{ settlement.funding_source || '-' }}</dd>
+      <dd>{{ settlementAccount }}</dd>
 
       <dt>Transaction ID</dt>
       <dd>{{ settlement.id }}</dd>
@@ -144,6 +148,7 @@ export default {
       <div :class="$style.warningHeader">
         <i class="el-icon-error" />
         <span :class="$style.warningTitle">
+          <!-- TODO: Add real error message -->
           This payout was returned by your bank. Reason given was: No account
         </span>
         <i

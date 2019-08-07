@@ -5,10 +5,6 @@ export default {
   name: 'TransactionRefund',
   directives: { mask },
   props: {
-    visible: {
-      type: Boolean,
-      required: true,
-    },
     transaction: {
       type: Object,
       required: true,
@@ -19,8 +15,8 @@ export default {
       form: {
         reason: '',
         amount: '',
-        currency: 'aud',
       },
+      processing: false,
       rules: {
         refundTo: [
           {
@@ -50,19 +46,23 @@ export default {
     refundTo() {
       const { customer } = this.transaction.order
       // TODO: Adjust to real data when one is done
-      return `${customer.first_name} ${customer.last_name}, BSB 178-8297, ACC 727873`
+      return `${customer.first_name} ${customer.last_name}, ${this.transaction.funding_source || 'Placeholder funding source'}`
     },
   },
   methods: {
     async unSubmit() {
       const { transaction, form } = this
       if (!this.validateAll().some(item => item === false)) {
+        this.processing = true
+
         const [error, response] = await this.$api.post(`/orders/${transaction.order.id}/refund`,
           {
             amount: form.amount,
-            reason: form.reason,
+            refund_reason: form.reason,
           }
         )
+
+        this.processing = false
 
         if (response) {
           this.$notify({
@@ -71,6 +71,7 @@ export default {
             message: `Refund paid successfully`,
           })
           this.$emit('update:visible', false)
+          this.$emit('updated')
         } else if (error) {
           const violations = Object.keys(error.violations)
           violations.forEach(violation => {
@@ -99,9 +100,9 @@ export default {
 <template>
   <el-dialog
     title="Refund Payment"
-    :visible="visible"
     :custom-class="$style.modal"
-    @update:visible="$emit('update:visible', $event)"
+    v-bind="$attrs"
+    v-on="$listeners"
   >
     <el-form
       ref="form"
@@ -147,7 +148,7 @@ export default {
             </el-input>
           </el-form-item>
           <el-select
-            v-model="form.currency"
+            :value="'AUD'"
             disabled
           >
             <el-option
@@ -179,6 +180,7 @@ export default {
       <el-button
         class="wide-button"
         type="primary"
+        :loading="processing"
         @click="unSubmit"
       >
         Refund

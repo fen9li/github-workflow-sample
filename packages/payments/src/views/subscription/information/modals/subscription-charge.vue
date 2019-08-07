@@ -25,8 +25,8 @@ export default {
     return {
       processing: false,
       form: {
-        amount: '',
-        selectedMethod: get(this.customer.paymentMethods[0], 'value', ''),
+        amount: null,
+        selectedMethod: get(this.customer,'payment_sources[0].token', null),
       },
       rules: {
         selectedMethod: [
@@ -48,7 +48,7 @@ export default {
   },
   computed: {
     displayMethodForm() {
-      return this.customer.paymentMethods.length === 0 || this.showAddMethodForm
+      return !get(this.customer.payment_sources, 'length') || this.showAddMethodForm
     },
   },
   methods: {
@@ -161,7 +161,7 @@ export default {
       <hr :class="['divider-primary', $style.divider]">
       <payment-form-item
         :selected-method="form.selectedMethod"
-        :payment-methods="customer.paymentMethods"
+        :payment-methods="customer.payment_sources"
         :display-form="displayMethodForm"
         @showForm="showAddMethodForm = $event"
         @changeMethod="form.selectedMethod = $event"

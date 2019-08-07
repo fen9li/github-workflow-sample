@@ -3,7 +3,7 @@ module.exports = {
   'created_at': '2019-06-24T04: 59: 29Z',
   'email': 'gokuneva@example.net',
   'enabled': 'enabled',
-  'endpoints': [
+  'payment_sources': [
     {
       'expiry.month': null,
       'expiry.year': null,

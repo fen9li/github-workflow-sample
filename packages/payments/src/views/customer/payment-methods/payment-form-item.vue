@@ -1,5 +1,6 @@
 <script>
 import paymentForm from './payment-form'
+import capitalize from 'lodash/capitalize'
 
 export default {
   name: 'AddPaymentMethodFormItem',
@@ -55,8 +56,10 @@ export default {
       // TODO: Add api method call when new method should be added, then emit close event
       this.$emit('showForm', false)
     },
+    formatMethod(method) {
+      return `${method.name} **** ${method.pan.toString().slice(-4)} ${capitalize(method.type.replace('_', ' '))}`
+    }
   },
-
 }
 </script>
 
@@ -85,8 +88,8 @@ export default {
             <el-option
               v-for="(method, index) in paymentMethods"
               :key="index"
-              :value="method.value"
-              :label="method.label"
+              :value="method.token"
+              :label="formatMethod(method)"
             />
           </el-select>
         </template>

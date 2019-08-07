@@ -28,7 +28,7 @@ export default {
   },
   computed: {
     methods() {
-      return this.customer.endpoints
+      return this.customer.payment_sources || []
     },
   },
   methods: {
@@ -61,7 +61,7 @@ export default {
     </div>
 
     <div
-      v-if="methods"
+      v-if="methods.length"
       :class="$style.cards"
     >
       <!-- TODO: Adjust to updated format (after backend adds data) -->

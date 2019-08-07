@@ -18,6 +18,7 @@ export default {
   inheritAttrs: false,
   data() {
     return {
+      processing: false,
       type: 'subscription',
       form: {
         name: null,
@@ -39,6 +40,8 @@ export default {
       const { form, type } = this
 
       if (!this.validateAll().some(item => item === false)) {
+        this.processing = true
+
         const productType = `${capitalize(type)} Product`
         let requestData
         const requestUrl = type === 'single' ? '/single-products' : '/products'
@@ -62,6 +65,8 @@ export default {
         }
 
         const [error, response] = await this.$api.post(requestUrl, requestData )
+
+        this.processing = false
 
         if (response) {
           this.$notify({
@@ -182,6 +187,7 @@ export default {
         type="primary"
         class="wide-button"
         data-test="submit"
+        :loading="processing"
         @click="createProduct"
       >
         Save

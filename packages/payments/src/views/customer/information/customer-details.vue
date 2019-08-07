@@ -11,6 +11,12 @@ export default {
       required: true,
     },
   },
+  computed: {
+    phone() {
+      const { phone_numbers: numbers } = this.customer
+      return numbers ? numbers[0] : '-'
+    }
+  }
 }
 </script>
 
@@ -42,7 +48,7 @@ export default {
       <dd>{{ customer.email }}</dd>
 
       <dt>Telephone</dt>
-      <dd>{{ customer.phone_numbers[0] || '-' }}</dd>
+      <dd>{{ phone }}</dd>
 
       <dt>Address</dt>
       <dd>{{ customer.address || '-' }}</dd>

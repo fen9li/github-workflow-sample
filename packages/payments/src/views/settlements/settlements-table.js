@@ -82,14 +82,16 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'fundingSource',
+    name: 'fundingSource.pan',
     label: 'Settlement Account',
+    icon: 'el-icon-document',
     width: 100,
     format: 'account',
   },
   {
     name: 'orderId',
     label: 'Order ID',
+    icon: 'el-icon-document',
     width: 70,
     type: 'string',
   },
@@ -97,33 +99,34 @@ const TABLE_COLUMNS = [
     name: 'status',
     label: 'Status',
     icon: 'el-icon-document',
+    format: 'capital',
     width: 100,
     component: {
       props: {
         styleObj(val) {
           switch (val) {
-            case 'Pending': return { color: '#fbb241' }
-            case 'Successfull': return { color: '#29d737' }
-            case 'Failed': return { color: '#fc7168' }
-            case 'Refunded': return { color: '#fc7168' }
+            case 'pending': return { color: '#fbb241' }
+            case 'completed': return { color: '#29d737' }
+            case 'failed': return { color: '#fc7168' }
+            case 'refunded': return { color: '#fc7168' }
             default: return {}
           }
         },
         badge(val) {
           switch (val) {
-            case 'Pending': return {
+            case 'pending': return {
               name: 'el-icon-time',
               pos: 'left',
             }
-            case 'Successfull': return {
+            case 'completed': return {
               name: 'el-icon-check',
               pos: 'left',
             }
-            case 'Failed': return {
+            case 'failed': return {
               name: 'el-icon-close',
               pos: 'left',
             }
-            case 'Refunded': return {
+            case 'refunded': return {
               name: 'el-icon-refresh',
               pos: 'left',
             }
@@ -134,7 +137,7 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'dateFinalised',
+    name: 'completedAt',
     label: 'Date Finalised',
     icon: 'el-icon-document',
     width: 100,
@@ -152,7 +155,6 @@ export default function(component) {
         filters: [
           {
             attribute: 'type',
-            comparison: 'eq',
             value: 'settlement',
           },
         ],

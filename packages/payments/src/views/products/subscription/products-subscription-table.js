@@ -65,45 +65,53 @@ const TABLE_COLUMNS = [
   {
     name: 'createdAt',
     label: 'Date Created',
+    icon: 'el-icon-document',
     format: 'dateTime',
   },
   {
     name: 'id',
     label: 'Code',
+    icon: 'el-icon-document',
     width: 140,
   },
   {
     name: 'name',
     label: 'Product Name',
+    icon: 'el-icon-document',
   },
   {
     name: 'billingType',
     label: 'Billing Cycle',
+    icon: 'el-icon-document',
     format: 'capital',
   },
   {
     name: 'anchorAt',
     label: 'Anchor Date',
+    icon: 'el-icon-document',
     format: 'dayMonthShort',
   },
   {
     name: 'sunsetAt',
+    icon: 'el-icon-document',
     label: 'End Date',
     format: 'date',
   },
   {
     name: 'pricingPlanCount',
+    icon: 'el-icon-document',
     label: 'Plans',
   },
   {
     name: '',
     label: 'Status',
+    icon: 'el-icon-document',
     format: 'capital',
     component: {
       is: 'cell-activity',
       props: {
         value: (_, row) => {
-          return row.sunsetAt && !isPast(row.sunsetAt) ? 'active' : 'inactive'
+          return row.sunsetAt && isPast(row.sunsetAt) ? 'inactive' : 'active'
         }
       }
     },

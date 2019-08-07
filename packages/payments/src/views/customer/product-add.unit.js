@@ -14,7 +14,7 @@ localVue.directive('loading', () => {})
 const filledForm = {
   product: 'product1',
   amount: '10.00',
-  endpoint: 'method1'
+  payment_source: 'method1'
 }
 
 function createWrapper() {

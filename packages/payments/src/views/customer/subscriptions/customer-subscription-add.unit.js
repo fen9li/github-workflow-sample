@@ -18,7 +18,7 @@ const filledForm = {
   product: 'product1',
   frequency: 'P1M',
   coupon: 'coupon1',
-  endpoint: 'method1'
+  payment_source: 'method1'
 }
 
 function createWrapper() {

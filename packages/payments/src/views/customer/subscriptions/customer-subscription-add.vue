@@ -2,6 +2,7 @@
 import paymentFormItem from '../payment-methods/payment-form-item'
 import ElasticProcessor from '@lib/processors/elastic-processor'
 import { datePickerFormat } from '@lib/utils/date-helper'
+import get from 'lodash/get'
 
 export default {
   name: 'CustomerDetailsAddSubscription',
@@ -20,12 +21,12 @@ export default {
       processing: false,
       showAddMethodForm: false,
       form: {
-        start_at: '',
+        start_at: null,
         end_at: null,
-        product: '',
-        frequency: '',
+        product: null,
+        frequency: null,
         coupon: null,
-        endpoint: null,
+        payment_source: get(this.customer,'payment_sources[0].token', null),
       },
       productsData: {
         data: [],
@@ -62,7 +63,7 @@ export default {
   },
   computed: {
     displayMethodForm() {
-      return this.customer.paymentMethods.length === 0 || this.showAddMethodForm
+      return !get(this.customer.payment_sources, 'length') || this.showAddMethodForm
     },
     allProducts() {
       return this.productsData.data.map(product => {
@@ -86,9 +87,13 @@ export default {
 
         const { form, customer } = this
         const [error, response] = await this.$api.post(`/customers/${customer.id}/subscriptions`, {
-          coupon: form.coupon,
+          coupon: {
+            code: form.coupon
+          },
           end_at: form.end_at,
-          endpoint: form.endpoint,
+          payment_source: {
+            token: form.payment_source
+          },
           frequency: form.frequency,
           product: {
             id: form.product
@@ -253,11 +258,11 @@ export default {
         <hr :class="['divider-primary', $style.divider]">
 
         <payment-form-item
-          :selected-method="form.endpoint"
-          :payment-methods="customer.paymentMethods"
+          :selected-method="form.payment_source"
+          :payment-methods="customer.payment_sources"
           :display-form="displayMethodForm"
           @showForm="showAddMethodForm = $event"
-          @changeMethod="form.endpoint = $event"
+          @changeMethod="form.payment_source = $event"
         />
       </el-form>
       <el-button

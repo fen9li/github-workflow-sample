@@ -384,14 +384,16 @@
   &__pay-method {
     display: flex;
     align-items: center;
+    max-height: 1.4rem;
   }
 
   &__pay-logo {
-    width: 2rem;
+    height: 1.2rem;
+    margin-left: 0.5rem;
   }
 
   &__pay-img {
-    width: 100%;
+    height: 100%;
   }
 
   &__wrapper {

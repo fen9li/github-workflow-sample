@@ -3,7 +3,6 @@ import appConfig from '~/app.config'
 import amountCharge from './information/modals/subscription-charge'
 import subscriptionCancel from './information/modals/subscription-cancel'
 import revertCancellation from './information/modals/revert-cancellation'
-import formatMethod from '@lib/utils/format-payment-method'
 import isPast from '@lib/utils/date-is-past'
 
 export default {
@@ -70,7 +69,8 @@ export default {
       const [, response] = await this.$api.get(`/subscriptions/${this.id}`)
       if (response) {
         this.subscription = { ...response }
-        if(response.cancellation_at && isPast(response.cancellation_at)) {
+        if(response.cancellation_at && isPast(response.cancellation_at) ||
+           response.end_at && isPast(response.end_at)) {
           this.subscription.isCancelled = true
         }
       }
@@ -80,17 +80,7 @@ export default {
       const [, response] = await this.$api.get(`/customers/${customerId}`)
       if (response) {
         this.customer = { ...response, fullName: `${response.first_name} ${response.last_name}` }
-        this.adjustPaymentMethods()
         this.loading = false
-      }
-    },
-    adjustPaymentMethods() {
-      const { endpoints } = this.customer
-
-      if (endpoints) {
-        this.customer.paymentMethods = endpoints.map(item => {
-          return { value: item.pan, label: formatMethod(item) }
-        })
       }
     },
   },
@@ -155,7 +145,7 @@ export default {
           v-if="modal.cancel && tabKey === 'subscription-transactions'"
           :visible.sync="modal.cancel"
           :subscription="subscription"
-          :payment-methods="customer.paymentMethods"
+          :payment-methods="customer.payment_sources"
         />
 
         <revert-cancellation
