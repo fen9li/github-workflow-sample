@@ -79,6 +79,7 @@ describe('packages/online-offers/src/views/catalogues/catalogues.vue', () => {
     createModal = wrapper.find('[data-test="modal"]')
     expect(createModal.exists()).toBeTruthy()
   })
+
 })
 
 
