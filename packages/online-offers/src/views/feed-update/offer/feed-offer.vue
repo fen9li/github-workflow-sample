@@ -105,7 +105,7 @@ export default {
       </div>
       <div>
         <dl :class="['datalist', $style.list]">
-          <dt>Offer Associated Aggreg</dt>
+          <dt>Offer Aggregator</dt>
           <dd>{{ capitalize(offer.feed) || '-' }}</dd>
           <dt>Offer Ext ID</dt>
           <dd>{{ offer.external_id || '-' }}</dd>
@@ -117,6 +117,8 @@ export default {
           <dd>
             {{ formatDate(offer.updated_at, 'DD/MM/YYYY hh:mm A') || '-' }}
           </dd>
+          <dt>Merchant Name</dt>
+          <dd>{{ offer.feed_merchant.merchant.name }}</dd>
           <dt>Offer Name</dt>
           <dd>{{ map.name || '-' }}</dd>
           <dt>Coupon Code</dt>
