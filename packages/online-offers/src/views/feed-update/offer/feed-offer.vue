@@ -38,14 +38,8 @@ export default {
     this.loading = false
   },
   methods: {
-    ...mapActions('offers', [
-      'getGlobalOffer',
-      'createGlobalOffer',
-    ]),
-    ...mapActions('feedOffers', [
-      'getFeedOffer',
-      'activateFeedOffer',
-    ]),
+    ...mapActions('offers', ['getGlobalOffer', 'createGlobalOffer']),
+    ...mapActions('feedOffers', ['getFeedOffer', 'activateFeedOffer']),
     capitalize,
     async fetchFeedOffer() {
       const [, result] = await this.getFeedOffer(this.$attrs.id)
@@ -53,26 +47,30 @@ export default {
         this.offer = result
       }
     },
-    async activate() {
+    activate() {
       this.progress = true
-      await this.createGlobalOffer({
-        feed_offer: this.offer.external_id,
-        name: this.advertiserName,
-      })
-      await this.activateFeedOffer({
-        feedOfferId: this.offer.id,
-        payload: {
-          acknowledgement: 'acknowledged',
-        },
-      })
-      this.getGlobalOffer().then(() => {
-        this.progress = false
-        this.$notify({
-          type: 'success',
-          title: 'Success',
-          message: 'Successfuly activated',
+
+      return Promise.all([
+        this.createGlobalOffer({
+          feed_offer: this.offer.external_id,
+          name: this.advertiserName,
+        }),
+        this.activateFeedOffer({
+          feedOfferId: this.offer.id,
+          payload: {
+            acknowledgement: 'acknowledged',
+          },
+        }),
+      ])
+        .then(this.fetchFeedOffer)
+        .then(() => {
+          this.progress = false
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: 'Successfully activated',
+          })
         })
-      })
     },
     formatDate(value, format) {
       return formatDate(value, format || 'DD/MM/YYYY', false)
