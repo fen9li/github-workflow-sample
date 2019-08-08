@@ -46,7 +46,8 @@ export default class DataProcessor {
   constructor(params = {}) {
     this.data = []
     this.total = 0
-    this.loading = true
+    this.loadingQueueLength = 1
+    this.isFirstRequest = true
     this.staticQuery = params.staticQuery || {}
     this.defaultQuery = params.query
     this.dataQuery = null
@@ -94,6 +95,10 @@ export default class DataProcessor {
     return Math.ceil(this.total / this.dataQuery.pageSize)
   }
 
+  get loading() {
+    return this.loadingQueueLength > 0
+  }
+
   readQueryString() {
     const queryString = this.component.$router.currentRoute.query.q
 
@@ -131,7 +136,12 @@ export default class DataProcessor {
     const { dataQuery, disableQueryString } = this
     const query = mergeQueries(this.staticQuery, dataQuery)
 
-    this.loading = true
+    if (this.isFirstRequest) {
+      this.isFirstRequest = false
+    }
+    else {
+      this.loadingQueueLength++
+    }
 
     if (!disableQueryString && shouldUpdateURL) {
       this.updateURL()
@@ -145,7 +155,7 @@ export default class DataProcessor {
     } catch (error) {
       console.error('Error while requesting data', error)
     } finally {
-      this.loading = false
+      this.loadingQueueLength--
     }
 
     return this.data
