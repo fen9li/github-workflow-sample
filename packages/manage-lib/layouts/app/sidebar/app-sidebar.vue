@@ -13,15 +13,17 @@ export default {
     }
   },
   watch: {
-    '$route'(route) {
+    $route(route) {
       if (route.meta.nested) {
         this.expanded = true
       }
     },
   },
   methods: {
-    onExpand() {
-      this.expanded = !this.expanded
+    onExpand(children) {
+      if (children && children.length) {
+        this.expanded = !this.expanded
+      }
     },
     activeClass(slug) {
       if (this.$route.params.slug === slug) {
@@ -38,13 +40,10 @@ export default {
     <div class="app-sidebar__wrapper">
       <ul class="menu">
         <template v-for="item in menu">
-          <template v-if="item.children && item.children.length">
+          <template v-if="item.children">
             <li
               :key="item.path"
-              :class="[
-                'menu__item',
-                expanded && 'menu__item--expanded'
-              ]"
+              :class="['menu__item', expanded && 'menu__item--expanded']"
             >
               <router-link
                 :to="{ path: item.path }"
@@ -53,9 +52,9 @@ export default {
                 <i :class="`el-icon-${item.icon}`" />
                 {{ item.title }}
                 <i
-
-                  class="el-icon-arrow-down"
-                  @click.prevent="onExpand"
+                  :class="{ 'menu__expand--disabled': !item.children.length }"
+                  class="el-icon-arrow-down menu__expand"
+                  @click.prevent="onExpand(item.children)"
                 />
               </router-link>
               <ul class="submenu">
@@ -64,10 +63,7 @@ export default {
                   :key="children.path"
                   :to="{ path: children.path }"
                   tag="li"
-                  :class="[
-                    'menu__item',
-                    activeClass(children.slug)
-                  ]"
+                  :class="['menu__item', activeClass(children.slug)]"
                 >
                   <a class="menu__link">
                     {{ children.title }}
@@ -113,7 +109,7 @@ export default {
     list-style: none;
 
     [class^='el-icon-'] {
-      margin-right: .6rem;
+      margin-right: 0.6rem;
       color: var(--color-primary-text);
     }
   }
@@ -124,27 +120,27 @@ export default {
 
   .menu__link {
     display: block;
-    padding: .75rem 1.5rem;
+    padding: 0.75rem 1.5rem;
     font-size: 1rem;
     color: var(--color-primary-text);
     cursor: pointer;
-    transition: background-color .15s;
+    transition: background-color 0.15s;
 
     &:hover,
     &:focus,
     &:active {
-      background-color: rgba(#fff, .1);
+      background-color: rgba(#fff, 0.1);
     }
   }
 
   .menu__item--active {
-    background-color: rgba(#fff, .15);
+    background-color: rgba(#fff, 0.15);
   }
 
   .submenu {
     max-height: 0;
     overflow: hidden;
-    transition: max-height .5s cubic-bezier(0, 1, 0, 1);
+    transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
 
     .menu__link {
       padding-left: 5rem;
@@ -159,17 +155,26 @@ export default {
 
   .menu__item .el-icon-arrow-down {
     position: absolute;
-    top: .9rem;
+    top: 0.9rem;
     right: 1.25rem;
     padding-right: 10px;
     padding-left: 10px;
     font-weight: bold;
-    transition: transform .5s cubic-bezier(0, 1, 0, 1);
+    transition: transform 0.5s cubic-bezier(0, 1, 0, 1);
     transform: rotate(0);
   }
 
   .menu__item--expanded .el-icon-arrow-down {
-    transform: rotate(180deg)
+    transform: rotate(180deg);
+  }
+
+  .menu__expand {
+    transition: opacity .3s ease-in-out;
+  }
+
+  .menu__expand--disabled {
+    cursor: wait;
+    opacity: 0.5;
   }
 }
 </style>
