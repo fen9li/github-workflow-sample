@@ -52,6 +52,19 @@ export default {
     isChanged() {
       return this.fields.some(f => f.changed)
     },
+    formMapForValidation() {
+      // el-form can't work with nested fields
+      const { form } = this
+      const validationMap = {}
+
+      for (const fieldName in form) {
+        if (form.hasOwnProperty(fieldName)) {
+          validationMap[fieldName] = form[fieldName].value
+        }
+      }
+
+      return validationMap
+    },
   },
   watch: {
     source: {
@@ -229,7 +242,7 @@ export default {
   <el-card :class="$style.card">
     <el-form
       ref="form"
-      :model="form"
+      :model="formMapForValidation"
       :class="$style.form"
       label-position="top"
     >
