@@ -1,6 +1,6 @@
 const TABLE_FILTERS = [
   {
-    attribute: 'merchant',
+    attribute: 'merchant.name',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -15,7 +15,7 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'lastUpdated',
+    attribute: 'updated_at',
     label: 'Last updated',
     type: 'date',
     icon: 'el-icon-document',
@@ -40,6 +40,14 @@ const TABLE_COLUMNS = [
     format: value => {
       return value.join(', ')
     },
+  },
+  {
+    name: 'enabled',
+    label: 'Global Merchant Status',
+    icon: 'el-icon-document',
+    format(value) {
+      return value ? 'Enabled' : 'Disabled'
+    }
   },
   {
     name: 'updated_at',
