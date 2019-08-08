@@ -44,7 +44,8 @@ const TABLE_FILTERS = [
 const TABLE_COLUMNS = [
   {
     name: 'enabled',
-    width: 70,
+    label: 'Global Merchant Status',
+    width: 100,
     icon: 'el-icon-document',
     component: (_, __, { row }) => ({
       is: merchantsStatus,
@@ -55,25 +56,25 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'name',
+    label: 'Global Merchant Name',
     width: 140,
-    label: 'Merchant',
     icon: 'el-icon-document',
   },
   {
     name: 'total_offers',
-    width: 70,
-    label: 'Offers',
+    label: 'Global Merchant Offers',
+    width: 140,
     icon: 'el-icon-document',
   },
   {
     name: 'feeds',
-    label: 'Feed',
+    label: 'Global Merchant Aggregator Feeds',
     icon: 'el-icon-document',
     format: 'arrayToString',
   },
   {
     name: 'updated_at',
-    label: 'Last Updated',
+    label: 'Last Updated Date',
     icon: 'el-icon-document',
     format: 'dateTime',
   },
