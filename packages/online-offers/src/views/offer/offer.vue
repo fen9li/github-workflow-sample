@@ -19,6 +19,7 @@ export default {
       isEdit: this.$route.params.edit,
       loading: true,
       offer: {},
+      feedMerchant: null,
       modals: {
         remove: false,
         update: false,
@@ -81,7 +82,7 @@ export default {
           key: 'tracking_url',
           label: 'Tracking URL',
           path: 'tracking_url',
-          format: v => (v || '—'),
+          format: v => v || '—',
         },
       ],
       feedOffers: [],
@@ -167,9 +168,16 @@ export default {
     },
   },
   async created() {
-    const [, result] = await this.getGlobalOffer(this.id)
-    if (result) {
-      this.offer = result
+    const [, globalOffer] = await this.getGlobalOffer(this.id)
+
+    if (globalOffer) {
+      const feedMerchId = globalOffer.feed_offer.merchant_external_id
+      const [, feedMerchant] = await this.getFeedMerchant({
+        merchantId: feedMerchId,
+      })
+
+      this.offer = globalOffer
+      this.feedMerchant = feedMerchant
     }
   },
   async mounted() {
@@ -182,9 +190,8 @@ export default {
       'updateGlobalOffer',
       'deleteGlobalOffer',
     ]),
-    ...mapActions('feedOffers', [
-      'activateFeedOffer',
-    ]),
+    ...mapActions('feedOffers', ['activateFeedOffer']),
+    ...mapActions('feedMerchants', ['getFeedMerchant']),
     formatDate(value, format) {
       return formatDate(value, format || 'DD/MM/YYYY', false)
     },
@@ -316,8 +323,16 @@ export default {
 
       <div>
         <dl :class="['datalist', $style.list]">
-          <dt>Offer Associated Aggreg</dt>
+          <dt>Offer Aggregator</dt>
           <dd>{{ aggregator || '-' }}</dd>
+
+          <template v-if="feedMerchant">
+            <dt>Aggregator Feed Merchant</dt>
+            <dd>{{ feedMerchant.map.name }}</dd>
+
+            <dt>Merchant Updated</dt>
+            <dd>{{ formatDate(feedMerchant.updated_at) || '-' }}</dd>
+          </template>
 
           <dt>Offer ID</dt>
           <dd>{{ offer.id || '-' }}</dd>
