@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-payments@0.3.0...manage-payments@0.4.0) (2019-08-08)
+
+### Features
+
+- **payments:** hide dashboard view ([dd7a2ce](https://github.com/loyaltycorp/manage-v2-frontend/commit/dd7a2ce))
+
 # [0.3.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-payments@0.2.0...manage-payments@0.3.0) (2019-08-05)
 
 ### Bug Fixes
