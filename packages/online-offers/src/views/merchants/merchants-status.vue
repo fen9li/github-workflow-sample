@@ -23,7 +23,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('merchants', ['updateMerchant']),
+    ...mapActions('merchants', ['updateGlobalMerchant']),
     ...mapMutations('merchants', {
       updateTable: 'UPDATE_TABLE',
     }),
@@ -32,7 +32,7 @@ export default {
 
       await this.$nextTick()
 
-      this.updateMerchant({
+      this.updateGlobalMerchant({
         merchantId: this.row.id,
         payload: {
           enabled: this.enabled,
