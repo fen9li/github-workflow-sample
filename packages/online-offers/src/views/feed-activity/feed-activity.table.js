@@ -117,4 +117,5 @@ export default component => ({
   }),
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
+  tableName: 'feed-activity'
 })

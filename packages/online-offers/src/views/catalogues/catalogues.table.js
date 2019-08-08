@@ -72,4 +72,5 @@ export default component => ({
   processor: new ApiProcessor({ component, path: 'catalogues' }),
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
+  tableName: 'catalogues'
 })

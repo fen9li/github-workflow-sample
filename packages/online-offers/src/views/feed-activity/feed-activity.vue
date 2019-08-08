@@ -1,6 +1,7 @@
 <script>
 import feedActivityTable from './feed-activity.table.js'
 import ExpandedRow from '@lib/layouts/table/features/expanded-row'
+import getExportedFilename from '../../utils/get-exported-filename'
 
 export default {
   name: 'FeedActivity',
@@ -15,6 +16,11 @@ export default {
       table: feedActivityTable(this),
     }
   },
+  methods: {
+    getExportedFilename() {
+      return getExportedFilename(this.table.tableName)
+    }
+  }
 }
 </script>
 
@@ -22,12 +28,13 @@ export default {
   <main-layout title="Feed Activity">
     <table-layout
       hider
-      table-name="feed-activity"
+      :table-name="table.tableName"
       :processor="table.processor"
       :filters="table.filters"
       :columns="table.columns"
       :fragments="false"
       :quantity="[25, 50, 100, 200]"
+      :export-filename="getExportedFilename"
     >
       <template
         slot="expandedRow"

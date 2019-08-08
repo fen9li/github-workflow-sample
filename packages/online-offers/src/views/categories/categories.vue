@@ -1,7 +1,7 @@
 <script>
 import categoriesTable from './categories.table.js'
-
 import CategoryModal from './category-modal'
+import getExportedFilename from '../../utils/get-exported-filename'
 
 export default {
   components: { CategoryModal },
@@ -15,6 +15,9 @@ export default {
     closeModal() {
       this.showAddModal = false
     },
+    getExportedFilename() {
+      return getExportedFilename(this.table.tableName)
+    }
   },
 }
 </script>
@@ -25,12 +28,13 @@ export default {
     title="Categories"
   >
     <table-layout
-      table-name="categories"
+      :table-name="table.tableName"
       :processor="table.processor"
       :filters="false"
       :columns="table.columns"
       :fragments="false"
       :quantity="[25, 50, 100, 200]"
+      :export-filename="getExportedFilename"
       :hider="false"
     />
 

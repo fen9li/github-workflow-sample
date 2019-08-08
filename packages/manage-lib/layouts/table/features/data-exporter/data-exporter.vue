@@ -10,6 +10,12 @@ import { getReadyColumns } from '@lib/components/data-table/data-table.vue'
 export default {
   name: 'DataExporter',
   mixins: [FeaturesMixin],
+  props: {
+    exportFilename: {
+      type: [String, Function],
+      default: 'exported',
+    },
+  },
   data() {
     return {
       loading: false,
@@ -79,13 +85,24 @@ export default {
 
       return { data: preparedData, columnLabels }
     },
+    getFileName() {
+      const { exportFilename } = this
+
+      if (typeof exportFilename === 'string') {
+        return exportFilename
+      } else if (exportFilename instanceof Function) {
+        return exportFilename()
+      }
+
+      return 'exported'
+    },
     saveFile(blob, type) {
       let reader = new FileReader()
 
       reader.onload = () => {
         let link = document.createElement('a')
 
-        link.download = `exported.${type}`
+        link.download = `${this.getFileName()}.${type}`
         link.target = '_blank'
         link.href = reader.result
 

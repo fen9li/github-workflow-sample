@@ -1,6 +1,7 @@
 <script>
 import cataloguesTable from './catalogues.table'
 import EditCatalogueModal from '../catalogue/catalogue-edit-modal.vue'
+import getExportedFilename from '../../utils/get-exported-filename'
 
 export default {
   name: 'Catalogues',
@@ -19,11 +20,6 @@ export default {
     }
   },
   methods: {
-    formatImage(image) {
-      if (image) {
-        return image + '//-/preview/100x30/-/quality/best/'
-      }
-    },
     onRowClick(row) {
       this.$router.push({
         name: 'catalogue-details',
@@ -32,6 +28,9 @@ export default {
         },
       })
     },
+    getExportedFilename() {
+      return getExportedFilename(this.table.tableName)
+    }
   },
 }
 </script>
@@ -39,13 +38,14 @@ export default {
 <template>
   <main-layout title="Clients">
     <table-layout
-      table-name="catalogue"
+      :table-name="table.tableName"
       :fragments="false"
       hider
       :quantity="[25, 50, 100, 200]"
       :processor="table.processor"
       :filters="table.filters"
       :columns="table.columns"
+      :export-filename="getExportedFilename"
       @row-click="onRowClick"
     />
     <el-button

@@ -62,9 +62,11 @@ export default {
   linked: {
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,
+    tableName: 'catalogue-details-linked'
   },
   unlinked: {
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,
+    tableName: 'catalogue-details-unlinked'
   },
 }
