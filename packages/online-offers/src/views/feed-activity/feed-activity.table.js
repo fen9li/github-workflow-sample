@@ -65,7 +65,7 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'feed',
-    label: 'Aggregators',
+    label: 'Aggregator Feed',
     icon: 'el-icon-document',
     format: value => {
       switch (value) {

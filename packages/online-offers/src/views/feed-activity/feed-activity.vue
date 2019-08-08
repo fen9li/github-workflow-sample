@@ -19,7 +19,7 @@ export default {
 </script>
 
 <template>
-  <main-layout title="Activity">
+  <main-layout title="Feed Activity">
     <table-layout
       hider
       table-name="feed-activity"
