@@ -1,5 +1,6 @@
 <script>
 import offersTable from './offers.table'
+import getExportedFilename from '../../utils/get-exported-filename'
 
 export default {
   name: 'GlobalOffers',
@@ -15,6 +16,9 @@ export default {
         params: { id: row.id || 'unknown' },
       })
     },
+    getExportedFilename() {
+      return getExportedFilename(this.table.tableName)
+    }
   },
 }
 </script>
@@ -22,7 +26,7 @@ export default {
 <template>
   <main-layout title="Global Offers">
     <table-layout
-      table-name="offers"
+      :table-name="table.tableName"
       :processor="table.processor"
       :filters="table.filters"
       :columns="table.columns"
@@ -30,6 +34,7 @@ export default {
       hider
       :class="$style.table"
       :quantity="[25, 50, 100, 200]"
+      :export-filename="getExportedFilename"
       @row-click="onRowClick"
     />
   </main-layout>

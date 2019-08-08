@@ -94,4 +94,5 @@ export default component => ({
   processor: new ApiProcessor({ component, path: 'offers' }),
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
+  tableName: 'offers'
 })

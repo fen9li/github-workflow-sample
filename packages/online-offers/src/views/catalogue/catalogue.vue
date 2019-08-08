@@ -1,9 +1,10 @@
 <script>
 import { mapActions } from 'vuex'
 import ApiProcessor from '@lib/processors/api-processor'
-import merchantsTable from './merchants.table.js'
+import catalogueTable from './catalogue.table.js'
 import CatalogueHeader from './catalogue-header.vue'
 import LinkModal from './link-modal.vue'
+import getExportedFilename from '../../utils/get-exported-filename'
 
 export default {
   name: 'Catalogue',
@@ -17,7 +18,7 @@ export default {
   data() {
     return {
       loading: true,
-      table: merchantsTable,
+      table: catalogueTable,
       isEdit: false,
       catalogue: {},
       selectedItems: [],
@@ -83,6 +84,11 @@ export default {
     handleSelectionChange(value) {
       this.selectedItems = value
     },
+    getExportedFilename() {
+      const { tableName } = this.table[this.activeTab]
+
+      return getExportedFilename(tableName)
+    }
   },
 }
 </script>
@@ -120,7 +126,8 @@ export default {
             :filters="table[activeTab].filters"
             :columns="table[activeTab].columns"
             :fragments="false"
-            table-name="catalogue-details"
+            :table-name="table[activeTab].tableName"
+            :export-filename="getExportedFilename"
             hider
             :quantity="[25, 50, 100, 200]"
             @row-click="onRowClick"

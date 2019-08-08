@@ -23,4 +23,5 @@ export default component => ({
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
   processor: new ApiProcessor({ component, path: 'categories' }),
+  tableName: 'categories'
 })

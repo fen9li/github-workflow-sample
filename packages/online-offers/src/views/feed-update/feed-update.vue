@@ -3,6 +3,7 @@ import { mapGetters } from 'vuex'
 import feedUpdateTable from './feed-update.table.js'
 import merchantUpdateModal from '../merchant-update'
 import ApiProcessor from '@lib/processors/api-processor'
+import getExportedFilename from '../../utils/get-exported-filename'
 import get from 'lodash/get'
 
 export default {
@@ -109,6 +110,11 @@ export default {
         })
       }
     },
+    getExportedFilename() {
+      const { tableName } = this.table[this.activeTab]
+
+      return getExportedFilename(tableName)
+    }
   },
 }
 </script>
@@ -130,13 +136,14 @@ export default {
         :name="tab.name"
       >
         <table-layout
-          :table-name="`feed-update-${tab.name}-${name}`"
+          :table-name="table[activeTab].tableName"
           :processor="table.processor"
           :filters="table[activeTab].filters"
           :columns="table[activeTab].columns"
           :fragments="false"
           hider
           :quantity="[25, 50, 100, 200]"
+          :export-filename="getExportedFilename"
           @row-click="onRowClick"
         />
       </el-tab-pane>

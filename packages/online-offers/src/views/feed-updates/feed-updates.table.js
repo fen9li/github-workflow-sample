@@ -137,4 +137,5 @@ export default component => ({
   processor: new ApiProcessor({ component, path: '/feeds/logs' }),
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
+  tableName: 'feed-updates'
 })

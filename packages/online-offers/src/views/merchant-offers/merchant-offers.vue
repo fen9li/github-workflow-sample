@@ -3,6 +3,7 @@ import ApiProcessor from '@lib/processors/api-processor'
 import { mapActions } from 'vuex'
 import merchantOffersTable from './merchant-offers.table'
 import MerchantModal from './merchant-modal'
+import getExportedFilename from '../../utils/get-exported-filename'
 
 export default {
   name: 'MerchantOffers',
@@ -33,6 +34,11 @@ export default {
         this.status
       }`
     },
+    activeTableName () {
+      const { activeTab } = this
+
+      return `merchant-offers-${activeTab}`
+    }
   },
   created() {
     this.activeTab = this.$route.params.tab || 'active'
@@ -76,6 +82,9 @@ export default {
     handleSelectionChange(value) {
       this.selectedItems = value
     },
+    getExportedFilename() {
+      return getExportedFilename(this.activeTableName)
+    }
   },
 }
 </script>
@@ -103,7 +112,8 @@ export default {
           :columns="table.columns"
           :fragments="false"
           :hider="false"
-          quantity
+          :quantity="[25, 50, 100, 200]"
+          :export-filename="getExportedFilename"
           @row-click="onRowClick"
           @selection-change="handleSelectionChange"
         >

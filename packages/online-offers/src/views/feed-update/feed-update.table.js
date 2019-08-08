@@ -95,9 +95,11 @@ export default {
   merchants: {
     filters: TABLE_FILTERS_MERCHANTS,
     columns: TABLE_COLUMNS_MERCHANTS,
+    tableName: 'feed-update-merchants'
   },
   offers: {
     filters: TABLE_FILTERS_OFFERS,
     columns: TABLE_COLUMNS_OFFERS,
+    tableName: 'feed-update-offers'
   },
 }

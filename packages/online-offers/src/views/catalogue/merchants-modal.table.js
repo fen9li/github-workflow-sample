@@ -1,4 +1,4 @@
-import merchantsTable from './merchants.table.js'
+import merchantsTable from './catalogue.table.js'
 
 const TABLE_FILTERS = []
 
