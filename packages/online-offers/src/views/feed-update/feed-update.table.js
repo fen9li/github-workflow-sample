@@ -8,7 +8,7 @@ const TABLE_FILTERS_MERCHANTS = [{
   icon: 'el-icon-document',
 }, {
   attribute: 'created_at',
-  label: 'Date created',
+  label: 'Date Created',
   type: 'date',
   icon: 'el-icon-date',
 }]
@@ -23,8 +23,8 @@ const TABLE_FILTERS_OFFERS = [{
   type: 'boolean',
   icon: 'el-icon-document',
 }, {
-  attribute: 'created_at',
-  label: 'Date created',
+  attribute: 'updated_at',
+  label: 'Last Updated',
   type: 'date',
   icon: 'el-icon-date',
 }]
@@ -41,7 +41,7 @@ const TABLE_COLUMNS_MERCHANTS = [{
   width: 300,
 }, {
   name: 'created_at',
-  label: 'Date created',
+  label: 'Date Created',
   icon: 'el-icon-date',
   format: 'date',
   width: 200,
@@ -71,8 +71,8 @@ const TABLE_COLUMNS_OFFERS = [{
   icon: 'el-icon-document',
   width: 300,
 }, {
-  name: 'created_at',
-  label: 'Date created',
+  name: 'updated_at',
+  label: 'Last Updated',
   icon: 'el-icon-date',
   format: 'date',
   width: 100,
