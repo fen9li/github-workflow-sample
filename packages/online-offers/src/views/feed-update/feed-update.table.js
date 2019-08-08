@@ -7,8 +7,8 @@ const TABLE_FILTERS_MERCHANTS = [{
   type: 'string',
   icon: 'el-icon-document',
 }, {
-  attribute: 'created_at',
-  label: 'Date Created',
+  attribute: 'updated_at',
+  label: 'Last Updated',
   type: 'date',
   icon: 'el-icon-date',
 }]
@@ -40,8 +40,8 @@ const TABLE_COLUMNS_MERCHANTS = [{
   icon: 'el-icon-document',
   width: 300,
 }, {
-  name: 'created_at',
-  label: 'Date Created',
+  name: 'updated_at',
+  label: 'Last Updated',
   icon: 'el-icon-date',
   format: 'date',
   width: 200,
