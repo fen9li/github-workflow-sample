@@ -27,7 +27,7 @@ export default {
       return !!this.row.offer_id
     },
     canActivate() {
-      return !this.activated || offerCanActivate(this.row)
+      return !this.activated && offerCanActivate(this.row)
     },
   },
   methods: {
