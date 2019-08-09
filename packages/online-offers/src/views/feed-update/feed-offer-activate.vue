@@ -2,6 +2,7 @@
 import CellMixin from '@lib/components/data-table/cells/cell.mixin'
 import { mapActions } from 'vuex'
 import ApiProcessor from '@lib/processors/api-processor'
+import offerCanActivate from '../../utils/offer-can-activate'
 
 export default {
   mixins: [CellMixin],
@@ -19,14 +20,14 @@ export default {
     return {
       showDialog: false,
       progress: false,
-      activated: false,
     }
   },
   computed: {
-    notActivated() {
-      return this.row.offer_id === null
-        && this.row.acknowledgement !== 'deleted'
-        && !this.activated
+    activated() {
+      return !!this.row.offer_id
+    },
+    canActivate() {
+      return !this.activated || offerCanActivate(this.row)
     },
   },
   methods: {
@@ -43,7 +44,6 @@ export default {
         name: this.row.name,
       })
         .then(() => {
-          this.activated = true
           this.progress = false
           this.activateFeedOffer({
             feedOfferId: this.row.id,
@@ -65,7 +65,7 @@ export default {
 
 <template>
   <el-button
-    v-if="notActivated"
+    v-if="canActivate"
     type="text"
     :class="$style.link"
     :loading="progress"

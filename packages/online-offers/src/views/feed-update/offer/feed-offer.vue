@@ -3,6 +3,7 @@ import { mapActions } from 'vuex'
 import get from 'lodash/get'
 import capitalize from 'lodash/capitalize'
 import { formatDate } from '@lib/utils/format-date'
+import offerCanActivate from '../../../utils/offer-can-activate'
 
 export default {
   name: 'FeedOffer',
@@ -14,14 +15,20 @@ export default {
     }
   },
   computed: {
-    map() {
+    normalizedValues() {
       return get(this.offer, 'map') || {}
+    },
+    feedMerchant() {
+      return get(this.offer, 'feed_merchant.merchant') || {}
     },
     advertiserName() {
       return get(this.offer, 'payload.advertisername')
     },
     activated() {
       return !!this.offer.offer_id
+    },
+    canActivate() {
+      return !this.activated || offerCanActivate(this.offer)
     },
     back() {
       return {
@@ -35,7 +42,6 @@ export default {
   },
   async created() {
     await this.fetchFeedOffer()
-    this.loading = false
   },
   methods: {
     ...mapActions('offers', ['getGlobalOffer', 'createGlobalOffer']),
@@ -44,6 +50,7 @@ export default {
     async fetchFeedOffer() {
       const [, result] = await this.getFeedOffer(this.$attrs.id)
       if (result) {
+        this.loading = false
         this.offer = result
       }
     },
@@ -81,7 +88,7 @@ export default {
 
 <template>
   <main-layout
-    :title="map.name"
+    :title="normalizedValues.name"
     :back="back"
     :loading="loading"
   >
@@ -94,7 +101,7 @@ export default {
           General Information
         </span>
         <el-button
-          v-if="!activated"
+          v-if="canActivate"
           :loading="progress"
           type="primary"
           class="el-button--wide"
@@ -106,33 +113,34 @@ export default {
       <div>
         <dl :class="['datalist', $style.list]">
           <dt>Offer Aggregator</dt>
-          <dd>{{ capitalize(offer.feed) || '-' }}</dd>
+          <dd>{{ capitalize(offer.feed) || '—' }}</dd>
           <dt>Offer Ext ID</dt>
-          <dd>{{ offer.external_id || '-' }}</dd>
+          <dd>{{ offer.external_id || '—' }}</dd>
           <dt>Offer Created at</dt>
           <dd>
-            {{ formatDate(offer.created_at, 'DD/MM/YYYY hh:mm A') || '-' }}
+            {{ formatDate(offer.created_at, 'DD/MM/YYYY hh:mm A') || '—' }}
           </dd>
           <dt>Offer Updated</dt>
           <dd>
-            {{ formatDate(offer.updated_at, 'DD/MM/YYYY hh:mm A') || '-' }}
+            {{ formatDate(offer.updated_at, 'DD/MM/YYYY hh:mm A') || '—' }}
           </dd>
           <dt>Merchant Name</dt>
-          <dd>{{ offer.feed_merchant.merchant.name }}</dd>
+
+          <dd>{{ feedMerchant.name || '—' }}</dd>
           <dt>Offer Name</dt>
-          <dd>{{ map.name || '-' }}</dd>
+          <dd>{{ normalizedValues.name || '—' }}</dd>
           <dt>Coupon Code</dt>
-          <dd>{{ map.code || '-' }}</dd>
+          <dd>{{ normalizedValues.code || '—' }}</dd>
           <dt>Offer Starts</dt>
-          <dd>{{ formatDate(map.start_date) || '-' }}</dd>
+          <dd>{{ formatDate(normalizedValues.start_date) || '—' }}</dd>
           <dt>Offer Ends</dt>
-          <dd>{{ formatDate(map.end_date) || '-' }}</dd>
+          <dd>{{ formatDate(normalizedValues.end_date) || '—' }}</dd>
           <dt>Description</dt>
-          <dd>{{ map.description || '-' }}</dd>
+          <dd>{{ normalizedValues.description || '—' }}</dd>
           <dt>Terms & Conditions</dt>
-          <dd>{{ map.terms || '-' }}</dd>
+          <dd>{{ normalizedValues.terms || '—' }}</dd>
           <dt>Offer Tracking URL</dt>
-          <dd>{{ map.tracking_url || '-' }}</dd>
+          <dd>{{ normalizedValues.tracking_url || '—' }}</dd>
         </dl>
       </div>
     </el-card>
