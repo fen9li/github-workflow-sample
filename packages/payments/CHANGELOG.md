@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-payments@0.4.0...manage-payments@0.4.1) (2019-08-12)
+
+### Bug Fixes
+
+- **payments:** adjust views for updated api format ([4c8ac39](https://github.com/loyaltycorp/manage-v2-frontend/commit/4c8ac39))
+
 # [0.4.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-payments@0.3.0...manage-payments@0.4.0) (2019-08-08)
 
 ### Features

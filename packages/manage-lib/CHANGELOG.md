@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyalty-corp/manage-lib@0.3.0...@loyalty-corp/manage-lib@0.4.0) (2019-08-12)
+
+### Bug Fixes
+
+- **payments:** adjust views for updated api format ([4c8ac39](https://github.com/loyaltycorp/manage-v2-frontend/commit/4c8ac39))
+
+### Features
+
+- **app-sidebar:** support loading state for expand icon ([bb7e8a5](https://github.com/loyaltycorp/manage-v2-frontend/commit/bb7e8a5))
+- **manage-lib:** add loading queue support for data processor ([27f86d6](https://github.com/loyaltycorp/manage-v2-frontend/commit/27f86d6))
+- **online-offers:** setup file name for table export ([645951d](https://github.com/loyaltycorp/manage-v2-frontend/commit/645951d))
+
 # [0.3.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyalty-corp/manage-lib@0.2.0...@loyalty-corp/manage-lib@0.3.0) (2019-08-05)
 
 ### Bug Fixes

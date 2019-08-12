@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-online-offers@0.3.1...manage-online-offers@0.4.0) (2019-08-12)
+
+### Bug Fixes
+
+- **online-offers:** fix cta visibilty conditions ([9dda5d0](https://github.com/loyaltycorp/manage-v2-frontend/commit/9dda5d0))
+- **online-offers:** fix fields validation in edit layout ([6951a54](https://github.com/loyaltycorp/manage-v2-frontend/commit/6951a54))
+- **online-offers:** fix labels on activity page ([ef7eb20](https://github.com/loyaltycorp/manage-v2-frontend/commit/ef7eb20))
+- **online-offers:** fix merchant status toggler ([412e8d9](https://github.com/loyaltycorp/manage-v2-frontend/commit/412e8d9))
+- **online-offers:** hide activate cta when feed offer is activated ([20413f8](https://github.com/loyaltycorp/manage-v2-frontend/commit/20413f8))
+- **online-offers:** update labels for global merchant table ([561e497](https://github.com/loyaltycorp/manage-v2-frontend/commit/561e497))
+- **online-offers:** update labels on feed offer detail page ([b0381cd](https://github.com/loyaltycorp/manage-v2-frontend/commit/b0381cd))
+- **online-offers:** update table columns for feed offers ([2098585](https://github.com/loyaltycorp/manage-v2-frontend/commit/2098585))
+
+### Features
+
+- **online-offers:** add merchant status column to client page ([b2e75af](https://github.com/loyaltycorp/manage-v2-frontend/commit/b2e75af))
+- **online-offers:** check extra properties for activate cta ([1e544fb](https://github.com/loyaltycorp/manage-v2-frontend/commit/1e544fb))
+- **online-offers:** setup file name for table export ([645951d](https://github.com/loyaltycorp/manage-v2-frontend/commit/645951d))
+- **online-offers:** update labels on table ([2c310f4](https://github.com/loyaltycorp/manage-v2-frontend/commit/2c310f4))
+- **online-offers:** updates labels on the global offer listing ([8c77e7f](https://github.com/loyaltycorp/manage-v2-frontend/commit/8c77e7f))
+
 ## [0.3.1](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-online-offers@0.3.0...manage-online-offers@0.3.1) (2019-08-08)
 
 **Note:** Version bump only for package manage-online-offers
