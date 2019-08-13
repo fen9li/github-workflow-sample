@@ -133,6 +133,14 @@ export default {
             @row-click="onRowClick"
             @selection-change="handleSelectionChange"
           >
+            <link-modal
+              :id="catalogue.id"
+              slot="features"
+              :items="selectedItems"
+              :name="catalogue.name"
+              :merchants-processor="table.processor"
+              :link="tab.name !== 'linked'"
+            />
             <el-table-column
               v-if="table.processor.data.length"
               type="selection"
@@ -141,14 +149,6 @@ export default {
             />
             <div v-else />
           </table-layout>
-
-          <link-modal
-            :id="catalogue.id"
-            :items="selectedItems"
-            :name="catalogue.name"
-            :merchants-processor="table.processor"
-            :link="tab.name !== 'linked'"
-          />
         </el-tab-pane>
       </el-tabs>
     </el-card>

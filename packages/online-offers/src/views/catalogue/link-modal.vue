@@ -92,25 +92,21 @@ export default {
 
 <template>
   <div data-test="link">
-    <div
-      :class="$style.buttonWrapper"
+    <el-button
+      class="el-button--small"
+      :type="link ? 'success' : 'danger'"
+      :disabled="!items || !items.length"
+      @click="showModal = true"
     >
-      <el-button
-        type="primary"
-        class="el-button--wide"
-        :disabled="!items || !items.length"
-        @click="showModal = true"
-      >
-        {{ link ? 'Link' : 'Unlink' }}
-      </el-button>
-    </div>
+      {{ link ? 'Link' : 'Unlink' }}
+    </el-button>
     <el-dialog
       :visible.sync="showModal"
       :class="$style.dialog"
       :title="link ? 'Link Merchants' : 'Unlink Merchants'"
       modal-append-to-body
       append-to-body
-      width="800px"
+      width="920px"
     >
       <div :class="$style.subtitle">
         Are you sure you wish to {{ link ? 'link' : 'unlink' }} these Merchants
@@ -143,13 +139,6 @@ export default {
 </template>
 
 <style lang="scss" module>
-.buttonWrapper {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  padding: rem(0 48px 16px 0);
-}
-
 .dialog {
   :global {
     .el-dialog {

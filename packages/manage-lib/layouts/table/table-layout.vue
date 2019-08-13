@@ -82,6 +82,7 @@ export default {
         />
       </div>
       <div :class="$style.features">
+        <slot name="features" />
         <fragments-manager
           v-if="fragments"
           v-bind="$attrs"
