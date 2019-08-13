@@ -1,6 +1,5 @@
 import ApiProcessor from '@lib/processors/api-processor'
 import merchantsStatus from './merchants-status'
-import cellRoute from '~/components/cells/cell-route.vue'
 
 const TABLE_FILTERS = [
   {
@@ -77,31 +76,6 @@ const TABLE_COLUMNS = [
     label: 'Last Updated Date',
     icon: 'el-icon-document',
     format: 'dateTime',
-  },
-  {
-    sortable: false,
-    width: 80,
-    fixed: 'right',
-    component: (_, __, { row }) => {
-      const offersCount = row.total_offers
-
-      if (offersCount > 0) {
-        return {
-          is: cellRoute,
-          props: {
-            text: 'View Offers',
-            pathName: 'merchant-offers',
-            identifier: 'id',
-          },
-        }
-      }
-
-      return {
-        props: {
-          allowEmpty: true,
-        },
-      }
-    },
   },
 ]
 
