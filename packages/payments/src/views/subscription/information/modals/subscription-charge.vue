@@ -24,6 +24,7 @@ export default {
   data() {
     return {
       processing: false,
+      showAddMethodForm: false,
       form: {
         amount: null,
         selectedMethod: get(this.customer,'payment_sources[0].token', null),
@@ -72,6 +73,7 @@ export default {
 
         // this.$emit('update:visible', false)
         // this.$emit('update:should-update', true)
+        // this.$emit('updated')
         // } else if (error) {
         //   const violations = Object.keys(error.violations)
         //   violations.forEach(violation => {
@@ -121,7 +123,7 @@ export default {
         />
       </el-form-item>
 
-      <!-- <el-form-item
+      <el-form-item
         label="Subscription"
       >
         <el-input
@@ -129,7 +131,7 @@ export default {
           disabled
           data-test="subscription"
         />
-      </el-form-item> -->
+      </el-form-item>
 
       <el-form-item
         label="Amount to Pay"

@@ -53,6 +53,7 @@ export default {
       <subscription-details
         :subscription="subscription"
         :customer="customer"
+        @updated="$emit('updated')"
       />
       <hr :class="['divider-primary', 'info-block__divider']">
       <customer-details

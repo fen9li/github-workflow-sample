@@ -99,6 +99,7 @@ export default {
           message: `Changes saved successfully`,
         })
         this.$emit('update:visible', false)
+        this.$emit('updated')
       } else if (error) {
         const violations = Object.keys(error.violations)
         violations.forEach(violation => {

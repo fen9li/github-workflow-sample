@@ -69,7 +69,7 @@ export default {
             message: `Changes saved successfully`,
           })
           this.$emit('update:visible', false)
-
+          this.$emit('updated')
         }
       }
     },

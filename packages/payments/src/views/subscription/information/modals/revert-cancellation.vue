@@ -25,13 +25,15 @@ export default {
           title: 'Error',
           message: firstError,
         })
-      } else
+      } else {
         this.$notify({
           type: 'success',
           title: 'Success',
           message: `Changes saved successfully`,
         })
-      this.$emit('update:visible', false)
+        this.$emit('update:visible', false)
+        this.$emit('updated')
+      }
     },
   },
 }

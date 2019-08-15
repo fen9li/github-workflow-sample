@@ -209,36 +209,42 @@ export default {
           :visible.sync="modal.anniversary"
           :subscription="subscription"
           :customer-name="customer.fullName"
+          @updated="$emit('updated')"
         />
         <coupons-edit
           v-if="modal.coupon"
           :visible.sync="modal.coupon"
           :subscription="subscription"
           :customer-name="customer.fullName"
+          @updated="$emit('updated')"
         />
         <payment-edit
           v-if="modal.payment"
           :visible.sync="modal.payment"
           :customer="customer"
           :subscription="subscription"
+          @updated="$emit('updated')"
         />
         <product-edit
           v-if="modal.product"
           :visible.sync="modal.product"
           :subscription="subscription"
           :customer-name="customer.fullName"
+          @updated="$emit('updated')"
         />
         <subscription-cancel
           v-if="modal.cancel"
           :visible.sync="modal.cancel"
           :subscription="subscription"
           :payment-methods="customer.payment_sources"
+          @updated="$emit('updated')"
         />
 
         <revert-cancellation
           v-if="modal.revert"
           :visible.sync="modal.revert"
           :subscription="subscription"
+          @updated="$emit('updated')"
         />
       </div>
       <span

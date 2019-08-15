@@ -57,11 +57,7 @@ export default {
     },
   },
   created() {
-    this.getSubscription().then(response => {
-      if (response) {
-        this.getCustomer(response.customer.id)
-      }
-    })
+    this.getData()
   },
   methods: {
     async getSubscription() {
@@ -83,6 +79,13 @@ export default {
         this.loading = false
       }
     },
+    getData() {
+      this.getSubscription().then(response => {
+        if (response) {
+          this.getCustomer(response.customer.id)
+        }
+      })
+    }
   },
 }
 </script>
@@ -146,12 +149,14 @@ export default {
           :visible.sync="modal.cancel"
           :subscription="subscription"
           :payment-methods="customer.payment_sources"
+          @updated="getData"
         />
 
         <revert-cancellation
           v-if="modal.revert"
           :visible.sync="modal.revert"
           :subscription="subscription"
+          @updated="getData"
         />
 
         <amount-charge
@@ -160,6 +165,7 @@ export default {
           :subscription="subscription"
           :customer="customer"
           :should-update.sync="shouldUpdate"
+          @updated="getData"
         />
 
         <small :class="$style.balanceLabel">
@@ -174,6 +180,7 @@ export default {
       :customer="customer"
       :loading="loading"
       :should-update.sync="shouldUpdate"
+      @updated="getData"
     />
   </main-layout>
 </template>
