@@ -39,7 +39,7 @@ export default {
           message: 'Coupon successfully deleted.',
         })
         this.$emit('update:visible', false)
-        this.$router.push({ name: 'coupons' })
+        this.$router.push({ name: 'coupons' , params: { removed: this.id } })
       }
     },
   },

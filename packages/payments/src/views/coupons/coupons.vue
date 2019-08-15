@@ -19,6 +19,12 @@ export default {
       },
     }
   },
+  mounted() {
+    const removedItem = this.$route.params.removed
+    if(removedItem) {
+      this.UPDATE_TABLE({ ...this.table, removedItem })
+    }
+  },
   methods: {
     ...mapActions('ui', ['UPDATE_TABLE']),
     onRowClick(row) {
