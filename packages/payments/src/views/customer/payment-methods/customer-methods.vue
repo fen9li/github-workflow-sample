@@ -117,12 +117,14 @@ export default {
       v-if="modal.add"
       :visible.sync="modal.add"
       :customer="customer"
+      @updated="$emit('updated')"
     />
     <delete-modal
       v-if="methodToRemove"
       :visible="true"
       :method="methodToRemove"
       @close="methodToRemove = null"
+      @updated="$emit('updated')"
     />
   </div>
 </template>

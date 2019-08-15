@@ -19,6 +19,7 @@ export default {
   methods: {
     onSubmit() {
       this.$emit('close')
+      this.$emit('updated')
     },
   },
 }

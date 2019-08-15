@@ -51,6 +51,7 @@ export default {
       <payment-methods
         :customer="customer"
         :loading="loading"
+        @updated="$emit('updated')"
       />
     </el-card>
   </div>

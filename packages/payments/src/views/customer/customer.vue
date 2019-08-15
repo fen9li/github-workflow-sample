@@ -143,6 +143,7 @@ export default {
       :customer="customer"
       :loading="loading"
       :should-update.sync="shouldUpdate"
+      @updated="getInformation"
     />
 
     <add-product

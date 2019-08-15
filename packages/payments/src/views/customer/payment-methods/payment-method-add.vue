@@ -38,6 +38,7 @@ export default {
 
       const [error, response] = await this.$api.post(`/customers/${this.customer.id}/tokens`, requestData)
       // this.$emit('update:visible', false)
+      // this.$emit('updated')
       console.warn(error, response)
     },
     updateValue({ fieldName, type, newVal }) {
