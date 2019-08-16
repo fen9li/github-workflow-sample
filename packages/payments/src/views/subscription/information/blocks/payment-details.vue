@@ -9,8 +9,8 @@ export default {
       default: () => {},
     },
     token: {
-      type: Boolean,
-      default: false,
+      type: String,
+      default: null,
     },
   },
   computed: {
@@ -29,6 +29,11 @@ export default {
       }
 
       return logoObj
+    },
+    payerName() {
+      const { paymentSource } = this
+
+      return paymentSource ? paymentSource.name || paymentSource.metadata.find(item => item.key === 'name').value : null
     }
   },
   methods: {
@@ -50,7 +55,7 @@ export default {
       class="datalist"
     >
       <dt>Card Holder Name</dt>
-      <dd>{{ paymentSource.name }}</dd>
+      <dd>{{ payerName }}</dd>
 
       <dt>Payment Method</dt>
       <dd>
@@ -68,7 +73,7 @@ export default {
 
       <template v-if="token">
         <dt>Token</dt>
-        <dd>{{ paymentSource.token }}</dd>
+        <dd>{{ token }}</dd>
       </template>
     </dl>
 

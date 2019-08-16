@@ -38,6 +38,7 @@ export default {
       <span>{{ title }}</span>
     </router-link>
     <el-select
+      v-if="appCode !== 'payments'"
       :value="$auth.config.label"
       placeholder="Select Panel"
     >

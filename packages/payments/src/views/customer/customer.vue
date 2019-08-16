@@ -3,6 +3,7 @@ import appConfig from '~/app.config'
 import AddProduct from './product-add'
 import AddSubscription from './subscriptions/customer-subscription-add'
 import formatDollar from '@lib/utils/format-dollar'
+import get from 'lodash/get'
 
 export default {
   name: 'CustomerProfile',
@@ -60,6 +61,14 @@ export default {
     subtitle() {
       return !this.loading ? 'Customer ID ' + this.customer.id : ''
     },
+    amount() {
+      const value = +get(this.customer, 'total_amount_outstanding.total')
+      return {
+        owing: value > 0,
+        text: value >= 0 ? 'Amount Owing' :'Amount in Credit',
+        value
+      }
+    }
   },
   created() {
     this.getInformation()
@@ -111,17 +120,24 @@ export default {
           Add Product
         </el-button>
       </div>
-      <div :class="$style.balance">
-        <div :class="$style.owing">
-          <small :class="$style.balanceLabel">
-            Amount Owing
+      <div
+        v-if="!loading"
+        :class="$style.balance"
+      >
+        <div
+          :class="[$style.owing, {[$style.positiveOwing]: amount.owing}]"
+        >
+          <small
+            :class="$style.balanceLabel"
+          >
+            {{ amount.text }}
           </small>
           <strong
             v-if="!loading"
             :class="$style.balanceCount"
             data-test="owing"
           >
-            {{ formatDollar(customer.total_amount_outstanding.total) }}
+            {{ formatDollar(amount.value) }}
           </strong>
         </div>
         <div :class="$style.total">
@@ -192,7 +208,7 @@ export default {
   text-align: right;
 }
 
-.owing {
+.positiveOwing {
   color: var(--color-error);
 }
 

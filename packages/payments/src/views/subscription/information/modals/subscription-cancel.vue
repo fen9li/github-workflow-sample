@@ -27,7 +27,7 @@ export default {
       type: 'now',
       refund: true,
       form: {
-        selectedMethod: get(this.paymentMethods[0], 'value', ''),
+        selectedMethod: get(this.paymentMethods[0], 'token', ''),
         cancelDate: '',
         amount: '',
       },
@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     displayMethodForm() {
-      return !get(this.customer.payment_sources, 'length') || this.showAddMethodForm
+      return !get(this.paymentMethods, 'length') || this.showAddMethodForm
     },
   },
   methods: {
@@ -176,6 +176,8 @@ export default {
           placeholder="Enter Date"
           :editable="false"
           data-test="datepicker"
+          format="dd/MM/yyyy"
+          :value-format="datePickerFormat"
         />
       </el-form-item>
 

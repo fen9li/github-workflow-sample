@@ -133,7 +133,7 @@ const TABLE_COLUMNS = [
     component: {
       props: {
         styleObj(val) {
-          return { color: '#fc7168' }
+          return val > 0 ? { color: '#fc7168' } : {}
         },
       },
     },

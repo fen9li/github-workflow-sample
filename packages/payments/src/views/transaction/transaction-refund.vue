@@ -46,7 +46,7 @@ export default {
     refundTo() {
       const { customer } = this.transaction.order
       // TODO: Adjust to real data when one is done
-      return `${customer.first_name} ${customer.last_name}, ${this.transaction.funding_source || 'Placeholder funding source'}`
+      return `${customer.first_name} ${customer.last_name}`
     },
   },
   methods: {

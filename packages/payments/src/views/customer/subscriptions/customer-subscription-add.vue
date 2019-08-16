@@ -1,7 +1,7 @@
 <script>
 import paymentFormItem from '../payment-methods/payment-form-item'
 import ElasticProcessor from '@lib/processors/elastic-processor'
-import { datePickerFormat } from '@lib/utils/date-helper'
+import { datePickerFormat, dateIsAfter, activeByDate } from '@lib/utils/date-helper'
 import get from 'lodash/get'
 
 export default {
@@ -67,14 +67,36 @@ export default {
     },
     allProducts() {
       return this.productsData.data.map(product => {
-        return { value: product.id, label: product.name }
+        return { value: product.id, label: product.name, end_at: product.sunsetAt }
+      }).filter(product => {
+        const { form } = this
+        if(form.start_at) {
+          return product.end_at ? dateIsAfter(product.end_at, form.start_at) : product
+        } else {
+          return product
+        }
       })
     },
     allCoupons() {
       return this.couponsData.data.map(coupon => {
-        return { value: coupon.code, label: coupon.name }
+        return {
+          value: coupon.code,
+          label: coupon.name,
+          start_at: coupon.startAt,
+          end_at: coupon.endAt }
+      }).filter(coup => {
+        if(activeByDate(coup.start_at, coup.end_at)) {
+          return coup
+        }
       })
     },
+  },
+  watch: {
+    'form.start_at'(){
+      const { form, allProducts } = this
+      const currentProd = allProducts.find(prod => prod.value === form.product)
+      form.product = get(currentProd, 'value', null)
+    }
   },
   created() {
     this.getProductsCoupons()
@@ -180,6 +202,7 @@ export default {
               v-model="form.start_at"
               type="date"
               placeholder="Enter Date"
+              format="dd/MM/yyyy"
               :value-format="datePickerFormat"
             />
           </el-form-item>
@@ -191,6 +214,7 @@ export default {
               v-model="form.end_at"
               type="date"
               placeholder="Enter Date"
+              format="dd/MM/yyyy"
               :value-format="datePickerFormat"
             />
           </el-form-item>

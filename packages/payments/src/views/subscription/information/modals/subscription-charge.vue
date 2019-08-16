@@ -26,7 +26,7 @@ export default {
       processing: false,
       showAddMethodForm: false,
       form: {
-        amount: null,
+        amount: get(this.subscription,'outstanding.total', null),
         selectedMethod: get(this.customer,'payment_sources[0].token', null),
       },
       rules: {

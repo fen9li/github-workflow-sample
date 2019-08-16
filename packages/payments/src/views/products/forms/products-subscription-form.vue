@@ -149,6 +149,7 @@ export default {
             type="date"
             placeholder="Enter Date"
             :editable="false"
+            format="dd/MM/yyyy"
             :value-format="datePickerFormat"
             @input="changeValue('sunset_at', $event)"
           />
@@ -166,6 +167,7 @@ export default {
             placeholder="Enter Date"
             :editable="false"
             :disabled="edit"
+            format="dd/MM/yyyy"
             :value-format="datePickerFormat"
             @input="changeValue('anchor_at', $event)"
           />

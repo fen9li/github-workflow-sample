@@ -170,7 +170,7 @@ export default {
     <div class="modal-note">
       <i class="el-icon-info" />
       <div class="modal-note__text">
-        Adding of editing a Coupon will become effective at the text billing date.
+        Coupon changes will take effect at the next billing date.
       </div>
     </div>
     <div class="modal__footer">

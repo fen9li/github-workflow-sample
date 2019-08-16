@@ -1,4 +1,5 @@
 import ElasticProcessor from '@lib/processors/elastic-processor'
+import { activeByDate } from '@lib/utils/date-helper'
 
 const TABLE_FILTERS = [
   {
@@ -62,6 +63,12 @@ const TABLE_COLUMNS = [
     width: 300,
   },
   {
+    name: 'id',
+    label: 'Product Code',
+    icon: 'el-icon-document',
+    width: 300,
+  },
+  {
     name: 'price.total',
     label: 'Amount',
     icon: 'el-icon-document',
@@ -71,7 +78,7 @@ const TABLE_COLUMNS = [
     name: 'startAt',
     label: 'Effective Start Date',
     icon: 'el-icon-document',
-    format: 'dayMonth',
+    format: 'date',
   },
   {
     name: 'endAt',
@@ -86,6 +93,11 @@ const TABLE_COLUMNS = [
     format: 'capital',
     component: {
       is: 'cell-activity',
+      props: {
+        value: (_, row) => {
+          return activeByDate(row.startAt, row.endAt) ? 'active' : 'inactive'
+        }
+      }
     },
   },
 ]

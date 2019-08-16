@@ -39,11 +39,6 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'address',
-    type: 'string',
-    icon: 'el-icon-document',
-  },
-  {
     attribute: 'status',
     type: 'select',
     icon: 'el-icon-document',

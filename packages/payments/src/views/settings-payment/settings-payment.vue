@@ -74,7 +74,7 @@ export default {
   <main-layout title="Payment Settings">
     <el-card>
       <div :class="$style.title">
-        Settlment Account Details
+        Settlement Account Details
       </div>
 
       <dl class="datalist">

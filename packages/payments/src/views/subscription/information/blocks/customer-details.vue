@@ -50,7 +50,7 @@ export default {
         data-test="details"
         @click="$router.push({name: 'customer-details', params: { id: customer.id }})"
       >
-        View Customer Details
+        View Customer Information
       </el-button>
     </div>
   </div>

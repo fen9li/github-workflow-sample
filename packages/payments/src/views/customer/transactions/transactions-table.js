@@ -1,4 +1,5 @@
 import ElasticProcessor from '@lib/processors/elastic-processor'
+import capitalize from 'lodash/capitalize'
 
 const TABLE_FILTERS = [
   {
@@ -65,6 +66,13 @@ const TABLE_COLUMNS = [
     name: 'type',
     icon: 'el-icon-document',
     format: 'capital',
+    component: {
+      props: {
+        format(val, row) {
+          return val.split('_').map(item => capitalize(item)).join(' ')
+        }
+      }
+    }
   },
   {
     name: 'amount.total',
@@ -84,7 +92,7 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'statementDescriptor',
+    name: 'orderDescription',
     label: 'Description',
     icon: 'el-icon-document',
   },

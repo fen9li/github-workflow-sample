@@ -120,6 +120,7 @@ export default {
             placeholder="Enter Date"
             :editable="false"
             disabled
+            format="dd/MM/yyyy"
             data-test="currentAnniversary"
           />
           <el-tooltip
@@ -146,6 +147,7 @@ export default {
             type="date"
             placeholder="Enter Date"
             :editable="false"
+            format="dd/MM/yyyy"
             :value-format="datePickerFormat"
             data-test="newAnniversary"
           />
@@ -167,7 +169,7 @@ export default {
     <div class="modal-note">
       <i class="el-icon-info" />
       <div class="modal-note__text">
-        Changing the Subscription Anchor Date may cause changes to payment dates and the subscription balance.
+        Changing the Subscription Anniversary Date may cause changes to payment dates and the subscription balance.
       </div>
     </div>
     <div class="modal__footer">

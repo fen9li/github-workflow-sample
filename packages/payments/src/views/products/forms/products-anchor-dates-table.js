@@ -23,7 +23,15 @@ export default function(component){
   return {
     processor: new ElasticProcessor({
       component,
-      index: 'subscription-product-groups',
+      index: 'subscription-products',
+      staticQuery: {
+        filters: [
+          {
+            attribute: 'billingType',
+            value: 'prorata',
+          },
+        ],
+      },
     }),
     columns: TABLE_COLUMNS,
 

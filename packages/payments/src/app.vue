@@ -47,7 +47,6 @@ export default {
         },
         {
           title: 'Settings',
-          path: '/settings',
           icon: 'setting',
           children: [
             {
