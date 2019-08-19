@@ -1,6 +1,6 @@
 <script>
 import ElasticProcessor from '@lib/processors/elastic-processor'
-import { nextDay } from '@lib/utils/date-helper'
+import { nextDay, sameDate } from '@lib/utils/date-helper'
 
 export default {
   name: 'EditSubscriptionEditProductModal',
@@ -17,6 +17,7 @@ export default {
   data() {
     return {
       processing: false,
+      loadingPlans: false,
       form: {
         product: '',
         frequency: '',
@@ -26,20 +27,7 @@ export default {
         loading: true,
       },
       subscriptioHistory: {},
-      frequencies: [
-        {
-          label: 'Monthly',
-          value: 'P1M',
-        },
-        {
-          label: 'Quarterly',
-          value: 'P3M',
-        },
-        {
-          label: 'Yearly',
-          value: 'P1Y',
-        },
-      ],
+      frequencies: [],
       rules: {
         product: [
           {
@@ -61,9 +49,22 @@ export default {
   computed: {
     allProducts() {
       return this.productsData.data.map(product => {
-        return { value: product.id, label: product.name }
+        return {
+          value: product.id,
+          label: product.name,
+          anchor_at: product.anchorAt,
+          type: product.billingType
+        }
+      }).filter(prod => {
+        const currentAnchor = this.subscription.current_product.group.anchor_at
+        return prod.type === 'prorata' && sameDate(currentAnchor, prod.anchor_at)
       })
     },
+  },
+  watch: {
+    'form.product'(newVal) {
+      this.getProductPlans(newVal)
+    }
   },
   created() {
     this.getAllProducts()
@@ -88,19 +89,11 @@ export default {
         start_at: nextDay(),
       }
 
-      const [error, response] = await this.$api.put(`/subscriptions/${subscription.id}/upgrade`, requestData)
+      const [error,] = await this.$api.put(`/subscriptions/${subscription.id}/upgrade`, requestData)
 
       this.processing = false
 
-      if (response) {
-        this.$notify({
-          type: 'success',
-          title: 'Success',
-          message: `Changes saved successfully`,
-        })
-        this.$emit('update:visible', false)
-        this.$emit('updated')
-      } else if (error) {
+      if (error) {
         const violations = Object.keys(error.violations)
         violations.forEach(violation => {
           setTimeout(() => {
@@ -111,6 +104,14 @@ export default {
             })
           }, 50)
         })
+      } else {
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: `Changes saved successfully`,
+        })
+        this.$emit('update:visible', false)
+        this.$emit('updated')
       }
     },
     getAllProducts() {
@@ -123,6 +124,38 @@ export default {
       const [error, response] = await this.$api.get(`/subscriptions/${this.subscription.id}/history`)
 
       console.warn(error, response)
+    },
+    async getProductPlans(id) {
+      this.loadingPlans = true
+      const [, response] = await this.$api.post(`/search/subscription-product-pricing-plans/_search`,
+        { query: { match: { productId: id } } }
+      )
+      this.loadingPlans = false
+
+      if(response) {
+        const formated = []
+        response.hits.hits.forEach(item => {
+          const value = item._source.billingInterval
+          const index = formated.findIndex(form => form.value === value)
+
+          if(index === -1) {
+
+            let label = ''
+            switch(value) {
+              case 'P1M': label = 'Monthly'
+                break
+              case 'P3M': label = 'Quarterly'
+                break
+              case 'P1Y': label = 'Yearly'
+                break
+            }
+
+            formated.push({ value, label })
+          }
+        })
+
+        this.frequencies = formated
+      }
     }
   },
 }
@@ -175,6 +208,7 @@ export default {
       >
         <el-select
           v-model="form.frequency"
+          v-loading="loadingPlans"
           placeholder="Select"
         >
           <el-option
@@ -189,7 +223,7 @@ export default {
     <div class="modal-note">
       <i class="el-icon-info" />
       <div class="modal-note__text">
-        Editing the Subscription Product pr Pricing Plan may cause changes to payment dates, billing frequencies, and the subscription balance.
+        Editing the Subscription Product or Pricing Plan may cause changes to payment dates, billing frequencies, and the subscription balance.
       </div>
     </div>
     <div class="modal__footer">

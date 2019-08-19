@@ -16,7 +16,7 @@ export function getCellData(attribute, cell, column) {
 
 export function getFormattedValue(attribute, cell, cellData, column) {
   const cellRow = cell.row
-  let value = get(cellRow, attribute) || get(cellData, 'props.value')
+  let value = get(cellData, 'props.value') || get(cellRow, attribute)
 
   if (typeof value === 'function') {
     value = value(null, cellRow)

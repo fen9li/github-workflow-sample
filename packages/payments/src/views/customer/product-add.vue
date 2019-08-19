@@ -3,6 +3,8 @@ import { mask } from 'vue-the-mask'
 import paymentFormItem from './payment-methods/payment-form-item'
 import ElasticProcessor from '@lib/processors/elastic-processor'
 import get from 'lodash/get'
+import { activeByDate } from '@lib/utils/date-helper'
+
 
 export default {
   name: 'CustomerDetailsAddProductModal',
@@ -62,9 +64,23 @@ export default {
     },
     allProducts() {
       return this.productsData.data.map(product => {
-        return { value: product.id, label: product.name }
+        return {
+          value: product.id,
+          label: product.name,
+          price: product.price.total,
+          start_at: product.startAt,
+          end_at: product.endAt, }
+      }).filter(prod => {
+        if(activeByDate(prod.start_at, prod.end_at)) {
+          return prod
+        }
       })
     },
+  },
+  watch: {
+    'form.product'(newVal) {
+      this.form.amount = this.allProducts.find(item => item.value === newVal).price
+    }
   },
   created() {
     this.getProducts()

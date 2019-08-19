@@ -147,6 +147,7 @@ export default {
           </el-form-item>
           <el-select
             v-model="form.currency"
+            disabled
           >
             <el-option
               label="AUD"
@@ -176,8 +177,8 @@ export default {
         <el-input
           v-model="form.number"
           v-mask="'#### #### #### ####'"
-          placeholder="---- ---- ---- ----"
-          :class="$style.short"
+          placeholder="----  ----  ----  ----"
+          :class="[$style.short, $style.cardInput]"
           data-test="number"
         />
         <div :class="$style.cardLogos">
@@ -237,7 +238,7 @@ export default {
           data-test="email"
         />
       </el-form-item>
-      <div
+      <!-- <div
         v-if="error && showError"
         :class="$style.error"
       >
@@ -247,7 +248,7 @@ export default {
           :class="['el-icon-close']"
           @click="showError = false"
         />
-      </div>
+      </div> -->
     </el-form>
     <div
       class="modal__footer"
@@ -319,6 +320,15 @@ export default {
 
     .el-icon-error {
       margin-right: .5rem;
+    }
+  }
+}
+
+.cardInput {
+  :global {
+    .el-input__inner::placeholder {
+      font-size: 1.2rem;
+      line-height: 1.2rem;
     }
   }
 }

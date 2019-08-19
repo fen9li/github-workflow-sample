@@ -1,4 +1,5 @@
 import ElasticProcessor from '@lib/processors/elastic-processor'
+import capitalize from 'lodash/capitalize'
 
 const TABLE_FILTERS = [
   {
@@ -36,14 +37,14 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'statementDescriptor',
+    attribute: 'orderDescription',
     label: 'Description',
     type: 'string',
     icon: 'el-icon-tickets',
   },
   {
     attribute: 'orderId',
-    label: 'Customer ID',
+    label: 'Order ID',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -91,9 +92,11 @@ const TABLE_COLUMNS = [
           if (val === 'refund') {
             return { color: '#fc7168' }
           }
-
           return {}
         },
+        format(val) {
+          return val.split('_').map(item => capitalize(item)).join(' ')
+        }
       },
     },
   },
@@ -147,7 +150,7 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'statementDescriptor',
+    name: 'orderDescription',
     label: 'Description',
     icon: 'el-icon-document',
     width: 200,
@@ -166,23 +169,27 @@ const TABLE_COLUMNS = [
     width: 120,
     component: {
       props: {
-        styleObj(val) {
-          switch (val) {
+        styleObj(_, row) {
+          switch (row.status) {
             case 'pending': return { color: '#fbb241' }
             case 'completed': return { color: '#29d737' }
             case 'failed': return { color: '#fc7168' }
             case 'refunded': return { color: '#fc7168' }
-            case 'finalised': return { color: '#fc7168' }
+            case 'finalised': return { color: '#29d737' }
             default: return {}
           }
         },
-        badge(val) {
-          switch (val) {
+        badge(_, row) {
+          switch (row.status) {
             case 'pending': return {
               name: 'el-icon-time',
               pos: 'left',
             }
             case 'completed': return {
+              name: 'el-icon-check',
+              pos: 'left',
+            }
+            case 'finalised': return {
               name: 'el-icon-check',
               pos: 'left',
             }
@@ -197,6 +204,9 @@ const TABLE_COLUMNS = [
             default: return {}
           }
         },
+        value: (_, row) => {
+          return row.status === 'finalised' ? 'completed' : row.status
+        }
       },
     },
   },

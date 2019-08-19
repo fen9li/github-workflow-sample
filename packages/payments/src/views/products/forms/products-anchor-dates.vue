@@ -19,7 +19,7 @@ export default {
   methods: {
     hightlightRow(value, current) {
       const format = formatDate
-      if (value && current) return format(value, 'DD/MMM', false) === format(current.anchorAt, 'DD/MMM', false)
+      if (value && current) return format(value, 'DD/MMM/YYYY', false) === format(current.anchorAt, 'DD/MMM/YYYY', false)
     },
   },
 }

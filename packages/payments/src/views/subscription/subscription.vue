@@ -4,6 +4,8 @@ import amountCharge from './information/modals/subscription-charge'
 import subscriptionCancel from './information/modals/subscription-cancel'
 import revertCancellation from './information/modals/revert-cancellation'
 import isPast from '@lib/utils/date-is-past'
+import get from 'lodash/get'
+import formatDollar from '@lib/utils/format-dollar'
 
 export default {
   name: 'Subscription',
@@ -55,11 +57,20 @@ export default {
         },
       ]
     },
+    amount() {
+      const value = +get(this.subscription, 'outstanding.total')
+      return {
+        owing: value > 0,
+        text: value >= 0 ? 'Amount Owing' :'Amount in Credit',
+        value
+      }
+    }
   },
   created() {
     this.getData()
   },
   methods: {
+    formatDollar,
     async getSubscription() {
       this.loading = true
       const [, response] = await this.$api.get(`/subscriptions/${this.id}`)
@@ -106,12 +117,9 @@ export default {
       ]"
     >
       <div v-if="!loading">
-        <div
-          v-if="!subscription.isCancelled"
-          :class="$style.headerBtns"
-        >
+        <div :class="$style.headerBtns">
           <div
-            v-if="tabKey === 'subscription-transactions'"
+            v-if="tabKey === 'subscription-transactions' && !subscription.isCancelled"
             :class="$style.cancellation"
           >
             <el-button
@@ -136,6 +144,7 @@ export default {
           </div>
 
           <el-button
+            v-if="amount.owing"
             type="primary"
             data-test="charge"
             @click="modal.charge = true"
@@ -168,9 +177,15 @@ export default {
           @updated="getData"
         />
 
-        <small :class="$style.balanceLabel">
-          Amount Owing
-          <b :class="$style.balanceCount">{{ subscription.outstanding.total | dollar }}</b>
+        <small
+          :class="[$style.balanceLabel, {[$style.positiveOwing]: amount.owing}]"
+        >
+          {{ amount.text }}
+          <b
+            :class="$style.balanceCount"
+          >
+            {{ formatDollar(amount.value) }}
+          </b>
         </small>
       </div>
     </div>
@@ -193,7 +208,6 @@ export default {
   justify-content: center;
   margin-bottom: -2.125rem;
   font-size: 1.1rem;
-  color: var(--color-error);
 }
 
 .balanceLabel {
@@ -201,6 +215,10 @@ export default {
   align-items: center;
   justify-content: flex-end;
   margin-top: 1.5rem;
+}
+
+.positiveOwing {
+  color: var(--color-error);
 }
 
 .balanceCount {

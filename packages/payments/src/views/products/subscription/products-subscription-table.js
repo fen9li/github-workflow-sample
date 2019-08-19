@@ -46,6 +46,7 @@ const TABLE_FILTERS = [
   },
   {
     attribute: 'status',
+    label: 'Status',
     type: 'select',
     icon: 'el-icon-document',
     values: [
@@ -103,7 +104,7 @@ const TABLE_COLUMNS = [
     label: 'Plans',
   },
   {
-    name: '',
+    name: 'status',
     label: 'Status',
     icon: 'el-icon-document',
     format: 'capital',

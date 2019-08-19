@@ -5,6 +5,7 @@ import formatDollar from '@lib/utils/format-dollar'
 import { formatDate } from '@lib/utils/format-date'
 import customerDetails from '../subscription/information/blocks/customer-details'
 import subscriptionDetails from '../subscription/information/blocks/subscription-details'
+import productDetails from '../product-single/product-single-details'
 import paymentDetails from '../subscription/information/blocks/payment-details'
 import capitalize from 'lodash/capitalize'
 import get from 'lodash/get'
@@ -49,6 +50,7 @@ export default {
     TransactionRefund,
     customerDetails,
     subscriptionDetails,
+    productDetails,
     paymentDetails,
   },
   props: {
@@ -73,6 +75,10 @@ export default {
       const { status } = this.transaction
 
       return availableStatuses[status] || {}
+    },
+    paymentSource() {
+      const { transaction } = this
+      return transaction.funding_source
     },
   },
   created() {
@@ -177,8 +183,11 @@ export default {
             <dt>Date Created</dt>
             <dd>{{ formatDate(transaction.created_at) }}</dd>
 
+            <dt>Type</dt>
+            <dd>{{ capitalize(transaction.type) }}</dd>
+
             <dt>Description</dt>
-            <dd>{{ transaction.statement_description || '-' }}</dd>
+            <dd>{{ transaction.order.description || '-' }}</dd>
 
             <dt>Amount</dt>
             <dd>{{ formatDollar(transaction.amount.total) }}</dd>
@@ -188,6 +197,9 @@ export default {
 
             <dt>Net</dt>
             <dd>{{ formatDollar(transaction.amount.subtotal) }}</dd>
+
+            <dt>Order ID</dt>
+            <dd>{{ transaction.order.id }}</dd>
 
             <dt>Transaction ID</dt>
             <dd>{{ transaction.id }}</dd>
@@ -204,10 +216,16 @@ export default {
 
         <hr :class="['divider-primary', 'info-block__divider']">
 
-        <div v-if="transaction.order.subscription">
+        <div v-if="transaction.order">
           <subscription-details
+            v-if="transaction.order.subscription"
             :subscription="subscription"
             is-transaction
+          />
+
+          <product-details
+            v-if="transaction.order.single_product"
+            :product="transaction.order.single_product"
           />
 
           <hr :class="['divider-primary', 'info-block__divider']">
@@ -215,7 +233,8 @@ export default {
 
         <payment-details
           :customer="transaction.order.customer"
-          token
+          :payment-source="transaction.funding_source"
+          :token="transaction.token"
         />
       </div>
     </el-card>

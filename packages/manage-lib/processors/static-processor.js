@@ -10,7 +10,6 @@ class StaticProcessor extends DataProcessor {
     this.fullData = [].concat(data)
     this.data = data
     this.total = data.length
-    this.loading = false
 
     this.init()
   }

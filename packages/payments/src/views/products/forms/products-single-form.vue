@@ -110,6 +110,7 @@ export default {
             type="date"
             placeholder="Enter Date"
             :editable="false"
+            format="dd/MM/yyyy"
             :value-format="datePickerFormat"
             @input="changeValue('start_at', $event)"
           />
@@ -121,6 +122,7 @@ export default {
             type="date"
             placeholder="Enter Date"
             :editable="false"
+            format="dd/MM/yyyy"
             :value-format="datePickerFormat"
             @input="changeValue('end_at', $event)"
           />

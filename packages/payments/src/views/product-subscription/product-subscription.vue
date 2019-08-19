@@ -100,6 +100,9 @@ export default {
         v-if="!loading"
         class="datalist"
       >
+        <dt>Date Created</dt>
+        <dd>{{ formatDate(details.created_at) }}</dd>
+
         <dt>Name</dt>
         <dd>{{ details.name }}</dd>
 

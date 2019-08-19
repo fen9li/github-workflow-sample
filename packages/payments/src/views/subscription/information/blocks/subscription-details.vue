@@ -114,7 +114,7 @@ export default {
         <dt>Coupon</dt>
         <dd>{{ appliedCoupon.name || '-' }}</dd>
 
-        <dt>Valid Until</dt>
+        <dt>Coupon Valid Until</dt>
         <dd>{{ `${formatDate(appliedCoupon.end_at)}` }}</dd>
       </dl>
 
@@ -147,13 +147,14 @@ export default {
           data-test="details"
           @click="$router.push({name: 'subscription-details', params: {id: subscription.id}})"
         >
-          View Subscription Details
+          View Subscription Information
         </el-button>
         <div
           v-else
           class="info-block__actions--subscription"
         >
           <el-button
+            v-if="product.group.billing_type === 'anniversary'"
             type="primary"
             data-test="anniversary"
             @click="modal.anniversary = true"
@@ -178,6 +179,7 @@ export default {
           </el-button>
 
           <el-button
+            v-if="product.group.billing_type === 'prorata'"
             type="primary"
             data-test="product"
             @click="modal.product = true"
