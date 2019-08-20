@@ -1,6 +1,8 @@
 <script>
 import ElasticProcessor from '@lib/processors/elastic-processor'
 import { nextDay, sameDate } from '@lib/utils/date-helper'
+import sort from '@lib/utils/dropdown-sorting'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'EditSubscriptionEditProductModal',
@@ -63,7 +65,7 @@ export default {
   },
   watch: {
     'form.product'(newVal) {
-      this.getProductPlans(newVal)
+      this.updatePlans(newVal)
     }
   },
   created() {
@@ -77,6 +79,8 @@ export default {
     form.product = currentProduct ? currentProduct.id : ''
   },
   methods: {
+    sort,
+    ...mapActions('products', ['GET_PRODUCT_PLANS']),
     async onSubmit() {
       this.processing = true
       const { form, subscription } = this
@@ -125,37 +129,10 @@ export default {
 
       console.warn(error, response)
     },
-    async getProductPlans(id) {
+    async updatePlans(id) {
       this.loadingPlans = true
-      const [, response] = await this.$api.post(`/search/subscription-product-pricing-plans/_search`,
-        { query: { match: { productId: id } } }
-      )
+      this.frequencies = await this.GET_PRODUCT_PLANS(id)
       this.loadingPlans = false
-
-      if(response) {
-        const formated = []
-        response.hits.hits.forEach(item => {
-          const value = item._source.billingInterval
-          const index = formated.findIndex(form => form.value === value)
-
-          if(index === -1) {
-
-            let label = ''
-            switch(value) {
-              case 'P1M': label = 'Monthly'
-                break
-              case 'P3M': label = 'Quarterly'
-                break
-              case 'P1Y': label = 'Yearly'
-                break
-            }
-
-            formated.push({ value, label })
-          }
-        })
-
-        this.frequencies = formated
-      }
     }
   },
 }
@@ -195,7 +172,7 @@ export default {
           placeholder="Select"
         >
           <el-option
-            v-for="item in allProducts"
+            v-for="item in sort(allProducts)"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -212,7 +189,7 @@ export default {
           placeholder="Select"
         >
           <el-option
-            v-for="item in frequencies"
+            v-for="item in sort(frequencies)"
             :key="item.value"
             :label="item.label"
             :value="item.value"

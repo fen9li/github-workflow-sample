@@ -123,12 +123,12 @@ export default {
             value="P1M"
           />
           <el-option
-            label="Yearly"
-            value="P1Y"
-          />
-          <el-option
             label="Quarterly"
             value="P3M"
+          />
+          <el-option
+            label="Yearly"
+            value="P1Y"
           />
         </el-select>
       </el-form-item>

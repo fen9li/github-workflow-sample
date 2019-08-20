@@ -4,7 +4,7 @@ import paymentFormItem from './payment-methods/payment-form-item'
 import ElasticProcessor from '@lib/processors/elastic-processor'
 import get from 'lodash/get'
 import { activeByDate } from '@lib/utils/date-helper'
-
+import sort from '@lib/utils/dropdown-sorting'
 
 export default {
   name: 'CustomerDetailsAddProductModal',
@@ -86,6 +86,7 @@ export default {
     this.getProducts()
   },
   methods: {
+    sort,
     async onSubmit() {
       this.showAddMethodForm = false
       if (!this.validateAll().some(item => item === false)) {
@@ -182,7 +183,7 @@ export default {
             data-test="product"
           >
             <el-option
-              v-for="product in allProducts"
+              v-for="product in sort(allProducts)"
               :key="product.value"
               :value="product.value"
               :label="product.label"

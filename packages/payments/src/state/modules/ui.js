@@ -1,9 +1,3 @@
-export const state = {}
-
-export const getters = {}
-
-export const mutations = {}
-
 export const actions = {
   UPDATE_TABLE({ commmit }, payload) {
     const { processor } = payload

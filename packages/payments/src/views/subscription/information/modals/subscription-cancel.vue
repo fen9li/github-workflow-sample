@@ -2,6 +2,7 @@
 import paymentFormItem from '../../../customer/payment-methods/payment-form-item'
 import get from 'lodash/get'
 import { mask } from 'vue-the-mask'
+import { datePickerFormat } from '@lib/utils/date-helper'
 
 export default {
   name: 'EditSubscriptionCancelModal',
@@ -23,6 +24,7 @@ export default {
   },
   data() {
     return {
+      datePickerFormat,
       loading: false,
       type: 'now',
       refund: true,
