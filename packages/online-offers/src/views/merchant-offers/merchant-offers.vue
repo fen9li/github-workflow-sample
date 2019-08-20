@@ -117,6 +117,15 @@ export default {
           @row-click="onRowClick"
           @selection-change="handleSelectionChange"
         >
+          <merchant-modal
+            v-if="table.processor.data.length"
+            :id="merchant.id"
+            slot="features"
+            :items="selectedItems"
+            :name="merchant.name"
+            :activate="tab.name === 'inactive'"
+            :offers-processor="table.processor"
+          />
           <el-table-column
             v-if="table.processor.data.length"
             type="selection"
@@ -125,15 +134,6 @@ export default {
           />
           <div v-else />
         </table-layout>
-
-        <merchant-modal
-          v-if="table.processor.data.length"
-          :id="merchant.id"
-          :items="selectedItems"
-          :name="merchant.name"
-          :activate="tab.name === 'inactive'"
-          :offers-processor="table.processor"
-        />
       </el-tab-pane>
     </el-tabs>
   </main-layout>

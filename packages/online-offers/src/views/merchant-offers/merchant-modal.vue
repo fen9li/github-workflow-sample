@@ -86,23 +86,22 @@ export default {
 </script>
 
 <template>
-  <div>
-    <div :class="$style.buttonWrapper">
-      <el-button
-        type="primary"
-        :disabled="!items || !items.length"
-        @click="showModal = true"
-      >
-        {{ activate ? 'Activate' : 'Deactivate' }}
-      </el-button>
-    </div>
+  <div data-test="merhant">
+    <el-button
+      class="el-button--small"
+      :type="activate ? 'success' : 'danger'"
+      :disabled="!items || !items.length"
+      @click="showModal = true"
+    >
+      {{ activate ? 'Activate' : 'Deactivate' }}
+    </el-button>
     <el-dialog
       :visible.sync="showModal"
       :class="$style.dialog"
       :title="activate ? 'Activate Offers' : 'Deactivate Offers'"
       modal-append-to-body
       append-to-body
-      width="800px"
+      width="920px"
     >
       <div :class="$style.subtitle">
         Are you sure you wish to
@@ -134,13 +133,6 @@ export default {
 </template>
 
 <style lang="scss" module>
-.buttonWrapper {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  padding: rem(0 48px 16px 0);
-}
-
 .dialog {
   :global {
     .el-dialog {
