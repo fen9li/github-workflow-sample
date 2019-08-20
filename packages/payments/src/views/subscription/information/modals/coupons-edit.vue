@@ -1,6 +1,7 @@
 <script>
 import ElasticProcessor from '@lib/processors/elastic-processor'
 import { formatDate } from '@lib/utils/format-date'
+import sort from '@lib/utils/dropdown-sorting'
 
 export default {
   name: 'EditSubscriptionEditCouponsModal',
@@ -47,6 +48,7 @@ export default {
     }
   },
   methods: {
+    sort,
     formatDate(value, format) {
       return formatDate(value, format || 'DD/MM/YYYY')
     },
@@ -152,7 +154,7 @@ export default {
           :disabled="!!appliedCoupon.end_at"
         >
           <el-option
-            v-for="item in allCoupons"
+            v-for="item in sort(allCoupons)"
             :key="item.value"
             :label="item.label"
             :value="item.value"

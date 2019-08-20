@@ -3,6 +3,8 @@ import paymentFormItem from '../payment-methods/payment-form-item'
 import ElasticProcessor from '@lib/processors/elastic-processor'
 import { datePickerFormat, dateIsAfter, activeByDate } from '@lib/utils/date-helper'
 import get from 'lodash/get'
+import sort from '@lib/utils/dropdown-sorting'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'CustomerDetailsAddSubscription',
@@ -20,6 +22,8 @@ export default {
       datePickerFormat,
       processing: false,
       showAddMethodForm: false,
+      frequencies: [],
+      loadingPlans: false,
       form: {
         start_at: null,
         end_at: null,
@@ -96,12 +100,17 @@ export default {
       const { form, allProducts } = this
       const currentProd = allProducts.find(prod => prod.value === form.product)
       form.product = get(currentProd, 'value', null)
-    }
+    },
+    'form.product'(newVal) {
+      this.updatePlans(newVal)
+    },
   },
   created() {
     this.getProductsCoupons()
   },
   methods: {
+    sort,
+    ...mapActions('products', ['GET_PRODUCT_PLANS']),
     async onSubmit() {
       this.showAddMethodForm = false
       if (!this.validateAll().some(item => item === false)) {
@@ -164,6 +173,11 @@ export default {
         index: 'coupons',
       })
     },
+    async updatePlans(id) {
+      this.loadingPlans = true
+      this.frequencies = await this.GET_PRODUCT_PLANS(id)
+      this.loadingPlans = false
+    }
   },
 }
 </script>
@@ -231,7 +245,7 @@ export default {
             placeholder="Please select"
           >
             <el-option
-              v-for="product in allProducts"
+              v-for="product in sort(allProducts)"
               :key="product.value"
               :value="product.value"
               :label="product.label"
@@ -246,19 +260,14 @@ export default {
         >
           <el-select
             v-model="form.frequency"
+            v-loading="loadingPlans"
             placeholder="Please select"
           >
             <el-option
-              label="Monthly"
-              value="P1M"
-            />
-            <el-option
-              label="Yearly"
-              value="P1Y"
-            />
-            <el-option
-              label="Quarterly"
-              value="P3M"
+              v-for="frequency in sort(frequencies)"
+              :key="frequency.value"
+              :label="frequency.label"
+              :value="frequency.value"
             />
           </el-select>
         </el-form-item>
@@ -271,7 +280,7 @@ export default {
             v-loading="couponsData.loading"
           >
             <el-option
-              v-for="coupon in allCoupons"
+              v-for="coupon in sort(allCoupons)"
               :key="coupon.id"
               :value="coupon.value"
               :label="coupon.label"

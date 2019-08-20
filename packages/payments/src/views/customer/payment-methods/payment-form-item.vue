@@ -1,6 +1,7 @@
 <script>
 import paymentForm from './payment-form'
 import capitalize from 'lodash/capitalize'
+import sort from '@lib/utils/dropdown-sorting'
 
 export default {
   name: 'AddPaymentMethodFormItem',
@@ -49,6 +50,7 @@ export default {
     },
   },
   methods: {
+    sort,
     updateValue({ fieldName, type, newVal }) {
       this.form[type][fieldName] = newVal
     },
@@ -86,7 +88,7 @@ export default {
             @change="$emit('changeMethod', $event)"
           >
             <el-option
-              v-for="(method, index) in paymentMethods"
+              v-for="(method, index) in sort(paymentMethods, 'name')"
               :key="index"
               :value="method.token"
               :label="formatMethod(method)"
