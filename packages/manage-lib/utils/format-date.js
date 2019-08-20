@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 
-export function formatDate(value, format, useUTC = true) {
+export function formatDate(value, format, useUTC = false) {
   if (!format) {
     throw Error('"date" formatter requires format argument')
   }
