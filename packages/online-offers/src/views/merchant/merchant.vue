@@ -2,12 +2,14 @@
 import { mapActions, mapState } from 'vuex'
 import merchantDetails from './details/merchant-details'
 import merchantEdit from './edit/merchant-edit'
+import merchantOffers from './offers/merchant-offers'
 
 export default {
   name: 'Merchant',
   components: {
     merchantDetails,
     merchantEdit,
+    merchantOffers,
   },
   data() {
     return {
@@ -140,6 +142,8 @@ export default {
         :feed="feed"
       />
     </el-card>
+
+    <merchantOffers />
   </main-layout>
 </template>
 
