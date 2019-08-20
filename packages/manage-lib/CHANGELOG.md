@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyalty-corp/manage-lib@0.4.0...@loyalty-corp/manage-lib@0.5.0) (2019-08-20)
+
+### Bug Fixes
+
+- **payments:** fix after smoke testing ([84a2d9f](https://github.com/loyaltycorp/manage-v2-frontend/commit/84a2d9f))
+
+### Features
+
+- **online-offers:** reposition link/activate button to table header ([ffe300e](https://github.com/loyaltycorp/manage-v2-frontend/commit/ffe300e))
+
 # [0.4.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyalty-corp/manage-lib@0.3.0...@loyalty-corp/manage-lib@0.4.0) (2019-08-12)
 
 ### Bug Fixes

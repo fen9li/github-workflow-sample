@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-payments@0.4.1...manage-payments@0.5.0) (2019-08-20)
+
+### Bug Fixes
+
+- **payments:** fix after smoke testing ([84a2d9f](https://github.com/loyaltycorp/manage-v2-frontend/commit/84a2d9f))
+
+### Features
+
+- **payments:** add table check item is deleted ([bbf6e2c](https://github.com/loyaltycorp/manage-v2-frontend/commit/bbf6e2c))
+- **payments:** update cust. root view after edit ([c31f0eb](https://github.com/loyaltycorp/manage-v2-frontend/commit/c31f0eb))
+- **payments:** update subscr root view after edit ([99a1527](https://github.com/loyaltycorp/manage-v2-frontend/commit/99a1527))
+
 ## [0.4.1](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-payments@0.4.0...manage-payments@0.4.1) (2019-08-12)
 
 ### Bug Fixes

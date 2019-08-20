@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-online-offers@0.4.0...manage-online-offers@0.5.0) (2019-08-20)
+
+### Features
+
+- **merchant-offers:** offer table in merchant ([f0f8c0e](https://github.com/loyaltycorp/manage-v2-frontend/commit/f0f8c0e))
+- **online-offers:** reposition link/activate button to table header ([ffe300e](https://github.com/loyaltycorp/manage-v2-frontend/commit/ffe300e))
+
 # [0.4.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-online-offers@0.3.1...manage-online-offers@0.4.0) (2019-08-12)
 
 ### Bug Fixes
