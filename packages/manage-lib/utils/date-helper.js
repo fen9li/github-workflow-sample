@@ -11,7 +11,7 @@ function dateIsAfter(dateOne, dateTwo) {
 
 function activeByDate(startAt, endAt) {
   if(endAt) {
-    return dayjs().isAfter(dayjs(startAt)) && dayjs().isBefore(dayjs(endAt))
+    return dayjs().isAfter(dayjs(startAt)) && dayjs().isBefore(dayjs(endAt).endOf('day'))
   } else {
     return dayjs().isAfter(dayjs(startAt))
   }

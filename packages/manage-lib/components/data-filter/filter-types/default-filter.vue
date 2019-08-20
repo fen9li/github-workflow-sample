@@ -1,6 +1,11 @@
 <script>
+import { mask } from 'vue-the-mask'
+
 export default {
   name: 'DefaultFilter',
+  directives: {
+    mask,
+  },
   props: {
     model: {
       type: Object,
@@ -19,6 +24,11 @@ export default {
     comparisons() {
       return this.filter.getComparisons()
     },
+    numberMask() {
+      const { attribute } = this.filter
+      return attribute.includes('amount') || attribute.includes('total') || attribute.includes('price') ?
+        ['#.##', '##.##', '###.##', '####.##', '#####.##', '######.##', '#######.##', '########.##'] : '##########'
+    }
   },
   watch: {
     'model.comparison'(newVal) {
@@ -84,6 +94,7 @@ export default {
           v-else-if="filter.type === 'numeric'"
           ref="input"
           v-model="model.value"
+          v-mask="numberMask"
           controls-position="right"
           :class="$style.comparisonValue"
         />
@@ -93,6 +104,7 @@ export default {
           v-model="model.value"
           :class="$style.comparisonValue"
           type="date"
+          format="dd/MM/yyyy"
           value-format="dd/MM/yyyy"
           :append-to-body="false"
         />
@@ -102,6 +114,7 @@ export default {
           v-model="model.value"
           :class="$style.comparisonValue"
           type="datetime"
+          format="dd/MM/yyyy hh:mm"
           value-format="dd/MM/yyyy hh:mm"
           :append-to-body="false"
         />

@@ -24,7 +24,17 @@ const TABLE_FILTERS = [
     attribute: 'billingType',
     label: 'Billing Cycle',
     icon: 'el-icon-document',
-    type: 'string',
+    type: 'select',
+    values: [
+      {
+        label: 'Anniversary',
+        value: 'anniversary'
+      },
+      {
+        label: 'Prorata',
+        value: 'prorata'
+      }
+    ]
   },
   {
     attribute: 'anchorAt',
@@ -33,7 +43,7 @@ const TABLE_FILTERS = [
     type: 'date',
   },
   {
-    attribute: 'endAt',
+    attribute: 'sunsetAt',
     label: 'End Date',
     icon: 'el-icon-date',
     type: 'date',
@@ -45,18 +55,18 @@ const TABLE_FILTERS = [
     type: 'numeric',
   },
   {
-    attribute: 'status',
+    attribute: 'sunset',
     label: 'Status',
-    type: 'select',
+    type: 'dateStatus',
     icon: 'el-icon-document',
     values: [
       {
-        label: 'active',
-        value: 'Active',
+        label: 'Active',
+        value: 'active',
       },
       {
-        label: 'inactive',
-        value: 'Inactive',
+        label: 'Inactive',
+        value: 'inactive',
       },
     ],
   },

@@ -39,20 +39,20 @@ const TABLE_FILTERS = [
     values: [
       {
         label: 'Monthly',
-        value: 'Monthly',
+        value: 'P1M',
       },
       {
         label: 'Quarterly',
-        value: 'Quarterly',
+        value: 'P3M',
       },
       {
         label: 'Yearly',
-        value: 'Yearly',
+        value: 'P1Y',
       },
     ],
   },
   {
-    attribute: 'outstandingBalance',
+    attribute: 'outstandingBalance.total',
     label: 'Amount Owing',
     type: 'numeric',
     icon: 'el-icon-money',
@@ -64,11 +64,11 @@ const TABLE_FILTERS = [
     values: [
       {
         label: 'Active',
-        value: 'Active',
+        value: 'active',
       },
       {
         label: 'Inactive',
-        value: 'Inactive',
+        value: 'inactive',
       },
     ],
   },

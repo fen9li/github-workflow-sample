@@ -44,6 +44,11 @@ const filterValues = {
       .add(utcOffset(), 'minute')
       .format(),
   }),
+  afterExact: value => ({
+    gt: dayjs.utc(dateStringFormatter(value))
+      .add(utcOffset(), 'minute')
+      .format(),
+  }),
   before: value => ({
     lt: dayjs.utc(dateStringFormatter(value))
       .add(utcOffset(), 'minute')
@@ -60,6 +65,36 @@ const filterValues = {
   }),
 }
 
+// Status field does not exist in elastic. Active status is calculated based on formulas:
+// startAt < now < endAt || null OR
+// now < sunsetAt || null
+function formatBetweenDatesFilter(body, filter) {
+  const currentDate = dayjs().format('DD/MM/YYYY')
+
+  const isActive = filter.value === 'active'
+
+  function dateOrNullQuery(field) {
+    body.query('bool', b => b.orQuery('bool', c => c.notQuery('exists', field))
+      .orQuery('range', field, getFilterValue({ value: currentDate, comparison: 'afterExact' })))
+  }
+
+  function dateOnlyQuery(field, comparison, type = 'query') {
+    body[type]('range', field, getFilterValue({ value: currentDate, comparison }))
+  }
+
+  if(filter.attribute === 'sunset') {
+    isActive ? dateOrNullQuery('sunsetAt') : dateOnlyQuery('sunsetAt', 'before')
+
+  } else if(filter.attribute === 'end') {
+    if(isActive) {
+      dateOrNullQuery('endAt')
+      dateOnlyQuery('startAt', 'before')
+    } else {
+      dateOnlyQuery('startAt', 'afterExact', 'orQuery')
+      dateOnlyQuery('endAt', 'before', 'orQuery')
+    }
+  }
+}
 
 function getFilterType({ comparison }) {
   return filterTypes[comparison] || 'match'
@@ -78,10 +113,13 @@ function buildBody(queryObj) {
       const filterType = getFilterType(p)
 
       if (filterType) {
-        p.comparison === 'not_eq' ?
+        if(p.comparison === 'not_eq') {
           body.notQuery(filterType, p.attribute, getFilterValue(p))
-          :
+        } else if(p.comparison === 'betweenDates') {
+          formatBetweenDatesFilter(body, p)
+        } else {
           body.query(filterType, p.attribute, getFilterValue(p))
+        }
       }
     })
   } else {

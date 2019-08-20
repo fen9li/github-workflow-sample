@@ -5,6 +5,7 @@ import DateType from './date/date-type'
 import TimeType from './time/time-type'
 import RelationalType from './relational/relational-type'
 import NumericType from './numeric/numeric-type'
+import DateStatus from './date-status/date-status-type'
 
 const types = {
   string: StringType,
@@ -14,6 +15,7 @@ const types = {
   time: TimeType,
   relational: RelationalType,
   numeric: NumericType,
+  dateStatus: DateStatus,
 }
 
 export default types

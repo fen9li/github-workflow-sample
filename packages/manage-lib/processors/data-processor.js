@@ -1,6 +1,7 @@
 import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
 import merge from 'deepmerge'
+import flattenDeep from 'lodash/flattenDeep'
 
 const createEmptyQuery = () => {
   return {
@@ -29,7 +30,7 @@ function mergeQueries(a, b) {
          * Works only for filters now
          */
         const alreadyAdded = highArray.find(highItem => {
-          return highItem.attribute === lowItem.attribute
+          return highItem.attribute === lowItem.attribute && highItem.value === lowItem.value
         })
 
         if (!alreadyAdded) {
@@ -190,6 +191,9 @@ export default class DataProcessor {
   }
 
   applyFilter(filter, index) {
+    if(Array.isArray(filter.value)){
+      filter.value = flattenDeep(filter.value)
+    }
     this.filters.splice(index, 1, filter)
     this.dataQuery.page = 1
 
