@@ -139,7 +139,6 @@ export default {
   max-width: 20rem;
   height: auto;
   max-height: 7rem;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   object-fit: contain;
 }
 
