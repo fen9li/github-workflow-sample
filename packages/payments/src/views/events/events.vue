@@ -37,7 +37,6 @@ export default {
       :processor="processor"
       :filters="filters"
       :columns="columns"
-      :fragments="false"
       @row-click="onRowClick"
     />
   </main-layout>

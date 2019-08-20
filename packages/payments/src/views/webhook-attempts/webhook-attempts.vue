@@ -51,7 +51,6 @@ export default {
       :processor="table.processor"
       :columns="table.columns"
       :filters="table.filters"
-      :fragments="false"
       @row-click="onRowClick"
     />
   </main-layout>

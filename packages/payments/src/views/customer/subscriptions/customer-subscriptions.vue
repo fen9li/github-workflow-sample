@@ -49,7 +49,6 @@ export default {
       :processor="table.processor"
       :filters="table.filters"
       :columns="table.columns"
-      :fragments="false"
       @row-click="onRowClick"
     />
   </div>
