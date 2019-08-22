@@ -83,8 +83,8 @@ export default {
     merchantId() {
       return get(this.selectedItem, 'id')
     },
-    trackingLing() {
-      return get(this.row, 'payload.TrackingLink')
+    trackingLink() {
+      return this.row.map.tracking_url
     },
     isSearchEmpty() {
       return !this.search.length
@@ -170,7 +170,7 @@ export default {
       this.$notify({
         type: 'success',
         title: 'Success',
-        message: `FeedMerchant successfuly ${this.merchantId ? 'associated' : 'created'}`,
+        message: `FeedMerchant successfully ${this.merchantId ? 'associated' : 'created'}`,
       })
     },
     onCreateClick() {
@@ -206,10 +206,10 @@ export default {
       :closable="false"
     >
       <template v-if="merchantId">
-        You want to associate <b>{{ row.name }}</b><br>with <b>{{ selectedItem.name }}</b>
+        You want to associate <b>{{ row.map.name }}</b><br>with <b>{{ selectedItem.name }}</b>
       </template>
       <template v-else>
-        You want to create <b>{{ row.name }}</b><br>as a new global merchant
+        You want to create <b>{{ row.map.name }}</b><br>as a new global merchant
       </template>
     </el-alert>
 
@@ -243,7 +243,7 @@ export default {
         </template>
 
         <dt>Merchant Tracking URL</dt>
-        <dd>{{ trackingLing }}</dd>
+        <dd>{{ trackingLink }}</dd>
       </dl>
     </template>
 
@@ -308,7 +308,7 @@ export default {
         </template>
 
         <dt>Merchant Tracking URL</dt>
-        <dd>{{ trackingLing }}</dd>
+        <dd>{{ trackingLink }}</dd>
       </dl>
 
       <el-form-item

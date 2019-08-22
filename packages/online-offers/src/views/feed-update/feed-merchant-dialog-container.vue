@@ -30,6 +30,18 @@ export default {
     merchant() {
       return this.row.merchant
     },
+    canAttach() {
+      const { commission, tracking_url: trackingUrl } = this.row.map
+      const commissionIsMissing =
+        // eslint-disable-next-line eqeqeq
+        commission.min == 0 &&
+        // eslint-disable-next-line eqeqeq
+        commission.base == 0 &&
+        // eslint-disable-next-line eqeqeq
+        commission.max == 0
+
+      return !commissionIsMissing && Boolean(trackingUrl)
+    }
   },
   methods: {
     ...mapActions('feedMerchants', [
@@ -79,7 +91,7 @@ export default {
         name="delete"
       />
       <div :class="$style.msg">
-        Are you sure you wish to detach<br> <b>{{ row.name }}</b> from <b>{{ merchant.name }}</b>?
+        Are you sure you wish to detach<br> <b>{{ row.map.name }}</b> from <b>{{ merchant.name }}</b>?
       </div>
       <div
         class="modal__footer"
@@ -95,7 +107,7 @@ export default {
       </div>
     </state-dialog>
   </div>
-  <div v-else>
+  <div v-else-if="canAttach">
     <div
       :class="$style.link"
       @click.stop.prevent="showCreate = true"
