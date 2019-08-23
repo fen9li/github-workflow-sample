@@ -239,6 +239,7 @@ export default {
           :visible.sync="modal.cancel"
           :subscription="subscription"
           :payment-methods="customer.payment_sources"
+          :customer="customer"
           @updated="$emit('updated')"
         />
 

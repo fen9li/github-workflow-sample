@@ -232,8 +232,10 @@ export default {
           :selected-method="form.payment_source"
           :payment-methods="customer.payment_sources"
           :display-form="displayMethodForm"
+          :customer="customer"
           @showForm="showAddMethodForm = $event"
           @changeMethod="form.payment_source = $event"
+          @updated="$emit('updated')"
         />
       </el-form>
       <el-button

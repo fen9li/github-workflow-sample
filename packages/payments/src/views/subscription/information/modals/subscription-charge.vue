@@ -30,7 +30,7 @@ export default {
         selectedMethod: get(this.customer,'payment_sources[0].token', null),
       },
       rules: {
-        selectedMethod: [
+        payment_source: [
           {
             required: true,
             message: 'This field is required',
@@ -56,36 +56,47 @@ export default {
     async onSubmit() {
       if (!this.validateAll().some(item => item === false)) {
 
-        // this.processing = true
+        const { customer, form, subscription } = this
+        this.processing = true
 
-        // TODO: Add proper api request
+        const requestData = {
+          amount: form.amount,
+          customer: {
+            id: customer.id
+          },
+          payment_source: {
+            token: form.payment_source,
+          },
+          subscription: {
+            id: subscription.id
+          },
+        }
 
-        // const [error, response] = await this.$api.post(`/subscriptions/${this.subscription.id}`)
+        const [error, response] = await this.$api.post('/orders', requestData)
 
-        // this.processing = true
+        this.processing = false
 
-        // if (response) {
-        //   this.$notify({
-        //     type: 'success',
-        //     title: 'Saved',
-        //     message: 'Changes saved successfully.',
-        //   })
-
-        // this.$emit('update:visible', false)
-        // this.$emit('update:should-update', true)
-        // this.$emit('updated')
-        // } else if (error) {
-        //   const violations = Object.keys(error.violations)
-        //   violations.forEach(violation => {
-        //     setTimeout(() => {
-        //       this.$notify({
-        //         type: 'error',
-        //         title: 'Error',
-        //         message: `${violation}: ${error.violations[violation][0]}`,
-        //       })
-        //     }, 50)
-        //   })
-        // }
+        if (response) {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: `Changes saved successfully`,
+          })
+          this.$emit('update:visible', false)
+          this.$emit('update:should-update', true)
+          this.$emit('updated')
+        } else if (error) {
+          const violations = Object.keys(error.violations)
+          violations.forEach(violation => {
+            setTimeout(() => {
+              this.$notify({
+                type: 'error',
+                title: 'Error',
+                message: `${violation}: ${error.violations[violation][0]}`,
+              })
+            }, 50)
+          })
+        }
       }
     },
     validateAll() {

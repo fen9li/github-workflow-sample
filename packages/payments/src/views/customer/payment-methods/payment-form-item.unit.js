@@ -106,7 +106,7 @@ describe('packages/payments/src/views/customer/payment-methods/payment-form-item
       name: '',
       number: '',
       expiry: '',
-      cvv: '',
+      cvc: '',
     },
   }
 
@@ -120,7 +120,7 @@ describe('packages/payments/src/views/customer/payment-methods/payment-form-item
       name: 'test-name',
       number: '1111 1111 1111 1111',
       expiry: '11/11',
-      cvv: '111',
+      cvc: '111',
     },
   }
 

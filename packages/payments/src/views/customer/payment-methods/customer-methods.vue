@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     getCardLogo(method) {
-      return '/img/visa_logo.png'
+      return '/img/visaelectron_logo.png'
     },
     deleteCard(method) {
       this.methodToRemove = method
@@ -123,6 +123,7 @@ export default {
       v-if="methodToRemove"
       :visible="true"
       :method="methodToRemove"
+      :customer="customer"
       @close="methodToRemove = null"
       @updated="$emit('updated')"
     />

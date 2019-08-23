@@ -21,11 +21,11 @@ export default {
     return {
       processing: false,
       form: {
-        selectedMethod: get(this.customer, 'payment_sources[0].token', ''),
+        payment_source: get(this.subscription, 'payment_source.token', ''),
       },
       showAddMethodForm: false,
       rules: {
-        selectedMethod: [
+        payment_source: [
           {
             required: true,
             message: 'This field is required',
@@ -43,28 +43,37 @@ export default {
   methods: {
     async onSubmit() {
       if (!this.validateAll().some(item => item === false)) {
+        const { subscription, form } = this
+        this.processing = true
 
-        // if (response) {
-        //   this.$notify({
-        //     type: 'success',
-        //     title: 'Success',
-        //     message: `Changes saved successfully`,
-        //   })
-        //   this.$emit('update:visible', false)
-        //   this.$emit('updated')
-        // } else if (error) {
-        //   const violations = Object.keys(error.violations)
-        //   violations.forEach(violation => {
-        //     setTimeout(() => {
-        //       this.$notify({
-        //         type: 'error',
-        //         title: 'Error',
-        //         message: `${violation}: ${error.violations[violation][0]}`,
-        //       })
-        //     }, 50)
-        //   })
-        // }
+        const [error,] = await this.$api.put(`/subscriptions/${subscription.id}/payment-source`, {
+          payment_source: {
+            token: form.payment_source
+          }
+        })
 
+        this.processing = false
+
+        if (error) {
+          const violations = Object.keys(error.violations)
+          violations.forEach(violation => {
+            setTimeout(() => {
+              this.$notify({
+                type: 'error',
+                title: 'Error',
+                message: `${violation}: ${error.violations[violation][0]}`,
+              })
+            }, 50)
+          })
+        } else {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: `Changes saved successfully`,
+          })
+          this.$emit('update:visible', false)
+          this.$emit('updated')
+        }
       }
     },
     validateAll() {
@@ -103,11 +112,12 @@ export default {
       </el-form-item>
 
       <payment-form-item
-        :selected-method="form.selectedMethod"
+        :selected-method="form.payment_source"
         :payment-methods="customer.payment_sources"
         :display-form="displayMethodForm"
+        :customer="customer"
         @showForm="showAddMethodForm = $event"
-        @changeMethod="form.selectedMethod = $event"
+        @changeMethod="form.payment_source = $event"
       />
     </el-form>
     <div class="modal__footer">

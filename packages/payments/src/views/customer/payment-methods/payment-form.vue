@@ -1,5 +1,6 @@
 <script>
 import { mask } from 'vue-the-mask'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'NewPaymentMethodForm',
@@ -7,23 +8,30 @@ export default {
     mask,
   },
   props: {
-    form: {
+    customer: {
       type: Object,
-      required: true,
+      required: true
     },
   },
   data() {
     return {
-      tab: 'card',
+      processing: false,
+      type: 'card',
+      form: {
+        account: {
+          name: null,
+          bsb: null,
+          number: null,
+        },
+        card: {
+          name: null,
+          number: null,
+          expiry: null,
+          cvc: null,
+        },
+      },
       rules: {
         name: [
-          {
-            required: true,
-            message: 'This field is required',
-            trigger: 'blur',
-          },
-        ],
-        number: [
           {
             required: true,
             message: 'This field is required',
@@ -36,15 +44,30 @@ export default {
             message: 'This field is required',
             trigger: 'blur',
           },
+          {
+            len: 5,
+            message: 'Expiry field must be in format 11/11',
+            trigger: 'blur',
+          },
         ],
-        cvv: [
+        cvc: [
           {
             required: true,
             message: 'This field is required',
             trigger: 'blur',
           },
+          {
+            len: 3,
+            message: 'CVV must be 3 digits',
+            trigger: 'blur',
+          },
         ],
         bsb: [
+          {
+            len: 6,
+            message: 'BSB must be 6 digits',
+            trigger: 'blur',
+          },
           {
             required: true,
             message: 'This field is required',
@@ -55,16 +78,85 @@ export default {
     }
   },
   methods: {
-    changeValue(fieldName, type, newVal) {
-      this.$emit('changeValue', { fieldName, type, newVal })
-    },
-    onSave() {
-      this.$refs[this.tab].validate(valid => {
+    ...mapActions('payment', ['addPaymentMethod']),
+    onSubmit() {
+      this.$refs[this.type].validate(valid => {
         if (valid) {
-          this.$emit('save')
+          this.processing = true
+
+          const { form, customer, type } = this
+          let requestData
+
+          if(type === 'card') {
+            requestData = {
+              type,
+              card: {
+                expiry: {
+                  month: form.card.expiry.slice(0,2),
+                  year: `20${form.card.expiry.slice(3)}`,
+                },
+                name: form.card.name,
+                number: form.card.number.replace(/\s/g, ''),
+              },
+              token: customer.eoneo_pay_api_key,
+            }
+          } else if(type === 'account') {
+            requestData = {
+              type,
+              account: {
+                prefix: form.account.bsb,
+                name: form.account.name,
+                number: form.account.number.replace(/\s/g, ''),
+              },
+              token: customer.eoneo_pay_api_key
+            }
+          }
+
+          this.addPaymentMethod(requestData).then(resp => {
+            const [error, response] = resp
+
+            if(error) {
+              this.$notify({
+                type: 'error',
+                title: 'Error',
+                message: error.message,
+              })
+              this.$refs[this.type].clearValidate()
+              this.processing = false
+            } else {
+              this.addMethodToCustomer(response.token)
+            }
+          })
         }
       })
     },
+    async addMethodToCustomer(token) {
+      const [error, response] = await this.$api.post(`/customers/${this.customer.id}/tokens`, {
+        token
+      })
+
+      this.processing = false
+
+      if (error) {
+        const violations = Object.keys(error.violations)
+        violations.forEach(violation => {
+          setTimeout(() => {
+            this.$notify({
+              type: 'error',
+              title: 'Error',
+              message: `${violation}: ${error.violations[violation][0]}`,
+            })
+          }, 50)
+        })
+      } else {
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: `Method added successfully`,
+        })
+        this.$emit('added', response.token)
+      }
+    }
   },
 }
 </script>
@@ -72,7 +164,7 @@ export default {
 <template>
   <div :class="$style.root">
     <el-tabs
-      v-model="tab"
+      v-model="type"
       stretch
     >
       <el-tab-pane
@@ -91,25 +183,27 @@ export default {
             prop="name"
           >
             <el-input
-              :value="form.card.name"
-              @input="changeValue('name', 'card', $event)"
+              v-model="form.card.name"
             />
           </el-form-item>
 
           <el-form-item
             label="Card No"
             prop="number"
+            :rules="[
+              {required: true, message: 'This field is required', trigger: 'blur'},
+              {len: 19, message: 'Card number must be 16 digits', trigger: 'blur'}
+            ]"
           >
             <el-input
+              v-model="form.card.number"
               v-mask="['#### #### #### ####']"
               placeholder="---- ---- ---- ----"
-              :value="form.card.number"
-              @input="changeValue('number', 'card', $event)"
             />
             <div :class="$style.cardLogos">
               <div :class="$style.logoWrapper">
                 <img
-                  src="/img/visa_logo.png"
+                  src="/img/visaelectron_logo.png"
                   alt="visa"
                   :class="$style.logo"
                 >
@@ -137,21 +231,20 @@ export default {
               prop="expiry"
             >
               <el-input
+                v-model="form.card.expiry"
                 v-mask="['##/##']"
                 :value="form.card.expiry"
                 placeholder="MM/YY"
-                @input="changeValue('expiry', 'card', $event)"
               />
             </el-form-item>
 
             <el-form-item
               label="CVV"
-              prop="cvv"
+              prop="cvc"
             >
               <el-input
+                v-model="form.card.cvc"
                 v-mask="['###']"
-                :value="form.card.cvv"
-                @input="changeValue('cvv', 'card', $event)"
               />
             </el-form-item>
           </div>
@@ -173,8 +266,7 @@ export default {
             prop="name"
           >
             <el-input
-              :value="form.account.name"
-              @input="changeValue('name', 'account', $event)"
+              v-model="form.account.name"
             />
           </el-form-item>
 
@@ -184,18 +276,22 @@ export default {
               prop="bsb"
             >
               <el-input
-                :value="form.account.bsb"
-                @input="changeValue('bsb', 'account', $event)"
+                v-model="form.account.bsb"
+                v-mask="['######']"
               />
             </el-form-item>
 
             <el-form-item
               label="Account No"
               prop="number"
+              :rules="[
+                {required: true, message: 'This field is required', trigger: 'blur'},
+                {len: 9, message: 'Account number must be 9 digits', trigger: 'blur'}
+              ]"
             >
               <el-input
-                :value="form.account.number"
-                @input="changeValue('number', 'account', $event)"
+                v-model="form.account.number"
+                v-mask="['#########']"
               />
             </el-form-item>
           </div>
@@ -205,8 +301,9 @@ export default {
     <el-button
       type="primary"
       :class="$style.saveButton"
+      :loading="processing"
       data-test="save"
-      @click="onSave"
+      @click="onSubmit"
     >
       Save
     </el-button>

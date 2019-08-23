@@ -20,7 +20,7 @@ const form = {
     name: '2',
     number: '2',
     expiry: '22/22',
-    cvv: '222',
+    cvc: '222',
   },
 }
 

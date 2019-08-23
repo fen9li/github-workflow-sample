@@ -1,5 +1,6 @@
 <script>
 import formatAccount from '@lib/utils/format-account'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'PaymentMethodDetails',
@@ -13,9 +14,15 @@ export default {
       default: null,
     },
   },
+  data() {
+    return {
+      paymentSystem: ''
+    }
+  },
   computed: {
     logo() {
       const { type } = this.paymentSource
+      const { paymentSystem } = this
 
       const logoObj = {
         url: '',
@@ -23,9 +30,9 @@ export default {
       }
 
       if(type === 'bank_account') {
-        logoObj.img =  `/img/bank_icon.png`
+        logoObj.img = `/img/bank_icon.png`
       } else if (type === 'credit_card') {
-        logoObj.img =  `/img/mastercard_logo.png`
+        logoObj.img = `/img/${paymentSystem}_logo.png`
       }
 
       return logoObj
@@ -36,7 +43,16 @@ export default {
       return paymentSource ? paymentSource.name || paymentSource.metadata.find(item => item.key === 'name').value : null
     }
   },
+  created() {
+    const { paymentSource } = this
+    if(paymentSource && paymentSource.type === 'credit_card') {
+      this.getCardType({ token: paymentSource.token || this.token, number: paymentSource.pan }).then(resp => {
+        this.paymentSystem = resp
+      })
+    }
+  },
   methods: {
+    ...mapActions('payment', ['getCardType']),
     formatAccount(value) {
       return formatAccount(value, 4)
     },
@@ -48,7 +64,7 @@ export default {
     class="info-block"
   >
     <span class="info-block__title">
-      Payment Details
+      Payment Details {{ paymentSystem }}
     </span>
     <dl
       v-if="paymentSource"

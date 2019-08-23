@@ -1,5 +1,6 @@
 <script>
 import { mask } from 'vue-the-mask'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'TransactionsVirtualPOS',
@@ -8,14 +9,16 @@ export default {
   },
   data() {
     return {
+      token: '',
+      processing: false,
       form: {
-        amount: '',
+        amount: null,
         currency: 'aud',
-        name: '',
-        number: '',
-        expiry: '',
-        cvv: '',
-        email: '',
+        name: null,
+        number: null,
+        expiry: null,
+        cvc: null,
+        email: null,
       },
       disableSubmit: false,
       showError: true,
@@ -49,7 +52,7 @@ export default {
             trigger: 'blur',
           },
         ],
-        cvv: [
+        cvc: [
           {
             required: true,
             message: 'This field is required',
@@ -66,32 +69,51 @@ export default {
       },
     }
   },
+  created() {
+    this.getOneTimeToken()
+  },
   methods: {
+    ...mapActions('payment', ['addPaymentMethod']),
+    getOneTimeToken() {
+      // Temporary we have a fixed test token for customerless payments, later a real request will be added.
+      this.token = 'M8CM8F694VRKEVJ6'
+    },
     onSubmit() {
-      if (!this.validateAll().some(item => item === false)) {
-        // if (response) {
-        //   this.$notify({
-        //     type: 'success',
-        //     title: 'Saved',
-        //     message: 'Transactions successfully made',
-        //   })
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.processing = true
 
-        //   this.$emit('update:visible', false)
-        //   this.$emit('updated')
-        // } else if (error) {
-        //   const violations = Object.keys(error.violations)
-        //   violations.forEach(violation => {
-        //     setTimeout(() => {
-        //       this.$notify({
-        //         type: 'error',
-        //         title: 'Error',
-        //         message: `${violation}: ${error.violations[violation][0]}`,
-        //       })
-        //     }, 50)
-        //   })
-        // }
-        console.warn(this.form)
-      }
+          const { form, token } = this
+
+          const requestData = {
+            card: {
+              expiry: {
+                month: form.card.expiry.slice(0,2),
+                year: `20${form.card.expiry.slice(3)}`,
+              },
+              name: form.card.name,
+              number: form.card.number.replace(/\s/g, ''),
+            },
+            token,
+          }
+
+          this.addPaymentMethod(requestData).then(resp => {
+            const [error, response] = resp
+
+            if(error) {
+              this.$notify({
+                type: 'error',
+                title: 'Error',
+                message: error.message,
+              })
+              this.$refs[this.type].clearValidate()
+              this.processing = false
+            } else {
+              this.addMethodToCustomer(response.token)
+            }
+          })
+        }
+      })
     },
     validateAll() {
       const result = []
@@ -184,7 +206,7 @@ export default {
         <div :class="$style.cardLogos">
           <div :class="$style.logoWrapper">
             <img
-              src="/img/visa_logo.png"
+              src="/img/visaelectron_logo.png"
               alt="visa"
               :class="$style.logo"
             >
@@ -220,13 +242,13 @@ export default {
         </el-form-item>
         <el-form-item
           label="CVV"
-          prop="cvv"
+          prop="cvc"
         >
           <el-input
-            v-model="form.cvv"
+            v-model="form.cvc"
             v-mask="'###'"
             :class="$style.short"
-            data-test="cvv"
+            data-test="cvc"
           />
         </el-form-item>
       </div>
@@ -258,6 +280,7 @@ export default {
         :disabled="disableSubmit"
         class="wide-button"
         :type="disableSubmit ? 'info' : 'primary'"
+        :loading="processing"
         data-test="submit"
         @click="onSubmit"
       >

@@ -8,6 +8,15 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    customer: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  data() {
+    return {
+      processing: false,
+    }
   },
   computed: {
     title() {
@@ -17,7 +26,31 @@ export default {
     },
   },
   methods: {
-    onSubmit() {
+    async onSubmit() {
+      this.processing = true
+      const { method, customer } = this
+      const [error,] = await this.$api.delete(`/customers/${customer.id}/tokens/${method.token}`)
+
+      this.processing = false
+
+      if (error) {
+        const violations = Object.keys(error.violations)
+        violations.forEach(violation => {
+          setTimeout(() => {
+            this.$notify({
+              type: 'error',
+              title: 'Error',
+              message: `${violation}: ${error.violations[violation][0]}`,
+            })
+          }, 50)
+        })
+      } else {
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: `Method removed successfully`,
+        })
+      }
       this.$emit('close')
       this.$emit('updated')
     },
@@ -51,6 +84,7 @@ export default {
         'wide-button',
       ]"
       data-test="submit"
+      :loading="processing"
       @click="onSubmit"
     >
       Delete

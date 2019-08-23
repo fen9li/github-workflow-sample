@@ -26,24 +26,6 @@ export default {
       default: 'Payment Method',
     },
   },
-  data() {
-    return {
-      form: {
-        account: {
-          name: '',
-          bsb: '',
-          number: '',
-        },
-        card: {
-          name: '',
-          number: '',
-          expiry: '',
-          cvv: '',
-        },
-      },
-
-    }
-  },
   computed: {
     showCloseIcon() {
       return this.paymentMethods.length && this.displayForm
@@ -51,15 +33,12 @@ export default {
   },
   methods: {
     sort,
-    updateValue({ fieldName, type, newVal }) {
-      this.form[type][fieldName] = newVal
-    },
-    saveMethod() {
-      // TODO: Add api method call when new method should be added, then emit close event
-      this.$emit('showForm', false)
-    },
     formatMethod(method) {
       return `${method.name} **** ${method.pan.toString().slice(-4)} ${capitalize(method.type.replace('_', ' '))}`
+    },
+    methodAdded(event) {
+      this.$emit('showForm', false)
+      this.$emit('updated')
     }
   },
 }
@@ -109,9 +88,8 @@ export default {
 
     <payment-form
       v-if="displayForm"
-      :form="form"
-      @changeValue="updateValue"
-      @save="saveMethod"
+      :customer="$attrs.customer"
+      @added="methodAdded"
     />
   </div>
 </template>

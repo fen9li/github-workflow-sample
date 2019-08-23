@@ -166,6 +166,7 @@ export default {
       v-if="modal.addProduct"
       :visible.sync="modal.addProduct"
       :customer="customer"
+      @updated="getInformation"
     />
 
     <add-subscription
@@ -173,6 +174,7 @@ export default {
       :visible.sync="modal.addSubscription"
       :customer="customer"
       :should-update.sync="shouldUpdate"
+      @updated="getInformation"
     />
   </main-layout>
 </template>

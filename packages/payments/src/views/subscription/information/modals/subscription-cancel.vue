@@ -5,7 +5,7 @@ import { mask } from 'vue-the-mask'
 import { datePickerFormat } from '@lib/utils/date-helper'
 
 export default {
-  name: 'EditSubscriptionCancelModal',
+  name: 'SubscriptionCancelModal',
   directives: {
     mask,
   },
@@ -17,8 +17,8 @@ export default {
       type: Object,
       default: () => {},
     },
-    paymentMethods: {
-      type: Array,
+    customer: {
+      type: Object,
       default: () => [],
     },
   },
@@ -29,13 +29,13 @@ export default {
       type: 'now',
       refund: true,
       form: {
-        selectedMethod: get(this.paymentMethods[0], 'token', ''),
+        payment_source: '',
         cancelDate: '',
         amount: '',
       },
       showAddMethodForm: false,
       rules: {
-        selectedMethod: [
+        payment_source: [
           {
             required: true,
             message: 'This field is required',
@@ -61,8 +61,11 @@ export default {
   },
   computed: {
     displayMethodForm() {
-      return !get(this.paymentMethods, 'length') || this.showAddMethodForm
+      return !get(this.customer, 'payment_sources') || this.showAddMethodForm
     },
+    availablePaymentMethods() {
+      return this.customer.payment_sources.filter(method => method.type === 'bank_account')
+    }
   },
   methods: {
     async onSubmit() {
@@ -77,7 +80,17 @@ export default {
         if(type !== 'end') {
 
           if(refund) {
-            await this.refundSubscruption()
+            if(form.payment_source) {
+              await this.refundSubscruption()
+            } else {
+              this.$notify({
+                type: 'error',
+                title: 'Error',
+                message: 'Payment method is required for refund.',
+              })
+              this.loading = false
+              return
+            }
           }
 
           if(type === 'specific') {
@@ -124,12 +137,15 @@ export default {
       const { form, subscription } = this
 
       const refundData = {
-        amount: form.amount
+        amount: form.amount,
+        // payment_source: {
+        //   token: form.payment_source
+        // }
       }
 
       const [error, response] = await this.$api.post(`/subscriptions/${subscription.id}/refund`, refundData)
 
-      console.warn(error, response)
+      console.warn('refunded', error, response)
 
       return [error, response]
     }
@@ -191,44 +207,55 @@ export default {
         >
           Refund remaining balance
         </el-checkbox>
-        <payment-form-item
-          v-if="refund"
-          :selected-method="form.selectedMethod"
-          :payment-methods="paymentMethods"
-          :display-form="displayMethodForm"
-          :class="$style.refundTo"
-          label="Refund to"
-          @showForm="showAddMethodForm = $event"
-          @changeMethod="form.selectedMethod = $event"
-        />
+        <div v-if="refund">
+          <payment-form-item
+            prop="payment_source"
+            :selected-method="form.payment_source"
+            :payment-methods="availablePaymentMethods"
+            :display-form="displayMethodForm"
+            :customer="customer"
+            :class="$style.refundTo"
+            label="Refund to"
+            @showForm="showAddMethodForm = $event"
+            @changeMethod="form.payment_source = $event"
+          />
 
-        <el-form-item
-          v-if="refund && !displayMethodForm"
-          label="Balance to be Refunded"
-          prop="amount"
-        >
           <div
-            class="amount-form-item"
+            :class="['modal-note', $style.note]"
           >
-            <el-form-item prop="amount">
-              <el-input
-                v-model="form.amount"
-                v-mask="['#.##', '##.##', '###.##', '####.##', '#####.##']"
-                placeholder="0.00"
-                data-test="amount"
-              >
-                <template #prepend>
-                  $
-                </template>
-              </el-input>
-            </el-form-item>
-            <el-select
-              value=""
-              placeholder="AUD"
-              disabled
-            />
+            <i class="el-icon-info" />
+            <div class="modal-note__text">
+              Refund is available only for bank accounts
+            </div>
           </div>
-        </el-form-item>
+
+          <el-form-item
+            v-if="!displayMethodForm"
+            label="Balance to be Refunded"
+          >
+            <div
+              class="amount-form-item"
+            >
+              <el-form-item prop="amount">
+                <el-input
+                  v-model="form.amount"
+                  v-mask="['#.##', '##.##', '###.##', '####.##', '#####.##']"
+                  placeholder="0.00"
+                  data-test="amount"
+                >
+                  <template #prepend>
+                    $
+                  </template>
+                </el-input>
+              </el-form-item>
+              <el-select
+                value=""
+                placeholder="AUD"
+                disabled
+              />
+            </div>
+          </el-form-item>
+        </div>
       </div>
     </el-form>
     <div class="modal__footer">
@@ -280,6 +307,11 @@ export default {
 
 .save {
   width: 15rem !important;
+}
+
+.note {
+  width: 18rem;
+  margin-bottom: .5rem;
 }
 
 </style>

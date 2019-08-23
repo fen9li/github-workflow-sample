@@ -13,37 +13,12 @@ export default {
       default: () => ({}),
     },
   },
-  data() {
-    return {
-      form: {
-        account: {
-          name: '',
-          bsb: '',
-          number: '',
-        },
-        card: {
-          name: '',
-          number: '',
-          expiry: '',
-          cvv: '',
-        },
-      },
-    }
-  },
-  methods: {
-    async onSave() {
-      const requestData = {
-        token: '6G2CTP82HK37AZYJHW78',
-      }
 
-      const [error, response] = await this.$api.post(`/customers/${this.customer.id}/tokens`, requestData)
-      // this.$emit('update:visible', false)
-      // this.$emit('updated')
-      console.warn(error, response)
-    },
-    updateValue({ fieldName, type, newVal }) {
-      this.form[type][fieldName] = newVal
-    },
+  methods: {
+    onSave() {
+      this.$emit('update:visible', false)
+      this.$emit('updated')
+    }
   },
 }
 </script>
@@ -55,9 +30,8 @@ export default {
     v-on="$listeners"
   >
     <payment-form
-      :form="form"
-      @changeValue="updateValue"
-      @save="onSave"
+      :customer="customer"
+      @added="onSave"
     />
   </el-dialog>
 </template>

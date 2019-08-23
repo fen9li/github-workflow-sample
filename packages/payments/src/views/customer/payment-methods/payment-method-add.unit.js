@@ -40,7 +40,7 @@ describe('packages/payments/src/views/customer/payment-methods/payment-method-ad
       name: '',
       number: '',
       expiry: '',
-      cvv: '',
+      cvc: '',
     },
   }
 
@@ -54,7 +54,7 @@ describe('packages/payments/src/views/customer/payment-methods/payment-method-ad
       name: '1',
       number: '1111 1111 1111 1111',
       expiry: '11/11',
-      cvv: '111',
+      cvc: '111',
     },
   }
 

@@ -78,13 +78,13 @@ describe('packages/payments/src/views/transactions/transactions-virtual-pos.vue'
     expect(wrapper.vm.form.expiry).toEqual(value)
   })
 
-  it('check cvv field is rendered and binded to the form', () => {
-    const cvv = wrapper.find('[data-test="cvv"]')
-    expect(wrapper.vm.form.cvv).toEqual('')
+  it('check cvc field is rendered and binded to the form', () => {
+    const cvc = wrapper.find('[data-test="cvc"]')
+    expect(wrapper.vm.form.cvc).toEqual('')
     const value = '222'
-    expect(cvv.exists()).toBeTruthy()
-    cvv.setValue(value)
-    expect(wrapper.vm.form.cvv).toEqual(value)
+    expect(cvc.exists()).toBeTruthy()
+    cvc.setValue(value)
+    expect(wrapper.vm.form.cvc).toEqual(value)
   })
 
   it('check email field is rendered and binded to the form', () => {
