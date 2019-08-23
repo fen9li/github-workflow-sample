@@ -10,11 +10,23 @@ const TABLE_FILTERS = [
   },
   {
     attribute: 'type',
-    type: 'string',
+    label: 'Type',
+    type: 'select',
     icon: 'el-icon-document',
+    values: [
+      {
+        label: 'Recurrring',
+        value: 'recurring',
+      },
+      {
+        label: 'One Off',
+        value: 'one_off',
+      },
+    ]
   },
   {
     attribute: 'amount.total',
+    label: 'Amount',
     type: 'numeric',
     icon: 'el-icon-document',
   },
@@ -54,8 +66,12 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
     values: [
       {
-        label: 'Settled',
-        value: 'settled',
+        label: 'Completed',
+        value: 'completed',
+      },
+      {
+        label: 'Finalised',
+        value: 'finalised',
       },
       {
         label: 'Pending',

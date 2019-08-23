@@ -9,6 +9,7 @@ const TABLE_FILTERS = [
   },
   {
     attribute: 'endAt',
+    label: 'End Date',
     icon: 'el-icon-date',
     type: 'date',
   },
@@ -49,7 +50,7 @@ const TABLE_FILTERS = [
     type: 'date',
   },
   {
-    attribute: 'outstandingBalance',
+    attribute: 'outstandingBalance.total',
     label: 'Amount Owing',
     type: 'numeric',
     icon: 'el-icon-tickets',
@@ -61,11 +62,11 @@ const TABLE_FILTERS = [
     values: [
       {
         label: 'Active',
-        value: 'Active',
+        value: 'active',
       },
       {
         label: 'Inactive',
-        value: 'Inactive',
+        value: 'inactive',
       },
     ],
   },
@@ -97,7 +98,7 @@ const TABLE_COLUMNS = [
     name: 'currentInterval',
     label: 'Frequency',
     icon: 'el-icon-document',
-    width: 90,
+    width: 120,
     format: 'capital',
     component: {
       props: {

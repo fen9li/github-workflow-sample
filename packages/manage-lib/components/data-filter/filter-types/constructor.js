@@ -22,11 +22,12 @@ export default class FilterType {
   getSummary(filter) {
     const comparison = this.getComparison(filter.comparison)
     const prefix = comparison && comparison.prefix
+    const isAmount = filter.attribute.includes('amount') || filter.attribute.includes('total') || filter.attribute.includes('price')
 
     if (/null|undefined/.test(filter.value)) {
       return this.label
     } else {
-      return `${this.label} ${prefix} ${filter.value}`
+      return `${this.label} ${prefix} ${isAmount ? `$${filter.value.toFixed(2)}` : filter.value}`
     }
   }
 
@@ -37,7 +38,7 @@ export default class FilterType {
       return {
         type: key,
         label: comparison[0],
-        prefix: comparison[1],
+        prefix: comparison[0],
       }
     })
   }

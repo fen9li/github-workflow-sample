@@ -3,6 +3,7 @@ import ElasticProcessor from '@lib/processors/elastic-processor'
 const TABLE_FILTERS = [
   {
     attribute: 'createdAt',
+    label: 'Date Created',
     icon: 'el-icon-date',
     type: 'date',
   },

@@ -17,7 +17,7 @@ export default class SelectColumn extends FilterType {
     const { value } = filter
 
     if (value instanceof Array && value.length > 0) {
-      return this.label + comparison.prefix + value.join(', ')
+      return this.label + comparison.prefix + value.map(val => this.values.find(v => v.value === val ).label).join(', ')
     }
     return this.label
   }

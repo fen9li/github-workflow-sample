@@ -15,7 +15,13 @@ const TABLE_FILTERS = [
     type: 'string',
   },
   {
-    attribute: 'price',
+    attribute: 'id',
+    label: 'Product Code',
+    icon: 'el-icon-document',
+    type: 'string',
+  },
+  {
+    attribute: 'price.total',
     label: 'Amount',
     icon: 'el-icon-document',
     type: 'numeric',
@@ -33,8 +39,9 @@ const TABLE_FILTERS = [
     type: 'date',
   },
   {
-    attribute: 'status',
-    type: 'select',
+    attribute: 'end',
+    label: 'Status',
+    type: 'dateStatus',
     icon: 'el-icon-document',
     values: [
       {

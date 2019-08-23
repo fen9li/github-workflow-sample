@@ -11,8 +11,18 @@ const TABLE_FILTERS = [
   {
     attribute: 'type',
     label: 'Type',
-    type: 'string',
+    type: 'select',
     icon: 'el-icon-document',
+    values: [
+      {
+        label: 'Recurrring',
+        value: 'recurring',
+      },
+      {
+        label: 'One Off',
+        value: 'one_off',
+      },
+    ]
   },
   {
     attribute: 'amount',
@@ -20,13 +30,14 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'statementDescriptor',
-    label: 'Statement Description',
+    attribute: 'orderDescription',
+    label: 'Description',
     type: 'string',
     icon: 'el-icon-document',
   },
   {
     attribute: 'orderId',
+    label: 'Order ID',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -36,20 +47,24 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
     values: [
       {
+        label: 'Completed',
+        value: 'completed',
+      },
+      {
         label: 'Finalised',
-        value: 'Finalised',
+        value: 'finalised',
       },
       {
         label: 'Pending',
-        value: 'Pending',
+        value: 'pending',
       },
       {
         label: 'Refunded',
-        value: 'Refunded',
+        value: 'refunded',
       },
       {
         label: 'Failed',
-        value: 'Failed',
+        value: 'failed',
       },
     ],
   },
@@ -103,26 +118,33 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'status',
+    label: 'Status',
     icon: 'el-icon-document',
     format: 'capital',
+    width: 120,
     component: {
       props: {
-        styleObj(val) {
-          switch (val) {
+        styleObj(_, row) {
+          switch (row.status) {
             case 'pending': return { color: '#fbb241' }
             case 'completed': return { color: '#29d737' }
             case 'failed': return { color: '#fc7168' }
             case 'refunded': return { color: '#fc7168' }
+            case 'finalised': return { color: '#29d737' }
             default: return {}
           }
         },
-        badge(val) {
-          switch (val) {
+        badge(_, row) {
+          switch (row.status) {
             case 'pending': return {
               name: 'el-icon-time',
               pos: 'left',
             }
             case 'completed': return {
+              name: 'el-icon-check',
+              pos: 'left',
+            }
+            case 'finalised': return {
               name: 'el-icon-check',
               pos: 'left',
             }
@@ -137,6 +159,9 @@ const TABLE_COLUMNS = [
             default: return {}
           }
         },
+        value: (_, row) => {
+          return row.status === 'finalised' ? 'completed' : row.status
+        }
       },
     },
   },

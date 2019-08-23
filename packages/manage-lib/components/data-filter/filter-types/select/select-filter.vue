@@ -33,9 +33,11 @@ export default {
   >
     <el-checkbox
       v-for="{ label, value } in values"
-      :key="value"
-      :label="label"
-    />
+      :key="label"
+      :label="value"
+    >
+      {{ label }}
+    </el-checkbox>
   </el-checkbox-group>
 </template>
 

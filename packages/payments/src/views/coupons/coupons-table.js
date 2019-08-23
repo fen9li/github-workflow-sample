@@ -12,10 +12,10 @@ const TABLE_FILTERS = [
     attribute: 'name',
     label: 'Coupon Name',
     icon: 'el-icon-document',
-    type: 'date',
+    type: 'string',
   },
   {
-    attribute: 'id',
+    attribute: 'code',
     label: 'Coupon Code',
     type: 'string',
     icon: 'el-icon-document',
@@ -45,21 +45,22 @@ const TABLE_FILTERS = [
   },
   {
     attribute: 'amount',
-    type: 'string',
+    type: 'numeric',
     icon: 'el-icon-document',
   },
   {
-    attribute: 'status',
-    type: 'select',
+    attribute: 'end',
+    label: 'Status',
+    type: 'dateStatus',
     icon: 'el-icon-document',
     values: [
       {
         label: 'Active',
-        value: 'Active',
+        value: 'active',
       },
       {
         label: 'Inactive',
-        value: 'Inactive',
+        value: 'inactive',
       },
     ],
   },

@@ -57,15 +57,15 @@ export default {
 
       return Boolean(existingFilter)
     },
+    // Currently Done button was requested not to be disabled if 'suchFilterAlreadyExists', but we'll keep the functionality for a while
     doneDisabled() {
-      const { localData, suchFilterAlreadyExists } = this
+      const { localData } = this
 
       if (localData) {
         const { value } = localData
         const isEmptyList = value instanceof Array && !value.length
 
-        return suchFilterAlreadyExists
-          || value === null
+        return value === null
           || value === undefined
           || value === ''
           || isEmptyList
@@ -131,7 +131,6 @@ export default {
       if (index === -1) {
         index = processor.dataQuery.filters.length
       }
-
       processor.applyFilter(this.localData, index)
       this.toggleDropdown()
     },
@@ -204,8 +203,8 @@ export default {
       </div>
       <el-button
         :class="$style.itemDone"
-        :disabled="doneDisabled"
         :title="doneTitle"
+        :disabled="doneDisabled"
         @click="applyFilter"
       >
         Done
