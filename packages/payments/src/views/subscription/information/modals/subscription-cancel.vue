@@ -38,21 +38,21 @@ export default {
         selectedMethod: [
           {
             required: true,
-            message: 'Payment method is required',
+            message: 'This field is required',
             trigger: 'blur',
           },
         ],
         cancelDate: [
           {
             required: true,
-            message: 'New date is required',
+            message: 'This field is required',
             trigger: 'blur',
           },
         ],
         amount: [
           {
             required: true,
-            message: 'Amount is required',
+            message: 'This field is required',
             trigger: 'blur',
           },
         ],
@@ -174,9 +174,9 @@ export default {
       >
         <el-date-picker
           v-model="form.cancelDate"
+          v-mask="['##/##/####']"
           type="date"
-          placeholder="Enter Date"
-          :editable="false"
+          placeholder="DD/MM/YYYY"
           data-test="datepicker"
           format="dd/MM/yyyy"
           :value-format="datePickerFormat"

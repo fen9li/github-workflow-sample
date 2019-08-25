@@ -1,9 +1,13 @@
 <script>
 import { datePickerFormat } from '@lib/utils/date-helper'
 import get from 'lodash/get'
+import { mask } from 'vue-the-mask'
 
 export default {
   name: 'EditSubscriptionAnniversaryModal',
+  directives: {
+    mask,
+  },
   props: {
     subscription: {
       type: Object,
@@ -25,7 +29,7 @@ export default {
         newDate: [
           {
             required: true,
-            message: 'New date is required',
+            message: 'This field is required',
             trigger: 'blur',
           },
         ],
@@ -115,10 +119,10 @@ export default {
           class="form-tooltip-field"
         >
           <el-date-picker
+            v-mask="['##/##/####']"
             :value="subscription.next_billed_at"
             type="date"
-            placeholder="Enter Date"
-            :editable="false"
+            placeholder="DD/MM/YYYY"
             disabled
             format="dd/MM/yyyy"
             data-test="currentAnniversary"
@@ -144,9 +148,9 @@ export default {
         >
           <el-date-picker
             v-model="form.newDate"
+            v-mask="['##/##/####']"
             type="date"
-            placeholder="Enter Date"
-            :editable="false"
+            placeholder="DD/MM/YYYY"
             format="dd/MM/yyyy"
             :value-format="datePickerFormat"
             data-test="newAnniversary"

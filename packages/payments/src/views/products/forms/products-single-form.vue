@@ -106,10 +106,10 @@ export default {
           prop="start_at"
         >
           <el-date-picker
+            v-mask="['##/##/####']"
             :value="data.start_at"
             type="date"
-            placeholder="Enter Date"
-            :editable="false"
+            placeholder="DD/MM/YYYY"
             format="dd/MM/yyyy"
             :value-format="datePickerFormat"
             @input="changeValue('start_at', $event)"
@@ -118,10 +118,10 @@ export default {
 
         <el-form-item label="End Date">
           <el-date-picker
+            v-mask="['##/##/####']"
             :value="data.end_at"
             type="date"
-            placeholder="Enter Date"
-            :editable="false"
+            placeholder="DD/MM/YYYY"
             format="dd/MM/yyyy"
             :value-format="datePickerFormat"
             @input="changeValue('end_at', $event)"
@@ -145,7 +145,7 @@ export default {
                 '#####.##'
               ]"
               :value="data.price.total"
-              placeholder="$0.00"
+              placeholder="0.00"
               @input="changeValue('price.total', $event)"
             >
               <template #prepend>

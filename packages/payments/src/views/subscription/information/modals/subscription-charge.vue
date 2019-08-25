@@ -33,14 +33,14 @@ export default {
         selectedMethod: [
           {
             required: true,
-            message: 'Payment method is required',
+            message: 'This field is required',
             trigger: 'blur',
           },
         ],
         amount: [
           {
             required: true,
-            message: 'Amount is required',
+            message: 'This field is required',
             trigger: 'blur',
           },
         ],
@@ -135,12 +135,13 @@ export default {
 
       <el-form-item
         label="Amount to Pay"
-        prop="amount"
       >
         <div
           class="amount-form-item"
         >
-          <el-form-item>
+          <el-form-item
+            prop="amount"
+          >
             <el-input
               v-model="form.amount"
               v-mask="['#.##', '##.##', '###.##', '####.##', '#####.##']"

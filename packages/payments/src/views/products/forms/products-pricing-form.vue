@@ -2,7 +2,6 @@
 import { mask } from 'vue-the-mask'
 import { datePickerFormat } from '@lib/utils/date-helper'
 
-
 export default {
   name: 'ProductsPricingForm',
   directives: {
@@ -139,10 +138,10 @@ export default {
           prop="start_at"
         >
           <el-date-picker
+            v-mask="['##/##/####']"
             :value="data.start_at"
             type="date"
             placeholder="DD/MM/YYYY"
-            :editable="false"
             format="dd/MM/yyyy"
             :value-format="datePickerFormat"
             @input="changeValue('start_at', $event)"
@@ -168,7 +167,7 @@ export default {
                   '#####.##'
                 ]"
                 :value="data.amount"
-                placeholder="$0.00"
+                placeholder="0.00"
                 @input="changeValue('amount', $event)"
               >
                 <template #prepend>

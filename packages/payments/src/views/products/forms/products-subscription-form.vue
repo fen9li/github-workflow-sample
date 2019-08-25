@@ -3,7 +3,6 @@ import ProductsAnchorDates from './products-anchor-dates'
 import { mask } from 'vue-the-mask'
 import { datePickerFormat } from '@lib/utils/date-helper'
 
-
 export default {
   name: 'ProductsSubscriptionForm',
   directives: {
@@ -145,10 +144,10 @@ export default {
       <div class="united-field">
         <el-form-item label="End Date">
           <el-date-picker
+            v-mask="['##/##/####']"
             :value="data.sunset_at"
             type="date"
-            placeholder="Enter Date"
-            :editable="false"
+            placeholder="DD/MM/YYYY"
             format="dd/MM/yyyy"
             :value-format="datePickerFormat"
             @input="changeValue('sunset_at', $event)"
@@ -162,10 +161,10 @@ export default {
           :class="[{[$style.disabled]: edit}, 'form-tooltip-field']"
         >
           <el-date-picker
+            v-mask="['##/##/####']"
             :value="data.anchor_at"
             type="date"
-            placeholder="Enter Date"
-            :editable="false"
+            placeholder="DD/MM/YYYY"
             :disabled="edit"
             format="dd/MM/yyyy"
             :value-format="datePickerFormat"

@@ -35,7 +35,7 @@ export default {
         email: [
           {
             required: true,
-            message: 'Email is required',
+            message: 'This field is required',
             trigger: 'blur' },
           {
             type: 'email',

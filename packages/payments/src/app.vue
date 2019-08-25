@@ -81,6 +81,7 @@ export default {
   <app-layout
     :menu="menu"
     app-code="payments"
+    link-click-open
   >
     <router-view :key="$route.path" />
   </app-layout>

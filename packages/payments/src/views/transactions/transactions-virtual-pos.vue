@@ -214,6 +214,7 @@ export default {
             v-model="form.expiry"
             v-mask="'##/##'"
             :class="$style.short"
+            placeholder="MM/YY"
             data-test="expiry"
           />
         </el-form-item>

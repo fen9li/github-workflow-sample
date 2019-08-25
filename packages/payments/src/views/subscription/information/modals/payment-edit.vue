@@ -28,7 +28,7 @@ export default {
         selectedMethod: [
           {
             required: true,
-            message: 'Payment Method is required',
+            message: 'This field is required',
             trigger: 'blur',
           },
         ],

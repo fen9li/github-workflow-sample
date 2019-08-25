@@ -46,12 +46,15 @@ const filterValues = {
   }),
   afterExact: value => ({
     gt: dayjs.utc(dateStringFormatter(value))
-      .add(utcOffset(), 'minute')
       .format(),
   }),
   before: value => ({
     lt: dayjs.utc(dateStringFormatter(value))
       .add(utcOffset(), 'minute')
+      .format(),
+  }),
+  beforeExact: value => ({
+    lte: dayjs.utc(dateStringFormatter(value))
       .format(),
   }),
   on: value => ({
@@ -83,15 +86,15 @@ function formatBetweenDatesFilter(body, filter) {
   }
 
   if(filter.attribute === 'sunset') {
-    isActive ? dateOrNullQuery('sunsetAt') : dateOnlyQuery('sunsetAt', 'before')
+    isActive ? dateOrNullQuery('sunsetAt') : dateOnlyQuery('sunsetAt', 'beforeExact')
 
   } else if(filter.attribute === 'end') {
     if(isActive) {
       dateOrNullQuery('endAt')
-      dateOnlyQuery('startAt', 'before')
+      dateOnlyQuery('startAt', 'beforeExact')
     } else {
       dateOnlyQuery('startAt', 'afterExact', 'orQuery')
-      dateOnlyQuery('endAt', 'before', 'orQuery')
+      dateOnlyQuery('endAt', 'beforeExact', 'orQuery')
     }
   }
 }

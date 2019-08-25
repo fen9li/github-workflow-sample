@@ -6,6 +6,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    linkClickOpen: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -31,6 +35,9 @@ export default {
       }
       return ''
     },
+    getOpenEvent(value) {
+      return value ? 'click' : null
+    }
   },
 }
 </script>
@@ -44,6 +51,7 @@ export default {
             <li
               :key="item.path"
               :class="['menu__item', expanded && 'menu__item--expanded']"
+              @[getOpenEvent(linkClickOpen)]="onExpand(item.children)"
             >
               <router-link
                 :to="{ path: item.path }"
@@ -54,7 +62,7 @@ export default {
                 <i
                   :class="{ 'menu__expand--disabled': !item.children.length }"
                   class="el-icon-arrow-down menu__expand"
-                  @click.prevent="onExpand(item.children)"
+                  @[getOpenEvent(!linkClickOpen)].prevent="onExpand(item.children)"
                 />
               </router-link>
               <ul class="submenu">

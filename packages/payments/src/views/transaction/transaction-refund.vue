@@ -28,14 +28,14 @@ export default {
         reason: [
           {
             required: true,
-            message: 'Reason is required',
+            message: 'This field is required',
             trigger: 'blur',
           },
         ],
         amount: [
           {
             required: true,
-            message: 'Amount is required',
+            message: 'This field is required',
             trigger: 'blur',
           },
         ],
@@ -122,10 +122,8 @@ export default {
       </el-form-item>
       <el-form-item
         label="Amount"
-        prop="amount"
       >
         <div
-          prop="amount"
           class="amount-form-item"
         >
           <el-form-item

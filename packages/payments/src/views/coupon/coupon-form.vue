@@ -23,22 +23,27 @@ export default {
       rules: {
         name: {
           required: true,
+          message: 'This field is required',
           trigger: 'blur',
         },
         code: {
           required: true,
+          message: 'This field is required',
           trigger: 'blur',
         },
         start_at: {
           required: true,
+          message: 'This field is required',
           trigger: 'blur',
         },
         amount: {
           required: true,
+          message: 'This field is required',
           trigger: 'blur',
         },
         validity_period: {
           required: true,
+          message: 'This field is required',
           trigger: 'blur',
         },
       },
@@ -96,24 +101,24 @@ export default {
         prop="start_at"
       >
         <el-date-picker
+          v-mask="['##/##/####']"
           :value="coupon.start_at"
           :disabled="edit"
-          :editable="false"
           type="date"
           format="dd/MM/yyyy"
           :value-format="datePickerFormat"
-          placeholder="Pick a date"
+          placeholder="DD/MM/YYYY"
           @input="changeValue('start_at', $event)"
         />
       </el-form-item>
       <el-form-item label="End Date">
         <el-date-picker
+          v-mask="['##/##/####']"
           :value="coupon.end_at"
           type="date"
-          :editable="false"
           format="dd/MM/yyyy"
           :value-format="datePickerFormat"
-          placeholder="Pick a date"
+          placeholder="DD/MM/YYYY"
           @input="changeValue('end_at', $event)"
         />
       </el-form-item>

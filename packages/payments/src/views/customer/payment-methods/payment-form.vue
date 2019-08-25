@@ -139,6 +139,7 @@ export default {
               <el-input
                 v-mask="['##/##']"
                 :value="form.card.expiry"
+                placeholder="MM/YY"
                 @input="changeValue('expiry', 'card', $event)"
               />
             </el-form-item>

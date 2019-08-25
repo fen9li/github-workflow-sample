@@ -5,9 +5,13 @@ import { datePickerFormat, dateIsAfter, activeByDate } from '@lib/utils/date-hel
 import get from 'lodash/get'
 import sort from '@lib/utils/dropdown-sorting'
 import { mapActions } from 'vuex'
+import { mask } from 'vue-the-mask'
 
 export default {
   name: 'CustomerDetailsAddSubscription',
+  directives: {
+    mask,
+  },
   components: {
     paymentFormItem,
   },
@@ -214,8 +218,9 @@ export default {
           >
             <el-date-picker
               v-model="form.start_at"
+              v-mask="['##/##/####']"
               type="date"
-              placeholder="Enter Date"
+              placeholder="DD/MM/YYYY"
               format="dd/MM/yyyy"
               :value-format="datePickerFormat"
             />
@@ -226,8 +231,9 @@ export default {
           >
             <el-date-picker
               v-model="form.end_at"
+              v-mask="['##/##/####']"
               type="date"
-              placeholder="Enter Date"
+              placeholder="DD/MM/YYYY"
               format="dd/MM/yyyy"
               :value-format="datePickerFormat"
             />

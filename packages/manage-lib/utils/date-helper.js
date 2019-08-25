@@ -10,10 +10,12 @@ function dateIsAfter(dateOne, dateTwo) {
 }
 
 function activeByDate(startAt, endAt) {
+  const started = dayjs().isAfter(dayjs(startAt)) || sameDate(startAt, dayjs())
+
   if(endAt) {
-    return dayjs().isAfter(dayjs(startAt)) && dayjs().isBefore(dayjs(endAt).endOf('day'))
+    return started && dayjs().isBefore(dayjs(endAt).endOf('day'))
   } else {
-    return dayjs().isAfter(dayjs(startAt))
+    return started
   }
 }
 
