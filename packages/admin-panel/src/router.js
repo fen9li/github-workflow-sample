@@ -10,8 +10,9 @@ export default new Router({
   linkActiveClass: 'menu__item--active',
   routes: [
     {
-      path: '/',
+      path: '/dashboard',
       name: 'dashboard',
+      component: () => lazy(import('./views/dashboard')),
     },
     {
       path: '/retailers',
@@ -32,6 +33,11 @@ export default new Router({
       path: '/log',
       name: 'log',
       component: () => lazy(import('./views/log')),
-    }
+    },
+    {
+      path: '/',
+      name: '*',
+      redirect: '/dashboard',
+    },
   ],
 })

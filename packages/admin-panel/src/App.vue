@@ -12,13 +12,9 @@ export default {
 </script>
 
 <template>
-  <app-layout
-    id="app"
-    :menu="menu"
-    title="Admin Panel"
-  >
+  <app-layout-dummy :menu="menu">
     <router-view />
-  </app-layout>
+  </app-layout-dummy>
 </template>
 
 <!-- This should generally be the only global CSS in the app. -->

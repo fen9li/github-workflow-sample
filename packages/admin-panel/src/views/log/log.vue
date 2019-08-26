@@ -8,6 +8,6 @@ export default {
 </script>
 
 <template>
-  <div />
+  <div>log</div>
 </template>
 
