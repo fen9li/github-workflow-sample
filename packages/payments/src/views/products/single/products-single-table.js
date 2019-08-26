@@ -11,7 +11,7 @@ const TABLE_FILTERS = [
   {
     attribute: 'name',
     label: 'Product Name',
-    icon: 'el-icon-document',
+    icon: 'el-icon-goods',
     type: 'string',
   },
   {
@@ -23,7 +23,7 @@ const TABLE_FILTERS = [
   {
     attribute: 'price.total',
     label: 'Amount',
-    icon: 'el-icon-document',
+    icon: 'el-icon-money',
     type: 'numeric',
   },
   {
@@ -42,7 +42,7 @@ const TABLE_FILTERS = [
     attribute: 'end',
     label: 'Status',
     type: 'dateStatus',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     values: [
       {
         label: 'Active',
@@ -60,13 +60,13 @@ const TABLE_COLUMNS = [
   {
     name: 'createdAt',
     label: 'Date Created',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: 'dateTime',
   },
   {
     name: 'name',
     label: 'Product Name',
-    icon: 'el-icon-document',
+    icon: 'el-icon-goods',
     width: 300,
   },
   {
@@ -78,25 +78,25 @@ const TABLE_COLUMNS = [
   {
     name: 'price.total',
     label: 'Amount',
-    icon: 'el-icon-document',
+    icon: 'el-icon-money',
     format: 'dollar',
   },
   {
     name: 'startAt',
     label: 'Effective Start Date',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: 'date',
   },
   {
     name: 'endAt',
     label: 'End Date',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: 'date',
   },
   {
     name: 'status',
     label: 'Status',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     format: 'capital',
     component: {
       is: 'cell-activity',

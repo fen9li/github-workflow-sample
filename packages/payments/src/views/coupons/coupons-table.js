@@ -11,7 +11,7 @@ const TABLE_FILTERS = [
   {
     attribute: 'name',
     label: 'Coupon Name',
-    icon: 'el-icon-document',
+    icon: 'el-icon-reading',
     type: 'string',
   },
   {
@@ -34,25 +34,26 @@ const TABLE_FILTERS = [
   },
   {
     attribute: 'validityPeriod',
+    label: 'Validity Period',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
   },
   {
     attribute: 'useCount',
     label: 'No. in Use',
     type: 'numeric',
-    icon: 'el-icon-document',
+    icon: 'el-icon-files',
   },
   {
     attribute: 'amount',
     type: 'numeric',
-    icon: 'el-icon-document',
+    icon: 'el-icon-money',
   },
   {
     attribute: 'end',
     label: 'Status',
     type: 'dateStatus',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     values: [
       {
         label: 'Active',
@@ -70,13 +71,13 @@ const TABLE_COLUMNS = [
   {
     name: 'createdAt',
     label: 'Date Created',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: 'dateTime',
   },
   {
     name: 'name',
     label: 'Coupon Name',
-    icon: 'el-icon-document',
+    icon: 'el-icon-reading',
   },
   {
     name: 'code',
@@ -86,19 +87,19 @@ const TABLE_COLUMNS = [
   {
     name: 'startAt',
     label: 'Effective Start Date',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: 'date',
   },
   {
     name: 'endAt',
     label: 'End Date',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: 'date',
   },
   {
     name: 'validityPeriod',
     label: 'Validity Period',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: 'capital',
     component: {
       props: {
@@ -115,13 +116,13 @@ const TABLE_COLUMNS = [
   {
     name: 'useCount',
     label: 'No. in Use',
-    icon: 'el-icon-document',
+    icon: 'el-icon-files',
   },
   {
     name: 'amount',
     label: 'Amount',
     format: 'capital',
-    icon: 'el-icon-document',
+    icon: 'el-icon-money',
     component: {
       props: {
         format(_, row) {
@@ -134,7 +135,7 @@ const TABLE_COLUMNS = [
     name: 'status',
     label: 'Status',
     format: 'capital',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     component: {
       is: 'cell-activity',
       props: {

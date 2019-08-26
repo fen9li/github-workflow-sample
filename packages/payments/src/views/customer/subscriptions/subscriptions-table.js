@@ -16,19 +16,13 @@ const TABLE_FILTERS = [
   {
     attribute: 'productName',
     type: 'string',
-    icon: 'el-icon-document',
-  },
-  {
-    attribute: 'currentAmount',
-    label: 'Pricing Plan',
-    type: 'numeric',
-    icon: 'el-icon-tickets',
+    icon: 'el-icon-goods',
   },
   {
     attribute: 'currentInterval',
     label: 'Frequency',
     type: 'select',
-    icon: 'el-icon-document',
+    icon: 'el-icon-refresh-right',
     values: [
       {
         label: 'Monthly',
@@ -53,12 +47,12 @@ const TABLE_FILTERS = [
     attribute: 'outstandingBalance.total',
     label: 'Amount Owing',
     type: 'numeric',
-    icon: 'el-icon-tickets',
+    icon: 'el-icon-money',
   },
   {
     attribute: 'status',
     type: 'select',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     values: [
       {
         label: 'Active',
@@ -75,7 +69,7 @@ const TABLE_FILTERS = [
 const TABLE_COLUMNS = [
   {
     name: 'startAt',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     label: 'Start Date',
     format: 'date',
     width: 120,
@@ -83,7 +77,7 @@ const TABLE_COLUMNS = [
   {
     name: 'endAt',
     label: 'End Date',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: {
       name: 'dayMonthYear',
     },
@@ -92,12 +86,12 @@ const TABLE_COLUMNS = [
   {
     name: 'productName',
     label: 'Product Name',
-    icon: 'el-icon-document',
+    icon: 'el-icon-goods',
   },
   {
     name: 'currentInterval',
     label: 'Frequency',
-    icon: 'el-icon-document',
+    icon: 'el-icon-refresh-right',
     width: 120,
     format: 'capital',
     component: {
@@ -115,13 +109,14 @@ const TABLE_COLUMNS = [
   {
     name: 'nextBilledAt',
     label: 'Next Billing Date',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: 'date',
     width: 140,
   },
   {
     name: 'outstandingBalance.total',
     label: 'Amount Owing',
+    icon: 'el-icon-money',
     format: 'dollar',
     overflowTooltip: false,
     component: {
@@ -139,7 +134,7 @@ const TABLE_COLUMNS = [
   {
     name: 'status',
     label: 'Status',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     width: 100,
     format: {
       name: 'capital',

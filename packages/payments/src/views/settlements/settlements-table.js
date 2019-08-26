@@ -11,13 +11,13 @@ const TABLE_FILTERS = [
     attribute: 'amount.subtotal',
     label: 'NET',
     type: 'numeric',
-    icon: 'el-icon-tickets',
+    icon: 'el-icon-money',
   },
   {
     attribute: 'fundingSource',
     label: 'Settlement Account',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-house',
   },
   {
     attribute: 'id',
@@ -28,7 +28,7 @@ const TABLE_FILTERS = [
   {
     attribute: 'status',
     type: 'select',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     values: [
       {
         label: 'Successfull',
@@ -51,7 +51,7 @@ const TABLE_FILTERS = [
   {
     attribute: 'dateFinalised',
     type: 'date',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
   },
 ]
 
@@ -59,14 +59,14 @@ const TABLE_COLUMNS = [
   {
     name: 'createdAt',
     label: 'Date Created',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     width: 140,
     format: 'dateTime',
   },
   {
     name: 'amount.subtotal',
     label: 'NET',
-    icon: 'el-icon-document',
+    icon: 'el-icon-money',
     format: 'dollar',
     width: 70,
     component: {
@@ -84,7 +84,7 @@ const TABLE_COLUMNS = [
   {
     name: 'fundingSource.pan',
     label: 'Settlement Account',
-    icon: 'el-icon-document',
+    icon: 'el-icon-house',
     width: 100,
     format: 'account',
   },
@@ -98,7 +98,7 @@ const TABLE_COLUMNS = [
   {
     name: 'status',
     label: 'Status',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     format: 'capital',
     width: 100,
     component: {
@@ -139,7 +139,7 @@ const TABLE_COLUMNS = [
   {
     name: 'completedAt',
     label: 'Date Finalised',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     width: 100,
     format: 'dateTime',
   },

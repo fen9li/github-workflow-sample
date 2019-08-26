@@ -9,11 +9,11 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'name',
-    icon: 'el-icon-document',
+    icon: 'el-icon-goods',
   },
   {
     name: 'anchorAt',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     width: 90,
     format: 'dayMonthShort',
   },

@@ -4,26 +4,28 @@ const TABLE_COLUMNS = [
   {
     name: 'createdAt',
     label: 'Date Created',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: 'dateTime',
   },
   {
     name: 'name',
     label: 'Pricing Plan Name',
-    icon: 'el-icon-document',
+    icon: 'el-icon-goods',
   },
   {
     name: 'startAt',
     label: 'Start Date',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: 'dateTime',
   },
   {
     name: 'amount.total',
+    icon: 'el-icon-money',
     format: 'dollar',
   },
   {
     name: 'billingInterval',
+    icon: 'el-icon-refresh-right',
     format: 'capital',
     component: {
       props: {
@@ -39,7 +41,7 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'status',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     format: 'capital',
     component: {
       is: 'cell-activity',

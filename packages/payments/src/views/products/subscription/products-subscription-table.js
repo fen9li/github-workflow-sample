@@ -17,13 +17,13 @@ const TABLE_FILTERS = [
   {
     attribute: 'name',
     label: 'Product Name',
-    icon: 'el-icon-document',
+    icon: 'el-icon-goods',
     type: 'string',
   },
   {
     attribute: 'billingType',
     label: 'Billing Cycle',
-    icon: 'el-icon-document',
+    icon: 'el-icon-refresh-right',
     type: 'select',
     values: [
       {
@@ -51,14 +51,14 @@ const TABLE_FILTERS = [
   {
     attribute: 'pricingPlanCount',
     label: 'Plans',
-    icon: 'el-icon-document',
+    icon: 'el-icon-files',
     type: 'numeric',
   },
   {
     attribute: 'sunset',
     label: 'Status',
     type: 'dateStatus',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     values: [
       {
         label: 'Active',
@@ -76,7 +76,7 @@ const TABLE_COLUMNS = [
   {
     name: 'createdAt',
     label: 'Date Created',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: 'dateTime',
   },
   {
@@ -88,35 +88,35 @@ const TABLE_COLUMNS = [
   {
     name: 'name',
     label: 'Product Name',
-    icon: 'el-icon-document',
+    icon: 'el-icon-goods',
   },
   {
     name: 'billingType',
     label: 'Billing Cycle',
-    icon: 'el-icon-document',
+    icon: 'el-icon-refresh-right',
     format: 'capital',
   },
   {
     name: 'anchorAt',
     label: 'Anchor Date',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: 'dayMonthShort',
   },
   {
     name: 'sunsetAt',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     label: 'End Date',
     format: 'date',
   },
   {
     name: 'pricingPlanCount',
-    icon: 'el-icon-document',
+    icon: 'el-icon-files',
     label: 'Plans',
   },
   {
     name: 'status',
     label: 'Status',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     format: 'capital',
     component: {
       is: 'cell-activity',

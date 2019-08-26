@@ -11,7 +11,7 @@ const TABLE_FILTERS = [
     attribute: 'type',
     label: 'Type',
     type: 'select',
-    icon: 'el-icon-document',
+    icon: 'el-icon-price-tag',
     values: [
       {
         label: 'Recurrring',
@@ -25,38 +25,39 @@ const TABLE_FILTERS = [
   },
   {
     attribute: 'amount.total',
+    label: 'Amount',
     type: 'numeric',
-    icon: 'el-icon-document',
+    icon: 'el-icon-money',
   },
   {
     attribute: 'customerId',
     label: 'Customer ID',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-s-custom',
   },
   {
     attribute: 'customerFirstName',
     label: 'First Name',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-user',
   },
   {
     attribute: 'customerLastName',
     label: 'Last Name',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-user',
   },
   {
     attribute: 'orderDescription',
     label: 'Description',
     type: 'string',
-    icon: 'el-icon-tickets',
+    icon: 'el-icon-data-board',
   },
   {
     attribute: 'crn',
     label: 'CRN',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-house',
   },
   {
     attribute: 'orderId',
@@ -67,7 +68,7 @@ const TABLE_FILTERS = [
   {
     attribute: 'status',
     type: 'select',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     values: [
       {
         label: 'Completed',
@@ -97,13 +98,13 @@ const TABLE_COLUMNS = [
   {
     name: 'createdAt',
     label: 'Date Created',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: 'dateTime',
   },
   {
     name: 'type',
     label: 'Type',
-    icon: 'el-icon-document',
+    icon: 'el-icon-price-tag',
     format: 'capital',
     width: 120,
     component: {
@@ -121,7 +122,7 @@ const TABLE_COLUMNS = [
   {
     name: 'amount.total',
     label: 'Amount',
-    icon: 'el-icon-document',
+    icon: 'el-icon-money',
     format: 'dollar',
     width: 120,
     component: {
@@ -142,13 +143,13 @@ const TABLE_COLUMNS = [
   {
     name: 'customerId',
     label: 'Customer ID',
-    icon: 'el-icon-document',
+    icon: 'el-icon-s-custom',
     width: 120,
   },
   {
     name: 'customerFirstName',
     label: 'First Name',
-    icon: 'el-icon-document',
+    icon: 'el-icon-user',
     width: 120,
     component: {
       props: {
@@ -159,7 +160,7 @@ const TABLE_COLUMNS = [
   {
     name: 'customerLastName',
     label: 'Last Name',
-    icon: 'el-icon-document',
+    icon: 'el-icon-user',
     width: 120,
     component: {
       props: {
@@ -170,13 +171,13 @@ const TABLE_COLUMNS = [
   {
     name: 'orderDescription',
     label: 'Description',
-    icon: 'el-icon-document',
+    icon: 'el-icon-data-board',
     width: 200,
   },
   {
     name: 'crn',
     label: 'CRN',
-    icon: 'el-icon-document',
+    icon: 'el-icon-house',
     width: 120,
   },
   {
@@ -188,7 +189,7 @@ const TABLE_COLUMNS = [
   {
     name: 'status',
     label: 'Status',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     format: 'capital',
     width: 120,
     component: {

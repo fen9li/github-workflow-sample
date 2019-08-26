@@ -6,13 +6,13 @@ const TABLE_FILTERS = [
     attribute: 'url',
     label: 'URL',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-link',
   },
   {
     attribute: 'type',
     label: 'Type',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-s-operation',
   },
   {
     attribute: 'id',
@@ -24,12 +24,12 @@ const TABLE_FILTERS = [
     attribute: 'date',
     label: 'Date',
     type: 'date',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
   },
   {
     attribute: 'status',
     type: 'select',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     values: [
       {
         label: 'Failed',
@@ -47,13 +47,13 @@ const TABLE_COLUMNS = [
   {
     name: 'url',
     label: 'URL',
-    icon: 'el-icon-document',
+    icon: 'el-icon-link',
     width: 250,
   },
   {
     name: 'type',
     label: 'Event Type',
-    icon: 'el-icon-document',
+    icon: 'el-icon-s-operation',
     width: 250,
   },
   {
@@ -65,14 +65,14 @@ const TABLE_COLUMNS = [
   {
     name: 'date',
     label: 'Date',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: 'dateTime',
     width: 160,
   },
   {
     name: 'status',
     label: 'Status',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     format: 'capital',
     component: {
       is: 'cell-tag',
