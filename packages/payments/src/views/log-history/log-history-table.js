@@ -7,12 +7,12 @@ const TABLE_FILTERS = [
   {
     attribute: 'description',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-data-board',
   },
   {
     attribute: 'status',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
   },
 ]
 
@@ -20,14 +20,14 @@ const TABLE_COLUMNS = [
   {
     name: 'createdAt',
     label: 'Date Created',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: 'dateTime',
     width: 200,
   },
   {
     name: 'description',
     label: 'Description',
-    icon: 'el-icon-document',
+    icon: 'el-icon-data-board',
     width: 500,
   },
   {
@@ -36,7 +36,7 @@ const TABLE_COLUMNS = [
     format: {
       name: 'httpStatus',
     },
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     align: 'right',
     component: {
       is: 'cell-tag',

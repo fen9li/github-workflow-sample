@@ -101,9 +101,8 @@ export default {
             >
               <i
                 :class="[
-                  'el-icon-arrow-down',
+                  column.icon || 'el-icon-arrow-down',
                   $style.itemIco,
-                  column.icon,
                 ]"
               />
               <span>

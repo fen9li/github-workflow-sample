@@ -3,37 +3,37 @@ import ElasticProcessor from '@lib/processors/elastic-processor'
 const TABLE_COLUMNS = [
   {
     name: 'type',
-    label: '',
+    label: 'Label',
     format: 'capital',
-    icon: 'el-icon-document',
+    icon: 'el-icon-price-tag',
     sortable: false,
   },
   {
     name: 'count',
     label: 'Count',
     align: 'right',
-    icon: 'el-icon-document',
+    icon: 'el-icon-files',
   },
   {
     name: 'amount',
     label: 'Amount',
     format: 'dollar',
     align: 'right',
-    icon: 'el-icon-document',
+    icon: 'el-icon-money',
   },
   {
     name: 'fee',
     label: 'Fee',
     format: 'dollar',
     align: 'right',
-    icon: 'el-icon-document',
+    icon: 'el-icon-money',
   },
   {
     name: 'net',
     label: 'NET',
     format: 'dollar',
     align: 'right',
-    icon: 'el-icon-document',
+    icon: 'el-icon-money',
   },
 ]
 

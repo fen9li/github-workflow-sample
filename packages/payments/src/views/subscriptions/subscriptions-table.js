@@ -17,25 +17,25 @@ const TABLE_FILTERS = [
     attribute: 'customerFirstName',
     label: 'First Name',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-user',
   },
   {
     attribute: 'customerLastName',
     label: 'Last Name',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-user',
   },
   {
     attribute: 'productName',
     label: 'Product Name',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-goods',
   },
   {
     attribute: 'currentInterval',
     label: 'Frequency',
     type: 'select',
-    icon: 'el-icon-document',
+    icon: 'el-icon-refresh-right',
     values: [
       {
         label: 'Monthly',
@@ -60,7 +60,7 @@ const TABLE_FILTERS = [
   {
     attribute: 'status',
     type: 'select',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     values: [
       {
         label: 'Active',
@@ -92,26 +92,26 @@ const TABLE_COLUMNS = [
   {
     name: 'customerFirstName',
     label: 'First Name',
-    icon: 'el-icon-document',
+    icon: 'el-icon-user',
     width: 140,
   },
   {
     name: 'customerLastName',
     label: 'Last Name',
-    icon: 'el-icon-document',
+    icon: 'el-icon-user',
     width: 140,
   },
   {
     name: 'productName',
     label: 'Product Name',
-    icon: 'el-icon-document',
+    icon: 'el-icon-goods',
     width: 200,
   },
   {
     name: 'currentInterval',
     label: 'Frequency',
     format: 'capital',
-    icon: 'el-icon-document',
+    icon: 'el-icon-refresh-right',
     component: {
       props: {
         format(value) {
@@ -141,7 +141,7 @@ const TABLE_COLUMNS = [
   {
     name: 'status',
     label: 'Status',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     format: 'capital',
     component: {
       is: 'cell-activity',

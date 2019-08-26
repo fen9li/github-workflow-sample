@@ -11,38 +11,38 @@ const TABLE_FILTERS = [
     attribute: 'id',
     type: 'string',
     label: 'Customer ID',
-    icon: 'el-icon-document',
+    icon: 'el-icon-s-custom',
   },
   {
     attribute: 'firstName',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-user',
   },
   {
     attribute: 'preferredName',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-user',
   },
   {
     attribute: 'lastName',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-user',
   },
   {
     attribute: 'email',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-message',
   },
   {
     attribute: 'phoneNumbers',
     label: 'Telephone',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-phone',
   },
   {
     attribute: 'status',
     type: 'select',
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     values: [
       {
         label: 'Active',
@@ -60,7 +60,7 @@ const TABLE_COLUMNS = [
   {
     name: 'createdAt',
     label: 'Date Сreated',
-    icon: 'el-icon-document',
+    icon: 'el-icon-date',
     format: {
       name: 'date',
       params: ['DD/MM/YYYY hh:mm A'],
@@ -71,38 +71,38 @@ const TABLE_COLUMNS = [
     name: 'id',
     label: 'Customer ID',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-s-custom',
     width: 140,
   },
   {
     name: 'firstName',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-user',
     width: 140,
   },
   {
     name: 'preferredName',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-user',
     width: 140,
   },
   {
     name: 'lastName',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-user',
     width: 140,
   },
   {
     name: 'email',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-message',
     width: 200,
   },
   {
     name: 'phoneNumbers[0]',
     label: 'Telephone',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-phone',
     width: 140,
   },
   {
@@ -111,7 +111,7 @@ const TABLE_COLUMNS = [
     format: {
       name: 'capital',
     },
-    icon: 'el-icon-document',
+    icon: 'el-icon-circle-check',
     component: {
       is: 'cell-activity',
     },

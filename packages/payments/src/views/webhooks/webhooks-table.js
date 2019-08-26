@@ -3,7 +3,7 @@ const TABLE_FILTERS = [
     attribute: 'url',
     label: 'URL',
     type: 'string',
-    icon: 'el-icon-document',
+    icon: 'el-icon-link',
   },
   {
     attribute: 'mode',
@@ -17,7 +17,7 @@ const TABLE_COLUMNS = [
   {
     name: 'url',
     label: 'URL',
-    icon: 'el-icon-document',
+    icon: 'el-icon-link',
   },
   {
     name: 'mode',
