@@ -5,8 +5,8 @@ import store from './state/store'
 import ManageLib from '@lib'
 
 Vue.use(ManageLib, {
-  // router,
-  // store,
+  router,
+  store,
 })
 
 new Vue({

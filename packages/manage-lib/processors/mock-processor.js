@@ -2,6 +2,22 @@ import StaticProcessor from './static-processor'
 
 const jsFileRE = /\.js$/
 
+function loadMock(mockFrom) {
+  const mockContext = require.context('@tests/__fixtures__', true, )
+  let mockPath = `./${mockFrom}`
+
+  if (!jsFileRE.test(mockPath)) {
+    mockPath += '.js'
+  }
+
+  const { table } = mockContext(mockPath)
+
+  return {
+    data: table,
+    total: table.length
+  }
+}
+
 class MockProcessor extends StaticProcessor {
   constructor(params = {}) {
     const { mockFrom } = params
@@ -10,23 +26,10 @@ class MockProcessor extends StaticProcessor {
       throw Error('mock-processor requires "mockFrom" key')
     }
 
-    super(params)
+    // assign 'data' and 'total' fields to the given params
+    const mergedParams = Object.assign(params, loadMock(mockFrom))
 
-    this.loadMock(mockFrom)
-  }
-
-  loadMock(mockFrom) {
-    const mockContext = require.context('../tests/__fixtures__', true, )
-    let mockPath = `./${mockFrom}`
-
-    if (!jsFileRE.test(mockPath)) {
-      mockPath += '.js'
-    }
-
-    const { table } = mockContext(mockPath)
-
-    this.fullData = table
-    this.total = table.length
+    super(mergedParams)
   }
 
   sendRequest() {

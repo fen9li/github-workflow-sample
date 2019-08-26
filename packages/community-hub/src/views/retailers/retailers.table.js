@@ -1,3 +1,5 @@
+import MockProcessor from '@lib/processors/mock-processor'
+
 const TABLE_FILTERS = [
   {
     attribute: 'status',
@@ -39,8 +41,13 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default {
-  processor: null,
-  filters: TABLE_FILTERS,
-  columns: TABLE_COLUMNS,
+export default function(context) {
+  return {
+    processor: new MockProcessor({
+      component: context,
+      mockFrom: 'retailers',
+    }),
+    filters: TABLE_FILTERS,
+    columns: TABLE_COLUMNS,
+  }
 }

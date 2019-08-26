@@ -12,9 +12,9 @@ export default {
 </script>
 
 <template>
-  <app-layout-dummy :menu="menu">
+  <app-layout :menu="menu">
     <router-view />
-  </app-layout-dummy>
+  </app-layout>
 </template>
 
 <!-- This should generally be the only global CSS in the app. -->
