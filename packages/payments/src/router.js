@@ -227,6 +227,7 @@ const router = new VueRouter({
       path: '/settings/webhook-details/:id',
       name: 'webhook-details',
       component: () => lazy(import('~/views/webhook')),
+      props: true,
     },
     {
       path: '/settings/webhook-attempts',

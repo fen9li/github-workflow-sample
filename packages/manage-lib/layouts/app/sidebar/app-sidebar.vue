@@ -72,6 +72,7 @@ export default {
                   :to="{ path: children.path }"
                   tag="li"
                   :class="['menu__item', activeClass(children.slug)]"
+                  @click.native="$event.stopImmediatePropagation()"
                 >
                   <a class="menu__link">
                     {{ children.title }}

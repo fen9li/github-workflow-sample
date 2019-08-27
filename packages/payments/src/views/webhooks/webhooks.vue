@@ -1,7 +1,5 @@
 <script>
-import StaticProcessor from '@lib/processors/static-processor'
 import table from './webhooks-table'
-import webhooksMock from '@tests/__fixtures__/webhooks'
 
 export default {
   name: 'Webhooks',
@@ -10,12 +8,7 @@ export default {
   },
   data() {
     return {
-      processor: new StaticProcessor({
-        component: this,
-        data: webhooksMock.table,
-      }),
-      filters: table.filters,
-      columns: table.columns,
+      table: table(this),
       modal: {
         add: false,
       },
@@ -36,9 +29,10 @@ export default {
   <main-layout title="Webhooks">
     <table-layout
       table-name="webhooks"
-      :processor="processor"
-      :filters="filters"
-      :columns="columns"
+      :processor="table.processor"
+      :filters="table.filters"
+      :columns="table.columns"
+      :fragments="false"
       @row-click="onRowClick"
     />
   </main-layout>

@@ -11,12 +11,33 @@ export default {
   components: {
     webhookSummary,
   },
-  data() {
-    return {
-      table: table(this),
-      endpoint: webhookMock.details,
+  props: {
+    id: {
+      type: String,
+      required: true,
     }
   },
+  data() {
+    return {
+      loading: false,
+      table: table(this),
+      endpoint: webhookMock.details,
+      details: {},
+    }
+  },
+  created() {
+    this.getWebhook()
+  },
+  methods: {
+    async getWebhook() {
+      this.loading = true
+      const [, response] = await this.$api.get(`search/webhooks/doc/${this.id}`)
+      if(response) {
+        this.details = response._source
+      }
+      this.loading = false
+    }
+  }
 }
 </script>
 
@@ -26,7 +47,8 @@ export default {
     back
   >
     <webhook-summary
-      :endpoint="endpoint"
+      v-loading="loading"
+      :details="details"
     />
 
     <table-layout

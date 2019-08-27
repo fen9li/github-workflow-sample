@@ -1,3 +1,5 @@
+import ElasticProcessor from '@lib/processors/elastic-processor'
+
 const TABLE_FILTERS = [
   {
     attribute: 'url',
@@ -20,7 +22,7 @@ const TABLE_COLUMNS = [
     icon: 'el-icon-link',
   },
   {
-    name: 'mode',
+    name: 'status',
     label: 'Mode',
     format: 'capital',
     icon: 'el-icon-document',
@@ -33,12 +35,22 @@ const TABLE_COLUMNS = [
             return { color: '#3A8463', background: '#CAF3C8' }
           }
         },
+        value(_,row) {
+          const first = row.status.toString()[0]
+          return first === '4' || first === '5' ? 'Down' : 'Live'
+        }
       },
     },
   },
 ]
 
-export default {
-  filters: TABLE_FILTERS,
-  columns: TABLE_COLUMNS,
+export default function(component){
+  return {
+    processor: new ElasticProcessor({
+      component,
+      index: 'webhooks'
+    }),
+    filters: TABLE_FILTERS,
+    columns: TABLE_COLUMNS,
+  }
 }
