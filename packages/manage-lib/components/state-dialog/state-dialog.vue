@@ -61,6 +61,14 @@ export default {
     .el-dialog__body {
       padding: 2rem 3rem;
     }
+
+    .el-dialog__headerbtn {
+      .el-dialog__close {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--color-dark-gray);
+      }
+    }
   }
 }
 
