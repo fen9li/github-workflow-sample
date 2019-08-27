@@ -1,10 +1,8 @@
 <script>
-import capitalize from 'lodash/capitalize'
-
 export default {
   name: 'WebhookSummary',
   props: {
-    endpoint: {
+    details: {
       type: Object,
       default: () => {},
     },
@@ -18,8 +16,12 @@ export default {
       },
     }
   },
-  methods: {
-    capitalize,
+  computed: {
+    webhookMode() {
+      const { status } = this.details
+      const val = status.toString()[0]
+      return val === '4' || val === '5' ? 'Down' : 'Live'
+    }
   },
 }
 </script>
@@ -30,26 +32,23 @@ export default {
       Summary
     </div>
     <dl
-      v-if="endpoint.id"
+      v-if="details.id"
       class="datalist"
     >
       <dt>URL</dt>
-      <dd>{{ endpoint.url }}</dd>
+      <dd>{{ details.url }}</dd>
 
       <dt>Mode</dt>
       <dd>
-        <span :class="['status-tag', {[$style.modeLive]: endpoint.mode === 'live'} ]">
-          {{ capitalize(endpoint.mode) }}
+        <span :class="['status-tag', $style[webhookMode.toLowerCase()]]">
+          {{ webhookMode }}
         </span>
       </dd>
 
       <dt>Event Types</dt>
       <dd :class="$style.events">
-        <p
-          v-for="event in endpoint.events"
-          :key="event"
-        >
-          {{ event }}
+        <p>
+          {{ details.activity.activity }}
         </p>
       </dd>
     </dl>
@@ -61,9 +60,14 @@ export default {
   margin-bottom: 2rem;
 }
 
-.modeLive {
+.live {
   color: #3A8463;
   background: #CAF3C8;
+}
+
+.down {
+  color: var(--color-error);
+  background: #FBD2D2;
 }
 
 .events :first-of-type  {
