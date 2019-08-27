@@ -56,6 +56,10 @@ export default {
       type: Function,
       default: () => false,
     },
+    highlightInactiveRow: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -143,9 +147,15 @@ export default {
     sortType(column) {
       return column.hasOwnProperty('sortable') ? column.sortable : 'custom'
     },
+    inactiveRowHover({ status }) {
+      if (!this.highlightInactiveRow && status === 'inactive') {
+        return true
+      }
+      return false
+    },
     rowClassName({ row, rowIndex }) {
       const { showRowLink, $style, highlightRow } = this
-      return `${showRowLink ? $style.rowActive : ''} ${highlightRow(row) ? $style.rowHighlighten : ''}`
+      return `${showRowLink ? $style.rowActive : ''} ${highlightRow(row) ? $style.rowHighlighten : ''} ${this.inactiveRowHover(row) ? 'el-table__row-inactive' : ''}`
     },
   },
 }
@@ -263,7 +273,7 @@ export default {
 }
 
 .rowHighlighten {
-  background-color: #F2F9FF !important;
+  background-color: #f2f9ff !important;
 }
 </style>
 
@@ -344,6 +354,18 @@ export default {
   .el-table__expand-icon--expanded {
     transform: rotate(-180deg);
   }
+
+  .el-table__row-inactive.hover-row > td {
+    cursor: default !important;
+    // https://github.com/ElemeFE/element/issues/4321#issuecomment-509666915
+    background-color: initial !important;
+  }
+
+  .el-table__row-inactive .el-icon-arrow-right {
+    color: #a7a7a7;
+    cursor: default;
+  }
+
 }
 
 </style>

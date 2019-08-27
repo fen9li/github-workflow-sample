@@ -25,6 +25,11 @@ export default new Router({
       component: () => lazy(import('./views/offers')),
     },
     {
+      path: '/offers/:id/:edit?',
+      name: 'offer-details',
+      component: () => lazy(import('./views/offer')),
+    },
+    {
       path: '/categories',
       name: 'categories',
       component: () => lazy(import('./views/categories')),

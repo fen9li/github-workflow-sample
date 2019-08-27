@@ -9,6 +9,7 @@ import CellTag from './cell-tag'
 import CellImage from './cell-image'
 import CellUserAvatar from './cell-user-avatar'
 import CellToggle from './cell-toggle'
+import CellLogo from './cell-logo'
 import { getFormattedValue, getCellData } from './utils.js'
 
 export default {
@@ -22,6 +23,7 @@ export default {
     CellImage,
     CellUserAvatar,
     CellToggle,
+    CellLogo,
   },
   props: {
     attribute: {
@@ -182,6 +184,15 @@ export default {
 .cell-image {
   width: 100px;
   height: 30px;
+  padding: 0;
+  background-repeat: no-repeat;
+  background-position: 0;
+  background-size: contain;
+}
+
+.cell-logo {
+  width: 20px;
+  height: 20px;
   padding: 0;
   background-repeat: no-repeat;
   background-position: 0;
