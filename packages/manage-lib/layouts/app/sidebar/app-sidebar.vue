@@ -89,7 +89,15 @@ export default {
               class="menu__item"
             >
               <a class="menu__link">
-                <el-icon :name="item.icon" />
+                <the-icon
+                  v-if="item.svg"
+                  :svg="item.svg"
+                  class="menu__svg"
+                />
+                <el-icon
+                  v-else
+                  :name="item.icon"
+                />
                 {{ item.title }}
               </a>
             </router-link>
@@ -127,8 +135,14 @@ export default {
     position: relative;
   }
 
+  .menu__svg {
+    margin-right: 0.6rem;
+    font-size: rem(16px);
+  }
+
   .menu__link {
-    display: block;
+    display: flex;
+    align-items: center;
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     color: var(--color-primary-text);

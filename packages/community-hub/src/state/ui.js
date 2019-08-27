@@ -1,35 +1,28 @@
-
 const state = {}
 
 const getters = {
   menu(state, getters, rootState, rootGetters) {
-    return [
-      {
-        title: 'Dashboard',
-        path: '/dashboard',
-        icon: 'user',
-      },
-      {
-        title: 'Retailers',
-        path: '/retailers',
-        icon: 'goods',
-      },
-      {
-        title: 'Offers',
-        path: '/offers',
-        icon: 'tickets',
-      },
-      {
-        title: 'Categories',
-        path: '/categories',
-        icon: 'refresh-right',
-      },
-      {
-        title: 'Log',
-        path: '/log',
-        icon: 'notebook-2',
-      },
-    ]
+    return [{
+      title: 'Dashboard',
+      path: '/dashboard',
+      svg: 'menu/dashboard',
+    }, {
+      title: 'Retailers',
+      path: '/retailers',
+      svg: 'menu/retailers',
+    }, {
+      title: 'Offers',
+      path: '/offers',
+      svg: 'menu/offers',
+    }, {
+      title: 'Categories',
+      path: '/categories',
+      svg: 'menu/categories',
+    }, {
+      title: 'Log',
+      path: '/log',
+      svg: 'menu/log',
+    }, ]
   },
 }
 
