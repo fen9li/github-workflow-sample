@@ -1,5 +1,5 @@
-import StaticProcessor from '@lib/processors/static-processor'
-import webhookMock from '@tests/__fixtures__/webhook'
+import ElasticProcessor from '@lib/processors/elastic-processor'
+// import webhookMock from '@tests/__fixtures__/webhook'
 
 const TABLE_COLUMNS = [
   {
@@ -15,14 +15,14 @@ const TABLE_COLUMNS = [
     width: 250,
   },
   {
-    name: 'date',
+    name: 'createdAt',
     label: 'Date',
     icon: 'el-icon-document',
     format: 'dateTime',
     width: 250,
   },
   {
-    name: 'status',
+    name: 'successful',
     label: 'Status',
     icon: 'el-icon-document',
     format: 'capital',
@@ -30,11 +30,14 @@ const TABLE_COLUMNS = [
       is: 'cell-tag',
       props: {
         styleObj(val) {
-          // TODO: Add switch when know all possible statuses
-          if (val === 'failed') {
-            return { color: 'var(--color-error)', background: '#FBD2D2' }
+          switch(val()) {
+            case 'success': return { color: '#3A8463', background: '#CAF3C8' }
+            case 'failed': return  { color: 'var(--color-error)', background: '#FBD2D2' }
           }
         },
+        value(val) {
+          return val ? 'success' : 'failed'
+        }
       },
     },
     width: 100,
@@ -44,9 +47,17 @@ const TABLE_COLUMNS = [
 
 export default function(component) {
   return {
-    processor: new StaticProcessor({
+    processor: new ElasticProcessor({
       component,
-      data: webhookMock.table,
+      index: 'webhook-responses',
+      staticQuery: {
+        filters: [
+          {
+            attribute: 'requestId',
+            value: component.id,
+          },
+        ],
+      },
     }),
     columns: TABLE_COLUMNS,
   }

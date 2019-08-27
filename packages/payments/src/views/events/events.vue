@@ -1,8 +1,5 @@
 <script>
-import StaticProcessor from '@lib/processors/static-processor'
 import table from './events-table'
-
-const eventsMock = require('@tests/__fixtures__/events')
 
 export default {
   name: 'Events',
@@ -11,19 +8,14 @@ export default {
   },
   data() {
     return {
-      processor: new StaticProcessor({
-        component: this,
-        data: eventsMock.table,
-      }),
-      filters: table.filters,
-      columns: table.columns,
+      table: table(this),
     }
   },
   methods: {
     onRowClick(row) {
       this.$router.push({
         name: 'event-details',
-        params: { id: row.id },
+        params: { id: row.id, routePayload: row },
       })
     },
   },
@@ -34,9 +26,10 @@ export default {
   <main-layout title="Events">
     <table-layout
       table-name="events"
-      :processor="processor"
-      :filters="filters"
-      :columns="columns"
+      :processor="table.processor"
+      :filters="table.filters"
+      :columns="table.columns"
+      :fragments="false"
       @row-click="onRowClick"
     />
   </main-layout>

@@ -80,6 +80,10 @@ export default {
       const { transaction } = this
       return transaction.funding_source
     },
+    transactionType() {
+      const { type } = this.transaction
+      return type ? type.split('_').map(v => capitalize(v)).join(' ') : '-'
+    }
   },
   created() {
     this.getAllData()
@@ -184,7 +188,7 @@ export default {
             <dd>{{ formatDate(transaction.created_at) }}</dd>
 
             <dt>Type</dt>
-            <dd>{{ capitalize(transaction.type) }}</dd>
+            <dd>{{ transactionType }}</dd>
 
             <dt>Description</dt>
             <dd>{{ transaction.order.description || '-' }}</dd>

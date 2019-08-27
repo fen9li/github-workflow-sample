@@ -1,7 +1,7 @@
 <script>
-import eventMock from '@tests/__fixtures__/event'
 import { formatDate } from '@lib/utils/format-date'
 import capitalize from 'lodash/capitalize'
+import ElasticProcessor from '@lib/processors/elastic-processor'
 
 export default {
   name: 'EventDetails',
@@ -13,10 +13,32 @@ export default {
       type: String,
       required: true,
     },
+    routePayload: {
+      type: Object,
+      default: () => {}
+    }
   },
   data() {
     return {
-      eventMock,
+      loading: false,
+      processing: false,
+      details: {},
+      webhooks: {
+        loading: true,
+        data: []
+      },
+      webhookCollapse: [],
+    }
+  },
+  created() {
+    const { routePayload, id } = this
+    if(routePayload) {
+      this.details = routePayload
+      this.getWebhooks(id)
+    } else {
+      this.getEvent().then(id => {
+        this.getWebhooks(id)
+      })
     }
   },
   methods: {
@@ -24,13 +46,59 @@ export default {
     formatDate(val) {
       return formatDate(val, 'DD/MM/YYYY hh:mm:ss')
     },
-    webhookStatus(val) {
-      switch (val) {
-        case 'success': return { color: '#3A8463', background: '#CAF3C8' }
-        case 'failed': return { color: 'var(--color-error)', background: '#FBD2D2' }
+    webhookStatus(status) {
+      const first = status.toString()[0]
+      return first === '4' || first === '5' ? 'failed' : 'success'
+    },
+    async resendEvent(id) {
+      // Double check with failed webhooks
+      this.processing = true
+      const [error,] = await this.$api.post(`/webhook/requests/${id}/retry`)
+      this.processing = false
+
+      if (error) {
+        const violations = Object.keys(error.violations)
+        violations.forEach(violation => {
+          setTimeout(() => {
+            this.$notify({
+              type: 'error',
+              title: 'Error',
+              message: `${violation}: ${error.violations[violation][0]}`,
+            })
+          }, 50)
+        })
+      } else {
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: 'Webhook successfully re-sent.',
+        })
       }
     },
-    resendEvent() {
+    async getEvent() {
+      this.loading = true
+      const [, response] = await this.$api.get(`search/activities/doc/${this.id}`)
+
+      if (response) {
+        this.details = response._source
+      }
+
+      this.loading = false
+      return response._source.id
+    },
+    getWebhooks(id) {
+      this.webhooks = new ElasticProcessor({
+        component: this,
+        index: 'webhooks',
+        staticQuery: {
+          filters: [
+            {
+              attribute: 'activity.id',
+              value: id,
+            },
+          ],
+        },
+      })
     },
   },
 }
@@ -41,68 +109,85 @@ export default {
     back
     title="Event Details"
   >
-    <el-card :class="$style.summary">
+    <el-card
+      v-loading="loading"
+      :class="$style.summary"
+    >
       <div slot="header">
         Summary
       </div>
       <dl
-        v-if="eventMock.id"
+        v-if="details"
         class="datalist"
       >
         <dt>Date</dt>
-        <dd>{{ formatDate(eventMock.created) }}</dd>
+        <dd>{{ formatDate(details.occurredAt) }}</dd>
         <dt>Description</dt>
-        <dd>{{ eventMock.description }}</dd>
+        <dd>{{ details.description }}</dd>
         <dt>ID</dt>
-        <dd>{{ eventMock.id }}</dd>
+        <dd>{{ details.id }}</dd>
       </dl>
     </el-card>
     <el-card
-      :v-if="eventMock.eventData"
+      v-loading="loading"
     >
       <div slot="header">
         Event Data
       </div>
-      <as-code>
-        {{ eventMock.eventData }}
+      <as-code
+        v-if="details.payload && !loading"
+      >
+        {{ JSON.parse(details.payload) }}
       </as-code>
     </el-card>
-    <el-card>
+    <el-card
+      v-loading="webhooks.loading"
+    >
       <div slot="header">
         Webhooks
       </div>
 
-      <el-collapse>
-        <el-collapse-item
-          v-for="webhook in eventMock.webhooks"
-          :key="webhook.id"
-          :name="webhook.id"
-          :class="$style.webhook"
+      <div v-if="!webhooks.loading">
+        <el-collapse
+          v-if="webhooks.data.length"
+          v-model="webhookCollapse"
         >
-          <template slot="title">
-            <span
-              :class="[$style.status, 'status-tag']"
-              :style="webhookStatus(webhook.status)"
-            >
-              {{ capitalize(webhook.status) }}
-            </span>
-            <span :class="$style.webhookUrl">
-              {{ webhook.url }}
-            </span>
-            <el-button
-              v-if="webhook.status === 'failed'"
-              type="primary"
-              :class="$style.resend"
-              @click.stop="resendEvent"
-            >
-              Re-send event
-            </el-button>
-          </template>
-          <div>
-            Here will be data
-          </div>
-        </el-collapse-item>
-      </el-collapse>
+          <el-collapse-item
+            v-for="webhook in webhooks.data"
+            :key="webhook.id"
+            :name="webhook.id"
+            :class="$style.webhook"
+          >
+            <template slot="title">
+              <div :class="$style.status">
+                <span
+                  :class="['status-tag', $style[webhookStatus(webhook.status)]]"
+                >
+                  {{ capitalize(webhookStatus(webhook.status)) }}
+                </span>
+              </div>
+              <span :class="$style.webhookUrl">
+                {{ webhook.url }}
+              </span>
+              <el-button
+                v-if="webhookStatus(webhook.status) === 'failed'"
+                type="primary"
+                :class="$style.resend"
+                :loading="processing"
+                @click.stop="resendEvent(webhook.id)"
+              >
+                Re-send event
+              </el-button>
+            </template>
+            <as-code>
+              {{ JSON.parse(webhook.activity.payload) }}
+            </as-code>
+          </el-collapse-item>
+        </el-collapse>
+        <div v-else>
+          No webhooks found
+        </div>
+      </div>
     </el-card>
   </main-layout>
 </template>
@@ -136,8 +221,19 @@ export default {
 }
 
 .status {
+  width: rem(70px);
   margin: 0 2rem;
   font-size: 1rem;
+}
+
+.success {
+  color: #3A8463;
+  background: #CAF3C8
+}
+
+.failed {
+  color: var(--color-error);
+  background: #FBD2D2
 }
 
 .webhookUrl {
