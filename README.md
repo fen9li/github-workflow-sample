@@ -4,10 +4,11 @@
 
 ### Packages
 
-| Package                                              | Description |
-| ---------------------------------------------------- | ----------- |
-| [`@loyalty-corp/superadmin`](/packages/super)        |             |
-| [`@loyalty-corp/payments-admin`](/packages/payments) |             |
+| Package                                                 | Description |
+| ------------------------------------------------------- | ----------- |
+| [`@loyalty-corp/superadmin`](/packages/super)           |             |
+| [`@loyalty-corp/payments-admin`](/packages/payments)    |             |
+| [`@loyaltycorp/community-hub`](/packages/community-hub) |             |
 
 ### Applications
 
@@ -16,6 +17,7 @@
 | super         | `yarn dev`               |
 | payments      | `yarn dev payments`      |
 | online-offers | `yarn dev online-offers` |
+| community-hub | `yarn dev community-hub` |
 
 ## Getting Started
 
