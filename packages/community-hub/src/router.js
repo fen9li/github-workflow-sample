@@ -30,6 +30,16 @@ export default new Router({
       component: () => lazy(import('./views/categories')),
     },
     {
+      path: '/categories/new',
+      name: 'category-new',
+      component: () => lazy(import('./views/categories/category-new')),
+    },
+    {
+      path: '/categories/:id/:edit',
+      name: 'category-details',
+      component: () => lazy(import('~/views/categories/category-details')),
+    },
+    {
       path: '/log',
       name: 'log',
       component: () => lazy(import('./views/log')),
