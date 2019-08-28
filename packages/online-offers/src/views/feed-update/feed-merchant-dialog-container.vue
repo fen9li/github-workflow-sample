@@ -30,17 +30,17 @@ export default {
     merchant() {
       return this.row.merchant
     },
+    commissionIsMissing() {
+      const { commission = {} } = this.row.map
+      const { min, base, max } = commission
+      // eslint-disable-next-line eqeqeq
+      const emptyCommission = min == 0 && base == 0 && max == 0
+      return emptyCommission
+    },
     canAttach() {
-      const { commission, tracking_url: trackingUrl } = this.row.map
-      const commissionIsMissing =
-        // eslint-disable-next-line eqeqeq
-        commission.min == 0 &&
-        // eslint-disable-next-line eqeqeq
-        commission.base == 0 &&
-        // eslint-disable-next-line eqeqeq
-        commission.max == 0
+      const { tracking_url: trackingUrl } = this.row.map
 
-      return !commissionIsMissing && Boolean(trackingUrl)
+      return !this.commissionIsMissing && Boolean(trackingUrl)
     }
   },
   methods: {
