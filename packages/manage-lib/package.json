@@ -11,7 +11,7 @@
     "dayjs": "^1.8.15",
     "deepmerge": "^3.2.0",
     "elasticsearch": "^15.4.1",
-    "element-ui": "2.11.1",
+    "element-ui": "2.8.2",
     "v-tooltip": "^2.0.2",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.11",
