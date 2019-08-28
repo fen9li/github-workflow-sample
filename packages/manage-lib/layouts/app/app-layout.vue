@@ -21,7 +21,14 @@ export default {
   <div v-if="loggedIn && $auth.isAuthorized()">
     <el-container :class="$style.root">
       <el-header height="72px">
-        <app-header v-bind="$attrs" />
+        <app-header
+          v-bind="$attrs"
+        >
+          <slot
+            slot="header-right"
+            name="header-right"
+          />
+        </app-header>
       </el-header>
       <el-container :class="$style.main">
         <el-aside
