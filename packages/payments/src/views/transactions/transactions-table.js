@@ -242,6 +242,9 @@ export default function(component) {
           },
         ],
       },
+      query: {
+        sort: { createdAt: { order: 'desc' } }
+      }
     }),
     columns: TABLE_COLUMNS,
     filters: TABLE_FILTERS,

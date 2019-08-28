@@ -124,6 +124,9 @@ export default function(component) {
     processor: new ElasticProcessor({
       component,
       index: 'customers',
+      query: {
+        sort: { createdAt: { order: 'desc' } }
+      }
     }),
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,

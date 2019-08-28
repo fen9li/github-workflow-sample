@@ -180,6 +180,9 @@ export default function(component) {
           },
         ],
       },
+      query: {
+        sort: { createdAt: { order: 'desc' } }
+      }
     }),
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,

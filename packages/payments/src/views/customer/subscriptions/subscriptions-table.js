@@ -158,6 +158,9 @@ export default function(component) {
           },
         ],
       },
+      query: {
+        sort: { startAt: { order: 'desc' } }
+      }
     }),
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,

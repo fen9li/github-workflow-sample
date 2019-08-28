@@ -16,7 +16,6 @@ export function getReadyColumns (dataQuery, columns = []) {
 
     for (let i=0; i<columnsCount; i++) {
       const column = columns[i]
-
       if (
         hide.indexOf(column.name) === -1 &&
         column.type !== 'expand'
@@ -105,6 +104,8 @@ export default {
       tableHeader.handleSortClick = noop
 
       this.tableHeader = tableHeader
+
+      this.syncSorting(this.dataQuery)
     })
   },
   methods: {
@@ -117,7 +118,9 @@ export default {
 
       tableHeader.columns.forEach(column => {
         if (sort.hasOwnProperty(column.property)) {
-          column.order = sort[column.property]
+          column.order = sort[column.property].order
+        } else if (sort._script && get(sort, '_script.script.params.column') === column.property) {
+          column.order = sort._script.order
         } else {
           column.order = ''
         }
@@ -128,10 +131,14 @@ export default {
         return
       }
 
+      const columnData = this.readyColumns.find(col => col.name === column.property)
+      const hasCustomSorting = columnData.hasOwnProperty('sorting')
+
       const index = SORT_ORDERS.indexOf(column.order)
       const newOrder = SORT_ORDERS[index >= 2 ? 0 : index + 1]
 
-      this.processor.updateSort(column.property, newOrder)
+      this.processor.updateSort(column.property, newOrder, ( hasCustomSorting && columnData.sorting))
+
       column.order = newOrder
     },
     onRowClick(row) {
@@ -189,6 +196,7 @@ export default {
         :sortable="sortType(column)"
         :min-width="column.width"
         :show-overflow-tooltip="showOverflowTooltip(column)"
+        :sorting="column.sorting"
       >
         <template #default="scope">
           <cell-wrap

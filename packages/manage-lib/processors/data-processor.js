@@ -238,13 +238,23 @@ export default class DataProcessor {
     return this.getData({ shouldUpdateURL: true })
   }
 
-  updateSort(attribute, order) {
+  updateSort(attribute, order, customSorting = false) {
+
     const { dataQuery } = this
 
     if (order) {
-      dataQuery.sort[attribute] = order
+      if(customSorting) {
+        dataQuery.sort['_script'] = customSorting(order, attribute)
+      } else {
+        dataQuery.sort[attribute] = order
+      }
     } else {
-      delete dataQuery.sort[attribute]
+      customSorting ? delete dataQuery.sort['_script'] : delete  dataQuery.sort[attribute]
+      if(customSorting) {
+        delete dataQuery.sort['_script']
+      } else {
+        delete  dataQuery.sort[attribute]
+      }
     }
 
     return this.getData({ shouldUpdateURL: true })

@@ -155,6 +155,9 @@ export default function(component) {
     processor: new ElasticProcessor({
       component,
       index: 'subscriptions',
+      query: {
+        sort: { startAt: { order: 'desc' } }
+      }
     }),
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,

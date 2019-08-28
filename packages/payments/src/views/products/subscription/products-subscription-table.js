@@ -1,5 +1,6 @@
 import ElasticProcessor from '@lib/processors/elastic-processor'
 import isPast from '@lib/utils/date-is-past'
+import { datesStatusSorting } from '@lib/utils/custom-table-sortings'
 
 const TABLE_FILTERS = [
   {
@@ -114,7 +115,7 @@ const TABLE_COLUMNS = [
     label: 'Plans',
   },
   {
-    name: 'status',
+    name: 'sunset',
     label: 'Status',
     icon: 'el-icon-circle-check',
     format: 'capital',
@@ -126,6 +127,7 @@ const TABLE_COLUMNS = [
         }
       }
     },
+    sorting: datesStatusSorting,
   },
 ]
 
@@ -134,6 +136,12 @@ export default function(component){
     processor: new ElasticProcessor({
       index: 'subscription-products',
       component,
+      query: {
+        sort: {
+          _script: datesStatusSorting('asc', 'sunset'),
+          createdAt: { order: 'desc' }
+        }
+      }
     }),
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,

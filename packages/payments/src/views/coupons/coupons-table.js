@@ -1,5 +1,6 @@
 import ElasticProcessor from '@lib/processors/elastic-processor'
 import { activeByDate } from '@lib/utils/date-helper'
+import { datesStatusSorting } from '@lib/utils/custom-table-sortings'
 
 const TABLE_FILTERS = [
   {
@@ -136,7 +137,7 @@ const TABLE_COLUMNS = [
     },
   },
   {
-    name: 'status',
+    name: 'end',
     label: 'Status',
     format: 'capital',
     icon: 'el-icon-circle-check',
@@ -148,6 +149,7 @@ const TABLE_COLUMNS = [
         }
       }
     },
+    sorting: datesStatusSorting,
   },
 ]
 
@@ -156,6 +158,11 @@ export default function(component){
     processor: new ElasticProcessor({
       component,
       index: 'coupons',
+      query: {
+        sort: {
+          createdAt: { order: 'desc' }
+        }
+      }
     }),
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,
