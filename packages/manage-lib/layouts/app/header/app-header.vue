@@ -37,7 +37,10 @@ export default {
       >
       <span>{{ title }}</span>
     </router-link>
-    <app-profile />
+    <div class="app-header__right">
+      <slot name="header-right" />
+      <app-profile />
+    </div>
   </div>
 </template>
 
@@ -52,6 +55,11 @@ export default {
   &__link {
     color: inherit !important;
     text-decoration: none;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
   }
 
   &__logo {

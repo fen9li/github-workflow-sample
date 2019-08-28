@@ -1,8 +1,12 @@
 <script>
 import { mapGetters } from 'vuex'
+import HeaderPublish from './components/publish/publish-changes'
 
 export default {
   name: 'SuperApp',
+  components: {
+    HeaderPublish,
+  },
   computed: {
     ...mapGetters('auth', [
       'loggedIn',
@@ -20,6 +24,7 @@ export default {
     :menu="menu"
     title="Online Offers"
   >
+    <header-publish slot="header-right" />
     <router-view />
   </app-layout>
 </template>

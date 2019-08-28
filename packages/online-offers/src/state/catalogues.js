@@ -12,25 +12,26 @@ const actions = {
   }, payload) {
     return api.post('/catalogues', payload)
   },
-
   async updateCatalogue({
     commit,
   }, payload) {
     return api.put(`/catalogues/${payload.id}`, payload)
   },
-
+  async publishCatalogues({
+    commit
+  }) {
+    return api.post(`/catalogues/publish`)
+  },
   async deleteCatalogue({
     commit,
   }, id) {
     return api.delete(`/catalogues/${id}`)
   },
-
   async getMerchantFromCatalogue({
     commit,
   }, merchantId) {
     return api.get(`/catalogues/${merchantId}`)
   },
-
   async linkMerchantToCatalogue({
     commit
   }, {
@@ -41,16 +42,17 @@ const actions = {
       merchants,
     })
   },
-
   async unlinkMerchantFromCatalogue({
     commit,
   }, {
     catalogueId,
     merchants,
   }) {
-    return api.delete(`/catalogues/${catalogueId}/merchants`,
-      { data: { merchants } }
-    )
+    return api.delete(`/catalogues/${catalogueId}/merchants`, {
+      data: {
+        merchants
+      }
+    })
   },
 }
 
