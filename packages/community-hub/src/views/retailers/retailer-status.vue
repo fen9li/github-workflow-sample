@@ -35,13 +35,21 @@ export default {
 </script>
 
 <template>
-  <div :style="styleObj">
+  <div
+    :class="$style.container"
+    :style="styleObj"
+  >
     <div :class="$style.badge" />
     {{ title }}
   </div>
 </template>
 
 <style lang="scss" module>
+.container {
+  display: flex;
+  align-items: center;
+}
+
 .badge {
   width: rem(10px);
   height: rem(10px);

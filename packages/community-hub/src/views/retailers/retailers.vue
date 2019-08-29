@@ -11,6 +11,14 @@ export default {
       table: table(this)
     }
   },
+  methods: {
+    onRowClick(row) {
+      this.$router.push({
+        name: 'retailer-details',
+        params: { id: row.id, },
+      })
+    },
+  },
 }
 </script>
 
@@ -24,6 +32,7 @@ export default {
       :fragments="false"
       :hider="false"
       :quantity="[25, 50, 100, 200]"
+      @row-click="onRowClick"
     />
   </main-layout>
 </template>

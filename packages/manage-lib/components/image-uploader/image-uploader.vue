@@ -82,7 +82,9 @@ export default {
       plain
       :class="$style.uploaderButton"
     >
-      Select file
+      <slot name="button-text">
+        Select file
+      </slot>
     </el-button>
   </uploadcare>
 </template>
@@ -123,4 +125,3 @@ export default {
     color: #c0c4cc
   }
 </style>
-
