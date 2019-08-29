@@ -24,6 +24,9 @@ export default {
     merchantId() {
       return this.$route.params.id
     },
+    disabled() {
+      return this.merchantFeeds.length === 0
+    },
     feed() {
       return this.merchantFeeds[0] || {}
     },
@@ -140,6 +143,7 @@ export default {
       <merchant-details
         :merchant="merchant"
         :feed="feed"
+        :disabled="disabled"
       />
     </el-card>
 

@@ -7,6 +7,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     switchValue() {
@@ -15,7 +19,9 @@ export default {
   },
   methods: {
     onClick() {
-      this.$emit('click')
+      if (!this.disabled) {
+        this.$emit('click')
+      }
     },
   },
 }
@@ -25,6 +31,7 @@ export default {
   <div @click.stop="onClick">
     <el-switch
       :value="switchValue"
+      :disabled="disabled"
     />
   </div>
 </template>

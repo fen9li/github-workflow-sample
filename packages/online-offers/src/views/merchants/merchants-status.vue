@@ -11,6 +11,10 @@ export default {
       type: Object,
       required: true,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -52,6 +56,7 @@ export default {
 <template>
   <cell-toggle
     :enabled="isEnabled"
+    :disabled="disabled"
     @click="onSwitch"
   />
 </template>

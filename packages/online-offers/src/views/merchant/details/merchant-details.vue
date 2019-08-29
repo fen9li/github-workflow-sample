@@ -16,6 +16,10 @@ export default {
       type: Object,
       required: true,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
     original: {
       type: Boolean,
       default: false,
@@ -79,6 +83,7 @@ export default {
           <el-switch
             :value="merchant.enabled"
             active-text="Active"
+            :disabled="disabled"
             @change="onSwitch"
           />
         </div>
