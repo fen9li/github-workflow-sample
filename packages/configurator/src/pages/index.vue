@@ -30,16 +30,15 @@ export default {
     </div>
     <div :class="$style.app">
       <template v-if="iframe">
-        <iframe
-          id="app-frame"
-          :class="$style.frame"
-          :src="frameUrl"
-        />
+        <iframe id="app-frame" :class="$style.frame" :src="frameUrl" />
       </template>
       <template v-else>
-        <input v-model="appUrl">
+        <input v-model="appUrl" />
         <button @click="loadApp">Load App</button>
       </template>
+
+<!--      <hero-widget-editor :config="undefined" />-->
+<!--      <slider-widget-editor :config="undefined" />-->
     </div>
   </main>
 </template>

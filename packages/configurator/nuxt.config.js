@@ -6,15 +6,22 @@ module.exports = {
   srcDir: 'src',
   loading: false,
   plugins: [
+    '~plugins/external',
     '~plugins/global',
   ],
   css: [
     '~/css/main.scss',
+    'element-ui/lib/theme-chalk/index.css'
   ],
   build: {
     extend: configureWebpack,
+    transpile: [
+      /@loyalty-corp\//,
+    ]
   },
-  modules: ['@nuxtjs/axios'],
+  modules: [
+    '@nuxtjs/axios'
+  ],
   server: {
     port: 8080,
     timing: true,
