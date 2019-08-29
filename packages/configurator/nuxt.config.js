@@ -1,53 +1,26 @@
-import path from 'path'
-import fs from 'fs'
+const configureWebpack = require('./devUtils/configureWebpack.js')
+const { resolve } = require('path')
+const { readFileSync } = require('fs')
 
 module.exports = {
+  srcDir: 'src',
+  loading: false,
   plugins: [
     '~plugins/global',
   ],
   css: [
     '~/css/main.scss',
   ],
-  /*
-  ** Headers of the page
-  */
-  head: {
-    title: 'configurator',
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Nuxt.js project' }
-    ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
-  },
-  /*
-  ** Customize the progress bar color
-  */
-  loading: { color: '#3B8070' },
-  /*
-  ** Build configuration
-  */
   build: {
-    /*
-    ** Run ESLint on save
-    */
-    extend (config, { isDev, isClient }) {
-      if (isDev && isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
-      }
-    }
+    extend: configureWebpack,
   },
+  modules: ['@nuxtjs/axios'],
   server: {
+    port: 8080,
+    timing: true,
     https: {
-      key: fs.readFileSync(path.resolve(__dirname, 'server.key')),
-      cert: fs.readFileSync(path.resolve(__dirname, 'server.crt'))
-    }
-  }
+      key: readFileSync(resolve(__dirname, 'cert/server.key')),
+      cert: readFileSync(resolve(__dirname, 'cert/server.crt')),
+    },
+  },
 }
