@@ -1,5 +1,6 @@
 <script>
 import table from './categories.table'
+import getExportedFilename from '@lib/utils/get-exported-filename'
 
 export default {
   name: 'Categories',
@@ -26,6 +27,9 @@ export default {
         },
       })
     },
+    getExportedFilename() {
+      return getExportedFilename(this.table.tableName)
+    }
   },
 }
 </script>
@@ -42,13 +46,13 @@ export default {
       </el-button>
     </template>
     <table-layout
-      table-name="categories"
+      :table-name="table.tableName"
       :processor="table.processor"
       :filters="table.filters"
       :columns="table.columns"
       :fragments="false"
-      :hider="false"
       :quantity="[25, 50, 100, 200]"
+      :export-filename="getExportedFilename"
       @row-click="onRowClick"
     />
   </main-layout>

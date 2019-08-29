@@ -8,8 +8,8 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'retailers_count',
-    label: 'No. of Retailers',
+    attribute: 'offers_count',
+    label: 'Number of Offers',
     type: 'numeric',
     icon: 'el-icon-document',
   },
@@ -23,8 +23,8 @@ const TABLE_COLUMNS = [
     width: 100,
   },
   {
-    name: 'retailers_count',
-    label: 'No. of Retailers',
+    name: 'offers_count',
+    label: 'Number of Offers',
     icon: 'el-icon-document',
   },
 ]
@@ -37,5 +37,6 @@ export default function(context) {
     }),
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,
+    tableName: 'categories'
   }
 }
