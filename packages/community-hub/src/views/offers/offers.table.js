@@ -18,8 +18,8 @@ const inactiveCell = {
 const TABLE_FILTERS = [{
   attribute: 'status',
   name: 'Status',
-  type: 'string',
-  icon: 'el-icon-document',
+  type: 'boolean',
+  icon: 'el-icon-check',
 }, {
   attribute: 'created_at',
   label: 'Created',
@@ -55,7 +55,7 @@ const TABLE_FILTERS = [{
 const TABLE_COLUMNS = [{
   name: 'status',
   label: 'Status',
-  icon: 'el-icon-document',
+  icon: 'el-icon-check',
   width: 100,
   format: {
     name: 'capital',

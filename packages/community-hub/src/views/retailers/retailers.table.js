@@ -17,14 +17,29 @@ function cellStyle(status) {
 const TABLE_FILTERS = [{
   attribute: 'status',
   name: 'Status',
+  type: 'boolean',
+  icon: 'el-icon-check',
+}, {
+  attribute: 'retailer_name',
+  name: 'Retailer Name',
   type: 'string',
   icon: 'el-icon-document',
-}, ]
+}, {
+  attribute: 'retailer_offers',
+  name: 'Number of Offers',
+  type: 'numeric',
+  icon: 'el-icon-document',
+}, {
+  attribute: 'create_at',
+  name: 'Date Created',
+  type: 'date',
+  icon: 'el-icon-time',
+}]
 
 const TABLE_COLUMNS = [{
   name: 'status',
   label: 'Status',
-  icon: 'el-icon-document',
+  icon: 'el-icon-check',
   width: 200,
   component: (_, __, {
     row,
@@ -44,7 +59,7 @@ const TABLE_COLUMNS = [{
     is: 'cell-image',
   },
 }, {
-  name: 'retailerName',
+  name: 'retailer_name',
   label: 'Retailer Name',
   icon: 'el-icon-document',
   width: 300,
@@ -58,7 +73,7 @@ const TABLE_COLUMNS = [{
     },
   },
 }, {
-  name: 'retailerOffers',
+  name: 'retailer_offers',
   label: 'Number of Offers',
   icon: 'el-icon-document',
   width: 200,
@@ -72,9 +87,9 @@ const TABLE_COLUMNS = [{
     },
   },
 }, {
-  name: 'created_at',
+  name: 'create_at',
   label: 'Date Created',
-  icon: 'el-icon-document',
+  icon: 'el-icon-time',
   format: {
     name: 'date',
     params: ['DD/MM/YYYY']

@@ -9,14 +9,22 @@ import Components from './components'
 import Router from './router'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utils from './utils'
-import { ApiHelper } from './api'
+import {
+  ApiHelper
+} from './api'
 
 dayjs.extend(utc)
+dayjs.extend(customParseFormat)
 
 export default {
   install(Vue, options) {
-    const includeList = [[ElementUI, { locale }]]
+    const includeList = [
+      [ElementUI, {
+        locale
+      }]
+    ]
     const use = Vue.use.bind(Vue)
     includeList.forEach(i => use(...i))
 

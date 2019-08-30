@@ -151,12 +151,20 @@ export default {
       if (data) {
         this.localData = cloneDeep(data)
       } else {
-        const firstComparison = this.filter.getFirstComparison()
+        const { type } = this.filter.getFirstComparison()
+        let value = null
+
+        if (type === 'is_true') {
+          value = true
+        } else if (type === 'is_false') {
+          value = false
+        }
 
         this.localData = {
           attribute: this.filter.attribute,
-          comparison: firstComparison.type,
-          value: null,
+          comparison: type,
+          value,
+          type: this.filter.type,
         }
       }
     },
