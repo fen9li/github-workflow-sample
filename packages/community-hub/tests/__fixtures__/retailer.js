@@ -22,5 +22,15 @@ module.exports = {
     website: 'www.boden.com.au',
     // coupon_code: 'ABCFFFOFW24',
     // offer_url: 'www.boden.com.au'
+    offers: [
+      {
+        id: 'BNSO002',
+        offer_name: 'Free shipping',
+      },
+      {
+        id: 'BNSO001',
+        offer_name: '5% Off Fridays',
+      }
+    ]
   },
 }

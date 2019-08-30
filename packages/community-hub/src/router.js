@@ -8,49 +8,66 @@ export default new Router({
   mode: 'history',
   base: process.env.VUE_APP_BASE_URL,
   linkActiveClass: 'menu__item--active',
-  routes: [{
-    path: '/dashboard',
-    name: 'dashboard',
-    component: () => lazy(import('./views/dashboard')),
-  }, {
-    path: '/retailers',
-    name: 'retailers',
-    component: () => lazy(import('./views/retailers')),
-  }, {
-    path: '/retailers/new',
-    name: 'retailer-new',
-    component: () => lazy(import('./views/retailer-new')),
-  }, {
-    path: '/retailers/:id/:edit?',
-    name: 'retailer-details',
-    component: () => lazy(import('./views/retailer')),
-  }, {
-    path: '/offers',
-    name: 'offers',
-    component: () => lazy(import('./views/offers')),
-  }, {
-    path: '/offers/:id/:edit?',
-    name: 'offer-details',
-    component: () => lazy(import('./views/offer')),
-  }, {
-    path: '/categories',
-    name: 'categories',
-    component: () => lazy(import('./views/categories')),
-  }, {
-    path: '/categories/new',
-    name: 'category-new',
-    component: () => lazy(import('./views/categories/category-new')),
-  }, {
-    path: '/categories/:id/:edit',
-    name: 'category-details',
-    component: () => lazy(import('~/views/categories/category-details')),
-  }, {
-    path: '/log',
-    name: 'log',
-    component: () => lazy(import('./views/log')),
-  }, {
-    path: '/',
-    name: '*',
-    redirect: '/dashboard',
-  }, ],
+  routes: [
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => lazy(import('./views/dashboard')),
+    },
+    {
+      path: '/retailers',
+      name: 'retailers',
+      component: () => lazy(import('./views/retailers')),
+    },
+    {
+      path: '/retailers/new',
+      name: 'retailer-new',
+      component: () => lazy(import('./views/retailer-new')),
+    },
+    {
+      path: '/retailers/:id/offers',
+      name: 'retailer-offers',
+      component: () => lazy(import('./views/retailer/offers/retailer-offers')),
+    },
+    {
+      path: '/retailers/:id/:edit?',
+      name: 'retailer-details',
+      component: () => lazy(import('./views/retailer')),
+    },
+    {
+      path: '/offers',
+      name: 'offers',
+      component: () => lazy(import('./views/offers')),
+    },
+    {
+      path: '/offers/:id/:edit?',
+      name: 'offer-details',
+      component: () => lazy(import('./views/offer')),
+    },
+    {
+      path: '/categories',
+      name: 'categories',
+      component: () => lazy(import('./views/categories')),
+    },
+    {
+      path: '/categories/new',
+      name: 'category-new',
+      component: () => lazy(import('./views/categories/category-new')),
+    },
+    {
+      path: '/categories/:id/:edit',
+      name: 'category-details',
+      component: () => lazy(import('~/views/categories/category-details')),
+    },
+    {
+      path: '/log',
+      name: 'log',
+      component: () => lazy(import('./views/log')),
+    },
+    {
+      path: '/',
+      name: '*',
+      redirect: '/dashboard',
+    },
+  ],
 })
