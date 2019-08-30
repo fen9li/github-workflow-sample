@@ -65,7 +65,16 @@ export default {
       this.isEdit = false
     },
     onManage() {
-      // console.log('manage')
+      this.$router.push({
+        name: 'offers',
+        params: {
+          filters: [{
+            attribute: 'retailer_name',
+            comparison: 'eq',
+            value: this.map.retailer_name,
+          }],
+        },
+      })
     },
   },
 }

@@ -31,6 +31,7 @@ export default {
       table-name="offers"
       :processor="table.processor"
       :filters="table.filters"
+      :initial-filters="$route.params.filters"
       :columns="table.columns"
       :fragments="false"
       :quantity="[25, 50, 100, 200]"
@@ -39,4 +40,3 @@ export default {
     />
   </main-layout>
 </template>
-
