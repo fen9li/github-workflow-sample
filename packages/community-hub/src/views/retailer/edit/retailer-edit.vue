@@ -23,6 +23,19 @@ export default {
         website: '',
         logo: '',
       },
+      rules: {
+        retailer_name: [{
+          required: true,
+          message: 'Retailer name is required',
+        }],
+        description: [{
+          required: true,
+          message: 'Description is required',
+        }, {
+          max: 255,
+          message: 'Length should be less than 255',
+        }],
+      },
       modals: {
         remove: false,
       },
@@ -48,11 +61,16 @@ export default {
       this.$notify({
         type: 'success',
         title: 'Retailer saved',
-        message: 'New retailer successfully saved.',
+        message: 'Changes successfully saved.',
       })
     },
     async submitRemove() {
       this.modals.remove = false
+      this.$notify({
+        type: 'success',
+        title: 'Retailer deleted',
+        message: 'Retailer successfully deleted.',
+      })
     },
   },
 }
@@ -63,6 +81,7 @@ export default {
     <el-form
       ref="form"
       :model="form"
+      :rules="rules"
     >
       <el-form-item
         label="Status"
@@ -98,10 +117,8 @@ export default {
         required
         :class="$style.formItem"
       >
-        <el-input
+        <the-textarea
           v-model="form.description"
-          type="textarea"
-          :rows="4"
           :class="$style.formInput"
         />
       </el-form-item>

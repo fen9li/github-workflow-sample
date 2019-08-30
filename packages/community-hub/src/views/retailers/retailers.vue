@@ -24,6 +24,16 @@ export default {
 
 <template>
   <main-layout title="Retailers">
+    <template #header>
+      <el-button
+        type="primary"
+        @click="$router.push({
+          name: 'retailer-new'
+        })"
+      >
+        + Add New Retailer
+      </el-button>
+    </template>
     <table-layout
       table-name="retailers"
       :processor="table.processor"
