@@ -33,11 +33,13 @@ export default {
     },
     summary() {
       const data = this.localData || this.data
+      const customLabel = this.filter.customFiltering && this.filter.customFiltering.label
 
       return data && this.filter.getSummary({
         comparison: data.comparison,
         value: data.value,
         attribute: data.attribute,
+        customLabel
       })
     },
     suchFilterAlreadyExists() {
@@ -122,16 +124,15 @@ export default {
     },
     removeFilter() {
       if (this.data) {
-        this.processor.removeFilter(this.index)
+        this.processor.removeFilter(this.index, this.filter)
       }
     },
     applyFilter() {
       let { index, processor } = this
-
       if (index === -1) {
         index = processor.dataQuery.filters.length
       }
-      processor.applyFilter(this.localData, index)
+      processor.applyFilter(this.localData, index, this.filter.customFiltering)
       this.toggleDropdown()
     },
     onDropdownVisibilityChanged(isVisible) {

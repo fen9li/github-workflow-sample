@@ -2,9 +2,11 @@ import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
 import merge from 'deepmerge'
 import flattenDeep from 'lodash/flattenDeep'
+import * as customFiltering from '../utils/custom-filtering'
 
 const createEmptyQuery = () => {
   return {
+    bool: { filter: [] },
     filters: [],
     sort: {},
     page: 1,
@@ -90,6 +92,10 @@ export default class DataProcessor {
 
   get filters() {
     return get(this.dataQuery, 'filters', [])
+  }
+
+  get boolFilters() {
+    return get(this.dataQuery, 'bool.filter', [])
   }
 
   get pageCount() {
@@ -190,17 +196,26 @@ export default class DataProcessor {
     }
   }
 
-  applyFilter(filter, index) {
-    if(Array.isArray(filter.value)){
-      filter.value = flattenDeep(filter.value)
+  applyFilter(filter, index, custom = false) {
+    if(custom) {
+      customFiltering[custom.name](filter, custom)
+      this.boolFilters.splice(index, 1, customFiltering[custom.name](filter, custom))
+    } else {
+      if(Array.isArray(filter.value)){
+        filter.value = flattenDeep(filter.value)
+      }
+      this.filters.splice(index, 1, filter)
     }
-    this.filters.splice(index, 1, filter)
     this.dataQuery.page = 1
 
     return this.getData({ shouldUpdateURL: true })
   }
 
-  removeFilter(index) {
+  removeFilter(index, filter) {
+    if(filter.customFiltering) {
+      const i = this.boolFilters.findIndex(f => get(f, 'script.script.params.attribute') === filter.attribute)
+      this.boolFilters.splice(i, 1)
+    }
     this.filters.splice(index, 1)
 
     return this.getData({ shouldUpdateURL: true })

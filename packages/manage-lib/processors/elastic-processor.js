@@ -108,8 +108,9 @@ function getFilterValue({ value, comparison }) {
 }
 
 function buildBody(queryObj) {
-  const { filters, sort } = queryObj
+  const { filters, sort, bool } = queryObj
   const body = bodybuilder()
+  const parseBool = bool.filter.length || Object.keys(bool).length > 1
 
   if (filters.length) {
     filters.forEach(p => {
@@ -125,7 +126,16 @@ function buildBody(queryObj) {
         }
       }
     })
-  } else {
+  }
+  if(parseBool) {
+    const boolQueries = Object.keys(bool)
+    boolQueries.forEach(key => {
+      if(bool[key].length) {
+        body.query('bool', bool)
+      }
+    })
+  }
+  if(!filters.length && !parseBool) {
     body.query('match_all')
   }
 

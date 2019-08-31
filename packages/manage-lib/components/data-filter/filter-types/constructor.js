@@ -9,6 +9,9 @@ export default class FilterType {
     this.icon = params.icon
     this.type = params.type
     this.values = params.values
+    if(params.customFiltering) {
+      this.customFiltering = params.customFiltering
+    }
   }
 
   get filterComponent() {
@@ -24,7 +27,9 @@ export default class FilterType {
     const prefix = comparison && comparison.prefix
     const isAmount = filter.attribute.includes('amount') || filter.attribute.includes('total') || filter.attribute.includes('price')
 
-    if (/null|undefined/.test(filter.value)) {
+    if(filter.customLabel) {
+      return `${this.label} ${prefix} ${filter.customLabel(filter.value)}`
+    } else if (/null|undefined/.test(filter.value)) {
       return this.label
     } else {
       return `${this.label} ${prefix} ${isAmount ? `$${filter.value.toFixed(2)}` : filter.value}`

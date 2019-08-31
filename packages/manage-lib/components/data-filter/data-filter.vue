@@ -3,6 +3,7 @@ import FilterItem from './filter-item.vue'
 import FilterItemNew from './filter-item-new.vue'
 import filterTypes from './filter-types'
 import DataProcessor from '../../processors/data-processor.js'
+import merge from 'deepmerge'
 
 export default {
   name: 'DataFilter',
@@ -33,6 +34,9 @@ export default {
         return FilterType ? new FilterType(filter) : null
       })
     },
+    appliedFilters() {
+      return merge(this.processor.filters, this.processor.boolFilters.map(filter => filter.script.script.params))
+    }
   },
   created() {
     for (let i = 0; i < this.initialFilters.length; i++) {
@@ -56,7 +60,7 @@ export default {
     :class="$style.tableFilter"
   >
     <filter-item
-      v-for="(data, index) in processor.filters"
+      v-for="(data, index) in appliedFilters"
       :key="getFilterKey(data)"
       :filter="getFilterByAttribute(data.attribute)"
       v-bind="{data, index, processor}"

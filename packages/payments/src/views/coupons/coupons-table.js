@@ -35,8 +35,12 @@ const TABLE_FILTERS = [
   {
     attribute: 'validityPeriod',
     label: 'Validity Period',
-    type: 'string',
+    type: 'numeric',
     icon: 'el-icon-date',
+    customFiltering: {
+      name: 'validityPeriod',
+      label: function(v) { return v === 1 ? `${v} Month` : `${v} Months` },
+    },
   },
   {
     attribute: 'useCount',
