@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyalty-corp/manage-lib@0.5.0...@loyalty-corp/manage-lib@0.6.0) (2019-09-01)
+
+### Bug Fixes
+
+- **community-hub:** update retailer table ([0fd2db1](https://github.com/loyaltycorp/manage-v2-frontend/commit/0fd2db1))
+- **manage:** revert to element-ui 2.8.2 ([e119086](https://github.com/loyaltycorp/manage-v2-frontend/commit/e119086))
+- **payments:** fix timezones issue ([3a82750](https://github.com/loyaltycorp/manage-v2-frontend/commit/3a82750))
+- **payments:** investigate filters in payments ([4c9e01b](https://github.com/loyaltycorp/manage-v2-frontend/commit/4c9e01b))
+
+### Features
+
+- **admin-panel:** add app-layout-dummy for no auth usage ([fb6a093](https://github.com/loyaltycorp/manage-v2-frontend/commit/fb6a093))
+- **app-header:** removed select ([bc14a3a](https://github.com/loyaltycorp/manage-v2-frontend/commit/bc14a3a))
+- **app-sidebar:** svg icons ([25c4706](https://github.com/loyaltycorp/manage-v2-frontend/commit/25c4706))
+- **community-hub:** create categories pages ([f130edf](https://github.com/loyaltycorp/manage-v2-frontend/commit/f130edf))
+- **community-hub:** create log page ([7e526d7](https://github.com/loyaltycorp/manage-v2-frontend/commit/7e526d7))
+- **community-hub:** mock data and create page for offers ([e4a2018](https://github.com/loyaltycorp/manage-v2-frontend/commit/e4a2018))
+- **manage-lib:** add rich-textarea and rich-renderer ([975c32e](https://github.com/loyaltycorp/manage-v2-frontend/commit/975c32e))
+- **merchants:** disable status switch if no feeds ([3aec0ef](https://github.com/loyaltycorp/manage-v2-frontend/commit/3aec0ef))
+- **payments:** modify dropdowns (sort + filter) ([ec1258d](https://github.com/loyaltycorp/manage-v2-frontend/commit/ec1258d))
+- **payments:** smoke testing updates ([39b85d9](https://github.com/loyaltycorp/manage-v2-frontend/commit/39b85d9))
+- **payments:** update table icons ([32a0951](https://github.com/loyaltycorp/manage-v2-frontend/commit/32a0951))
+- **payments:** update webhook and details views ([ee12417](https://github.com/loyaltycorp/manage-v2-frontend/commit/ee12417))
+- **publish:** publish changes ([7cf00e4](https://github.com/loyaltycorp/manage-v2-frontend/commit/7cf00e4))
+- **retailer:** details, edit ([daa0197](https://github.com/loyaltycorp/manage-v2-frontend/commit/daa0197))
+
 # [0.5.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyalty-corp/manage-lib@0.4.0...@loyalty-corp/manage-lib@0.5.0) (2019-08-20)
 
 ### Bug Fixes

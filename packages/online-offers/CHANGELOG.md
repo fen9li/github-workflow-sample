@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-online-offers@0.5.0...manage-online-offers@0.6.0) (2019-09-01)
+
+### Bug Fixes
+
+- **merchant-associate:** hide associate btn if missing track url ([37257fd](https://github.com/loyaltycorp/manage-v2-frontend/commit/37257fd))
+- **online-offers:** check empty commission ([d961815](https://github.com/loyaltycorp/manage-v2-frontend/commit/d961815))
+
+### Features
+
+- **logo-images:** removed shadows from logos ([66c5b71](https://github.com/loyaltycorp/manage-v2-frontend/commit/66c5b71))
+- **merchants:** disable status switch if no feeds ([3aec0ef](https://github.com/loyaltycorp/manage-v2-frontend/commit/3aec0ef))
+- **publish:** publish changes ([7cf00e4](https://github.com/loyaltycorp/manage-v2-frontend/commit/7cf00e4))
+
 # [0.5.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-online-offers@0.4.0...manage-online-offers@0.5.0) (2019-08-20)
 
 ### Features

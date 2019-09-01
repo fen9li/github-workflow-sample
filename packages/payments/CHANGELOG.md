@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-payments@0.5.0...manage-payments@0.6.0) (2019-09-01)
+
+### Bug Fixes
+
+- **payments:** investigate filters in payments ([4c9e01b](https://github.com/loyaltycorp/manage-v2-frontend/commit/4c9e01b))
+- **payments:** return fragments to tables ([9c6fa0a](https://github.com/loyaltycorp/manage-v2-frontend/commit/9c6fa0a))
+
+### Features
+
+- **events:** update event / events details views ([16fc372](https://github.com/loyaltycorp/manage-v2-frontend/commit/16fc372))
+- **payments:** modify dropdowns (sort + filter) ([ec1258d](https://github.com/loyaltycorp/manage-v2-frontend/commit/ec1258d))
+- **payments:** smoke testing updates ([39b85d9](https://github.com/loyaltycorp/manage-v2-frontend/commit/39b85d9))
+- **payments:** update table icons ([32a0951](https://github.com/loyaltycorp/manage-v2-frontend/commit/32a0951))
+- **payments:** update webhook and details views ([ee12417](https://github.com/loyaltycorp/manage-v2-frontend/commit/ee12417))
+
 # [0.5.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/manage-payments@0.4.1...manage-payments@0.5.0) (2019-08-20)
 
 ### Bug Fixes

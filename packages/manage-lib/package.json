@@ -1,6 +1,6 @@
 {
   "name": "@loyalty-corp/manage-lib",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "scripts": {
     "unit": "vue-cli-service test:unit"
   },
@@ -12,7 +12,6 @@
     "deepmerge": "^3.2.0",
     "elasticsearch": "^15.4.1",
     "element-ui": "2.8.2",
-    "v-tooltip": "^2.0.2",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.11",
     "normalize.css": "^8.0.1",
@@ -20,6 +19,7 @@
     "register-service-worker": "^1.6.2",
     "sass-mq": "^5.0.0",
     "uploadcare-vue": "^1.0.0",
+    "v-tooltip": "^2.0.2",
     "vue": "^2.6.10",
     "vue-codemirror": "^4.0.6",
     "vue-meta": "^1.6.0",
