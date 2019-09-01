@@ -1,0 +1,22 @@
+{
+  "name": "@loyaltycorp/configurator",
+  "version": "1.0.0",
+  "description": "Configurator",
+  "author": "Loyalty Corp",
+  "private": true,
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "@loyalty-corp/manage-lib": "0.5.0",
+    "element-ui": "^2.8.3",
+    "normalize.css": "^8.0.1",
+    "nprogress": "^0.2.0",
+    "vue": "^2.6.10"
+  }
+}
