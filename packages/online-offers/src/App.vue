@@ -1,5 +1,6 @@
 <script>
 import { mapGetters } from 'vuex'
+import { API } from '@loyalty-corp/manage-lib/processors/api-processor'
 import HeaderPublish from './components/publish/publish-changes'
 
 export default {
@@ -14,6 +15,12 @@ export default {
     ...mapGetters('ui', [
       'menu',
     ]),
+  },
+  created() {
+    const authHash = btoa(process.env.VUE_APP_API_AUTH + ':')
+    const authHeader = `Basic ${authHash}`
+
+    API.defaults.headers.common['Authorization'] = authHeader
   },
 }
 </script>
