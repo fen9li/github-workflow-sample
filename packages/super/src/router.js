@@ -7,6 +7,7 @@ Vue.use(Router)
 const router = new Router({
   mode: 'history',
   base: process.env.VUE_APP_BASE_URL,
+  linkExactActiveClass: 'menu__item--active',
   routes: [
     {
       path: '/',
