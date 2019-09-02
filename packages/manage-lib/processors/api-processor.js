@@ -1,5 +1,5 @@
-import DataProcessor from './data-processor'
 import axios from 'axios'
+import DataProcessor from './data-processor'
 
 const filteredItems = (items, { key, value }) => items.filter(item => item[key] === value)
 
@@ -17,9 +17,6 @@ const transformedItems = (items, rules) => {
 
 export const API = axios.create({
   baseURL: process.env.VUE_APP_API_URL,
-  auth: {
-    username: process.env.VUE_APP_API_AUTH,
-  },
 })
 
 class ApiProcessor extends DataProcessor {
@@ -43,15 +40,12 @@ class ApiProcessor extends DataProcessor {
   sendRequest(query) {
     const { page, pageSize } = query
 
-    return API
-      .get(this.path,
-        {
-          params: {
-            page,
-            perPage: pageSize,
-          },
-        }
-      )
+    return API.get(this.path, {
+      params: {
+        page,
+        perPage: pageSize,
+      },
+    })
       .then(({ data }) => {
         let { items, pagination } = data
 
@@ -71,16 +65,12 @@ class ApiProcessor extends DataProcessor {
   }
 
   sendRequestAll() {
-    return API
-      .get(
-        this.path,
-        {
-          params: {
-            page: 1,
-            perPage: 1e9,
-          },
-        }
-      )
+    return API.get(this.path, {
+      params: {
+        page: 1,
+        perPage: 1e9,
+      },
+    })
       .then(({ data }) => {
         const { items, pagination } = data
 

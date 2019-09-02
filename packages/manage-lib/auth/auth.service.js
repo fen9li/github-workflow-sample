@@ -9,7 +9,7 @@ const webAuth = new auth0.WebAuth({
   redirectUri: `${window.location.origin}/callback`,
   clientID: process.env.VUE_APP_AUTH0_CLIENT_ID,
   responseType: 'token id_token',
-  scope: 'openid profile email',
+  scope: `openid profile email ${process.env.VUE_APP_AUTH0_SCOPES || ''}`.trim(),
   audience: process.env.VUE_APP_AUTH0_AUDIENCE,
 })
 
@@ -19,6 +19,7 @@ const loginEvent = 'loginEvent'
 class AuthService extends EventEmitter {
   contructor() {
     this.idToken = null
+    this.accessToken = null
     this.config = null
     this.profile = null
     this.access = null
@@ -53,7 +54,7 @@ class AuthService extends EventEmitter {
     return new Promise((resolve, reject) => {
       webAuth.parseHash((err, authResult) => {
         if (err) {
-          reject(err)
+          // reject(err)
         } else {
           this.localLogin(authResult)
           resolve(authResult.idToken)
@@ -100,6 +101,7 @@ class AuthService extends EventEmitter {
 
   localLogin(authResult) {
     this.idToken = authResult.idToken
+    this.accessToken = authResult.accessToken
     this.access = jwtDecode(authResult.accessToken)
     this.profile = authResult.idTokenPayload
 
@@ -111,6 +113,7 @@ class AuthService extends EventEmitter {
 
     this.emit(loginEvent, {
       loggedIn: true,
+      accessToken: this.accessToken,
       profile: authResult.idTokenPayload,
       state: authResult.appState || {},
     })

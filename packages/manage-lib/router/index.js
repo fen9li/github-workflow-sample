@@ -2,6 +2,8 @@ import get from 'lodash/get'
 import NProgress from 'nprogress/nprogress'
 import authService from '../auth/auth.service'
 
+const reqPath = window.location.pathname
+
 export default {
   install(Vue, options = {}) {
     const { router } = options
@@ -20,7 +22,9 @@ export default {
               }))
             })
             .catch(() => {
-              authService.login()
+              authService.login({
+                target: reqPath,
+              })
             })
         },
       },
