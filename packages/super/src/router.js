@@ -7,6 +7,7 @@ Vue.use(Router)
 const router = new Router({
   mode: 'history',
   base: process.env.VUE_APP_BASE_URL,
+  linkActiveClass: 'menu__item--active',
   linkExactActiveClass: 'menu__item--active',
   routes: [
     {
@@ -40,6 +41,21 @@ const router = new Router({
       path: '/providers',
       name: 'providers',
       component: () => lazy(import('./views/providers')),
+    },
+    {
+      path: '/providers/create',
+      name: 'provider-create',
+      component: () => lazy(import('./views/provider')),
+      props: true,
+      meta: {
+        create: true,
+      },
+    },
+    {
+      path: '/providers/:id/:edit?',
+      name: 'provider-details',
+      component: () => lazy(import('./views/provider')),
+      props: true,
     },
     {
       path: '/products',

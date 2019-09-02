@@ -87,6 +87,7 @@ export default {
               :to="{ path: item.path }"
               tag="li"
               class="menu__item"
+              :exact="item.path === '/'"
             >
               <a class="menu__link">
                 <the-icon

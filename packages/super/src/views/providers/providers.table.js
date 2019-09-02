@@ -21,10 +21,10 @@ const TABLE_FILTERS = [
     type: 'string',
   },
   {
-    attribute: 'updatedAt',
-    label: 'Last updated',
-    icon: 'el-icon-date',
-    type: 'date',
+    attribute: '2fa',
+    label: 'Enforce 2FA',
+    type: 'boolean',
+    icon: 'el-icon-document',
   },
   {
     attribute: 'timezone',
@@ -45,15 +45,16 @@ const TABLE_COLUMNS = [
     name: 'createdAt',
     label: 'Date Created',
     icon: 'el-icon-date',
-    format: 'date',
-    width: 100,
+    format: {
+      name: 'date',
+      params: ['DD/MM/YYYY hh:mm A'],
+    },
   },
   {
     name: 'id',
     label: 'Provider ID',
     sortable: false,
     icon: 'el-icon-document',
-    width: 300,
   },
   {
     name: 'name',
@@ -61,10 +62,9 @@ const TABLE_COLUMNS = [
     icon: 'el-icon-document',
   },
   {
-    name: 'updatedAt',
-    label: 'Last Updated',
-    icon: 'el-icon-date',
-    format: 'date',
+    name: '2fa',
+    label: 'Enforce 2FA',
+    icon: 'el-icon-document',
     width: 100,
   },
   {
@@ -80,7 +80,34 @@ const TABLE_COLUMNS = [
       name: 'capital',
     },
     component: {
-      is: 'cell-activity',
+      props: {
+        styleObj(_, row) {
+          switch (row.status) {
+            case 'active':
+              return {
+                color: '#36d544',
+              }
+            case 'inactive':
+              return {
+                color: '#e21d1f'
+              }
+            default: return {}
+          }
+        },
+        badge(_, row) {
+          switch (row.status) {
+            case 'active':
+              return {
+                name: 'el-icon-check',
+              }
+            case 'inactive':
+              return {
+                name: 'el-icon-close',
+              }
+            default: return {}
+          }
+        }
+      },
     },
     width: 100,
   },

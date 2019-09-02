@@ -41,6 +41,7 @@ export default {
     <table-layout
       :table-name="table.tableName"
       :fragments="false"
+      :class="$style.provider"
       hider
       :quantity="[25, 50, 100, 200]"
       :processor="table.processor"
@@ -60,3 +61,13 @@ export default {
     </el-button>
   </main-layout>
 </template>
+
+<style lang="scss" module>
+.provider {
+  :global {
+    .cell-badge {
+      margin-right: 10px;
+    }
+  }
+}
+</style>
