@@ -17,6 +17,10 @@ export default new Router({
     name: 'retailers',
     component: () => lazy(import('./views/retailers')),
   }, {
+    path: '/retailers/new',
+    name: 'retailer-new',
+    component: () => lazy(import('./views/retailer-new')),
+  }, {
     path: '/retailers/:id/:edit?',
     name: 'retailer-details',
     component: () => lazy(import('./views/retailer')),
