@@ -56,7 +56,7 @@ export default {
 <template>
   <main-layout
     v-if="$route.name === 'roles'"
-    title="Manage roles"
+    title="Roles"
   >
     <table-layout
       :fragments="false"

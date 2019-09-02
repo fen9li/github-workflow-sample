@@ -39,7 +39,7 @@ export default {
 </script>
 
 <template>
-  <main-layout title="Manage users and roles">
+  <main-layout title="Users">
     <table-layout
       :fragments="false"
       :hider="false"

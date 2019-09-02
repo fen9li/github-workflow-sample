@@ -7,36 +7,9 @@ export default {
     ...mapGetters('auth', [
       'loggedIn',
     ]),
-    menu() {
-      return [
-        {
-          title: 'Home',
-          path: '/',
-          icon: 'news',
-        },
-        {
-          title: 'Auth',
-          path: '/auth',
-          icon: 'lock',
-          children: [
-            {
-              title: 'API Endpoints',
-              path: '/auth/api-endpoints',
-            },
-            {
-              title: 'Users',
-              path: '/auth/users',
-            },
-            {
-              title: 'Roles',
-              path: '/auth/roles',
-            },
-          ],
-        },
-
-
-      ]
-    },
+    ...mapGetters('ui', [
+      'menu',
+    ]),
   },
 }
 </script>
