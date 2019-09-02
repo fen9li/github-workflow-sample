@@ -1,9 +1,8 @@
 <script>
-import { mask } from 'vue-the-mask'
+import amountMask from '@lib/utils/amount-mask'
 
 export default {
   name: 'TransactionRefund',
-  directives: { mask },
   props: {
     transaction: {
       type: Object,
@@ -50,6 +49,7 @@ export default {
     },
   },
   methods: {
+    amountMask,
     async unSubmit() {
       const { transaction, form } = this
       if (!this.validateAll().some(item => item === false)) {
@@ -130,15 +130,9 @@ export default {
             prop="amount"
           >
             <el-input
-              v-model="form.amount"
-              v-mask="[
-                '#.##',
-                '##.##',
-                '###.##',
-                '####.##',
-                '#####.##'
-              ]"
+              :value="form.amount"
               placeholder="0.00"
+              @input="form.amount = amountMask($event)"
             >
               <template #prepend>
                 $

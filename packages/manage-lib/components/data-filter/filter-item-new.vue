@@ -66,7 +66,7 @@ export default {
       ref="input"
       v-model="searchInput"
       prefix-icon="el-icon-search"
-      placeholder="Type to search..."
+      placeholder="Search columns"
       #header
       :class="$style.searchInput"
     />
@@ -94,7 +94,7 @@ export default {
         class="el-icon-search"
         :class="$style.addFilterIcon"
       />
-      Search or Add Filter
+      Add Filter
     </el-button>
   </el-popover>
 </template>

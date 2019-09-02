@@ -61,6 +61,10 @@ export default {
     showAmountNote() {
       const { next_billed_amount: amount, isCancelled } = this.subscription
       return amount && !isCancelled
+    },
+    billingCycle() {
+      const type = this.product.group.billing_type
+      return type === 'prorata' ? 'pro rata' : type
     }
   },
   methods: {
@@ -94,13 +98,17 @@ export default {
         <dd>{{ `${formatDate(subscription.end_at)}` }}</dd>
 
         <dt>Product Name</dt>
-        <dd>{{ product.name }}</dd>
+        <dd>
+          <router-link :to="{name: 'products-subscription-details', params: {id: product.id }}">
+            {{ product.name }}
+          </router-link>
+        </dd>
 
         <dt>Product Code</dt>
         <dd>{{ product.id }}</dd>
 
         <dt>Billing Cycle</dt>
-        <dd>{{ capitalize(product.group.billing_type) }}</dd>
+        <dd>{{ capitalize(billingCycle) }}</dd>
 
         <dt>Amount</dt>
         <dd>{{ `${formatDollar(subscription.next_billed_amount.total)}` }}</dd>

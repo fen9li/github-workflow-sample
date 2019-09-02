@@ -32,7 +32,7 @@ const TABLE_FILTERS = [
         value: 'anniversary'
       },
       {
-        label: 'Prorata',
+        label: 'Pro rata',
         value: 'prorata'
       }
     ]
@@ -96,6 +96,13 @@ const TABLE_COLUMNS = [
     label: 'Billing Cycle',
     icon: 'el-icon-refresh-right',
     format: 'capital',
+    component: {
+      props: {
+        format(val) {
+          return val === 'Prorata' ? 'Pro rata' : val
+        }
+      }
+    }
   },
   {
     name: 'anchorAt',

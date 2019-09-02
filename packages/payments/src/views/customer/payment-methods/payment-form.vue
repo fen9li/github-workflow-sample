@@ -24,8 +24,8 @@ export default {
           number: null,
         },
         card: {
+          number: '',
           name: null,
-          number: null,
           expiry: null,
           cvc: null,
         },
@@ -57,8 +57,9 @@ export default {
             trigger: 'blur',
           },
           {
-            len: 3,
-            message: 'CVV must be 3 digits',
+            min: 3,
+            max: 4,
+            message: 'CVV must be 3 or 4 digits',
             trigger: 'blur',
           },
         ],
@@ -76,6 +77,12 @@ export default {
         ],
       },
     }
+  },
+  computed: {
+    mask() {
+      const length = this.form.card.number.replace(/\s/g, '').length
+      return length > 15 ? '#### #### #### ####' : '#### ###### #####'
+    },
   },
   methods: {
     ...mapActions('payment', ['addPaymentMethod']),
@@ -192,12 +199,13 @@ export default {
             prop="number"
             :rules="[
               {required: true, message: 'This field is required', trigger: 'blur'},
-              {len: 19, message: 'Card number must be 16 digits', trigger: 'blur'}
+              {min: 17, max: 19, message: 'Card number must be 15 or 16 digits', trigger: 'blur'}
             ]"
           >
             <el-input
               v-model="form.card.number"
-              v-mask="['#### #### #### ####']"
+              v-mask="mask"
+              :class="$style.cardInput"
               placeholder="---- ---- ---- ----"
             />
             <div :class="$style.cardLogos">
@@ -244,7 +252,7 @@ export default {
             >
               <el-input
                 v-model="form.card.cvc"
-                v-mask="['###']"
+                v-mask="['###', '####']"
               />
             </el-form-item>
           </div>
@@ -342,5 +350,14 @@ export default {
   display: block;
   width: 15rem;
   margin: 2rem auto 0;
+}
+
+.cardInput {
+  :global {
+    .el-input__inner::placeholder {
+      font-size: 1.2rem;
+      line-height: 1.2rem;
+    }
+  }
 }
 </style>

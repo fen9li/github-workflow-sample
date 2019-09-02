@@ -1,5 +1,4 @@
 <script>
-import { mask } from 'vue-the-mask'
 import paymentFormItem from './payment-methods/payment-form-item'
 import ElasticProcessor from '@lib/processors/elastic-processor'
 import get from 'lodash/get'
@@ -10,9 +9,6 @@ export default {
   name: 'CustomerDetailsAddProductModal',
   components: {
     paymentFormItem,
-  },
-  directives: {
-    mask,
   },
   props: {
     customer: {
@@ -202,13 +198,6 @@ export default {
             >
               <el-input
                 v-model="form.amount"
-                v-mask="[
-                  '#.##',
-                  '##.##',
-                  '###.##',
-                  '####.##',
-                  '#####.##'
-                ]"
                 placeholder="0.00"
                 data-test="amount"
                 disabled

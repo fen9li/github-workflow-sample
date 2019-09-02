@@ -1,13 +1,10 @@
 <script>
 import paymentFormItem from '../../../customer/payment-methods/payment-form-item'
 import get from 'lodash/get'
-import { mask } from 'vue-the-mask'
+import amountMask from '@lib/utils/amount-mask'
 
 export default {
   name: 'AmountChargeOwingModal',
-  directives: {
-    mask,
-  },
   components: {
     paymentFormItem,
   },
@@ -53,6 +50,7 @@ export default {
     },
   },
   methods: {
+    amountMask,
     async onSubmit() {
       if (!this.validateAll().some(item => item === false)) {
 
@@ -65,7 +63,7 @@ export default {
             id: customer.id
           },
           payment_source: {
-            token: form.payment_source,
+            token: form.selectedMethod,
           },
           subscription: {
             id: subscription.id
@@ -154,10 +152,10 @@ export default {
             prop="amount"
           >
             <el-input
-              v-model="form.amount"
-              v-mask="['#.##', '##.##', '###.##', '####.##', '#####.##']"
+              :value="form.amount"
               placeholder="0.00"
               data-test="amount"
+              @input="form.amount = amountMask($event)"
             >
               <template #prepend>
                 $

@@ -1,6 +1,7 @@
 <script>
 import { mask } from 'vue-the-mask'
 import { mapActions } from 'vuex'
+import amountMask from '@lib/utils/amount-mask'
 
 export default {
   name: 'TransactionsVirtualPOS',
@@ -12,10 +13,10 @@ export default {
       token: '',
       processing: false,
       form: {
-        amount: null,
         currency: 'aud',
+        number: '',
+        amount: null,
         name: null,
-        number: null,
         expiry: null,
         cvc: null,
         email: null,
@@ -51,11 +52,22 @@ export default {
             message: 'This field is required',
             trigger: 'blur',
           },
+          {
+            len: 5,
+            message: 'Expiry field must be in format 11/11',
+            trigger: 'blur',
+          },
         ],
         cvc: [
           {
             required: true,
             message: 'This field is required',
+            trigger: 'blur',
+          },
+          {
+            min: 3,
+            max: 4,
+            message: 'CVV must be 3 or 4 digits',
             trigger: 'blur',
           },
         ],
@@ -65,14 +77,26 @@ export default {
             message: 'This field is required',
             trigger: 'blur',
           },
+          {
+            message: 'This field must be a valid email',
+            type: 'email',
+            trigger: 'blur',
+          },
         ],
       },
     }
+  },
+  computed: {
+    mask() {
+      const length = this.form.number.replace(/\s/g, '').length
+      return length > 15 ? '#### #### #### ####' : '#### ###### #####'
+    },
   },
   created() {
     this.getOneTimeToken()
   },
   methods: {
+    amountMask,
     ...mapActions('payment', ['addPaymentMethod']),
     getOneTimeToken() {
       // Temporary we have a fixed test token for customerless payments, later a real request will be added.
@@ -151,16 +175,11 @@ export default {
             prop="amount"
           >
             <el-input
-              v-model="form.amount"
-              v-mask="[
-                '#.##',
-                '##.##',
-                '###.##',
-                '####.##',
-                '#####.##'
-              ]"
+              :value="form.amount"
               placeholder="0.00"
               data-test="amount"
+              type="text"
+              @input="form.amount = amountMask($event)"
             >
               <template #prepend>
                 $
@@ -198,9 +217,9 @@ export default {
       >
         <el-input
           v-model="form.number"
-          v-mask="'#### #### #### ####'"
+          v-mask="mask"
           placeholder="----  ----  ----  ----"
-          :class="[$style.short, $style.cardInput]"
+          :class="$style.cardInput"
           data-test="number"
         />
         <div :class="$style.cardLogos">
@@ -235,7 +254,6 @@ export default {
           <el-input
             v-model="form.expiry"
             v-mask="'##/##'"
-            :class="$style.short"
             placeholder="MM/YY"
             data-test="expiry"
           />
@@ -246,7 +264,7 @@ export default {
         >
           <el-input
             v-model="form.cvc"
-            v-mask="'###'"
+            v-mask="['###', '####']"
             :class="$style.short"
             data-test="cvc"
           />

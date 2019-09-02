@@ -74,8 +74,8 @@ export default {
       type="danger"
       circle
     />
-    <p>
-      There may be payments scheduled using this card details.
+    <p :class="$style.desc">
+      There may be payments scheduled using this card's details.
     </p>
     <el-button
       type="danger"
@@ -93,7 +93,9 @@ export default {
 </template>
 
 <style lang="scss" module>
-
+.desc {
+  word-break: normal !important;
+}
 .root {
   margin-left: .5rem;
 }

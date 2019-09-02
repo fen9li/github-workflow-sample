@@ -3,6 +3,7 @@ import paymentFormItem from '../../../customer/payment-methods/payment-form-item
 import get from 'lodash/get'
 import { mask } from 'vue-the-mask'
 import { datePickerFormat } from '@lib/utils/date-helper'
+import amountMask from '@lib/utils/amount-mask'
 
 export default {
   name: 'SubscriptionCancelModal',
@@ -68,6 +69,7 @@ export default {
     }
   },
   methods: {
+    amountMask,
     async onSubmit() {
       if (!this.validateAll().some(item => item === false)) {
         this.loading = true
@@ -238,10 +240,10 @@ export default {
             >
               <el-form-item prop="amount">
                 <el-input
-                  v-model="form.amount"
-                  v-mask="['#.##', '##.##', '###.##', '####.##', '#####.##']"
+                  :value="form.amount"
                   placeholder="0.00"
                   data-test="amount"
+                  @input="form.amount = amountMask($event)"
                 >
                   <template #prepend>
                     $

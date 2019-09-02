@@ -1,6 +1,7 @@
 <script>
 import { mask } from 'vue-the-mask'
 import { datePickerFormat } from '@lib/utils/date-helper'
+import amountMask from '@lib/utils/amount-mask'
 
 export default {
   name: 'ProductsSingleForm',
@@ -61,6 +62,7 @@ export default {
     }
   },
   methods: {
+    amountMask,
     changeValue(fieldName, newVal) {
       this.$emit('changeValue', { fieldName, newVal })
     },
@@ -137,16 +139,9 @@ export default {
             prop="price.total"
           >
             <el-input
-              v-mask="[
-                '#.##',
-                '##.##',
-                '###.##',
-                '####.##',
-                '#####.##'
-              ]"
               :value="data.price.total"
               placeholder="0.00"
-              @input="changeValue('price.total', $event)"
+              @input="changeValue('price.total', amountMask($event))"
             >
               <template #prepend>
                 $
