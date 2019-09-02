@@ -16,6 +16,10 @@ export default {
       type: Array,
       required: true,
     },
+    initialFilters: {
+      type: Array,
+      default: () => [],
+    },
     processor: {
       type: DataProcessor,
       required: true,
@@ -29,6 +33,11 @@ export default {
         return FilterType ? new FilterType(filter) : null
       })
     },
+  },
+  created() {
+    for (let i = 0; i < this.initialFilters.length; i++) {
+      this.processor.applyFilter(this.initialFilters[i], i)
+    }
   },
   methods: {
     getFilterByAttribute(attribute) {

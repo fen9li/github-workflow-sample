@@ -78,6 +78,7 @@ export default {
           v-if="$attrs.filters"
           :processor="$attrs.processor"
           :filters="$attrs.filters"
+          :initial-filters="$attrs['initial-filters']"
           v-on="$listeners"
         />
       </div>
