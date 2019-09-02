@@ -1,4 +1,5 @@
 <script>
+import { API } from '@loyalty-corp/manage-lib/processors/api-processor'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -10,6 +11,13 @@ export default {
     ...mapGetters('ui', [
       'menu',
     ]),
+  },
+  methods: {
+    handleLoginEvent(data) {
+      const authHeader = `Bearer ${data.accessToken}`
+
+      API.defaults.headers.common['Authorization'] = authHeader
+    },
   },
 }
 </script>
