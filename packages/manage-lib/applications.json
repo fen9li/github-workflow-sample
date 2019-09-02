@@ -1,16 +1,34 @@
 {
-  "super": {
-    "label": "Super",
-    "path": "/"
+  "rewards": {
+    "label": "Rewards",
+    "icon": "rewards.svg"
+  },
+  "recRoom": {
+    "label": "Rec Room",
+    "icon": "recRoom.svg"
   },
   "payments": {
     "label": "Payments",
     "scope": "read:payments",
-    "path": "/payments"
+    "path": "/payments",
+    "icon": "payments.svg"
+  },
+  "eStore": {
+    "label": "eStore",
+    "icon": "eStore.svg"
+  },
+  "points": {
+    "label": "Points",
+    "icon": "points.svg"
   },
   "onlineOffers": {
     "label": "Online Offers",
     "scope": "read:online-offers",
-    "path": "/online-offers"
+    "path": "/online-offers",
+    "icon": "online-offers.svg"
+  },
+  "super": {
+    "label": "Super",
+    "path": "/"
   }
 }

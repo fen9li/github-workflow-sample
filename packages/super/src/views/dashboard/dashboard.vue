@@ -13,18 +13,21 @@ export default {
 
 <template>
   <main-layout title="Dashboard">
-    <template v-for="item in applications">
+    <template v-for="(item, name) in applications">
       <el-col
-        v-if="!item.scope || $grant(item.scope)"
+        v-if="(!item.scope || $grant(item.scope)) && name !== 'super'"
         :key="item.path"
         :class="[$style.appsItem, 'grid-content']"
       >
         <a :href="item.path">
           <el-card shadow="hover">
-            <span slot="header">{{ item.label }}</span>
-            <small>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </small>
+            <div :class="$style.card">
+              <img :src="`/images/${item.icon}`">
+              <div :class="$style.cardLabel">{{ item.label }}</div>
+              <div :class="$style.cardArrow">
+                <img src="/images/arrow-right.svg">
+              </div>
+            </div>
           </el-card>
         </a>
       </el-col>
@@ -35,8 +38,26 @@ export default {
 <style lang="scss" module>
 
 .appsItem {
-  width: 20rem;
+  width: 50%;
   padding: 10px;
+
+  .card {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding-top: 32px;
+
+    .cardLabel {
+      margin-left: 40px;
+      font-size: 30px;
+    }
+
+    .cardArrow {
+      display: flex;
+      flex: 1;
+      justify-content: flex-end;
+    }
+  }
 
   a {
     text-decoration: none;
