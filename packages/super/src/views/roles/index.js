@@ -1,1 +1,1 @@
-export { default } from './auth-roles'
+export { default } from './roles'
