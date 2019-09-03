@@ -40,6 +40,11 @@ const router = new Router({
       component: () => lazy(import('./views/logs')),
     },
     {
+      path: '/log/:id',
+      name: 'log-details',
+      component: () => lazy(import('./views/logs/log')),
+    },
+    {
       path: '/settings',
       name: 'settings',
       component: () => lazy(import('./views/settings')),
