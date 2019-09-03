@@ -1,6 +1,6 @@
 import ElasticProcessor from '@lib/processors/elastic-processor'
 import { activeByDate } from '@lib/utils/date-helper'
-import { datesStatusSorting } from '@lib/utils/custom-table-sortings'
+import { datesStatusSorting, couponAmountSorting } from '@lib/utils/custom-table-sortings'
 
 const TABLE_FILTERS = [
   {
@@ -39,7 +39,7 @@ const TABLE_FILTERS = [
     type: 'numeric',
     icon: 'el-icon-date',
     customFiltering: {
-      name: 'validityPeriod',
+      name: 'couponValidityPeriod',
       label: function(v) { return v === 1 ? `${v} Month` : `${v} Months` },
     },
   },
@@ -51,8 +51,21 @@ const TABLE_FILTERS = [
   },
   {
     attribute: 'amount',
-    type: 'numeric',
+    type: 'select',
     icon: 'el-icon-money',
+    values: [
+      {
+        label: 'Fixed Amount',
+        value: 'discountAbsolute'
+      },
+      {
+        label: 'Percentage',
+        value: 'discountPercentage'
+      }
+    ],
+    customFiltering: {
+      name: 'couponAmount',
+    },
   },
   {
     attribute: 'end',
@@ -135,6 +148,7 @@ const TABLE_COLUMNS = [
         },
       },
     },
+    sorting: couponAmountSorting,
   },
   {
     name: 'end',

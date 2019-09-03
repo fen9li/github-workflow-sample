@@ -31,6 +31,21 @@ function datesStatusSorting(order, field) {
   }
 }
 
+function couponAmountSorting(order, field) {
+  return {
+    type: 'number',
+    order,
+    script: {
+      lang: 'painless',
+      source: `int order = 0; if(doc.discountPercentage.size() != 0) { order = 1 } else { order = 2 } order;`,
+      params: {
+        column: field,
+      }
+    }
+  }
+}
+
 export {
   datesStatusSorting,
+  couponAmountSorting,
 }

@@ -1,4 +1,4 @@
-function validityPeriod(filter, custom) {
+function couponValidityPeriod(filter, custom) {
   const { comparison } = filter
   let source
 
@@ -29,6 +29,24 @@ function validityPeriod(filter, custom) {
   }
 }
 
+function couponAmount(filter, custom) {
+  const type = filter.value && filter.value[0]
+  const percentage = 'doc.discountPercentage.size()'
+  const source = (type === 'discountPercentage') ? `${percentage} != 0` : `${percentage} == 0`
+
+  return {
+    script : {
+      script : {
+        source,
+        lang: "painless",
+        params:
+          { ...filter, ...custom }
+      }
+    }
+  }
+}
+
 export {
-  validityPeriod,
+  couponValidityPeriod,
+  couponAmount,
 }
