@@ -1,5 +1,5 @@
 <script>
-import providerMock from '@tests/__fixtures__/provider'
+import { mapActions } from 'vuex'
 import ProviderDetails from './details/provider-details'
 import ProviderEdit from './edit/provider-edit'
 
@@ -11,19 +11,15 @@ export default {
   },
   data() {
     return {
-      loading: false,
-      provider: {
-        ...providerMock
-      },
       isEdit: this.$route.params.edit || this.$route.meta.create,
+      loading: !this.$route.meta.create,
+      provider: {},
+      progress: false,
     }
   },
   computed: {
     providerId() {
-      if (this.$route.params.id) {
-        return this.$route.params.id
-      }
-      return undefined
+      return this.$route.params.id || null
     },
     isCreate() {
       return this.$route.meta.create
@@ -63,7 +59,20 @@ export default {
       }
     },
   },
+  async created() {
+    if (this.providerId) {
+      const [, response] = await this.getProvider({ id: this.providerId })
+      if (response) {
+        this.provider = response
+      }
+    }
+  },
   methods: {
+    ...mapActions('provider', [
+      'getProvider',
+      'createProvider',
+      'updateProvider',
+    ]),
     onEdit() {
       this.isEdit = true
       this.$router.push({
@@ -71,6 +80,31 @@ export default {
         params: { edit: 'edit' },
       })
     },
+    async onSubmit(form) {
+      this.progress = true
+      const action = this.providerId ? 'updateProvider' : 'createProvider'
+      const [error, response] = await this[action](this.form)
+      if (error) {
+        this.$notify({
+          type: 'error',
+          title: 'Error',
+          message: error.message,
+        })
+      }
+      if (response) {
+        this.isEdit = false
+        this.provider = response
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: `Successfuly ${this.isCreate ? 'created' : 'updated'}`,
+        })
+      }
+      this.progress = false
+    },
+    onCancel() {
+      this.$router.push(this.back)
+    }
   },
 }
 </script>
@@ -85,6 +119,9 @@ export default {
       v-if="isEdit"
       :provider="provider"
       :create="isCreate"
+      :progress="progress"
+      @submit="onSubmit"
+      @cancel="onCancel"
     />
     <provider-details
       v-else

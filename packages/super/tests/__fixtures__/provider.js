@@ -1,5 +1,5 @@
 module.exports = {
-  "2fa": true,
+  "twoFactor": true,
   "createdAt": "2019-08-06T09:43:00Z",
   "description": "This is the descripAon for Suncorp and lorem",
   "id": "9467deb7-b82e-11e9-9f0a-0242ac130002",

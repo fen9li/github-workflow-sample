@@ -21,7 +21,7 @@ const TABLE_FILTERS = [
     type: 'string',
   },
   {
-    attribute: '2fa',
+    attribute: 'twoFactor',
     label: 'Enforce 2FA',
     type: 'boolean',
     icon: 'el-icon-document',
@@ -62,7 +62,7 @@ const TABLE_COLUMNS = [
     icon: 'el-icon-document',
   },
   {
-    name: '2fa',
+    name: 'twoFactor',
     label: 'Enforce 2FA',
     icon: 'el-icon-document',
     width: 100,

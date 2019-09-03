@@ -1,10 +1,16 @@
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'ProviderEdit',
   props: {
     provider: {
       type: Object,
       default: () => {},
+    },
+    progress: {
+      type: Boolean,
+      default: false,
     },
     create: {
       type: Boolean,
@@ -14,13 +20,11 @@ export default {
   data() {
     return {
       form: {
-        createdAt: null,
-        updatedAt: null,
         id: null,
         name: null,
         description: null,
-        '2fa': null,
-        timezone: null,
+        twoFactor: null,
+        timezone: 'Melbourne (GMT + 10)',
         products: [],
       },
       rules: {
@@ -45,16 +49,15 @@ export default {
             trigger: 'change',
           },
         ],
-        products: [
-          {
-            type: 'array',
-            required: true,
-            message: 'This field is required',
-            trigger: 'change',
-          },
-        ],
+        // products: [
+        //   {
+        //     type: 'array',
+        //     required: true,
+        //     message: 'This field is required',
+        //     trigger: 'change',
+        //   },
+        // ],
       },
-      progress: false,
     }
   },
   watch: {
@@ -68,11 +71,26 @@ export default {
     }
   },
   methods: {
+    ...mapActions('provider', [
+      'createProvider',
+      'updateProvider',
+    ]),
     prefillFields() {
       if (this.provider) {
         this.form = this.provider
       }
     },
+    onSubmit() {
+      this.$refs.form.validate(valid => {
+        if (!valid) {
+          return false
+        }
+        this.$emit('submit', this.form)
+      })
+    },
+    onCancel() {
+      this.$emit('cancel')
+    }
   }
 }
 </script>
@@ -121,10 +139,10 @@ export default {
         </el-select>
       </el-form-item>
       <el-form-item
-        prop="2fa"
+        prop="twoFactor"
       >
         <el-checkbox
-          v-model="provider['2fa']"
+          v-model="form.twoFactor"
           label="Enforce Two-Factor Authen6ca6on"
         />
       </el-form-item>
@@ -182,11 +200,14 @@ export default {
         <el-button
           type="primary"
           plain
+          @click="onCancel"
         >
           Cancel
         </el-button>
         <el-button
           type="primary"
+          :loading="progress"
+          @click="onSubmit"
         >
           Save
         </el-button>
