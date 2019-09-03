@@ -13,7 +13,9 @@ export default {
   },
   methods: {
     onCreateUserClick() {
-
+      this.$router.push({
+        name: 'user-create',
+      })
     },
     onRowClick(row) {
       this.$router.push({

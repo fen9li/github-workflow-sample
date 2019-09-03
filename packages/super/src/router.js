@@ -26,6 +26,17 @@ const router = new Router({
       props: true,
     },
     {
+      path: '/user/create',
+      name:'user-create',
+      component: () => lazy(import('./views/users/form')),
+    },
+    {
+      path: '/user/edit/:id',
+      name:'user-edit',
+      component: () => lazy(import('./views/users/form')),
+      props: true,
+    },
+    {
       path: '/providers',
       name: 'providers',
       component: () => lazy(import('./views/providers')),

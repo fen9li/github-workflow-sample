@@ -45,6 +45,30 @@ export default {
     formatDate(value, format) {
       return formatDate(value, format || 'DD/MM/YYYY')
     },
+    handleCommand(command) {
+      switch (command) {
+        case 'edit':
+          this.onEditClick()
+          break
+        case 'resend-email':
+          break
+        case 'resend-sms':
+          break
+        case 'resend-google':
+          break
+        case 'change-password':
+          break
+      }
+    },
+    onEditClick() {
+      this.$router.push({
+        name: 'user-edit',
+        params: {
+          id: this.userData.id,
+          user: this.userData,
+        },
+      })
+    },
   },
 }
 </script>
@@ -59,12 +83,13 @@ export default {
       slot="header"
       :class="$style.caption"
     >
-      <el-dropdown trigger="click">
+      <el-dropdown
+        trigger="click"
+        @command="handleCommand"
+      >
         <el-button
           :class="$style.button"
           size="small"
-          type="primary"
-          plain
         >
           <i
             class="el-icon-more"
@@ -72,19 +97,19 @@ export default {
           />
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>
+          <el-dropdown-item command="edit">
             Edit User Details
           </el-dropdown-item>
-          <el-dropdown-item>
+          <el-dropdown-item command="resend-email">
             Resend Verification Email
           </el-dropdown-item>
-          <el-dropdown-item>
+          <el-dropdown-item command="resend-sms">
             Resend SMS OTP Code
           </el-dropdown-item>
-          <el-dropdown-item>
+          <el-dropdown-item command="resend-google">
             Regenerate Google Auth Code
           </el-dropdown-item>
-          <el-dropdown-item>
+          <el-dropdown-item command="change-password">
             Change Password
           </el-dropdown-item>
         </el-dropdown-menu>
