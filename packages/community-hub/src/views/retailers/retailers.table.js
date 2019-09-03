@@ -18,7 +18,17 @@ const TABLE_FILTERS = [{
   attribute: 'status',
   name: 'Status',
   type: 'boolean',
-  icon: 'el-icon-check',
+  icon: 'el-icon-circle-check',
+  booleanValues: {
+    is_true: {
+      label: 'active',
+      value: 'active',
+    },
+    is_false: {
+      label: 'inactive',
+      value: 'inactive',
+    },
+  },
 }, {
   attribute: 'retailer_name',
   name: 'Retailer Name',
@@ -39,7 +49,7 @@ const TABLE_FILTERS = [{
 const TABLE_COLUMNS = [{
   name: 'status',
   label: 'Status',
-  icon: 'el-icon-check',
+  icon: 'el-icon-circle-check',
   width: 200,
   component: (_, __, {
     row,

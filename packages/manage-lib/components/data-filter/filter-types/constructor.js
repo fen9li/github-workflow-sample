@@ -9,7 +9,17 @@ export default class FilterType {
     this.icon = params.icon
     this.type = params.type
     this.values = params.values
-    if(params.customFiltering) {
+    this.booleanValues = params.booleanValues || {
+      is_true: {
+        label: 'true',
+        value: true,
+      },
+      is_false: {
+        label: 'false',
+        value: false,
+      },
+    }
+    if (params.customFiltering) {
       this.customFiltering = params.customFiltering
     }
   }
@@ -27,7 +37,7 @@ export default class FilterType {
     const prefix = comparison && comparison.prefix
     const isAmount = filter.attribute.includes('amount') || filter.attribute.includes('total') || filter.attribute.includes('price')
 
-    if(filter.customLabel) {
+    if (filter.customLabel) {
       return `${this.label} ${prefix} ${filter.customLabel(filter.value)}`
     } else if (/null|undefined/.test(filter.value)) {
       return this.label

@@ -147,19 +147,41 @@ Is an `Array` of `Filter`
 
 ### Object `Filter`
 
-| Property     | Type     | Description            |
-| ------------ | -------- | ---------------------- |
-| `attribute`  | `String` | name/key of the column |
-| `comparison` | `String` | comparison name        |
-| `value`      | `Any`    | filter's value         |
+| Property        | Type     | Description            |
+| --------------- | -------- | ---------------------- |
+| `attribute`     | `String` | name/key of the column |
+| `comparison`    | `String` | comparison name        |
+| `value`         | `Any`    | filter's value         |
+| `type`          | `String` | filter's type          |
+| `booleanValues` | `Object` | map values and labels  |
 
 #### Filter Example
 
 ```javascript
 {
   attribute: 'orderId',
+  type: 'numeric',
   comparison: 'gt',
-  value: 123
+  value: 123,
+}
+```
+
+```javascript
+{
+  attribute: 'status',
+  type: 'boolean',
+  comparison: 'is_true',
+  value: true,
+  booleanValues: {
+    is_true: {
+      label: 'active',
+      value: 'active',
+    },
+    is_false: {
+      label: 'inactive',
+      value: 'inactive',
+    },
+  },
 }
 ```
 
@@ -343,6 +365,7 @@ Describes each column in the table.
 | `icon` | `String` | icon class name from Element UI | - |
 | `type` | `String` | type of the associated column. Possible values: `string`, `numeric`, `boolean`, `date`, `time`, `select` | - |
 | `values` | `SelectItemsList` | **(optional)** required if `type` is `select` | `[]` |
+| `booleanValues` | `Object` | **(optional)** used if `type` is `boolean` | `{ is_true: { label: 'true', value: true }, is_false: { label: 'false', value: false } }` |
 
 #### Example
 
@@ -351,6 +374,24 @@ Describes each column in the table.
   attribute: 'orderId',
   type: 'string',
   icon: 'el-icon-document'
+}
+```
+
+```javascript
+{
+  attribute: 'status',
+  type: 'boolean',
+  icon: 'el-icon-circle-check',
+  booleanValues: {
+    is_true: {
+      label: 'active',
+      value: 'active',
+    },
+    is_false: {
+      label: 'inactive',
+      value: 'inactive',
+    },
+  },
 }
 ```
 

@@ -2,9 +2,15 @@ import FilterType from '../constructor'
 
 export default class BooleanColumn extends FilterType {
   get comparisons() {
+    const {
+      booleanValues: {
+        is_true: isTrue,
+        is_false: isFalse,
+      }
+    } = this
     return {
-      is_true: ['is active', 'are active'],
-      is_false: ['is inactive', 'are inactive'],
+      is_true: [`is ${ isTrue.label }`, `are ${ isTrue.label }`],
+      is_false: [`is ${ isFalse.label }`, `are ${ isFalse.label }`],
     }
   }
 

@@ -56,6 +56,7 @@ class StaticProcessor extends DataProcessor {
         value,
         comparison,
         type,
+        booleanValues,
       } = filter
 
       if (type === 'date') {
@@ -86,16 +87,46 @@ class StaticProcessor extends DataProcessor {
       } else if (type === 'boolean') {
         return acc.filter(row => {
           const isTrue = comparison === 'is_true'
-          const isActive = row[attribute] === 'active'
+          const isActive = row[attribute] === booleanValues['is_true'].value
 
           return (isTrue && isActive) || (!isTrue && !isActive)
         })
+      } else if (type === 'select') {
+        return acc.filter(row => {
+          const rowValue = row[attribute]
+
+          if (Array.isArray(rowValue)) {
+            for (const item of rowValue) {
+              if (value.includes(item)) {
+                return true
+              }
+            }
+            return false
+          } else {
+            return value.includes(rowValue)
+          }
+        })
       } else {
         return acc.filter(row => {
-          const testRE = new RegExp(value.toLowerCase(), 'g')
-          const cellValue = row[attribute].toLowerCase()
+          const rowValue = row[attribute]
+          let testRE
+          let cellValue
 
-          return testRE.test(cellValue)
+          if (Array.isArray(rowValue)) {
+            for (const item of rowValue) {
+              testRE = new RegExp(value.toLowerCase(), 'g')
+              cellValue = item.toLowerCase()
+              if (testRE.test(cellValue)) {
+                return true
+              }
+            }
+            return false
+          } else {
+            testRE = new RegExp(value.toLowerCase(), 'g')
+            cellValue = row[attribute].toLowerCase()
+
+            return testRE.test(cellValue)
+          }
         })
       }
     }, response.data)

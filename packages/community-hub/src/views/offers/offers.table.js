@@ -19,7 +19,17 @@ const TABLE_FILTERS = [{
   attribute: 'status',
   name: 'Status',
   type: 'boolean',
-  icon: 'el-icon-check',
+  icon: 'el-icon-circle-check',
+  booleanValues: {
+    is_true: {
+      label: 'active',
+      value: 'active',
+    },
+    is_false: {
+      label: 'inactive',
+      value: 'inactive',
+    },
+  },
 }, {
   attribute: 'created_at',
   label: 'Created',
@@ -35,12 +45,32 @@ const TABLE_FILTERS = [{
   icon: 'el-icon-document',
 }, {
   attribute: 'categories',
-  type: 'string',
-  icon: 'el-icon-document',
+  type: 'select',
+  icon: 'el-icon-circle-check',
+  values: [{
+    label: 'Jewel',
+    value: 'Jewel',
+  }, {
+    label: 'Fashion',
+    value: 'Fashion',
+  }, {
+    label: 'Retail',
+    value: 'Retail',
+  }],
 }, {
   attribute: 'offer_type',
-  type: 'string',
-  icon: 'el-icon-document',
+  type: 'select',
+  icon: 'el-icon-circle-check',
+  values: [{
+    label: 'Coupon Code',
+    value: 'Coupon Code',
+  }, {
+    label: 'URL',
+    value: 'URL',
+  }, {
+    label: 'Show and save',
+    value: 'Show and save',
+  }],
 }, {
   attribute: 'locations',
   type: 'string',
@@ -55,7 +85,7 @@ const TABLE_FILTERS = [{
 const TABLE_COLUMNS = [{
   name: 'status',
   label: 'Status',
-  icon: 'el-icon-check',
+  icon: 'el-icon-circle-check',
   width: 100,
   format: {
     name: 'capital',

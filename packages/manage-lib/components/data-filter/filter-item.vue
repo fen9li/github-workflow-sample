@@ -34,12 +34,14 @@ export default {
     summary() {
       const data = this.localData || this.data
       const customLabel = this.filter.customFiltering && this.filter.customFiltering.label
+      const { label } = this.filter
 
       return data && this.filter.getSummary({
         comparison: data.comparison,
         value: data.value,
         attribute: data.attribute,
-        customLabel
+        customLabel,
+        label,
       })
     },
     suchFilterAlreadyExists() {
@@ -162,9 +164,10 @@ export default {
 
         this.localData = {
           attribute: this.filter.attribute,
+          type: this.filter.type,
+          booleanValues: this.filter.booleanValues,
           comparison: type,
           value,
-          type: this.filter.type,
         }
       }
     },
