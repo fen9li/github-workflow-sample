@@ -1,5 +1,5 @@
 {
-  "name": "manage-payments",
+  "name": "@loyaltycorp/manage-payments",
   "private": true,
   "version": "0.6.0",
   "scripts": {
@@ -9,7 +9,7 @@
     "unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "@loyalty-corp/manage-lib": "0.6.0",
+    "@loyaltycorp/manage-lib": "0.6.0",
     "axios": "^0.18.0",
     "d3": "^5.9.2",
     "vue": "^2.6.10",

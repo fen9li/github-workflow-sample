@@ -1,6 +1,6 @@
 <script>
 import { mapGetters } from 'vuex'
-import { API } from '@loyalty-corp/manage-lib/processors/api-processor'
+import { API } from '@loyaltycorp/manage-lib/processors/api-processor'
 import HeaderPublish from './components/publish/publish-changes'
 
 export default {

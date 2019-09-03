@@ -1,6 +1,5 @@
 <script>
 import { formatDate } from '@lib/utils/format-date'
-
 import user from './user.mock.js'
 
 export default {

@@ -1,6 +1,6 @@
 {
-  "name": "manage-online-offers",
-  "short_name": "manage-online-offers",
+  "name": "@loyaltycorp/manage-online-offers",
+  "short_name": "@loyaltycorp/manage-online-offers",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",

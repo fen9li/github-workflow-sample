@@ -1,5 +1,5 @@
 <script>
-import { API } from '@loyalty-corp/manage-lib/processors/api-processor'
+import { API } from '@loyaltycorp/manage-lib/processors/api-processor'
 import { mapGetters } from 'vuex'
 
 export default {
