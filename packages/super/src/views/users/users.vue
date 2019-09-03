@@ -1,5 +1,7 @@
 <script>
 import usersTable from './users.table'
+import getExportedFilename from '@lib/utils/get-exported-filename'
+
 
 export default {
   name: 'UserManagement',
@@ -25,6 +27,9 @@ export default {
         },
       })
     },
+    getExportedFilename() {
+      return getExportedFilename(this.table.tableName)
+    }
   },
 }
 </script>
@@ -45,6 +50,7 @@ export default {
       :filters="table.filters"
       :columns="table.columns"
       :fragments="false"
+      :export-filename="getExportedFilename"
       hider
       @row-click="onRowClick"
     />

@@ -1,6 +1,5 @@
 // import ApiProcessor from '@lib/processors/api-processor'
-import StaticProcessor from '@lib/processors/static-processor'
-import data from './users.mock.js'
+import MockProcessor from '@lib/processors/mock-processor'
 
 const TABLE_FILTERS = [
   {
@@ -19,7 +18,7 @@ const TABLE_FILTERS = [
 
 const TABLE_COLUMNS = [
   {
-    name: 'created_at',
+    name: 'createdAt',
     label: 'Date Created',
     format: 'dateTime',
     icon: 'el-icon-document',
@@ -98,9 +97,9 @@ export default component => ({
   //   component,
   //   path: '/users',
   // }),
-  processor: new StaticProcessor({
+  processor: new MockProcessor({
     component,
-    data: data.items,
+    mockFrom: 'users',
 
   }),
   filters: TABLE_FILTERS,
