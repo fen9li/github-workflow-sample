@@ -63,6 +63,22 @@ const router = new Router({
       component: () => lazy(import('./views/products')),
     },
     {
+      path: '/products/:id',
+      redirect: '/products/:id/info'
+    },
+    {
+      path: '/products/:id/:activeTab',
+      name: 'product-details',
+      component: () => lazy(import('./views/product/product.vue')),
+      props: true
+    },
+    {
+      path: '/products/:id/version/:versionId',
+      name: 'product-version',
+      component: () => lazy(import('./views/product/product-version.vue')),
+      props: true
+    },
+    {
       path: '/roles',
       name: 'roles',
       component: () => lazy(import('./views/roles')),

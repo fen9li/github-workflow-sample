@@ -1,5 +1,6 @@
 <script>
 import capitalize from 'lodash/capitalize'
+
 export default {
   name: 'ProviderStatus',
   props: {

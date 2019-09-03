@@ -1,4 +1,3 @@
-// import ApiProcessor from '@lib/processors/api-processor'
 import MockProcessor from '@lib/processors/mock-processor'
 
 const TABLE_FILTERS = [
@@ -10,34 +9,37 @@ const TABLE_FILTERS = [
   },
   {
     attribute: 'id',
-    label: 'Provider ID',
-    type: 'string',
+    label: 'Version Id',
     icon: 'el-icon-document',
+    type: 'string',
   },
   {
     attribute: 'name',
-    label: 'Provider Name',
+    label: 'Version Name',
     icon: 'el-icon-document',
     type: 'string',
-  },
-  {
-    attribute: 'twoFactor',
-    label: 'Enforce 2FA',
-    type: 'boolean',
-    icon: 'el-icon-document',
-  },
-  {
-    attribute: 'timezone',
-    name: 'Timezone',
-    type: 'string',
-    icon: 'el-icon-document',
   },
   {
     attribute: 'status',
-    name: 'Status',
-    type: 'string',
     icon: 'el-icon-document',
-  }
+    type: 'select',
+    values: [
+      {
+        label: 'Active',
+        value: 'active',
+      },
+      {
+        label: 'Inactive',
+        value: 'inactive',
+      },
+    ],
+  },
+  {
+    attribute: 'latest',
+    label: 'Latest?',
+    icon: 'el-icon-document',
+    type: 'boolean',
+  },
 ]
 
 const TABLE_COLUMNS = [
@@ -47,35 +49,26 @@ const TABLE_COLUMNS = [
     icon: 'el-icon-date',
     format: {
       name: 'date',
-      params: ['DD/MM/YYYY hh:mm A'],
+      params: ['DD/MM/YYYY'],
     },
+    width: 200,
   },
   {
     name: 'id',
-    label: 'Provider ID',
-    sortable: false,
+    label: 'Version Id',
     icon: 'el-icon-document',
+    width: 200,
   },
   {
     name: 'name',
-    label: 'Provider Name',
+    label: 'Version Name',
     icon: 'el-icon-document',
-  },
-  {
-    name: 'twoFactor',
-    label: 'Enforce 2FA',
-    icon: 'el-icon-document',
-    width: 100,
-  },
-  {
-    name: 'timezone',
-    label: 'Timezone',
-    icon: 'el-icon-document',
+    width: 200,
   },
   {
     name: 'status',
-    label: 'Status',
     icon: 'el-icon-document',
+    width: 200,
     format: 'capital',
     component: {
       props: {
@@ -87,9 +80,10 @@ const TABLE_COLUMNS = [
               }
             case 'inactive':
               return {
-                color: '#e21d1f'
+                color: '#e21d1f',
               }
-            default: return {}
+            default:
+              return {}
           }
         },
         badge(_, row) {
@@ -104,30 +98,52 @@ const TABLE_COLUMNS = [
                 name: 'el-icon-close',
                 pos: 'left'
               }
-            default: return {}
+            default:
+              return {}
           }
-        }
+        },
       },
     },
-    width: 100,
+  },
+  {
+    name: 'latest',
+    label: 'Latest?',
+    icon: 'el-icon-document',
+    width: 200,
+    format: () => '',
+    component: {
+      props: {
+        allowEmpty: true,
+        styleObj(_, row) {
+          if (row.latest) {
+            return {
+              color: '#36d544',
+            }
+          }
+
+          return {}
+        },
+        badge(_, row) {
+          if (row.latest) {
+            return {
+              name: 'el-icon-check',
+              pos: 'left',
+            }
+          }
+
+          return {}
+        },
+      },
+    },
   },
 ]
 
-// export default component => ({
-//   processor: new ApiProcessor({ component, path: 'providers' }),
-//   filters: TABLE_FILTERS,
-//   columns: TABLE_COLUMNS,
-//   tableName: 'providers'
-// })
-
-export default function(context) {
-  return {
-    processor: new MockProcessor({
-      component: context,
-      mockFrom: 'providers',
-    }),
-    filters: TABLE_FILTERS,
-    columns: TABLE_COLUMNS,
-    tableName: 'providers'
-  }
-}
+export default component => ({
+  // processor: null,
+  processor: new MockProcessor({
+    component,
+    mockFrom: 'product-versions-tab',
+  }),
+  filters: TABLE_FILTERS,
+  columns: TABLE_COLUMNS,
+})

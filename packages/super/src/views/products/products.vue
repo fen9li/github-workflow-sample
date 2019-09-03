@@ -18,7 +18,10 @@ export default {
     onRowClick(row) {
       this.$router.push({
         name: 'product-details',
-        params: { id: row.id },
+        params: {
+          id: row.id,
+          activeTab: 'info',
+        },
       })
     },
   },
