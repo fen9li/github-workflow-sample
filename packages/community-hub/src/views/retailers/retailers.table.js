@@ -65,6 +65,7 @@ const TABLE_COLUMNS = [{
   label: 'Logo',
   icon: 'el-icon-document',
   width: 200,
+  sortable: false,
   component: {
     is: 'cell-image',
   },
