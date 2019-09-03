@@ -1,5 +1,5 @@
-// import ApiProcessor from '@lib/processors/api-processor'
-import MockProcessor from '@lib/processors/mock-processor'
+import ApiProcessor from '@lib/processors/api-processor'
+// import MockProcessor from '@lib/processors/mock-processor'
 
 const TABLE_FILTERS = [
   {
@@ -110,9 +110,9 @@ const TABLE_COLUMNS = [
 
 export default function(component) {
   return {
-    processor: new MockProcessor({
+    processor: new ApiProcessor({
       component,
-      mockFrom: 'products',
+      path: 'products',
     }),
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,
