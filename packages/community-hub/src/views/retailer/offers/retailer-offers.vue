@@ -1,5 +1,6 @@
 <script>
 import get from 'lodash/get'
+import retailerOffersForm from './retailer-offers-form'
 import retailerData from '@tests/__fixtures__/retailer'
 
 export default {
@@ -7,11 +8,13 @@ export default {
   page: {
     title: 'Retailer Offers',
   },
+  components: {
+    retailerOffersForm
+  },
   data() {
     return {
       retailer: retailerData,
       activeTile: null,
-      addNew: false
     }
   },
   computed: {
@@ -45,9 +48,11 @@ export default {
     },
     addNewOffer() {
       this.activeTile = 'new'
-      this.addNew = true
     },
     previewOffers() {},
+    closeTile() {
+      this.activeTile = null
+    }
   },
 }
 </script>
@@ -57,7 +62,10 @@ export default {
     :title="`${map.retailer_name} Offers`"
     :back="back"
   >
-    <template slot="header" v-if="isHasOffers">
+    <template
+      v-if="isHasOffers"
+      #header
+    >
       <el-button
         size="small"
         plain
@@ -82,10 +90,10 @@ export default {
         accordion
       >
         <el-collapse-item
-          v-if="!isHasOffers || addNew"
+          v-if="isNewOffer"
           name="new"
         >
-          <template slot="title">
+          <template #title>
             New Offer
             <el-button
               type="text"
@@ -94,12 +102,7 @@ export default {
               <i :class="[isNewOffer ? 'el-icon-arrow-up' : 'el-icon-arrow-down']" />
             </el-button>
           </template>
-          <el-button
-            plain
-            @click="addNew = false"
-          >
-            Cancel
-          </el-button>
+          <retailer-offers-form />
         </el-collapse-item>
 
         <template v-if="isHasOffers">
@@ -108,8 +111,8 @@ export default {
             :key="offer.id"
             :name="offer.id"
           >
-            <template slot="title">
-              {{offer.offer_name}}
+            <template #title>
+              {{ offer.offer_name }}
               <el-button
                 type="text"
                 :class="$style.action"
@@ -120,7 +123,10 @@ export default {
                 <i :class="[isActiveOffer(offer.id) ? 'el-icon-arrow-up' : 'el-icon-arrow-down']" />
               </el-button>
             </template>
-            <div>Form</div>
+            <retailer-offers-form
+              :offer="offer"
+              @cancel="closeTile"
+            />
           </el-collapse-item>
         </template>
       </el-collapse>
@@ -136,13 +142,13 @@ export default {
       }
 
       .el-collapse-item {
-        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        background-color: #FFF;
         border: 1px solid #EBEEF5;
         border-radius: 4px;
-        background-color: #FFFFFF;
-        overflow: hidden;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 
-        & .is-active {
+        .is-active {
           background: #F7F7F7;
           transition: background-color 0.2s;
         }
@@ -162,10 +168,10 @@ export default {
         justify-content: space-between;
         width: 100%;
         padding: 2.5rem 3rem;
-        border: none;
-        font-weight: 600;
         font-size: 1.4rem;
+        font-weight: 600;
         color: #303133;
+        border: none;
       }
 
       .el-collapse-item__content {
@@ -178,11 +184,11 @@ export default {
 
   .action {
     float: right;
-    background-color: transparent;
-    border: none;
     margin-right: .5rem;
     font-weight: 600;
     color: #0086ff;
+    background-color: transparent;
+    border: none;
 
     i {
       margin-left: .5rem;

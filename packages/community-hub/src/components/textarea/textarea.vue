@@ -36,7 +36,10 @@ export default {
       :rows="rows"
       :maxlength="maxChars"
     />
-    <div :class="$style.chars">
+    <div
+      v-if="maxChars"
+      :class="$style.chars"
+    >
       {{ internalValue.length }} / {{ maxChars }}
     </div>
   </div>

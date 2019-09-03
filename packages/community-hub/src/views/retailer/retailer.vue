@@ -66,14 +66,7 @@ export default {
     },
     onManage() {
       this.$router.push({
-        name: 'offers',
-        params: {
-          filters: [{
-            attribute: 'retailer_name',
-            comparison: 'eq',
-            value: this.map.retailer_name,
-          }],
-        },
+        name: 'retailer-offers',
       })
     },
   },

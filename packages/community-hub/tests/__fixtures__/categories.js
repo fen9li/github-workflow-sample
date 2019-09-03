@@ -6,17 +6,17 @@ module.exports = {
       id: 'BNSO004',
     },
     {
-      category_name: 'Fashion',
+      category_name: 'Retail',
       offers_count: 4,
       id: 'BNSO003',
     },
     {
-      category_name: 'Fashion',
+      category_name: 'Fashion1',
       offers_count: 76,
       id: 'BNSO002',
     },
     {
-      category_name: 'Fashion',
+      category_name: 'Fashion2',
       offers_count: 8,
       id: 'BNSO001',
     },
