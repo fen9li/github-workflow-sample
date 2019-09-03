@@ -19,26 +19,19 @@ const availableStatuses = {
   completed: {
     icon: 'el-icon-check',
     color: '#29d737',
-    label: 'Successful',
+    label: 'Completed',
   },
   finalised: {
     icon: 'el-icon-check',
     color: '#29d737',
     label: 'Finalised',
   },
-  refund: {
-    icon: 'el-icon-close',
-    color: 'var(--color-error)',
-    label: 'Refund',
-  },
-  3: {
+  failed: {
     icon: 'el-icon-close',
     color: '#f00',
     label: 'Failed',
   },
 }
-
-// failed = 3 / completed = 4 / pending = 1 / unknown = 5
 
 export default {
   name: 'TransactionDetails',

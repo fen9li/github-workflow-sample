@@ -54,28 +54,28 @@ const TABLE_COLUMNS = [
       props: {
         styleObj(val) {
           switch (val) {
-            case 'Pending': return { color: '#fbb241' }
-            case 'Successful': return { color: '#29d737' }
-            case 'Failed': return { color: '#fc7168' }
-            case 'Refunded': return { color: '#fc7168' }
+            case 'pending': return { color: '#fbb241' }
+            case 'successful': return { color: '#29d737' }
+            case 'failed': return { color: '#fc7168' }
+            case 'refunded': return { color: '#fc7168' }
             default: return {}
           }
         },
         badge(val) {
           switch (val) {
-            case 'Pending': return {
+            case 'pending': return {
               name: 'el-icon-time',
               pos: 'left',
             }
-            case 'Successful': return {
+            case 'successful': return {
               name: 'el-icon-check',
               pos: 'left',
             }
-            case 'Failed': return {
+            case 'failed': return {
               name: 'el-icon-close',
               pos: 'left',
             }
-            case 'Refunded': return {
+            case 'refunded': return {
               name: 'el-icon-refresh',
               pos: 'left',
             }

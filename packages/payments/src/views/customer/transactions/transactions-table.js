@@ -55,12 +55,8 @@ const TABLE_FILTERS = [
         value: 'finalised',
       },
       {
-        label: 'Pending',
+        label: 'Processing',
         value: 'pending',
-      },
-      {
-        label: 'Refunded',
-        value: 'refunded',
       },
       {
         label: 'Failed',
@@ -129,7 +125,6 @@ const TABLE_COLUMNS = [
             case 'pending': return { color: '#fbb241' }
             case 'completed': return { color: '#29d737' }
             case 'failed': return { color: '#fc7168' }
-            case 'refunded': return { color: '#fc7168' }
             case 'finalised': return { color: '#29d737' }
             default: return {}
           }
@@ -152,15 +147,11 @@ const TABLE_COLUMNS = [
               name: 'el-icon-close',
               pos: 'left',
             }
-            case 'refunded': return {
-              name: 'el-icon-refresh',
-              pos: 'left',
-            }
             default: return {}
           }
         },
-        value: (_, row) => {
-          return row.status === 'finalised' ? 'completed' : row.status
+        value(_, row) {
+          return row.status === 'pending' ? 'Processing' : row.status
         }
       },
     },
