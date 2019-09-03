@@ -46,88 +46,138 @@ class StaticProcessor extends DataProcessor {
       .then(data => this.sort(data))
   }
 
+  filterBoolean(acc, filter) {
+    const {
+      attribute,
+      comparison,
+      booleanValues,
+    } = filter
+
+    return acc.filter(row => {
+      return row[attribute] === booleanValues[comparison].value
+    })
+  }
+
+  filterDate(acc, filter) {
+    const {
+      value,
+      attribute,
+      comparison,
+    } = filter
+    const filterDate = dayjs(value, 'DD/MM/YYYY')
+
+    return acc.filter(row => {
+      const rowDate = dayjs(row[attribute]).format('DD/MM/YYYY')
+      const rowDateClean = dayjs(rowDate, 'DD/MM/YYYY')
+
+      switch (comparison) {
+        case 'before':
+          return rowDateClean.isBefore(filterDate)
+        case 'after':
+          return filterDate.isBefore(rowDateClean)
+        case 'on':
+          return filterDate.isSame(rowDateClean)
+        default:
+          console.warn(`unknown date filter comparison: ${ comparison }`)
+          return false
+      }
+    })
+  }
+
+  filterNumeric(acc, filter) {
+    const {
+      comparison,
+      attribute,
+      value,
+    } = filter
+
+    switch (comparison) {
+      case 'gt':
+        return acc.filter(row => value <= row[attribute])
+      case 'lt':
+        return acc.filter(row => value >= row[attribute])
+      case 'eq':
+        return acc.filter(row => value === row[attribute])
+      default:
+        console.warn(`unknown numeric filter comparison: ${ comparison }`)
+        return false
+    }
+  }
+
+  filterSelect(acc, filter) {
+    const {
+      attribute,
+      value,
+    } = filter
+
+    return acc.filter(row => {
+      const rowValue = row[attribute]
+
+      if (Array.isArray(rowValue)) {
+        for (const item of rowValue) {
+          if (value.includes(item)) {
+            return true
+          }
+        }
+        return false
+      } else {
+        return value.includes(rowValue)
+      }
+    })
+  }
+
+  filterString(acc, filter) {
+    const {
+      attribute,
+      value,
+    } = filter
+
+    return acc.filter(row => {
+      const rowValue = row[attribute]
+      let testRE
+      let cellValue
+
+      if (Array.isArray(rowValue)) {
+        for (const item of rowValue) {
+          testRE = new RegExp(value.toLowerCase(), 'g')
+          cellValue = item.toLowerCase()
+          if (testRE.test(cellValue)) {
+            return true
+          }
+        }
+        return false
+      } else {
+        testRE = new RegExp(value.toLowerCase(), 'g')
+        cellValue = row[attribute].toLowerCase()
+
+        return testRE.test(cellValue)
+      }
+    })
+  }
+
   filter(response) {
     const {
       filters
     } = this.dataQuery
     const newData = filters.reduce((acc, filter) => {
       const {
-        attribute,
-        value,
-        comparison,
         type,
-        booleanValues,
       } = filter
 
-      if (type === 'date') {
-        const filterDate = dayjs(value, 'DD/MM/YYYY')
-
-        return acc.filter(row => {
-          const rowDate = dayjs(row[attribute]).format('DD/MM/YYYY')
-          const rowDateClean = dayjs(rowDate, 'DD/MM/YYYY')
-
-          if (comparison === 'before') {
-            return rowDateClean.isBefore(filterDate)
-          } else if (comparison === 'after') {
-            return filterDate.isBefore(rowDateClean)
-          } else if (comparison === 'on') {
-            return filterDate.isSame(rowDateClean)
-          } else {
-            return false
-          }
-        })
-      } else if (type === 'numeric') {
-        if (comparison === 'gt') {
-          return acc.filter(row => value <= row[attribute])
-        } else if (comparison === 'lt') {
-          return acc.filter(row => value >= row[attribute])
-        } else {
-          return acc.filter(row => value === row[attribute])
-        }
-      } else if (type === 'boolean') {
-        return acc.filter(row => {
-          const isTrue = comparison === 'is_true'
-          const isActive = row[attribute] === booleanValues['is_true'].value
-
-          return (isTrue && isActive) || (!isTrue && !isActive)
-        })
-      } else if (type === 'select') {
-        return acc.filter(row => {
-          const rowValue = row[attribute]
-
-          if (Array.isArray(rowValue)) {
-            for (const item of rowValue) {
-              if (value.includes(item)) {
-                return true
-              }
-            }
-            return false
-          } else {
-            return value.includes(rowValue)
-          }
-        })
-      } else {
-        return acc.filter(row => {
-          const rowValue = row[attribute]
-          let testRE
-          let cellValue
-
-          if (Array.isArray(rowValue)) {
-            for (const item of rowValue) {
-              testRE = new RegExp(value.toLowerCase(), 'g')
-              cellValue = item.toLowerCase()
-              if (testRE.test(cellValue)) {
-                return true
-              }
-            }
-            return false
-          } else {
-            testRE = new RegExp(value.toLowerCase(), 'g')
-            cellValue = row[attribute].toLowerCase()
-
-            return testRE.test(cellValue)
-          }
-        })
+      switch (type) {
+        case 'date':
+          return this.filterDate(acc, filter)
+        case 'numeric':
+          return this.filterNumeric(acc, filter)
+        case 'boolean':
+          return this.filterBoolean(acc, filter)
+        case 'select':
+          return this.filterSelect(acc, filter)
+        case 'string':
+          return this.filterString(acc, filter)
+        default:
+          console.warn(`unknown filter type: ${ type }`)
+          return []
       }
     }, response.data)
 
