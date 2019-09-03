@@ -6,6 +6,8 @@ import AsCode from './as-code'
 import ImageUploader from './image-uploader'
 import RichTextarea from './rich-textarea'
 import RichRenderer from './rich-renderer'
+import TheIcon from './the-icon'
+
 
 export default {
   install(Vue, options) {
@@ -17,5 +19,6 @@ export default {
     Vue.component('image-uploader', ImageUploader)
     Vue.component('rich-textarea', RichTextarea)
     Vue.component('rich-renderer', RichRenderer)
+    Vue.component('the-icon', TheIcon)
   },
 }

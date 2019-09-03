@@ -32,17 +32,17 @@ const getters = {
       {
         title: 'Feed Activity',
         path: '/feed-activity',
-        icon: 's-data',
+        svg: 'activity'
       },
       {
         title: 'Log',
         path: '/log',
-        icon: 'notebook-2',
+        svg: 'log'
       },
       {
         title: 'Categories',
         path: '/categories',
-        icon: 'refresh-left',
+        svg: 'categories'
       },
     ]
   },
