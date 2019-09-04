@@ -143,7 +143,7 @@ export default {
       >
         <el-checkbox
           v-model="form.twoFactor"
-          label="Enforce Two-Factor Authen6ca6on"
+          label="Enforce Two-Factor Authentication"
         />
       </el-form-item>
       <el-form-item

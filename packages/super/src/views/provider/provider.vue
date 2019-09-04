@@ -83,7 +83,7 @@ export default {
     async onSubmit(form) {
       this.progress = true
       const action = this.providerId ? 'updateProvider' : 'createProvider'
-      const [error, response] = await this[action](this.form)
+      const [error, response] = await this[action](form)
       if (error) {
         this.$notify({
           type: 'error',
