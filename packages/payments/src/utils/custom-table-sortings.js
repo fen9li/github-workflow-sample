@@ -1,5 +1,5 @@
 
-import dayjs from 'dayjs'
+import dayjs from '@lib/node_modules/dayjs'
 
 // Sorting for columns, where start_at < now < end_at || now < sunsetAt
 function datesStatusSorting(order, field) {

@@ -1,6 +1,6 @@
 import ElasticProcessor from '@lib/processors/elastic-processor'
 import isPast from '@lib/utils/date-is-past'
-import { datesStatusSorting } from '@lib/utils/custom-table-sortings'
+import { datesStatusSorting } from '@/utils/custom-table-sortings'
 
 const TABLE_FILTERS = [
   {

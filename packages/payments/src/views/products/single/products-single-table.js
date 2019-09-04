@@ -1,6 +1,6 @@
 import ElasticProcessor from '@lib/processors/elastic-processor'
 import { activeByDate } from '@lib/utils/date-helper'
-import { datesStatusSorting } from '@lib/utils/custom-table-sortings'
+import { datesStatusSorting } from '@/utils/custom-table-sortings'
 
 const TABLE_FILTERS = [
   {

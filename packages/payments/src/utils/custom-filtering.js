@@ -1,4 +1,4 @@
-function couponValidityPeriod(filter, custom) {
+function couponValidityPeriod(filter) {
   const { comparison } = filter
   let source
 
@@ -18,18 +18,19 @@ function couponValidityPeriod(filter, custom) {
   }
 
   return {
+    label: function(v) { return v === 1 ? `${v} Month` : `${v} Months` },
     script : {
       script : {
         source,
         lang: "painless",
         params:
-          { ...filter, ...custom }
+          { ...filter }
       }
     }
   }
 }
 
-function couponAmount(filter, custom) {
+function couponAmount(filter) {
   const type = filter.value && filter.value[0]
   const percentage = 'doc.discountPercentage.size()'
   const source = (type === 'discountPercentage') ? `${percentage} != 0` : `${percentage} == 0`
@@ -40,7 +41,7 @@ function couponAmount(filter, custom) {
         source,
         lang: "painless",
         params:
-          { ...filter, ...custom }
+          { ...filter }
       }
     }
   }
