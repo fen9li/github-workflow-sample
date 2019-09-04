@@ -49,21 +49,21 @@ export default {
             trigger: 'change',
           },
         ],
-        // products: [
-        //   {
-        //     type: 'array',
-        //     required: true,
-        //     message: 'This field is required',
-        //     trigger: 'change',
-        //   },
-        // ],
+        products: [
+          {
+            type: 'array',
+            required: true,
+            message: 'This field is required',
+            trigger: 'change',
+          },
+        ],
       },
     }
   },
   computed: {
     ...mapState('provider', [
-      'products'
-    ])
+      'products',
+    ]),
   },
   watch: {
     provider() {
@@ -81,15 +81,34 @@ export default {
       'createProvider',
       'updateProvider',
       'getProviderProducts',
+      'getProductVersions',
     ]),
     checkProduct(value, id) {
       this.form.products = value
-        ? this.form.products.concat(id)
-        : this.form.products.filter(item => item !== id)
+        ? this.form.products.concat({
+          id,
+          version: null
+        })
+        : this.form.products.filter(item => item.id !== id)
+    },
+    getProductVersion(id) {
+      return this.form.products.find(item => item.id === id) || {}
+    },
+    versionDisabled(id) {
+      return this.form.products.findIndex(item => item.id === id) === -1
+    },
+    productVersion(id) {
+      return this.getProductVersion(id).version || null
+    },
+    selectVersion(versionId, productId) {
+      this.getProductVersion(productId).version = versionId
     },
     prefillFields() {
       if (this.provider) {
-        this.form = this.provider
+        this.form = {
+          ...this.provider,
+          products: [],
+        }
       }
     },
     onSubmit() {
@@ -196,15 +215,17 @@ export default {
           />
           <el-select
             :key="`select_${index}`"
-            v-model="product.defaultVersion"
             :class="$style.productSelect"
+            :value="productVersion(product.id)"
+            :disabled="versionDisabled(product.id)"
             placeholder="please select version"
-            disabled
+            @change="selectVersion($event, product.id)"
           >
             <el-option
               v-for="(version, i) in product.versions"
               :key="i"
-              :value="version"
+              :value="version.id"
+              :label="version.name"
             />
           </el-select>
         </div>
