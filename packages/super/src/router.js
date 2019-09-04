@@ -121,6 +121,7 @@ const router = new Router({
   }, {
     path: '/log/:id',
     name: 'log-details',
+    props: true,
     component: () => lazy(import('./views/logs/log')),
     meta: {
       menu: 'logs',
