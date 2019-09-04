@@ -27,8 +27,13 @@ export default {
           :key="item.path"
           :class="[$style.appsItem, 'grid-content']"
         >
-          <a :href="item.path">
-            <el-card shadow="hover">
+          <a
+            :href="item.path"
+          >
+            <el-card
+              shadow="hover"
+              :class="$style.item"
+            >
               <div :class="$style.card">
                 <img :src="`/images/${item.icon}`">
                 <div :class="$style.cardLabel">{{ item.label }}</div>
@@ -46,17 +51,25 @@ export default {
 
 <style lang="scss" module>
 .main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: row dense;
   padding: 0 38px;
 }
 
 .appsItem {
-  width: 50%;
   padding: 10px;
+
+
+  .item {
+    height: 100%;
+  }
 
   .card {
     display: flex;
     align-items: center;
     width: 100%;
+    height: 100%;
     padding-top: 32px;
 
     .cardLabel {
@@ -80,6 +93,7 @@ export default {
   }
 
   :global(.el-card__body) {
+    height: 100%;
     padding-top: 0;
   }
 }
