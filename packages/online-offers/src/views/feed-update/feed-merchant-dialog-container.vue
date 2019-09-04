@@ -38,9 +38,7 @@ export default {
       return emptyCommission
     },
     canAttach() {
-      const { tracking_url: trackingUrl } = this.row.map
-
-      return !this.commissionIsMissing && Boolean(trackingUrl)
+      return this.row.status === 'active'
     }
   },
   methods: {
