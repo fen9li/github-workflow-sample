@@ -1,5 +1,5 @@
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'ProviderEdit',
@@ -60,21 +60,35 @@ export default {
       },
     }
   },
+  computed: {
+    ...mapState('product', [
+      'products'
+    ])
+  },
   watch: {
     provider() {
       this.prefillFields()
     },
   },
   created() {
+    this.getProducts()
     if (!this.create) {
       this.prefillFields()
     }
   },
   methods: {
+    ...mapActions('product', [
+      'getProducts'
+    ]),
     ...mapActions('provider', [
       'createProvider',
       'updateProvider',
     ]),
+    checkProduct(value, id) {
+      this.form.products = value
+        ? this.form.products.concat(id)
+        : this.form.products.filter(item => item !== id)
+    },
     prefillFields() {
       if (this.provider) {
         this.form = this.provider
@@ -166,12 +180,13 @@ export default {
       </el-form-item>
       <!-- TODO Versions -->
       <el-form-item
+        v-if="products.items && products.loading === false"
         label="Products"
         prop="products"
         :class="$style.products"
       >
         <div
-          v-for="(product, index) in form.products"
+          v-for="(product, index) in products.items"
           :key="index"
           :class="$style.product"
         >
@@ -179,13 +194,14 @@ export default {
             :key="index"
             :label="product.name"
             :class="$style.productCheckbox"
-            disabled
+            @change="checkProduct($event, product.id)"
           />
           <el-select
             :key="`select_${index}`"
             v-model="product.defaultVersion"
             :class="$style.productSelect"
             placeholder="please select version"
+            disabled
           >
             <el-option
               v-for="(version, i) in product.versions"
