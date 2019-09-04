@@ -23,18 +23,18 @@ const router = new Router({
     {
       path: '/user/:id',
       name: 'user',
-      component: () => lazy(import('./views/users/user')),
+      component: () => lazy(import('./views/user')),
       props: true,
     },
     {
       path: '/user/create',
       name:'user-create',
-      component: () => lazy(import('./views/users/form')),
+      component: () => lazy(import('./views/user/form')),
     },
     {
       path: '/user/edit/:id',
       name:'user-edit',
-      component: () => lazy(import('./views/users/form')),
+      component: () => lazy(import('./views/user/form')),
       props: true,
     },
     {

@@ -1,6 +1,6 @@
 <script>
 import { formatDate } from '@lib/utils/format-date'
-import user from './user.mock.js'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'User',
@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      userData: {
+      user: {
       },
     }
   },
@@ -24,7 +24,7 @@ export default {
       return 'pending'
     },
     iconName() {
-      switch (this.userData.status) {
+      switch (this.user.status) {
         case 'active':
           return 'check'
         case 'pending':
@@ -38,8 +38,14 @@ export default {
     this.getData()
   },
   methods: {
+    ...mapActions('user', ['getUser']),
     async getData() {
-      this.userData = user
+      this.loading = true
+      const [, response] = await this.getUser(this.id)
+      if (response) {
+        this.user = { ...response }
+      }
+      this.loading = false
     },
     formatDate(value, format) {
       return formatDate(value, format || 'DD/MM/YYYY')
@@ -63,8 +69,8 @@ export default {
       this.$router.push({
         name: 'user-edit',
         params: {
-          id: this.userData.id,
-          user: this.userData,
+          id: this.user.id,
+          user: this.user,
         },
       })
     },
@@ -74,8 +80,9 @@ export default {
 
 <template>
   <main-layout
-    :title="userData.fullName"
-    :subtitle="`User ID ${userData.id}`"
+    :title="user.fullName"
+    :loading="loading"
+    :subtitle="`User ID ${user.id}`"
     back
   >
     <div
@@ -116,7 +123,9 @@ export default {
     </div>
 
     <el-card>
-      <div class="info-block__wrapper">
+      <div
+        class="info-block__wrapper"
+      >
         <div class="info-block">
           <span
             class="info-block__title"
@@ -126,50 +135,51 @@ export default {
               User Details
             </div>
             <div
+              v-if="user.status"
               :class="{
                 [$style.headerStatus] : true,
-                [$style.headerStatusActive]: userData.status === 'active',
-                [$style.headerStatusPending]: userData.status === 'pending',
-                [$style.headerStatusBlocked]: userData.status === 'blocked',
+                [$style.headerStatusActive]: user.status === 'active',
+                [$style.headerStatusPending]: user.status === 'pending',
+                [$style.headerStatusBlocked]: user.status === 'blocked',
               }"
             >
               <el-icon :name="iconName" />
-              Status
+              {{ user.status }}
             </div>
           </span>
           <dl
-            v-if="userData"
+            v-if="user"
             class="datalist"
           >
             <dt>Date Created</dt>
-            <dd>{{ formatDate(userData.created_at) }}</dd>
+            <dd>{{ formatDate(user.created_at) }}</dd>
 
             <dt>Last Upadate Date</dt>
-            <dd>{{ formatDate(userData.created_at) }}</dd>
+            <dd>{{ formatDate(user.created_at) }}</dd>
 
             <dt>Last Login Date</dt>
-            <dd>{{ formatDate(userData.created_at) }}</dd>
+            <dd>{{ formatDate(user.created_at) }}</dd>
 
             <dt>User ID</dt>
-            <dd>{{ userData.id }}</dd>
+            <dd>{{ user.id }}</dd>
 
             <dt>First Name</dt>
-            <dd>{{ userData.givenName }}</dd>
+            <dd>{{ user.givenName }}</dd>
 
             <dt>Last Name</dt>
-            <dd>{{ userData.familyName }}</dd>
+            <dd>{{ user.familyName }}</dd>
 
             <dt>Email</dt>
-            <dd>{{ userData.email }}</dd>
+            <dd>{{ user.email }}</dd>
 
             <dt>Telephone</dt>
-            <dd>{{ userData.phone }}</dd>
+            <dd>{{ user.phone }}</dd>
 
             <dt>Provider</dt>
-            <dd>{{ userData.providerId }}</dd>
+            <dd>{{ user.providerId }}</dd>
 
             <dt>2FA</dt>
-            <dd>{{ userData.twoFA }}</dd>
+            <dd>{{ user.twoFA }}</dd>
           </dl>
 
           <span

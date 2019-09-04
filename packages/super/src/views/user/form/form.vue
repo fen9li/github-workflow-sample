@@ -1,5 +1,6 @@
 <script>
 import { mask } from 'vue-the-mask'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'UserForm',
@@ -7,16 +8,33 @@ export default {
     mask,
   },
   props: {
-    user: {
-      type: Object,
+    id: {
+      type: String,
       default: null,
     },
   },
   data() {
     return {
-      data: {
+      form: {
+        // Mocked. Required by backed but not present in design
+        password: "12345678",
+        productVersions: [
+          {
+            "product": "4c249cf1-b847-11e9-9f0a-0242ac130002",
+            "version": "4c2a85b3-b847-11e9-9f0a-0242ac130002"
+          }
+        ],
+        roles: ["testRole"]
       },
-      products: [
+      loading: false,
+      saving: false,
+      select1: [],
+      select2: [],
+    }
+  },
+  computed: {
+    products() {
+      return [
         {
           value: 'payments',
           name: 'Payments',
@@ -33,41 +51,41 @@ export default {
           value: 'points',
           name: 'Points',
         },
-      ],
-      select1: [],
-      select2: [],
-      rules: {
+      ]
+    },
+    rules() {
+      return {
         givenName: [
           {
-            required: true,
+            // required: true,
             message: 'This field is required',
             trigger: 'blur',
           },
         ],
         familyName: [
           {
-            required: true,
+            // required: true,
             message: 'This field is required',
             trigger: 'blur',
           },
         ],
         email: [
           {
-            required: true,
+            // required: true,
             message: 'This field is required',
             trigger: 'blur',
           },
         ],
         phone: [
           {
-            required: true,
+            // required: true,
             message: 'This field is required',
             trigger: 'blur',
           },
         ],
         provider: [
           {
-            required: true,
+            // required: true,
             message: 'This field is required',
             trigger: 'blur',
           },
@@ -79,23 +97,51 @@ export default {
           },
         ],
       }
-    }
+    },
   },
   mounted () {
-    this.data = { ...this.data, ...this.user }
+    if (this.id) this.getData()
   },
   methods: {
+    ...mapActions('user', ['createUser', 'updateUser']),
+    async getData() {
+      this.loading = true
+      const [, response] = await this.$api.get(`/users/${this.id}`)
+      if (response) {
+        this.form = { ...response }
+      }
+      this.loading = false
+    },
     onCancel() {
       this.$router.go(-1)
     },
-    onSave() {},
+    async onSave() {
+      const { id, form }  = this
+      this.saving = true
+      let response
+      if (this.id) {
+        [, response] = await this.updateUser({ id, form })
+      } else  {
+        [, response] = await this.createUser(form)
+      }
+      if (response) {
+        this.$router.push({
+          name: 'user',
+          params: {
+            id: response.id,
+          },
+        })
+      }
+      this.saving = false
+    },
   },
 }
 </script>
 
 <template>
   <main-layout
-    :title="user ? 'Edit User' : 'Create User'"
+    :title="id ? 'Edit User' : 'Create User'"
+    :loading="loading"
     back
   >
     <el-card>
@@ -121,7 +167,7 @@ export default {
             prop="givenName"
           >
             <el-input
-              v-model="data.givenName"
+              v-model="form.givenName"
               data-test="givenName"
             />
           </el-form-item>
@@ -130,7 +176,7 @@ export default {
             prop="familyName"
           >
             <el-input
-              v-model="data.familyName"
+              v-model="form.familyName"
               data-test="familyName"
             />
           </el-form-item>
@@ -141,7 +187,7 @@ export default {
             prop="email"
           >
             <el-input
-              v-model="data.email"
+              v-model="form.email"
               data-test="email"
             />
           </el-form-item>
@@ -150,7 +196,7 @@ export default {
             prop="phone"
           >
             <el-input
-              v-model="data.phone"
+              v-model="form.phone"
               v-mask="['#### ### ###']"
               placeholder="0400 000 000"
               data-test="phone"
@@ -163,7 +209,7 @@ export default {
             prop="provider"
           >
             <el-input
-              v-model="data.provider"
+              v-model="form.provider"
               data-test="provider"
             />
           </el-form-item>
@@ -172,7 +218,7 @@ export default {
             prop="familyName"
           >
             <el-select
-              v-model="data.status"
+              v-model="form.status"
             >
               <el-option
                 label="Active"
@@ -198,7 +244,7 @@ export default {
         >
           <!-- <div>
             <el-checkbox-group
-              v-model="data.products"
+              v-model="form.products"
             >
               <el-checkbox
                 v-for="(product, index) in products"
@@ -268,6 +314,7 @@ export default {
           <el-button
             type="primary"
             :class="$style.button"
+            :disabled="saving"
             @click="onSave"
           >
             Save
