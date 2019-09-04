@@ -19,7 +19,7 @@ export default {
   },
   computed: {
     status() {
-      return capitalize(this.provider.status)
+      return this.provider.status ? capitalize(this.provider.status) : 'Empty status'
     },
   },
   methods: {
@@ -39,9 +39,7 @@ export default {
     >
       <div :class="$style.title">
         Provider Details
-        <provider-status
-          :status="provider.status"
-        />
+        <provider-status :status="status" />
       </div>
       <el-button
         type="primary"

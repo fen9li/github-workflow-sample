@@ -64,6 +64,7 @@ export default {
       const [, response] = await this.getProvider({ id: this.providerId })
       if (response) {
         this.provider = response
+        this.loading = false
       }
     }
   },

@@ -37,14 +37,14 @@ export default {
         ],
         timezone: [
           {
-            required: true,
+            required: false,
             message: 'This field is required',
             trigger: 'change',
           },
         ],
         status: [
           {
-            required: true,
+            required: false,
             message: 'This field is required',
             trigger: 'change',
           },
