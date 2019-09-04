@@ -5,8 +5,6 @@ import { formatDate } from '@lib/utils/format-date'
 import CreateVersionModal from './modals/create-version-modal.vue'
 import DeleteVersionModal from './modals/delete-version-modal.vue'
 
-import VersionMock from './version.mock.js'
-
 export default {
   name: 'ProductVersion',
   components: {
@@ -30,7 +28,7 @@ export default {
       modal: {
         edit: false,
         delete: false,
-      }
+      },
     }
   },
   computed: {
@@ -58,19 +56,20 @@ export default {
     async loadVersion() {
       this.loading = true
 
-      try {
-        // this.version = await this.getProduct({
-        //   productId: this.id,
-        //   versionId: this.versionId,
-        // })
-        this.version = VersionMock
-      } catch (e) {
+      const [err, version] = await this.getVersion({
+        productId: this.id,
+        versionId: this.versionId,
+      })
+
+      if (err) {
         this.$router.replace(this.backRoute)
-        console.error(e)
+        console.error(err)
+      } else {
+        this.version = version
       }
 
       this.loading = false
-    }
+    },
   },
 }
 </script>
@@ -79,8 +78,12 @@ export default {
   <main-layout
     title="Version Details"
     :back="backRoute"
+    :loading="loading"
   >
-    <el-card :class="$style.card">
+    <el-card
+      v-if="!loading"
+      :class="$style.card"
+    >
       <dl :class="['datalist', $style.list]">
         <dt>Date Created</dt>
         <dd>{{ formatDate(version.createdAt) }}</dd>
