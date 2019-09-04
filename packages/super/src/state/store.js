@@ -5,6 +5,7 @@ import ui from './ui'
 import product from './product.js'
 import provider from './provider.js'
 import version from './version.js'
+import user from './user.js'
 
 Vue.use(Vuex)
 
@@ -13,6 +14,7 @@ export default new Vuex.Store({
     ui,
     product,
     provider,
-    version
+    version,
+    user
   },
 })

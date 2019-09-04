@@ -1,17 +1,62 @@
-// import ApiProcessor from '@lib/processors/api-processor'
-import MockProcessor from '@lib/processors/mock-processor'
+import ApiProcessor from '@lib/processors/api-processor'
+// import MockProcessor from '@lib/processors/mock-processor'
 
 const TABLE_FILTERS = [
+  {
+    attribute: 'createdAt',
+    label: 'Date Created',
+    type: 'date',
+    icon: 'el-icon-date',
+  },
+  {
+    attribute: 'id',
+    label: 'User ID',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'givenName',
+    label: 'First Name',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'familyName',
+    label: 'Last Name',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: 'provider',
+    label: 'Provider',
+    type: 'string',
+    icon: 'el-icon-document',
+  },
+  {
+    attribute: '2fa',
+    type: 'select',
+    icon: 'el-icon-document',
+    values: [{
+      label: 'Yes',
+      value: true,
+    }, {
+      label: 'No',
+      value: false,
+    }, ],
+  },
   {
     attribute: 'status',
     type: 'select',
     icon: 'el-icon-document',
     values: [{
       label: 'Enabled',
-      value: true,
+      value: 'active',
     }, {
-      label: 'Disabled',
-      value: false,
+      label: 'Pending',
+      value: 'pending',
+    }, {
+      label: 'Blocked',
+      value: 'blocked',
     }, ],
   },
 ]
@@ -34,27 +79,33 @@ const TABLE_COLUMNS = [
     name: 'givenName',
     label: 'First Name',
     icon: 'el-icon-document',
+    width: 120,
   },
   {
     name: 'familyName',
     label: 'Last Name',
     icon: 'el-icon-document',
+    width: 120,
   },
   {
     name: 'email',
     icon: 'el-icon-document',
+    width: 160,
   },
   {
     name: 'provider',
     icon: 'el-icon-document',
+    width: 120,
   },
   {
     name: 'products',
     icon: 'el-icon-document',
+    width: 120,
   },
   {
     name: '2fa',
     icon: 'el-icon-document',
+    width: 80,
   },
   {
     name: 'status',
@@ -93,15 +144,14 @@ const TABLE_COLUMNS = [
 ]
 
 export default component => ({
-  // processor: new ApiProcessor({
-  //   component,
-  //   path: '/users',
-  // }),
-  processor: new MockProcessor({
+  processor: new ApiProcessor({
     component,
-    mockFrom: 'users',
-
+    path: 'users',
   }),
+  // processor: new MockProcessor({
+  //   component,
+  //   mockFrom: 'users',
+  // }),
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
   tableName: 'users'
