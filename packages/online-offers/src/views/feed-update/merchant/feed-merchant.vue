@@ -139,9 +139,6 @@ export default {
             }}
           </dd>
 
-          <dt>Merchant Tracking URL</dt>
-          <dd>{{ details.map.trackingUrl || '—' }}</dd>
-
           <dt>Merchant Website</dt>
           <dd>{{ details.map.website || '—' }}</dd>
 
