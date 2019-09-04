@@ -59,12 +59,10 @@ export default {
     },
     prefillForm() {
       const { form } = this
-      const { metadata } = this.details
+      const { map: { trackingUrl, commission } } = this.details
 
-      if (metadata) {
-        form.baseline_rate = metadata.baseline_rate
-        form.baseline_url = metadata.baseline_url
-      }
+      form.baseline_rate = commission.base
+      form.baseline_url = trackingUrl
     },
     formatDollar(value) {
       return formatDollar(value)
@@ -132,44 +130,25 @@ export default {
           <dt>Summary</dt>
           <dd>{{ details.map.summary || '—' }}</dd>
 
-          <template v-if="!rakuten">
-            <dt>Commission Rate</dt>
-            <dd>
-              {{
-                details.map.comission
-                  ? formatDollar(details.map.comission.base)
-                  : '—'
-              }}
-            </dd>
+          <dt>Commission Rate</dt>
+          <dd>
+            {{
+              details.map.commission
+                ? formatDollar(details.map.commission.base)
+                : '—'
+            }}
+          </dd>
 
-            <dt>Merchant Tracking URL</dt>
-            <dd>{{ details.map.TrackingUrl || '—' }}</dd>
-          </template>
-          <template v-else>
-            <template v-if="details.metadata && details.metadata.baseline_rate">
-              <dt>Commission Rate</dt>
-              <dd>
-                {{
-                  details.metadata.baseline_rate
-                    ? formatDollar(details.metadata.baseline_rate)
-                    : '—'
-                }}
-              </dd>
-            </template>
-
-            <template v-if="details.metadata && details.metadata.baseline_url">
-              <dt>Merchant Tracking URL</dt>
-              <dd>{{ details.metadata.baseline_url || '—' }}</dd>
-            </template>
-          </template>
+          <dt>Merchant Tracking URL</dt>
+          <dd>{{ details.map.trackingUrl || '—' }}</dd>
 
           <dt>Merchant Website</dt>
-          <dd>{{ details.map.TargetUrl || '—' }}</dd>
+          <dd>{{ details.map.website || '—' }}</dd>
 
           <dt>Terms and Conditions</dt>
           <dd
             :class="$style.terms"
-            v-html="details.map.TermsAndConditions"
+            v-html="details.map.terms"
           />
         </dl>
         <div
