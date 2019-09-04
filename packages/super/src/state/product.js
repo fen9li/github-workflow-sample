@@ -18,9 +18,11 @@ const actions = {
     commit('SET_PRODUCT', result)
     return [error, result]
   },
+
   createProduct(store, form) {
     return api.post('/products', form)
   },
+
   async updateProduct({ commit }, { productId, form }) {
     const [, result] = await api.put(`/products/${productId}`, form)
     commit('SET_PRODUCT', result)

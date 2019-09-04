@@ -1,13 +1,13 @@
 <script>
+import { mapActions, mapState } from 'vuex'
 import StaticProcessor from '@lib/processors/static-processor'
 import productsTable from './provider-products.table'
 export default {
   name: 'ProviderProducts',
   props: {
-    products: {
-      type: Array,
-      default: () => [],
-      required: true
+    provider: {
+      type: Object,
+      default: () => {},
     },
   },
   data() {
@@ -16,19 +16,29 @@ export default {
       table: productsTable,
     }
   },
+  computed: {
+    ...mapState('provider', [
+      'products'
+    ]),
+  },
   watch: {
-    items() {
-      this.getData()
+    products(products) {
+      if (products.items) {
+        this.getProducts(products)
+      }
     },
   },
   created() {
-    this.getData()
+    this.getProviderProducts()
   },
   methods: {
-    getData() {
+    ...mapActions('provider', [
+      'getProviderProducts',
+    ]),
+    getProducts(products) {
       this.table.processor = new StaticProcessor({
         component: this,
-        data: this.products,
+        data: products.items,
         disableQueryString: true,
       })
     },
@@ -42,6 +52,7 @@ export default {
       Products
     </div>
     <table-layout
+      v-if="products.items"
       :class="$style.table"
       shadow="never"
       table-name="provider-products"
