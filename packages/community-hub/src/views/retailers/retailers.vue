@@ -40,7 +40,6 @@ export default {
       :filters="table.filters"
       :columns="table.columns"
       :fragments="false"
-      :hider="false"
       :quantity="[25, 50, 100, 200]"
       @row-click="onRowClick"
     />
