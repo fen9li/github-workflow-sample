@@ -68,6 +68,22 @@ export default {
       this.$emit('refresh-table')
       this.progress = false
     },
+    onLatestChanged() {
+      const { form } = this
+      const newLatestVal = !form.latest
+
+      if (!this.isEdit) {
+        form.latest = newLatestVal
+      } else {
+        if (newLatestVal !== true || form.status !== 'inactive') {
+          form.latest = newLatestVal
+        }
+
+        if (newLatestVal) {
+          this.form.status = 'inactive'
+        }
+      }
+    },
   },
 }
 </script>
@@ -113,7 +129,10 @@ export default {
         />
       </el-form-item>
       <el-form-item>
-        <el-checkbox v-model="form.latest">
+        <el-checkbox
+          :value="form.latest"
+          @input="onLatestChanged"
+        >
           Mark as latest version
         </el-checkbox>
       </el-form-item>
