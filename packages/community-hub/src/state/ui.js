@@ -6,22 +6,27 @@ const getters = {
       title: 'Dashboard',
       path: '/dashboard',
       svg: 'menu/dashboard',
+      menu: 'dashboard',
     }, {
       title: 'Retailers',
       path: '/retailers',
       svg: 'menu/retailers',
+      menu: 'retailers',
     }, {
       title: 'Offers',
       path: '/offers',
       svg: 'menu/offers',
+      menu: 'offers',
     }, {
       title: 'Categories',
       path: '/categories',
       svg: 'menu/categories',
+      menu: 'categories',
     }, {
       title: 'Log',
       path: '/log',
       svg: 'menu/log',
+      menu: 'log',
     }, ]
   },
 }

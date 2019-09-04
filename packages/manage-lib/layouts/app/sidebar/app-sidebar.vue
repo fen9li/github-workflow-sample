@@ -29,8 +29,11 @@ export default {
         this.expanded = !this.expanded
       }
     },
-    activeClass(slug) {
-      if (this.$route.params.slug === slug) {
+    activeClass(menu, metaName = 'menu') {
+      if (menu && (
+        this.$route.meta[metaName] === menu ||
+        this.$route.params.slug === menu
+      )) {
         return 'menu__item--active'
       }
       return ''
@@ -53,25 +56,35 @@ export default {
               :class="['menu__item', expanded && 'menu__item--expanded']"
               @[getOpenEvent(linkClickOpen)]="onExpand(item.children)"
             >
-              <router-link
+              <component
+                :is="item.path ? 'router-link' : 'li'"
                 :to="{ path: item.path }"
-                class="menu__link"
+                tag="li"
+                :class="[
+                  'menu__item',
+                  activeClass(item.menu),
+                ]"
               >
-                <i :class="`el-icon-${item.icon}`" />
-                {{ item.title }}
-                <i
-                  :class="{ 'menu__expand--disabled': !item.children.length }"
-                  class="el-icon-arrow-down menu__expand"
-                  @[getOpenEvent(!linkClickOpen)].prevent="onExpand(item.children)"
-                />
-              </router-link>
+                <a class="menu__link">
+                  <i :class="`el-icon-${item.icon}`" />
+                  {{ item.title }}
+                  <i
+                    :class="{ 'menu__expand--disabled': !item.children.length }"
+                    class="el-icon-arrow-down menu__expand"
+                    @[getOpenEvent(!linkClickOpen)].prevent="onExpand(item.children)"
+                  />
+                </a>
+              </component>
               <ul class="submenu">
                 <router-link
                   v-for="children in item.children"
                   :key="children.path"
                   :to="{ path: children.path }"
                   tag="li"
-                  :class="['menu__item', activeClass(children.slug)]"
+                  :class="[
+                    'menu__item',
+                    activeClass(children.menu, 'submenu'),
+                  ]"
                   @click.native="$event.stopImmediatePropagation()"
                 >
                   <a class="menu__link">
@@ -86,7 +99,10 @@ export default {
               :key="item.path"
               :to="{ path: item.path }"
               tag="li"
-              class="menu__item"
+              :class="[
+                'menu__item',
+                activeClass(item.menu),
+              ]"
               :exact="item.path === '/'"
             >
               <a class="menu__link">
