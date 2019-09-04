@@ -9,8 +9,13 @@ export default {
     }
   },
   methods: {
-    onRowClick() {
-      // @todo
+    onRowClick(row) {
+      this.$router.push({
+        name: 'role',
+        params: {
+          id: row.id,
+        }
+      })
     }
   }
 }

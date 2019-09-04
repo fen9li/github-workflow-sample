@@ -29,7 +29,10 @@ export default {
     >
       <div :class="$style.title">
         Product Details
-        <provider-status :status="product.status" />
+        <provider-status
+          v-if="product.status"
+          :status="product.status"
+        />
       </div>
     </div>
     <dl :class="['datalist', $style.list]">

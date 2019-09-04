@@ -1,5 +1,5 @@
 <script>
-// import ApiProcessor from '@lib/processors/api-processor'
+import ApiProcessor from '@lib/processors/api-processor'
 import VersionTabTable from './versions-tab.table.js'
 
 export default {
@@ -15,13 +15,21 @@ export default {
       table: VersionTabTable(this),
     }
   },
-  // created() {
-  //   this.table.processor = new ApiProcessor({
-  //     component: this,
-  //     path: `/products/${this.productId}/versions`
-  //   })
-  // },
+  computed: {
+    path() {
+      return `/products/${this.productId}/versions`
+    }
+  },
+  created() {
+    this.getVersions()
+  },
   methods: {
+    getVersions() {
+      this.table.processor = new ApiProcessor({
+        component: this,
+        path: this.path
+      })
+    },
     onRowClick(row) {
       this.$router.push({
         name: 'product-version',

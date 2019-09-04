@@ -1,5 +1,5 @@
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import ProductInformationTab from './tabs/product-information-tab.vue'
 import ProductRolesTab from './tabs/product-roles-tab.vue'
 import ProductVersionsTab from './tabs/product-versions-tab.vue'
@@ -7,7 +7,7 @@ import ProductVersionsTab from './tabs/product-versions-tab.vue'
 import EditProductModal from './modals/edit-product-modal.vue'
 import CreateVersionModal from './modals/create-version-modal.vue'
 
-import ProductMock from './product.mock.js'
+// import ProductMock from './product.mock.js'
 
 export default {
   name: 'ProductDetail',
@@ -30,7 +30,6 @@ export default {
   },
   data() {
     return {
-      product: null,
       loading: true,
       modal: {
         editProduct: false,
@@ -38,17 +37,16 @@ export default {
       },
     }
   },
+  computed: {
+    ...mapState('product', ['product'])
+  },
   async created() {
     this.loading = true
-
-    try {
-      // this.product = await this.getProduct(this.id)
-      this.product = ProductMock
-    } catch (e) {
+    const [error,] = await this.getProduct(this.id)
+    if (error) {
       this.$router.replace({ name: 'product' })
-      console.error(e)
+      console.error(error)
     }
-
     this.loading = false
   },
   methods: {

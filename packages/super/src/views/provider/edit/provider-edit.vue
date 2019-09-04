@@ -61,7 +61,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('product', [
+    ...mapState('provider', [
       'products'
     ])
   },
@@ -71,18 +71,16 @@ export default {
     },
   },
   created() {
-    this.getProducts()
+    this.getProviderProducts()
     if (!this.create) {
       this.prefillFields()
     }
   },
   methods: {
-    ...mapActions('product', [
-      'getProducts'
-    ]),
     ...mapActions('provider', [
       'createProvider',
       'updateProvider',
+      'getProviderProducts',
     ]),
     checkProduct(value, id) {
       this.form.products = value

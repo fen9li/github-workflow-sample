@@ -1,32 +1,30 @@
 import api from '~/api'
 
 const state = {
-  products: { items: null, pagination: null, loading: false }
+  product: {},
 }
 
 const getters = {}
 
 const mutations = {
-  SET_PRODUCTS(state, payload) {
-    state.products = { ...state.products, ...payload }
+  SET_PRODUCT(state, payload) {
+    state.product = payload
   }
 }
 
 const actions = {
-  async getProducts({ commit }) {
-    commit('SET_PRODUCTS', { loading : true })
-    const [, response] = await api.get(`/products`)
-    commit('SET_PRODUCTS', { ...response, loading: false })
-    return response
-  },
-  getProduct(store, productId) {
-    return api.get(`/products/${productId}`)
+  async getProduct({ commit }, productId) {
+    const [error, result] = await api.get(`/products/${productId}`)
+    commit('SET_PRODUCT', result)
+    return [error, result]
   },
   createProduct(store, form) {
     return api.post('/products', form)
   },
-  updateProduct(store, { productId, form }) {
-    return api.put(`/products/${productId}`, form)
+  async updateProduct({ commit }, { productId, form }) {
+    const [, result] = await api.put(`/products/${productId}`, form)
+    commit('SET_PRODUCT', result)
+    return result
   },
 }
 

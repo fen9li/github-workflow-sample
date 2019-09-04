@@ -55,7 +55,7 @@ export default {
 
 <template>
   <el-dialog
-    title="Create Product"
+    title="Edit Product"
     v-bind="$attrs"
     v-on="$listeners"
   >
