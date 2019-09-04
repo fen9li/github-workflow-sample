@@ -62,7 +62,7 @@ const TABLE_COLUMNS = [
     width: 160,
   },
   {
-    name: 'updatedBy',
+    name: 'updatedBy.name',
     type: 'string',
     icon: 'el-icon-document',
     width: 160,
