@@ -9,15 +9,32 @@ export default {
       default: () => {},
     },
   },
+  data() {
+    return {
+      processing: false,
+    }
+  },
   methods: {
-    submit() {
-      // TODO: Add API endpoint
-      this.$notify({
-        type: 'success',
-        title: 'Success',
-        message: 'Changes successfully saved.',
-      })
-      this.$emit('update:visible', false)
+    async onSubmit() {
+      this.processing = true
+      const [error] = await this.$api.post('/webhooks/failed/retry')
+      this.processing = true
+
+      if (error) {
+        this.$notify({
+          type: 'error',
+          title: 'Error',
+          message: error.message,
+        })
+      } else {
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: `Successfuly requested`,
+        })
+        this.$emit('update:visible', false)
+        this.$emit('update')
+      }
     },
   },
 }
@@ -48,7 +65,8 @@ export default {
         $style.submit,
         'wide-button',
       ]"
-      @click="submit"
+      :loading="processing"
+      @click="onSubmit"
     >
       Retry failed webhooks
     </el-button>

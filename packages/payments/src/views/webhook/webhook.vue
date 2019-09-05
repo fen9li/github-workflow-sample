@@ -1,6 +1,5 @@
 <script>
 import table from './webhook-attempts-table'
-import webhookMock from '@tests/__fixtures__/webhook'
 import webhookSummary from './webhook-summary'
 
 export default {
@@ -21,7 +20,6 @@ export default {
     return {
       loading: false,
       table: table(this),
-      endpoint: webhookMock.details,
       details: {},
     }
   },

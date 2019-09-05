@@ -1,5 +1,4 @@
-import StaticProcessor from '@lib/processors/static-processor'
-import webhookMock from '@tests/__fixtures__/webhook'
+import ElasticProcessor from '@lib/processors/elastic-processor'
 
 const TABLE_FILTERS = [
   {
@@ -21,23 +20,24 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'date',
+    attribute: 'createdAt',
     label: 'Date',
     type: 'date',
     icon: 'el-icon-date',
   },
   {
-    attribute: 'status',
+    attribute: 'successful',
+    label: 'Status',
     type: 'select',
     icon: 'el-icon-circle-check',
     values: [
       {
         label: 'Failed',
-        value: 'failed',
+        value: false,
       },
       {
         label: 'Success',
-        value: 'success',
+        value: true,
       },
     ],
   },
@@ -63,26 +63,29 @@ const TABLE_COLUMNS = [
     width: 200,
   },
   {
-    name: 'date',
+    name: 'createdAt',
     label: 'Date',
     icon: 'el-icon-date',
     format: 'dateTime',
     width: 160,
   },
   {
-    name: 'status',
+    name: 'successful',
     label: 'Status',
-    icon: 'el-icon-circle-check',
+    icon: 'el-icon-document',
     format: 'capital',
     component: {
       is: 'cell-tag',
       props: {
         styleObj(val) {
-          // TODO: Add switch when know all possible statuses
-          if (val === 'failed') {
-            return { color: 'var(--color-error)', background: '#FBD2D2' }
+          switch(val()) {
+            case 'success': return { color: '#3A8463', background: '#CAF3C8' }
+            case 'failed': return  { color: 'var(--color-error)', background: '#FBD2D2' }
           }
         },
+        value(val) {
+          return val ? 'success' : 'failed'
+        }
       },
     },
     width: 100,
@@ -91,9 +94,9 @@ const TABLE_COLUMNS = [
 
 export default function(component) {
   return {
-    processor: new StaticProcessor({
+    processor: new ElasticProcessor({
       component,
-      data: webhookMock.table,
+      index: 'webhook-responses'
     }),
     columns: TABLE_COLUMNS,
     filters: TABLE_FILTERS,
