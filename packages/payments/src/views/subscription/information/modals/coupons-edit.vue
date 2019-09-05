@@ -2,6 +2,7 @@
 import ElasticProcessor from '@lib/processors/elastic-processor'
 import { formatDate } from '@lib/utils/format-date'
 import sort from '@lib/utils/dropdown-sorting'
+import { existingCoupons } from '@/utils/custom-filtering'
 
 export default {
   name: 'EditSubscriptionEditCouponsModal',
@@ -82,6 +83,11 @@ export default {
       this.couponsData = new ElasticProcessor({
         component: this,
         index: 'coupons',
+        staticQuery: {
+          bool: {
+            filter: [existingCoupons()]
+          }
+        }
       })
     },
     async removeCoupon() {

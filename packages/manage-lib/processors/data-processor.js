@@ -34,7 +34,8 @@ function mergeQueries(a, b) {
           return highItem.attribute === lowItem.attribute && highItem.value === lowItem.value
         })
 
-        if (!alreadyAdded) {
+
+        if (!alreadyAdded || alreadyAdded.script) {
           result.push(lowItem)
         }
       })

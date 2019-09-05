@@ -1,3 +1,5 @@
+import dayjs from '@lib/node_modules/dayjs'
+
 function couponValidityPeriod(filter) {
   const { comparison } = filter
   let source
@@ -47,7 +49,28 @@ function couponAmount(filter) {
   }
 }
 
+function existingCoupons() {
+  const today = dayjs.utc(dayjs()).startOf('day').valueOf()
+  const endExists = `doc.endAt.size() != 0`
+  const endNotExists = `doc.endAt.size() == 0`
+  const endDate = `doc.endAt.value.getMillis()`
+  const source = `${endNotExists} || (${endExists} && ${endDate} > params.today)`
+
+  return {
+    script : {
+      script : {
+        source,
+        lang: "painless",
+        params: {
+          today
+        }
+      }
+    }
+  }
+}
+
 export {
   couponValidityPeriod,
   couponAmount,
+  existingCoupons
 }

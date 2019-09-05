@@ -1,7 +1,7 @@
 import ElasticProcessor from '@lib/processors/elastic-processor'
 import { activeByDate } from '@lib/utils/date-helper'
 import { datesStatusSorting, couponAmountSorting } from '@/utils/custom-table-sortings'
-import { couponValidityPeriod, couponAmount } from '@/utils/custom-filtering'
+import { couponValidityPeriod, couponAmount, existingCoupons } from '@/utils/custom-filtering'
 
 const TABLE_FILTERS = [
   {
@@ -171,6 +171,11 @@ export default function(component){
       query: {
         sort: {
           createdAt: { order: 'desc' }
+        }
+      },
+      staticQuery: {
+        bool: {
+          filter: [existingCoupons()]
         }
       }
     }),

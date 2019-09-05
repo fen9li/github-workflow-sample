@@ -6,6 +6,7 @@ import get from 'lodash/get'
 import sort from '@lib/utils/dropdown-sorting'
 import { mapActions } from 'vuex'
 import { mask } from 'vue-the-mask'
+import { existingCoupons } from '@/utils/custom-filtering'
 
 export default {
   name: 'CustomerDetailsAddSubscription',
@@ -175,6 +176,11 @@ export default {
       this.couponsData = new ElasticProcessor({
         component: this,
         index: 'coupons',
+        staticQuery: {
+          bool: {
+            filter: [existingCoupons()]
+          }
+        }
       })
     },
     async updatePlans(id) {
