@@ -8,15 +8,64 @@ const router = new Router({
   mode: 'history',
   base: process.env.VUE_APP_BASE_URL,
   routes: [{
-    path: '/',
-    name: 'home',
-    component: () => lazy(import('./views/home')),
+    path: '/accounts',
+    name: 'accounts',
+    component: () => lazy(import('./views/accounts')),
     meta: {
-      menu: 'home',
+      menu: 'accounts',
+    },
+  }, {
+    path: '/providers',
+    name: 'providers',
+    component: () => lazy(import('./views/providers')),
+    meta: {
+      menu: 'providers',
+    },
+  }, {
+    path: '/rules',
+    name: 'rules',
+    component: () => lazy(import('./views/rules')),
+    meta: {
+      menu: 'rules',
+    },
+  }, {
+    path: '/events',
+    name: 'events',
+    component: () => lazy(import('./views/events')),
+    meta: {
+      menu: 'events',
+    },
+  }, {
+    path: '/event_occurrences',
+    name: 'event_occurrences',
+    component: () => lazy(import('./views/event_occurrences')),
+    meta: {
+      menu: 'event_occurrences',
+    },
+  }, {
+    path: '/limits',
+    name: 'limits',
+    component: () => lazy(import('./views/limits')),
+    meta: {
+      menu: 'limits',
+    },
+  }, {
+    path: '/badges',
+    name: 'badges',
+    component: () => lazy(import('./views/badges')),
+    meta: {
+      menu: 'badges',
+    },
+  }, {
+    path: '/memberships',
+    name: 'memberships',
+    component: () => lazy(import('./views/memberships')),
+    meta: {
+      menu: 'memberships',
     },
   }, {
     path: '*',
-    redirect: '/',
+    redirect: '/accounts',
   }, ],
 })
 
