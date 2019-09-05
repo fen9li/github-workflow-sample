@@ -13,6 +13,11 @@ export default {
       'profile',
     ]),
   },
+  methods: {
+    close() {
+      this.visible = false
+    },
+  },
 }
 </script>
 
@@ -40,17 +45,10 @@ export default {
       </span>
     </div>
     <el-col class="header-profile__menu">
-      <router-link
-        to="/profile"
-        class="header-profile__link"
-      >
-        <el-button
-          class="header-profile__button"
-          @click="visible = false"
-        >
-          Profile
-        </el-button>
-      </router-link>
+      <slot
+        name="header-menu"
+        :close="close"
+      />
       <router-link
         to="/logout"
         class="header-profile__link"
@@ -58,7 +56,7 @@ export default {
         <el-button
           type="primary"
           class="header-profile__button"
-          @click="visible = false"
+          @click="close"
         >
           Logout
         </el-button>

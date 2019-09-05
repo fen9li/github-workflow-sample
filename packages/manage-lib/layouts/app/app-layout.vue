@@ -28,6 +28,15 @@ export default {
             slot="header-right"
             name="header-right"
           />
+          <template
+            #header-menu="{ close }"
+            name="header-menu"
+          >
+            <slot
+              name="header-menu"
+              :close="close"
+            />
+          </template>
         </app-header>
       </el-header>
       <el-container :class="$style.main">
