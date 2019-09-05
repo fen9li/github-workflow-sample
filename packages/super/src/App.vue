@@ -28,6 +28,19 @@ export default {
     :menu="menu"
     title="Super"
   >
+    <template #header-menu="{ close }">
+      <router-link
+        to="/profile"
+        class="header-profile__link"
+      >
+        <el-button
+          class="header-profile__button"
+          @click="close"
+        >
+          Profile
+        </el-button>
+      </router-link>
+    </template>
     <router-view />
   </app-layout>
 </template>

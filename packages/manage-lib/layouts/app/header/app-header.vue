@@ -39,7 +39,17 @@ export default {
     </router-link>
     <div class="app-header__right">
       <slot name="header-right" />
-      <app-profile />
+      <app-profile>
+        <template
+          #header-menu="{ close }"
+          name="header-menu"
+        >
+          <slot
+            name="header-menu"
+            :close="close"
+          />
+        </template>
+      </app-profile>
     </div>
   </div>
 </template>

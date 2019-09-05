@@ -15,6 +15,10 @@ const router = new Router({
       menu: 'dashboard',
     },
   }, {
+    path: '/profile',
+    name: 'profile',
+    component: () => lazy(import('./views/profile')),
+  }, {
     path: '/users',
     name: 'users',
     component: () => lazy(import('./views/users')),

@@ -42,9 +42,8 @@ export default {
         <dt>Last Update Date</dt>
         <dd>{{ formatDate(role.updatedAt, 'DD/MM/YYYY HH:mm') }}</dd>
 
-        <dt>
-          Role ID/dt>
-        </dt><dd>{{ role.id }}</dd>
+        <dt>Role ID</dt>
+        <dd>{{ role.id }}</dd>
 
         <dt>Product assigned</dt>
         <dd>{{ role.products.join(', ') }}</dd>
