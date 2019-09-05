@@ -17,6 +17,7 @@ export default {
     return {
       user: {
       },
+      loading: false,
     }
   },
   computed: {

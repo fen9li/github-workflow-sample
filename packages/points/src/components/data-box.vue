@@ -48,6 +48,8 @@ export default {
     <dl :class="['datalist', $style.list]">
       <slot />
     </dl>
+
+    <slot name="boxFooter" />
   </el-card>
 </template>
 
