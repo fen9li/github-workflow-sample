@@ -3,40 +3,45 @@ const state = {}
 const getters = {
   menu(state, getters, rootState, rootGetters) {
     return [{
-      title: 'Dashboard',
-      path: '/',
+      title: 'Accounts',
+      path: '/accounts',
       icon: 's-data',
-      menu: 'dashboard',
-    }, {
-      title: 'Users',
-      path: '/users',
-      icon: 'user',
-      menu: 'users',
+      menu: 'accounts',
     }, {
       title: 'Providers',
       path: '/providers',
       icon: 'tickets',
       menu: 'providers',
     }, {
-      title: 'Products',
-      path: '/products',
-      icon: 'goods',
-      menu: 'products',
-    }, {
-      title: 'Roles',
-      path: '/roles',
+      title: 'Rules',
+      path: '/rules',
       icon: 'news',
-      menu: 'roles',
+      menu: 'rules',
     }, {
-      title: 'Logs',
-      path: '/logs',
+      title: 'Events',
+      path: '/events',
+      icon: 'phone-outline',
+      menu: 'events',
+    }, {
+      title: 'Event Occurrences',
+      path: '/event_occurrences',
       icon: 'notebook-2',
-      menu: 'logs',
+      menu: 'event_occurrences',
     }, {
-      title: 'Settings',
-      path: '/settings',
-      icon: 'setting',
-      menu: 'settings',
+      title: 'Limits',
+      path: '/limits',
+      icon: 'film',
+      menu: 'limits',
+    }, {
+      title: 'Badges',
+      path: '/badges',
+      icon: 'help',
+      menu: 'badges',
+    }, {
+      title: 'Memberships',
+      path: '/memberships',
+      icon: 'user',
+      menu: 'memberships',
     }, ]
   },
 }

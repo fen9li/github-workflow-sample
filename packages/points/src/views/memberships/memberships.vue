@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-  <main-layout title="Home">
-    Home Content
+  <main-layout title="Memberships">
+    Memberships Content
   </main-layout>
 </template>
