@@ -32,9 +32,10 @@ export default {
       return this.processor.loading
     },
     summary() {
+      const { filter } = this
       const data = this.localData || this.data
-      const customLabel = this.filter.customFiltering && this.filter.customFiltering.label
-      const { label } = this.filter
+      const customLabel = filter.customFiltering && filter.customFiltering(filter).label
+      const { label } = filter
 
       return data && this.filter.getSummary({
         comparison: data.comparison,

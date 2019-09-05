@@ -2,7 +2,6 @@ import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
 import merge from 'deepmerge'
 import flattenDeep from 'lodash/flattenDeep'
-import * as customFiltering from '../utils/custom-filtering'
 
 const createEmptyQuery = () => {
   return {
@@ -198,8 +197,7 @@ export default class DataProcessor {
 
   applyFilter(filter, index, custom = false) {
     if(custom) {
-      customFiltering[custom.name](filter, custom)
-      this.boolFilters.splice(index, 1, customFiltering[custom.name](filter, custom))
+      this.boolFilters.splice(index, 1, custom(filter))
     } else {
       if(Array.isArray(filter.value)){
         filter.value = flattenDeep(filter.value)
