@@ -2,6 +2,7 @@
 import table from './providers.table.js'
 
 export default {
+  name: 'Providers',
   data() {
     return {
       table: table(this),
@@ -9,9 +10,14 @@ export default {
   },
   methods: {
     onRowClick(row) {
-      // row
-    }
-  }
+      this.$router.push({
+        name: 'provider-details',
+        params: {
+          id: row.id,
+        },
+      })
+    },
+  },
 }
 </script>
 

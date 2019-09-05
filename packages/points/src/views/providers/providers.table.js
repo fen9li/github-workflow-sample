@@ -21,7 +21,7 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'earnRare',
+    attribute: 'earnRate',
     label: 'Provider Earn rate',
     type: 'numeric',
     icon: 'el-icon-document',
@@ -39,7 +39,7 @@ const TABLE_FILTERS = [
     icon: 'el-icon-date',
   },
   {
-    attribute: 'updatedAp',
+    attribute: 'updatedAt',
     label: 'Last Updated',
     type: 'date',
     icon: 'el-icon-date',
@@ -86,7 +86,7 @@ const TABLE_COLUMNS = [
     icon: 'el-icon-document',
   },
   {
-    name: 'earnRare',
+    name: 'earnRate',
     label: 'Provider Earn rate',
     type: 'string',
     icon: 'el-icon-document',
@@ -110,7 +110,7 @@ const TABLE_COLUMNS = [
     width: 120,
   },
   {
-    name: 'updatedAp',
+    name: 'updatedAt',
     label: 'Last Updated',
     icon: 'el-icon-date',
     format: {
