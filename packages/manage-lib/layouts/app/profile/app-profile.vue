@@ -3,6 +3,11 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'HeaderProfile',
+  data() {
+    return {
+      visible: false,
+    }
+  },
   computed: {
     ...mapGetters('auth', [
       'profile',
@@ -14,6 +19,7 @@ export default {
 <template>
   <el-popover
     v-if="profile"
+    v-model="visible"
     class="header-profile"
     placement="bottom-end"
     width="200"
@@ -34,8 +40,26 @@ export default {
       </span>
     </div>
     <el-col class="header-profile__menu">
-      <router-link to="/logout">
-        <el-button type="primary">
+      <router-link
+        to="/profile"
+        class="header-profile__link"
+      >
+        <el-button
+          class="header-profile__button"
+          @click="visible = false"
+        >
+          Profile
+        </el-button>
+      </router-link>
+      <router-link
+        to="/logout"
+        class="header-profile__link"
+      >
+        <el-button
+          type="primary"
+          class="header-profile__button"
+          @click="visible = false"
+        >
           Logout
         </el-button>
       </router-link>
@@ -57,6 +81,16 @@ export default {
     + .header-profile__item {
       border-left: 1px solid var(--color-text);
     }
+  }
+  &__link {
+    display: block;
+
+    &:not(:last-child) {
+      margin-bottom: rem(12px);
+    }
+  }
+  &__button {
+    width: 100%;
   }
   &__avatar {
     display: inline-block;
