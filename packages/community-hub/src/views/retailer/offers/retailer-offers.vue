@@ -1,6 +1,6 @@
 <script>
 import get from 'lodash/get'
-import retailerOffersForm from './retailer-offers-form'
+import RetailerOffersForm from './retailer-offers-form'
 import retailerData from '@tests/__fixtures__/retailer'
 
 export default {
@@ -9,7 +9,7 @@ export default {
     title: 'Retailer Offers',
   },
   components: {
-    retailerOffersForm
+    RetailerOffersForm
   },
   data() {
     return {
@@ -49,7 +49,11 @@ export default {
     addNewOffer() {
       this.activeTile = 'new'
     },
-    previewOffers() {},
+    previewOffers() {
+      this.$router.push({
+        name: 'retailer-offers-preview',
+      })
+    },
     closeTile() {
       this.activeTile = null
     }
@@ -102,7 +106,10 @@ export default {
               <i :class="[isNewOffer ? 'el-icon-arrow-up' : 'el-icon-arrow-down']" />
             </el-button>
           </template>
-          <retailer-offers-form />
+          <retailer-offers-form
+            :retailer="map"
+            @cancel="closeTile"
+          />
         </el-collapse-item>
 
         <template v-if="isHasOffers">
@@ -125,6 +132,7 @@ export default {
             </template>
             <retailer-offers-form
               :offer="offer"
+              :retailer="map"
               @cancel="closeTile"
             />
           </el-collapse-item>

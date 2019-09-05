@@ -36,6 +36,13 @@ export default new Router({
       menu: 'retailers',
     },
   }, {
+    path: '/retailers/:id/offers/preview',
+    name: 'retailer-offers-preview',
+    component: () => lazy(import('./views/retailer/offers/retailer-offers-preview')),
+    meta: {
+      menu: 'retailers',
+    },
+  }, {
     path: '/retailers/:id/:edit?',
     name: 'retailer-details',
     component: () => lazy(import('./views/retailer')),

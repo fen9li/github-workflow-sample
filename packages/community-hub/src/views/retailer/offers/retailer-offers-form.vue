@@ -6,15 +6,34 @@ import { mask } from 'vue-the-mask'
 import { datePickerFormat } from '@lib/utils/date-helper'
 import categoriesData from '@tests/__fixtures__/categories'
 
+import OffersPreview from './components/offers-preview'
+import PreviewOfModal from './components/preview-of-modal'
+import OfferCoupon from './components/offers/offer-coupon'
+import OfferShowSave from './components/offers/offer-show-save'
+
 export default {
   name: 'RetailerOffersForm',
   directives: {
     mask,
   },
+  components: {
+    OffersPreview,
+    PreviewOfModal,
+    OfferCoupon,
+    OfferShowSave
+  },
   props: {
+    retailer: {
+      type: Object,
+      default: () => ({})
+    },
     offer: {
       type: Object,
       default: () => ({})
+    },
+    showPreview: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -116,6 +135,27 @@ export default {
       if (!this.form.offer_type) return
       return this.form.offer_type === 'URL'
     },
+    retailerPreview() {
+      return { ...this.retailer, offers: [this.form] }
+    },
+    offerComponent() {
+      switch (this.form.offer_type) {
+        case 'Show and Save':
+          return {
+            name: 'offer-show-save',
+            title: 'Show and Save',
+            fullBody: true,
+          }
+        case 'Coupon Code':
+          return {
+            name: 'offer-coupon',
+            title: 'Coupon Code',
+            fullBody: false,
+          }
+        default:
+          return null
+      }
+    }
   },
   watch: {
     'form.offer_type'() {
@@ -175,7 +215,7 @@ export default {
       })
     },
     onCancel() {
-      this.form = cloneDeep(this.offer)
+      this.form = Object.assign(this.form, cloneDeep(this.offer))
       this.$emit('cancel')
     },
     onDelete() {
@@ -193,205 +233,250 @@ export default {
 
 <template>
   <div>
-    <el-form
-      ref="form"
-      :model="form"
-      :rules="rules"
-      label-position="top"
-      class="card-form"
-    >
-      <el-form-item
-        label="Status"
-        prop="status"
-        required
+    <div :class="$style.formWrapper">
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        label-position="top"
+        :class="['card-form', $style.form]"
       >
-        <el-switch
-          v-model="form.status"
-          active-color="#13ce66"
-          inactive-color="#a7a7a7"
-          active-value="active"
-          inactive-value="inactive"
-        />
-        <span :class="$style.status">
-          {{ status }}
-        </span>
-      </el-form-item>
-      <el-form-item
-        label="Offer Name"
-        prop="offer_name"
-        required
-      >
-        <el-input v-model="form.offer_name" />
-      </el-form-item>
-      <el-form-item
-        label="Category"
-        prop="categories"
-      >
-        <el-select
-          v-model="form.categories"
-          multiple
-          placeholder="Select categories..."
+        <el-form-item
+          label="Status"
+          prop="status"
+          required
         >
-          <el-option
-            v-for="category in categoriesList"
-            :key="category.category_name"
-            :label="category.category_name"
-            :value="category.category_name"
+          <el-switch
+            v-model="form.status"
+            active-color="#13ce66"
+            inactive-color="#a7a7a7"
+            active-value="active"
+            inactive-value="inactive"
           />
-        </el-select>
-      </el-form-item>
-      <el-form-item
-        label="Offer Description"
-        prop="description"
-      >
-        <the-textarea
-          v-model="form.description"
-          :class="$style.fullwidth"
-        />
-      </el-form-item>
-      <el-form-item
-        label="Participating Locations"
-        prop="locations"
-      >
-        <div :class="$style.fullwidth">
-          <div
-            v-for="(location, index) in form.locations"
-            :key="index"
-            :class="$style.locationItem"
+          <span :class="$style.status">
+            {{ status }}
+          </span>
+        </el-form-item>
+        <el-form-item
+          label="Offer Name"
+          prop="offer_name"
+          required
+        >
+          <el-input v-model="form.offer_name" />
+        </el-form-item>
+        <el-form-item
+          label="Category"
+          prop="categories"
+        >
+          <el-select
+            v-model="form.categories"
+            multiple
+            placeholder="Select categories..."
           >
-            <el-input v-model="form.locations[index]" />
-            <el-button
-              v-if="form.locations && form.locations.length > 1"
-              type="info"
-              icon="el-icon-close"
-              circle
-              size="mini"
-              :class="$style.locationItemBtn"
-              @click="removeLocation(index)"
+            <el-option
+              v-for="category in categoriesList"
+              :key="category.category_name"
+              :label="category.category_name"
+              :value="category.category_name"
             />
-          </div>
-          <el-button
-            :disabled="form.locations && form.locations.length >= locationsMaxCount"
-            type="text"
-            icon="el-icon-plus"
-            @click="addLocation"
-          >
-            Add location
-          </el-button>
-        </div>
-      </el-form-item>
-      <el-form-item label="Offer End Date">
-        <el-date-picker
-          v-model="form.end_at"
-          v-mask="['##/##/####']"
-          type="date"
-          format="dd/MM/yyyy"
-          :value-format="datePickerFormat"
-          placeholder="Enter Date"
-          @input="changeEndDate('end_at', $event)"
-        />
-      </el-form-item>
-      <el-form-item
-        label="Offer Terms and Conditions"
-        prop="terms"
-      >
-        <the-textarea
-          v-model="form.terms"
-          :max-chars="null"
-          :class="$style.fullwidth"
-        />
-      </el-form-item>
-      <el-form-item
-        label="Offer Type"
-        prop="offer_type"
-      >
-        <el-select
-          v-model="form.offer_type"
-          placeholder="Select an offer type"
-        >
-          <el-option
-            v-for="item in offerTypes"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
-
-      <template v-if="isOfferTypeShow">
+          </el-select>
+        </el-form-item>
         <el-form-item
-          label="Redemption Image (860 x 860 px minimum) "
-          prop="logo"
+          label="Offer Description"
+          prop="description"
         >
-          <hub-image-uploader
-            v-model="form.logo"
+          <the-textarea
+            v-model="form.description"
             :class="$style.fullwidth"
-          >
-            <template #title>
-              <div :class="$style.uploadPlus">
-                +
-              </div> Select file
-            </template>
-          </hub-image-uploader>
-        </el-form-item>
-      </template>
-      <template v-if="isOfferTypeCoupon">
-        <el-form-item
-          label="Coupon Code"
-          prop="coupon_code"
-        >
-          <el-input
-            :value="form.coupon_code"
-            @input="changeCouponCode"
           />
         </el-form-item>
-
-        <el-form-item>
-          <el-radio-group
-            v-model="form.coupon_code_use"
-            prop="coupon_code_use"
+        <el-form-item
+          label="Participating Locations"
+          prop="locations"
+        >
+          <div :class="$style.fullwidth">
+            <div
+              v-for="(location, index) in form.locations"
+              :key="index"
+              :class="$style.locationItem"
+            >
+              <el-input v-model="form.locations[index]" />
+              <el-button
+                v-if="form.locations && form.locations.length > 1"
+                type="info"
+                icon="el-icon-close"
+                circle
+                size="mini"
+                :class="$style.locationItemBtn"
+                @click="removeLocation(index)"
+              />
+            </div>
+            <el-button
+              :disabled="form.locations && form.locations.length >= locationsMaxCount"
+              type="text"
+              icon="el-icon-plus"
+              @click="addLocation"
+            >
+              Add location
+            </el-button>
+          </div>
+        </el-form-item>
+        <el-form-item label="Offer End Date">
+          <el-date-picker
+            v-model="form.end_at"
+            v-mask="['##/##/####']"
+            type="date"
+            format="dd/MM/yyyy"
+            :value-format="datePickerFormat"
+            placeholder="Enter Date"
+            @input="changeEndDate('end_at', $event)"
+          />
+        </el-form-item>
+        <el-form-item
+          label="Offer Terms and Conditions"
+          prop="terms"
+        >
+          <the-textarea
+            v-model="form.terms"
+            :max-chars="null"
+            :class="$style.fullwidth"
+          />
+        </el-form-item>
+        <el-form-item
+          label="Offer Type"
+          prop="offer_type"
+        >
+          <el-select
+            v-model="form.offer_type"
+            placeholder="Select an offer type"
           >
-            <el-radio
-              label="online only"
-              border
-              :class="$style.radio"
-            >
-              Online only
-            </el-radio>
-            <el-radio
-              label="in-store only"
-              border
-              :class="$style.radio"
-            >
-              In-Store only
-            </el-radio>
-            <el-radio
-              label="online and in-store"
-              border
-              :class="$style.radio"
-            >
-              Online and In-Store
-            </el-radio>
-          </el-radio-group>
+            <el-option
+              v-for="item in offerTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
 
-        <el-form-item
-          v-if="form.coupon_code_use === 'online only' || form.coupon_code_use === 'online and in-store'"
-          label="Offer URL"
-          prop="offer_url"
-        >
-          <el-input v-model="form.offer_url" />
-        </el-form-item>
-      </template>
-      <template v-if="isOfferTypeUrl">
-        <el-form-item
-          label="URL"
-          prop="url"
-        >
-          <el-input v-model="form.url" />
-        </el-form-item>
-      </template>
-    </el-form>
+        <template v-if="isOfferTypeShow">
+          <el-form-item
+            label="Redemption Image (860 x 860 px minimum) "
+            prop="logo"
+          >
+            <hub-image-uploader
+              v-model="form.logo"
+              :class="$style.fullwidth"
+            >
+              <template #title>
+                <div :class="$style.uploadPlus">
+                  +
+                </div> Select file
+              </template>
+            </hub-image-uploader>
+          </el-form-item>
+        </template>
+        <template v-if="isOfferTypeCoupon">
+          <el-form-item
+            label="Coupon Code"
+            prop="coupon_code"
+          >
+            <el-input
+              :value="form.coupon_code"
+              @input="changeCouponCode"
+            />
+          </el-form-item>
+
+          <el-form-item>
+            <el-radio-group
+              v-model="form.coupon_code_use"
+              prop="coupon_code_use"
+            >
+              <el-radio
+                label="online only"
+                border
+                :class="$style.radio"
+              >
+                Online only
+              </el-radio>
+              <el-radio
+                label="in-store only"
+                border
+                :class="$style.radio"
+              >
+                In-Store only
+              </el-radio>
+              <el-radio
+                label="online and in-store"
+                border
+                :class="$style.radio"
+              >
+                Online and In-Store
+              </el-radio>
+            </el-radio-group>
+          </el-form-item>
+
+          <el-form-item
+            v-if="form.coupon_code_use === 'online only' || form.coupon_code_use === 'online and in-store'"
+            label="Offer URL"
+            prop="offer_url"
+          >
+            <el-input v-model="form.offer_url" />
+          </el-form-item>
+        </template>
+        <template v-if="isOfferTypeUrl">
+          <el-form-item
+            label="URL"
+            prop="url"
+          >
+            <el-input v-model="form.url" />
+          </el-form-item>
+        </template>
+      </el-form>
+
+      <div
+        v-if="showPreview"
+        :class="$style.previewWrapper"
+      >
+        <div :class="$style.previewTitle">
+          Preview
+        </div>
+        <offers-preview
+          :retailer="retailerPreview"
+          :class="$style.preview"
+        />
+        <template v-if="form.terms">
+          <hr :class="['divider-primary', $style.divider]">
+          <div :class="$style.previewTitle">
+            Preview
+          </div>
+          <preview-of-modal title="Terms and Conditions">
+            <span>{{ form.terms }}</span>
+            <span slot="footer">
+              <el-button type="primary">
+                Got it
+              </el-button>
+            </span>
+          </preview-of-modal>
+        </template>
+        <template v-if="offerComponent">
+          <hr :class="['divider-primary', $style.divider]">
+          <div :class="$style.previewTitle">
+            Preview
+          </div>
+          <preview-of-modal
+            :title="offerComponent.title"
+            :full-body="offerComponent.fullBody"
+          >
+            <component
+              :is="offerComponent.name"
+              :offer="form"
+            />
+          </preview-of-modal>
+        </template>
+      </div>
+    </div>
+
     <div class="card-footer">
       <div v-if="isEdit">
         <el-button
@@ -472,6 +557,39 @@ export default {
 
   .radio {
     margin-right: rem(10px);
+  }
+
+  .previewWrapper {
+    width: calc(100% - 30rem);
+    padding-right: rem(50px);
+    margin-left: rem(100px);
+    user-select: none;
+  }
+
+  .preview {
+    pointer-events: none;
+    transform: scale(0.8);
+    transform-origin: left top;
+  }
+
+  .previewTitle {
+    margin-bottom: rem(15px);
+    font-size: rem(20px);
+    font-weight: 600;
+  }
+
+  .divider {
+    margin: rem(20px) 0;
+    background-image: linear-gradient(to left, transparent 50%, var(--color-dark-gray) 50%);
+  }
+
+  .formWrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .form {
+    flex-basis: 100%;
   }
 
   .msg {
