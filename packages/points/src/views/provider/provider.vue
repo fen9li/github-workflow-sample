@@ -2,11 +2,9 @@
 import { formatDate } from '@lib/utils/format-date'
 import DataBox from '~/components/data-box'
 import DataList from '~/components/data-list'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 import EditProviderModal from './modals/edit-provider-modal'
-
-import ProviderMock from './provider.mock.js'
 
 export default {
   name: 'ProviderDetail',
@@ -24,7 +22,6 @@ export default {
   data() {
     return {
       loading: false,
-      provider: ProviderMock,
       modal: {
         addRule: false,
         addLimit: false,
@@ -35,7 +32,7 @@ export default {
     }
   },
   computed: {
-    // ...mapState('provider', ['provider']),
+    ...mapState('provider', ['provider']),
     title() {
       const { provider } = this
 
@@ -56,14 +53,14 @@ export default {
     },
   },
   created() {
-    // this.fetchProviderData()
+    this.fetchProviderData()
   },
   methods: {
     ...mapActions('provider', ['getProvider']),
     async fetchProviderData() {
       this.loading = true
 
-      const err = await this.getProvider(this.id)
+      const [err] = await this.getProvider(this.id)
 
       if (err) {
         this.$router.replace({ name: 'providers' })
@@ -114,7 +111,7 @@ export default {
       header="Provider Details"
       :status="status"
     >
-      <data-list>
+      <data-list v-if="!loading">
         <dt>Date Created</dt>
         <dd>{{ formatDate(provider.createdAt) }}</dd>
 
