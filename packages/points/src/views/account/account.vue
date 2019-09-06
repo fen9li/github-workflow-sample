@@ -177,35 +177,35 @@ export default {
 
     <update-membership
       v-if="modals.updateMembership"
-      :id="id"
+      :id="account.id"
       :visible.sync="modals.updateMembership"
       @close-modal="modals.updateMembership = false"
     />
 
     <add-badge
       v-if="modals.addBadge"
-      :id="id"
+      :id="account.id"
       :visible.sync="modals.addBadge"
       @close-modal="modals.addBadge = false"
     />
 
     <add-metadata
       v-if="modals.addMetadata"
-      :id="id"
+      :id="account.id"
       :visible.sync="modals.addMetadata"
       @close-modal="modals.addMetadata = false"
     />
 
     <manual-adjustment
       v-if="modals.manualAdjustment"
-      :id="id"
+      :id="account.id"
       :visible.sync="modals.manualAdjustment"
       @close-modal="modals.manualAdjustment = false"
     />
 
     <delete-account
       v-if="modals.deleteAccount"
-      :id="id"
+      :id="account.id"
       :visible.sync="modals.deleteAccount"
       @close-modal="modals.deleteAccount = false"
     />

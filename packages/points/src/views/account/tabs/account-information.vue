@@ -70,13 +70,13 @@ export default {
         <dd>{{ account.providerId || '—' }}</dd>
 
         <dt>Current Balance</dt>
-        <dd>{{ account.balance || '—' }}</dd>
+        <dd>{{ account.balance }}</dd>
 
         <dt>Min Balance</dt>
-        <dd>{{ account.minBalance || '—' }}</dd>
+        <dd>{{ account.minBalance }}</dd>
 
         <dt>Max Balance</dt>
-        <dd>{{ account.maxBalance || '—' }}</dd>
+        <dd>{{ account.maxBalance }}</dd>
 
         <dt>Lifetime Points Earned</dt>
         <dd>{{ account.lifetimeBalance || '—' }}</dd>

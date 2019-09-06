@@ -1,22 +1,22 @@
 // import ApiProcessor from '@lib/processors/api-processor'
-import MockProcessor from '@lib/processors/mock-processor'
+// import MockProcessor from '@lib/processors/mock-processor'
 import Buttons from './account-metadata-buttons'
 
 const TABLE_FILTERS = [
+  // {
+  //   attribute: 'createdAt',
+  //   label: 'Date Created',
+  //   type: 'date',
+  //   icon: 'el-icon-date',
+  // },
   {
-    attribute: 'createdAt',
-    label: 'Date Created',
-    type: 'date',
-    icon: 'el-icon-date',
-  },
-  {
-    attribute: 'key',
+    attribute: '[0]',
     label: 'Key',
     type: 'string',
     icon: 'el-icon-document',
   },
   {
-    attribute: 'value',
+    attribute: '[1]',
     label: 'Value',
     type: 'string',
     icon: 'el-icon-document',
@@ -24,22 +24,22 @@ const TABLE_FILTERS = [
 ]
 
 const TABLE_COLUMNS = [
+  // {
+  //   name: 'createdAt',
+  //   label: 'Date Created',
+  //   format: 'dateTime',
+  //   icon: 'el-icon-date',
+  //   sortable: false,
+  //   width: 160,
+  // },
   {
-    name: 'createdAt',
-    label: 'Date Created',
-    format: 'dateTime',
-    icon: 'el-icon-date',
-    sortable: false,
-    width: 160,
-  },
-  {
-    name: 'key',
+    name: '[0]',
     label: 'Key',
     icon: 'el-icon-document',
     width: 300,
   },
   {
-    name: 'value',
+    name: '[1]',
     label: 'Value',
     icon: 'el-icon-document',
     width: 300,
@@ -55,16 +55,22 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default component => ({
-  // processor: new ApiProcessor({
-  //   component,
-  //   path: 'metadata',
-  // }),
-  processor: new MockProcessor({
-    component,
-    mockFrom: 'metadata',
-  }),
+// export default component => ({
+//   // processor: new ApiProcessor({
+//   //   component,
+//   //   path: 'metadata',
+//   // }),
+//   processor: new MockProcessor({
+//     component,
+//     mockFrom: 'metadata',
+//   }),
+//   filters: TABLE_FILTERS,
+//   columns: TABLE_COLUMNS,
+//   tableName: 'metadata'
+// })
+
+export default {
+  processor: null,
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
-  tableName: 'metadata'
-})
+}

@@ -1,4 +1,7 @@
 <script>
+import camelCase from 'lodash/camelCase'
+import { mapActions } from 'vuex'
+
 export default {
   name: 'AddMetadata',
   props: {
@@ -36,10 +39,30 @@ export default {
     }
   },
   methods: {
+    ...mapActions('account', [
+      'updateAccount',
+    ]),
     async onSubmit() {
+      const formValid = await this.$refs.form.validate().catch(() => false)
+      if (!formValid) {
+        return
+      }
       this.progress = true
-      this.$emit('close-modal')
+      await this.updateAccount({
+        id: this.id,
+        form: {
+          metadata: {
+            [camelCase(this.form.key)]: this.form.value
+          }
+        }
+      })
       this.progress = false
+      this.$emit('close-modal')
+      this.$notify({
+        type: 'success',
+        title: 'Metadata updated',
+        message: `Metadata for ${this.id} successfully updated`,
+      })
     },
   },
 }

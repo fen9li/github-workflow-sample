@@ -34,7 +34,7 @@ export default {
 
 <template>
   <el-dialog
-    title="Update Membership"
+    title="Manual Adjustment"
     v-bind="$attrs"
     modal-append-to-body
     append-to-body

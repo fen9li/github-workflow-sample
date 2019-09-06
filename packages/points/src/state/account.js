@@ -19,6 +19,10 @@ const actions = {
     const result = await api.put(`/accounts/${id}`, form)
     return result
   },
+  async deleteAccount(store, id) {
+    const result = await api.delete(`/accounts/${id}`)
+    return result
+  },
 }
 
 export default {

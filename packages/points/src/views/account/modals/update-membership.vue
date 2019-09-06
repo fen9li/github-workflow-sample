@@ -44,7 +44,9 @@ export default {
       :model="form"
       label-position="top"
     >
-      <el-form-item>
+      <el-form-item
+        label="membership"
+      >
         <el-select v-model="form.membership">
           <el-option
             v-for="(item, index) in memberships"

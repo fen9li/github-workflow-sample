@@ -1,4 +1,6 @@
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'DeleteAccount',
   props: {
@@ -13,10 +15,22 @@ export default {
     }
   },
   methods: {
+    ...mapActions('account', [
+      'deleteAccount',
+    ]),
     async onSubmit() {
       this.progress = true
-      this.$emit('close-modal')
+      await this.deleteAccount(this.id)
       this.progress = false
+      this.$emit('close-modal')
+      this.$notify({
+        type: 'success',
+        title: 'Accound deleted',
+        message: `Accound for ${this.id} successfully deleted`,
+      })
+      this.$router.push({
+        name: 'accounts',
+      })
     },
   },
 }
