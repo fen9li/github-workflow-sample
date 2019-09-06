@@ -17,6 +17,15 @@ const router = new Router({
       },
     },
     {
+      path: '/account/:id/:tab?',
+      name: 'account',
+      component: () => lazy(import('./views/account')),
+      props: true,
+      meta: {
+        menu: 'accounts',
+      },
+    },
+    {
       path: '/providers',
       name: 'providers',
       component: () => lazy(import('./views/providers')),
