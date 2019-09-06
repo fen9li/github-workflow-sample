@@ -6,7 +6,7 @@ import ManageLib from '@lib'
 import applications from '@lib/applications'
 
 Vue.use(ManageLib, {
-  config: applications.super,
+  config: applications.points,
   router,
   store,
 })

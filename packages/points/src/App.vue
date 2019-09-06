@@ -15,8 +15,8 @@ export default {
   methods: {
     handleLoginEvent(data) {
       const authHeader = `Bearer ${data.accessToken}`
-
       API.defaults.headers.common['Authorization'] = authHeader
+      this.$store.dispatch('providers/getProviders')
     },
   },
 }
