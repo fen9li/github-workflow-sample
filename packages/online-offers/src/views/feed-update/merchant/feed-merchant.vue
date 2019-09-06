@@ -130,14 +130,16 @@ export default {
           <dt>Summary</dt>
           <dd>{{ details.map.summary || '—' }}</dd>
 
-          <dt>Commission Rate</dt>
-          <dd>
-            {{
-              details.map.commission
-                ? formatDollar(details.map.commission.base)
-                : '—'
-            }}
-          </dd>
+          <template v-if="!rakuten">
+            <dt>Commission Rate</dt>
+            <dd>
+              {{
+                details.map.commission
+                  ? formatDollar(details.map.commission.base)
+                  : '—'
+              }}
+            </dd>
+          </template>
 
           <dt>Merchant Website</dt>
           <dd>{{ details.map.website || '—' }}</dd>
