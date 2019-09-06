@@ -36,6 +36,8 @@ export default {
   <el-dialog
     title="Update Membership"
     v-bind="$attrs"
+    modal-append-to-body
+    append-to-body
     v-on="$listeners"
   >
     <el-form

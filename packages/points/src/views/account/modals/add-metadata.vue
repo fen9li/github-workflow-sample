@@ -49,6 +49,8 @@ export default {
   <el-dialog
     :title="title"
     v-bind="$attrs"
+    modal-append-to-body
+    append-to-body
     v-on="$listeners"
   >
     <el-form

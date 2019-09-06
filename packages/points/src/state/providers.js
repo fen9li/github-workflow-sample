@@ -5,7 +5,15 @@ const state = {
   providers: [],
 }
 
-const getters = {}
+const getters = {
+  getProviderName: state => id => {
+    if (state.providers.length) {
+      const provider = state.providers.find(provider => provider.id === id)
+      return provider.name
+    }
+    return null
+  },
+}
 
 const mutations = {
   SET_PROVIDERS(state, payload) {

@@ -1,4 +1,5 @@
 <script>
+import { mapActions } from 'vuex'
 import capitalize from 'lodash/capitalize'
 import AccountInformation from './tabs/account-information'
 import AccountBadges from './tabs/account-badges'
@@ -34,8 +35,9 @@ export default {
   },
   data() {
     return {
+      account: {},
       activeTab: '',
-      progress: false,
+      loading: true,
       modals: {
         updateMembership: false,
         addBadge: false,
@@ -91,9 +93,20 @@ export default {
   },
   created() {
     this.activeTab = this.$route.params.tab || 'information'
+    this.getAccountData()
   },
   methods: {
+    ...mapActions('account', [
+      'getAccount'
+    ]),
     capitalize,
+    async getAccountData(){
+      const [, response] = await this.getAccount(this.id)
+      if (response) {
+        this.account = { ...response }
+      }
+      this.loading = false
+    },
     onTabChanged(tabName) {
       this.$router.push({
         name: 'account',
@@ -117,6 +130,7 @@ export default {
   <main-layout
     :title="`Account ${id}`"
     :back="{ name: 'accounts' }"
+    :loading="loading"
   >
     <el-dropdown
       slot="header"
@@ -155,7 +169,8 @@ export default {
       >
         <component
           :is="`Account${capitalize(tab.name)}`"
-          :id="id"
+          :loading="loading"
+          :account="account"
         />
       </el-tab-pane>
     </el-tabs>

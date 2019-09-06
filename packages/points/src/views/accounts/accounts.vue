@@ -1,9 +1,13 @@
 <script>
 import accountsTable from './accounts.table'
+import createAccount from '../account/modals/create-account'
 import getExportedFilename from '@lib/utils/get-exported-filename'
 
 export default {
   name: "AccountsPoints",
+  components: {
+    createAccount,
+  },
   data() {
     return {
       table: accountsTable(this),
@@ -27,6 +31,10 @@ export default {
 
 <template>
   <main-layout title="Accounts">
+    <createAccount
+      slot="header"
+      :account-processor="table.processor"
+    />
     <table-layout
       :table-name="table.tableName"
       :processor="table.processor"

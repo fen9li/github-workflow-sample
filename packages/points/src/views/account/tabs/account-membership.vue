@@ -5,8 +5,8 @@ import getExportedFilename from '@lib/utils/get-exported-filename'
 export default {
   name: 'AccountMembership',
   props: {
-    id: {
-      type: String,
+    account: {
+      type: Object,
       required: true,
     },
   },
