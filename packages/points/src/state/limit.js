@@ -13,8 +13,20 @@ const mutations = {
 }
 
 const actions = {
+  async getLimit({ commit }, limitId) {
+    const res = await api.get(`/limits/${limitId}`)
+    const [err, limit] = res
+
+    if (err) {
+      return err
+    }
+
+    commit('SET_LIMIT', limit)
+
+    return res
+  },
   async createLimit({ commit }, form) {
-    const res = await api.post(`/limits/`, form)
+    const res = await api.post('/limits/', form)
     const [err] = res
 
     if (err) {
@@ -33,6 +45,17 @@ const actions = {
     }
 
     commit('SET_LIMIT', limit)
+
+    return res
+  },
+
+  async deleteLimit({ commit }, limitId) {
+    const res = await api.delete(`/limits/${limitId}`)
+    const [err] = res
+
+    if (err) {
+      return err
+    }
 
     return res
   },

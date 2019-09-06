@@ -81,6 +81,15 @@ const router = new Router({
       },
     },
     {
+      path: '/limits/:limitId',
+      name: 'limit-details',
+      component: () => lazy(import('./views/limit')),
+      props: true,
+      meta: {
+        menu: 'limits',
+      },
+    },
+    {
       path: '/badges',
       name: 'badges',
       component: () => lazy(import('./views/badges')),

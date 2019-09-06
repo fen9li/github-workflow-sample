@@ -69,6 +69,7 @@ export default {
     }
 
     this.form = {
+      ...this.form,
       ...pick(this.limit, [
         'name',
         'type',

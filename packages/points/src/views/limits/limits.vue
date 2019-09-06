@@ -20,7 +20,7 @@ export default {
       this.$router.push({
         name: 'limit-details',
         params: {
-          id: row.id,
+          limitId: row.id,
         },
       })
     },
