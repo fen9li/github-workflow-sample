@@ -105,10 +105,10 @@ export default {
           <dt>Merchant Name</dt>
           <dd>{{ merchant.name }}</dd>
           <dt>Commission Aggregator</dt>
-          <dd>{{ feed.feed }}</dd>
+          <dd>{{ feed.feed || '–' }}</dd>
           <dt>Commission Type</dt>
           <dd>{{ commission.type || '–' }}</dd>
-          <template v-if="commission">
+          <template v-if="commission.base">
             <dt>Commission Rate</dt>
             <dd>
               <span :class="$style.rate">
@@ -127,9 +127,9 @@ export default {
             {{ categories }}
           </dd>
           <dt>Summary</dt>
-          <dd>{{ merchant.summary }}</dd>
+          <dd>{{ merchant.summary || '–' }}</dd>
           <dt>Merchant Website</dt>
-          <dd>{{ merchant.website }}</dd>
+          <dd>{{ merchant.website || '–' }}</dd>
           <dt>Terms & Conditions</dt>
           <dd
             v-if="merchant.terms"
