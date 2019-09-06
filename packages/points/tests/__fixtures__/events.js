@@ -6,8 +6,9 @@ module.exports = {
       "name": "Melbourne Cup",
       "type": "Earn",
       "value": 23,
+      "providerName": "Suncorp",
       "updatedAt": "2019-05-06T16:34:52Z",
-      "status": "approved",
+      "status": "active",
     },
     {
       "createdAt": "2019-05-06T16:34:52Z",
@@ -15,8 +16,9 @@ module.exports = {
       "name": "Melbourne White Night",
       "type": "Earn",
       "value": 100,
+      "providerName": "Optus",
       "updatedAt": "2019-05-06T16:34:52Z",
-      "status": "completed",
+      "status": "inactive",
     },
     {
       "createdAt": "2019-05-06T16:34:52Z",
@@ -24,8 +26,9 @@ module.exports = {
       "name": "Queens Bday",
       "type": "Burn",
       "value": -23,
+      "providerName": "Suncorp",
       "updatedAt": "2019-05-06T16:34:52Z",
-      "status": "failed",
+      "status": "active",
     },
     {
       "createdAt": "2019-05-06T16:34:52Z",
@@ -33,8 +36,9 @@ module.exports = {
       "name": "Melbourne Cup",
       "type": "Burn",
       "value": -100,
+      "providerName": "Optus",
       "updatedAt": "2019-05-06T16:34:52Z",
-      "status": "pending",
+      "status": "inactive",
     },
   ]
 }

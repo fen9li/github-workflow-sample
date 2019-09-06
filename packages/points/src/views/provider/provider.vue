@@ -1,6 +1,7 @@
 <script>
 import { formatDate } from '@lib/utils/format-date'
 import DataBox from '~/components/data-box'
+import DataList from '~/components/data-list'
 import { mapActions } from 'vuex'
 
 import EditProviderModal from './modals/edit-provider-modal'
@@ -11,6 +12,7 @@ export default {
   name: 'ProviderDetail',
   components: {
     DataBox,
+    DataList,
     EditProviderModal
   },
   props: {
@@ -112,42 +114,44 @@ export default {
       header="Provider Details"
       :status="status"
     >
-      <dt>Date Created</dt>
-      <dd>{{ formatDate(provider.createdAt) }}</dd>
+      <data-list>
+        <dt>Date Created</dt>
+        <dd>{{ formatDate(provider.createdAt) }}</dd>
 
-      <dt>Provider ID</dt>
-      <dd>{{ provider.id }}</dd>
+        <dt>Provider ID</dt>
+        <dd>{{ provider.id }}</dd>
 
-      <dt>Provider Name</dt>
-      <dd>{{ provider.name }}</dd>
+        <dt>Provider Name</dt>
+        <dd>{{ provider.name }}</dd>
 
-      <dt>Label</dt>
-      <dd>{{ provider.label }}</dd>
+        <dt>Label</dt>
+        <dd>{{ provider.label }}</dd>
 
-      <dt>Logo</dt>
-      <dd
-        v-if="provider.logo"
-        :class="$style.logo"
-        :style="`background-image: url('${provider.logo}')`"
-      />
-      <dd v-else>
-        —
-      </dd>
+        <dt>Logo</dt>
+        <dd
+          v-if="provider.logo"
+          :class="$style.logo"
+          :style="`background-image: url('${provider.logo}')`"
+        />
+        <dd v-else>
+          —
+        </dd>
 
-      <dt>Schedule Rate</dt>
-      <dd>{{ provider.scheduledRate ? 'Enabled' : 'Disabled' }}</dd>
+        <dt>Schedule Rate</dt>
+        <dd>{{ provider.scheduledRate ? 'Enabled' : 'Disabled' }}</dd>
 
-      <dt>Schedule Date</dt>
-      <dd>{{ formatDate(provider.scheduledRate) }}</dd>
+        <dt>Schedule Date</dt>
+        <dd>{{ formatDate(provider.scheduledRate) }}</dd>
 
-      <dt>Earn Rate</dt>
-      <dd>{{ provider.earnRate }}</dd>
+        <dt>Earn Rate</dt>
+        <dd>{{ provider.earnRate }}</dd>
 
-      <dt>Burn Rate</dt>
-      <dd>{{ provider.burnRate }}</dd>
+        <dt>Burn Rate</dt>
+        <dd>{{ provider.burnRate }}</dd>
 
-      <dt>Last Updated</dt>
-      <dd>{{ formatDate(provider.updatedAt) }}</dd>
+        <dt>Last Updated</dt>
+        <dd>{{ formatDate(provider.updatedAt) }}</dd>
+      </data-list>
     </data-box>
 
     <edit-provider-modal

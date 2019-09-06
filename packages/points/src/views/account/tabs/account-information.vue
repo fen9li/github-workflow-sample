@@ -1,6 +1,7 @@
 <script>
 import { formatDate } from '@lib/utils/format-date'
 import DataBox from '~/components/data-box'
+import DataList from '~/components/data-list'
 import { mapActions } from 'vuex'
 import userMock from '@tests/__fixtures__/account'
 
@@ -8,6 +9,7 @@ export default {
   name: 'AccountInformationTab',
   components: {
     DataBox,
+    DataList,
   },
   props: {
     id: {
@@ -60,72 +62,72 @@ export default {
       header="User Details"
       :status="status"
     >
-      <dt>Date Created</dt>
-      <dd>{{ formatDate(account.createdAt) }}</dd>
+      <data-list>
+        <dt>Date Created</dt>
+        <dd>{{ formatDate(account.createdAt) }}</dd>
 
-      <dt>Provider Name</dt>
-      <dd>{{ account.provider || '—' }}</dd>
+        <dt>Provider Name</dt>
+        <dd>{{ account.provider || '—' }}</dd>
 
-      <dt>External ID</dt>
-      <dd>{{ account.externalId || '—' }}</dd>
+        <dt>External ID</dt>
+        <dd>{{ account.externalId || '—' }}</dd>
 
-      <dt>Account ID</dt>
-      <dd>{{ account.id || '—' }}</dd>
+        <dt>Account ID</dt>
+        <dd>{{ account.id || '—' }}</dd>
 
-      <dt>Provider ID</dt>
-      <dd>{{ account.providerId || '—' }}</dd>
+        <dt>Provider ID</dt>
+        <dd>{{ account.providerId || '—' }}</dd>
 
-      <dt>Current Balance</dt>
-      <dd>{{ account.balance.current || '—' }}</dd>
+        <dt>Current Balance</dt>
+        <dd>{{ account.balance.current || '—' }}</dd>
 
-      <dt>Min Balance</dt>
-      <dd>{{ account.balance.min || '—' }}</dd>
+        <dt>Min Balance</dt>
+        <dd>{{ account.balance.min || '—' }}</dd>
 
-      <dt>Max Balance</dt>
-      <dd>{{ account.balance.max || '—' }}</dd>
+        <dt>Max Balance</dt>
+        <dd>{{ account.balance.max || '—' }}</dd>
 
-      <dt>Life1me Points Earned</dt>
-      <dd>{{ account.earned || '—' }}</dd>
+        <dt>Life1me Points Earned</dt>
+        <dd>{{ account.earned || '—' }}</dd>
 
-      <dt>Membership</dt>
-      <dd>{{ account.membership || '—' }}</dd>
+        <dt>Membership</dt>
+        <dd>{{ account.membership || '—' }}</dd>
 
-      <dt>Last Updated</dt>
-      <dd>{{ formatDate(account.updatedAt) }}</dd>
+        <dt>Last Updated</dt>
+        <dd>{{ formatDate(account.updatedAt) }}</dd>
+      </data-list>
 
-      <div slot="boxFooter">
-        <hr :class="['divider-primary', 'info-block__divider']">
-        <div :class="$style.title">
-          Badges
-        </div>
-
-        <ul :class="$style.badges">
-          <li
-            v-for="(badge, index) in account.badges"
-            :key="index"
-            :class="$style.badge"
-          >
-            <div
-              :class="$style.logo"
-              :style="{backgroundImage: `url(${badge.logo})`}"
-            />
-            <dl :class="$style.list">
-              <dt :class="$style.key">
-                Name
-              </dt>
-              <dd :class="$style.value">
-                <b>{{ badge.name }}</b>
-              </dd>
-              <dt :class="$style.key">
-                Attained
-              </dt>
-              <dd :class="$style.value">
-                {{ badge.attained }}
-              </dd>
-            </dl>
-          </li>
-        </ul>
+      <hr :class="['divider-primary', 'info-block__divider']">
+      <div :class="$style.title">
+        Badges
       </div>
+
+      <ul :class="$style.badges">
+        <li
+          v-for="(badge, index) in account.badges"
+          :key="index"
+          :class="$style.badge"
+        >
+          <div
+            :class="$style.logo"
+            :style="{backgroundImage: `url(${badge.logo})`}"
+          />
+          <dl :class="$style.list">
+            <dt :class="$style.key">
+              Name
+            </dt>
+            <dd :class="$style.value">
+              <b>{{ badge.name }}</b>
+            </dd>
+            <dt :class="$style.key">
+              Attained
+            </dt>
+            <dd :class="$style.value">
+              {{ badge.attained }}
+            </dd>
+          </dl>
+        </li>
+      </ul>
     </data-box>
   </div>
 </template>

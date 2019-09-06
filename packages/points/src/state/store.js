@@ -5,6 +5,7 @@ import account from './account'
 import ui from './ui'
 import providers from './providers'
 import provider from './provider'
+import event from './event'
 import rule from './rule'
 
 Vue.use(Vuex)
@@ -15,6 +16,7 @@ export default new Vuex.Store({
     ui,
     providers,
     provider,
+    event,
     rule,
   },
 })
