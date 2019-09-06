@@ -1,11 +1,56 @@
 <script>
-export default {
+import table from './rules.table.js'
+import RuleCreateModal from './modals/rule-create-modal.vue'
 
+export default {
+  name: 'Rules',
+  components: {
+    RuleCreateModal,
+  },
+  data() {
+    return {
+      table: table(this),
+      modal: {
+        create: false,
+      },
+    }
+  },
+  methods: {
+    onRowClick(row) {
+      this.$router.push({
+        name: 'rule-details',
+        params: {
+          id: row.id,
+        },
+      })
+    },
+  },
 }
 </script>
 
 <template>
   <main-layout title="Rules">
-    Rules Content
+    <template slot="header">
+      <el-button
+        type="primary"
+        class="el-button--wide"
+        @click="modal.create = true"
+      >
+        Add Rule
+      </el-button>
+      <rule-create-modal
+        v-if="modal.create"
+        :visible.sync="modal.create"
+        @success="modal.create = false"
+      />
+    </template>
+    <table-layout
+      table-name="rules"
+      :processor="table.processor"
+      :filters="table.filters"
+      :columns="table.columns"
+      :fragments="false"
+      @row-click="onRowClick"
+    />
   </main-layout>
 </template>
