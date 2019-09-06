@@ -77,13 +77,6 @@ export default {
           path: 'feed_offer.map.end_date',
           format: this.formatDate,
         },
-        {
-          changed: false,
-          key: 'tracking_url',
-          label: 'Tracking URL',
-          path: 'tracking_url',
-          format: v => v || '—',
-        },
       ],
       feedOffers: [],
     }
@@ -367,9 +360,6 @@ export default {
 
           <dt>Terms & Conditions</dt>
           <dd>{{ offer.terms || '-' }}</dd>
-
-          <dt>Offer Tracking URL</dt>
-          <dd>{{ '-' }}</dd>
         </dl>
       </div>
     </el-card>
