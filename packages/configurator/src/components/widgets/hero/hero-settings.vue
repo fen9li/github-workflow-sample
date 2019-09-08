@@ -1,12 +1,15 @@
 <script>
+import SettingsMixin from '../settings.mixin'
+
 export default {
-  name: 'DashboardView',
+  name: 'HeroWidget',
+  mixins: [SettingsMixin],
 }
 </script>
 
 <template>
   <div :class="$style.root">
-    Dashboard View
+    Hero
   </div>
 </template>
 

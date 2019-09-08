@@ -22,15 +22,24 @@ const router = new VueRouter({
       path: '/modules',
       name: 'modules',
       component: () => lazy(import('~/views/modules')),
+      meta: {
+        title: 'Modules',
+      },
     },
     {
       path: '/dashboard',
       name: 'dashboard',
       component: () => lazy(import('~/views/dashboard')),
+      meta: {
+        title: 'Dashboard',
+      },
     },
     {
       path: '/menu',
       name: 'menu',
+      meta: {
+        title: 'Menu',
+      },
       component: () => lazy(import('~/views/menu')),
     },
     {
