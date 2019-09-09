@@ -63,12 +63,12 @@ export default {
       }
 
       this.progress = true
-      const [error, response] = await this.updateBadge({
+      const [, response] = await this.updateBadge({
         id: this.badge.id,
-        form: this.badge,
+        form: this.form,
       })
 
-      if (!error) {
+      if (response) {
         this.$emit('success', response)
       }
       this.progress = false

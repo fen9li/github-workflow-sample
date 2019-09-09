@@ -27,7 +27,9 @@ export default {
       this.progress = true
       const [error] = await this.archiveBadge(this.id)
       if (!error) {
-        this.$emit('success')
+        this.$router.push({
+          name: 'badges',
+        })
       }
       this.progress = false
     },
