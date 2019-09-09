@@ -1,6 +1,3 @@
-// import ApiProcessor from '@lib/processors/api-processor'
-import MockProcessor from '@lib/processors/mock-processor'
-
 const TABLE_FILTERS = [
   {
     attribute: 'createdAt',
@@ -137,16 +134,9 @@ const TABLE_COLUMNS = [
   },
 ]
 
-export default component => ({
-  // processor: new ApiProcessor({
-  //   component,
-  //   path: 'events',
-  // }),
-  processor: new MockProcessor({
-    component,
-    mockFrom: 'events',
-  }),
+export default {
+  processor: null,
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
-  tableName: 'events'
-})
+  tableName: 'account-event-occurrences'
+}
