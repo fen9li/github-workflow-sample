@@ -106,6 +106,12 @@ const router = new Router({
       },
     },
     {
+      path: '/membership/:id',
+      name: 'membership',
+      component: () => lazy(import('./views/membership')),
+      props: true,
+    },
+    {
       path: '*',
       redirect: '/accounts',
     },

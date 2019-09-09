@@ -132,7 +132,7 @@ export default component => ({
   // }),
   processor: new MockProcessor({
     component,
-    mockFrom: 'membership',
+    mockFrom: 'memberships',
   }),
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,

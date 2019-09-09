@@ -1,5 +1,5 @@
-// import ApiProcessor from '@lib/processors/api-processor'
-import MockProcessor from '@lib/processors/mock-processor'
+import ApiProcessor from '@lib/processors/api-processor'
+// import MockProcessor from '@lib/processors/mock-processor'
 
 const TABLE_FILTERS = [
   {
@@ -10,7 +10,7 @@ const TABLE_FILTERS = [
   },
   {
     attribute: 'id',
-    label: 'Event ID',
+    label: 'Membership ID',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -57,18 +57,13 @@ const TABLE_COLUMNS = [
   },
   {
     name: 'id',
-    label: 'Event ID',
+    label: 'Membership ID',
     icon: 'el-icon-document',
   },
   {
     name: 'name',
-    label: 'Event Name',
+    label: 'Membership Name',
     icon: 'el-icon-document',
-  },
-  {
-    name: 'type',
-    icon: 'el-icon-document',
-    width: 80,
   },
   {
     name: 'providerName',
@@ -115,14 +110,14 @@ const TABLE_COLUMNS = [
 ]
 
 export default component => ({
-  // processor: new ApiProcessor({
-  //   component,
-  //   path: 'events',
-  // }),
-  processor: new MockProcessor({
+  processor: new ApiProcessor({
     component,
-    mockFrom: 'events',
+    path: 'memberships',
   }),
+  // processor: new MockProcessor({
+  //   component,
+  //   mockFrom: 'memberships',
+  // }),
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
   tableName: 'users'
