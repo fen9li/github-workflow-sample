@@ -2,6 +2,7 @@
 import { datePickerFormat } from '@lib/utils/date-helper'
 import { mask } from 'vue-the-mask'
 import MultipleSelect from '~/components/multiple-select'
+import { mapActions } from 'vuex'
 
 const EVENTS = [{
   name: 'Event 1',
@@ -28,7 +29,7 @@ export default {
       events: EVENTS,
       form: {
         name: '',
-        type: 'Earn',
+        type: 'earn',
         provider: 'Suncorp',
         events: [EVENTS[0].id],
         ruleExpression: '',
@@ -50,25 +51,28 @@ export default {
     }
   },
   methods: {
+    ...mapActions('rule', ['createRule']),
     addEvent() {
       this.form.events.push(EVENTS[0].id)
     },
     removeEvent(index) {
       this.form.events.splice(index, 1)
     },
-    onSubmit() {
+    async onSubmit() {
       this.$refs.form.validate(valid => {
         if (!valid) {
           return false
         }
-
-        this.progress = true
-
-        setTimeout(() => {
-          this.progress = false
-          this.$emit('success')
-        }, 1000)
       })
+      this.progress = true
+
+      const [, result] = await this.createRule(this.form)
+
+      if (result) {
+        this.$emit('done')
+      } else {
+        this.progress = false
+      }
     },
   },
 }
@@ -106,13 +110,13 @@ export default {
               prop="type"
             >
               <el-radio
-                label="Earn"
+                label="earn"
                 :class="$style.radio"
               >
                 Earn
               </el-radio>
               <el-radio
-                label="Burn"
+                label="burn"
                 :class="$style.radio"
               >
                 Burn
@@ -151,7 +155,7 @@ export default {
             prop="ruleExpression"
           >
             <el-input
-              v-model="form.ruleExpression"
+              v-model="form.expression"
               type="textarea"
               :rows="4"
             />
@@ -200,10 +204,13 @@ export default {
             </el-form-item>
           </div>
           <el-form-item
-            label="Rule Priority (0 - 5000)"
+            label="Rule Priority (-5000 — -1 or 5001 — 1000)"
             prop="priority"
           >
-            <el-input v-model="form.priority" />
+            <el-input
+              v-model="form.priority"
+              type="number"
+            />
           </el-form-item>
         </el-form>
         <div

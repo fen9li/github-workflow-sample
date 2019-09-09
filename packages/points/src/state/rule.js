@@ -13,37 +13,25 @@ const mutations = {
 }
 
 const actions = {
-  async getRule({
-    commit
-  }, ruleId) {
-    const res = await api.get(`/rules/${ ruleId }`)
-    const [err, rule] = res
-
-    if (err) {
-      return err
+  async getRule({ commit }, ruleId) {
+    const [err, rule]  = await api.get(`/global-rules/${ ruleId }`)
+    if (rule) {
+      commit('SET_RULE', rule)
     }
-
-    commit('SET_RULE', rule)
-
-    return res
+    return [err, rule]
   },
 
-  async updateRule({
-    commit
-  }, {
-    ruleId,
-    form
-  }) {
-    const res = await api.put(`/rules/${ ruleId }`, form)
-    const [err, rule] = res
+  async createRule(store, form) {
+    const result = await api.post('/global-rules', form)
+    return result
+  },
 
-    if (err) {
-      return err
+  async updateRule({ commit }, { ruleId, form }) {
+    const [err, rule] = await api.put(`/global-rules/${ ruleId }`, form)
+    if (rule) {
+      commit('SET_RULE', rule)
     }
-
-    commit('SET_RULE', rule)
-
-    return res
+    return [err, rule]
   },
 }
 

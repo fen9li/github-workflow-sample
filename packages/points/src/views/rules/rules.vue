@@ -24,6 +24,10 @@ export default {
         },
       })
     },
+    async onCreate(){
+      await this.table.processor.getData()
+      this.modal.create = false
+    },
   },
 }
 </script>
@@ -41,7 +45,7 @@ export default {
       <rule-create-modal
         v-if="modal.create"
         :visible.sync="modal.create"
-        @success="modal.create = false"
+        @done="onCreate"
       />
     </template>
     <table-layout

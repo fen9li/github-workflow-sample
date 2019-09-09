@@ -1,5 +1,5 @@
-// import ApiProcessor from '@lib/processors/api-processor'
-import MockProcessor from '@lib/processors/mock-processor'
+import ApiProcessor from '@lib/processors/api-processor'
+// import MockProcessor from '@lib/processors/mock-processor'
 
 const TABLE_FILTERS = [{
   attribute: 'createdAt',
@@ -138,14 +138,14 @@ const TABLE_COLUMNS = [{
 
 export default function (component) {
   return {
-    processor: new MockProcessor({
-      component,
-      mockFrom: 'rules',
-    }),
-    // processor: new ApiProcessor({
+    // processor: new MockProcessor({
     //   component,
-    //   path: 'rules',
+    //   mockFrom: 'rules',
     // }),
+    processor: new ApiProcessor({
+      component,
+      path: 'global-rules',
+    }),
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,
   }
