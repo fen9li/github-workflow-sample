@@ -10,6 +10,7 @@ import events from './events'
 import rule from './rule'
 import globalLimit from './global-limit.js'
 import membership from './membership'
+import badge from './badge'
 
 Vue.use(Vuex)
 
@@ -24,5 +25,6 @@ export default new Vuex.Store({
     rule,
     globalLimit,
     membership,
+    badge,
   },
 })
