@@ -139,11 +139,13 @@ const TABLE_COLUMNS = [{
 export default function (component) {
   return {
     processor: new MockProcessor({
-      // processor: new ApiProcessor({
       component,
       mockFrom: 'rules',
-      // path: 'rules',
     }),
+    // processor: new ApiProcessor({
+    //   component,
+    //   path: 'rules',
+    // }),
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,
   }

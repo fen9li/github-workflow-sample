@@ -51,6 +51,12 @@ const router = new Router({
       },
     },
     {
+      path: '/rule/:id',
+      name: 'rule-details',
+      component: () => lazy(import('./views/rule')),
+      props: true,
+    },
+    {
       path: '/events',
       name: 'events',
       component: () => lazy(import('./views/events')),
