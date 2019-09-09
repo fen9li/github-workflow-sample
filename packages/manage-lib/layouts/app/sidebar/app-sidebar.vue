@@ -160,7 +160,7 @@ export default {
   .menu__link {
     display: flex;
     align-items: center;
-    padding: 0.75rem 1.5rem;
+    padding: 1rem 1.5rem;
     font-size: 1rem;
     color: var(--color-primary-text);
     cursor: pointer;
