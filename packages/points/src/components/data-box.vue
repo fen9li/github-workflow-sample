@@ -12,6 +12,10 @@ export default {
       type: String,
       default: '',
     },
+    statusObj: {
+      type: Object,
+      default: () => {}
+    }
   },
   computed: {
     capitalizedStatus() {
@@ -40,6 +44,17 @@ export default {
             :class="$style.statusIcon"
           />
           <span>{{ capitalizedStatus }}</span>
+        </div>
+        <div
+          v-else-if="statusObj"
+          :class="$style.status"
+          :style="{color: statusObj.color}"
+        >
+          <el-icon
+            :name="statusObj.icon"
+            :class="$style.statusIcon"
+          />
+          <span>{{ statusObj.label }}</span>
         </div>
       </div>
       <slot name="boxHeader" />
