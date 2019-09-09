@@ -5,17 +5,15 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'PointsApp',
   computed: {
-    ...mapGetters('auth', [
-      'loggedIn',
-    ]),
-    ...mapGetters('ui', [
-      'menu',
-    ]),
+    ...mapGetters('auth', ['loggedIn']),
+    ...mapGetters('ui', ['menu']),
   },
   methods: {
     handleLoginEvent(data) {
       const authHeader = `Bearer ${data.accessToken}`
+
       API.defaults.headers.common['Authorization'] = authHeader
+
       this.$store.dispatch('providers/getProviders')
     },
   },
@@ -34,9 +32,11 @@ export default {
 
 <!-- This should generally be the only global CSS in the app. -->
 <style lang="scss">
-
 #nprogress .bar {
   background: var(--color-link);
 }
 
+.modal-loader {
+  height: 200px;
+}
 </style>

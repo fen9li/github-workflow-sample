@@ -1,17 +1,10 @@
 <script>
 import MultipleSelect from '~/components/multiple-select'
+import { mapActions, mapState } from 'vuex'
 import { datePickerFormat } from '@lib/utils/date-helper'
 import { mask } from 'vue-the-mask'
 import pick from 'lodash/pick'
 import get from 'lodash/get'
-
-const EVENTS = [{
-  name: 'Event 1',
-  id: '123',
-}, {
-  name: 'Event 2',
-  id: '345',
-}]
 
 export default {
   name: 'RuleEditModal',
@@ -30,8 +23,6 @@ export default {
   data() {
     return {
       datePickerFormat,
-      providers: ['Suncorp', 'Optus', 'PA', 'Guild Super'],
-      events: EVENTS,
       form: {
         name: null,
         type: null,
@@ -45,9 +36,18 @@ export default {
       },
       rules: {},
       progress: false,
+      loaded: false,
     }
   },
+  computed: {
+    ...mapState('providers', ['providers']),
+    ...mapState('events', ['events']),
+  },
   created() {
+    Promise.all([this.getProviders(), this.getEvents()]).then(() => {
+      this.loaded = true
+    })
+
     this.form = {
       ...pick(this.rule, [
         'name',
@@ -63,12 +63,8 @@ export default {
     }
   },
   methods: {
-    addEvent() {
-      this.form.events.push(EVENTS[0].id)
-    },
-    removeEvent(index) {
-      this.form.events.splice(index, 1)
-    },
+    ...mapActions('providers', ['getProviders']),
+    ...mapActions('events', ['getEvents']),
     onSubmit() {
       this.$refs.form.validate(valid => {
         if (!valid) {
@@ -94,137 +90,138 @@ export default {
       v-bind="$attrs"
       v-on="$listeners"
     >
-      <div>
-        <el-form
-          ref="form"
-          :model="form"
-          :rules="rules"
-          label-width="180px"
-          label-position="top"
+      <div
+        v-if="!loaded"
+        v-loading="true"
+        class="modal-loader"
+      />
+
+      <el-form
+        v-else
+        ref="form"
+        :model="form"
+        :rules="rules"
+        label-width="180px"
+        label-position="top"
+      >
+        <el-form-item
+          label="Rule Name"
+          prop="name"
         >
-          <el-form-item
-            label="Rule Name"
-            prop="name"
-          >
-            <el-input
-              :value="form.name"
-              disabled
-            />
-          </el-form-item>
-          <el-form-item
-            label="Event Type"
+          <el-input
+            :value="form.name"
+            disabled
+          />
+        </el-form-item>
+        <el-form-item
+          label="Event Type"
+          prop="type"
+          required
+        >
+          <el-radio-group
+            v-model="form.type"
             prop="type"
-            required
           >
-            <el-radio-group
-              v-model="form.type"
-              prop="type"
+            <el-radio
+              label="Earn"
+              :class="$style.radio"
             >
-              <el-radio
-                label="Earn"
-                :class="$style.radio"
-              >
-                Earn
-              </el-radio>
-              <el-radio
-                label="Burn"
-                :class="$style.radio"
-              >
-                Burn
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item
-            label="Provider Name"
-            prop="provider"
-          >
-            <el-select
-              v-model="form.provider"
-              placeholder="Select provider..."
+              Earn
+            </el-radio>
+            <el-radio
+              label="Burn"
+              :class="$style.radio"
             >
-              <el-option
-                v-for="(provider, index) in providers"
-                :key="index"
-                :label="provider"
-                :value="provider"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item
-            label="Event Name"
-            prop="events"
-          >
-            <multiple-select
-              :values="form.events"
-              :items="events"
-              @add="addEvent"
-              @remove="removeEvent"
-            />
-          </el-form-item>
-          <el-form-item
-            label="Rule Expression"
-            prop="ruleExpression"
-          >
-            <el-input
-              v-model="form.ruleExpression"
-              type="textarea"
-              :rows="4"
-            />
-          </el-form-item>
-          <el-form-item prop="enabled">
-            <el-switch
-              v-model="form.enabled"
-              active-color="#13ce66"
-              inactive-color="#a7a7a7"
-            />
-            <span
-              :class="[
-                $style.switchLabel,
-                form.enabled && $style.switchLabelActive,
-              ]"
-            >
-              Rule {{ form.enabled ? 'Enabled' : 'Disabled' }}
-            </span>
-          </el-form-item>
-          <div :class="$style.dates">
-            <el-form-item
-              label="Rule Start Date"
-              prop="startAt"
-            >
-              <el-date-picker
-                v-model="form.startAt"
-                v-mask="['##/##/####']"
-                type="date"
-                format="dd/MM/yyyy"
-                :value-format="datePickerFormat"
-                placeholder="Enter Date"
-              />
-            </el-form-item>
-            <el-form-item
-              label="Rule End Date"
-              prop="finishAt"
-            >
-              <el-date-picker
-                v-model="form.finishAt"
-                v-mask="['##/##/####']"
-                type="date"
-                format="dd/MM/yyyy"
-                :value-format="datePickerFormat"
-                placeholder="Enter Date"
-              />
-            </el-form-item>
-          </div>
-          <el-form-item
-            label="Rule Priority (0 - 5000)"
-            prop="priority"
-          >
-            <el-input v-model="form.priority" />
-          </el-form-item>
-        </el-form>
-        <div
-          slot="footer"
-          class="modal__footer"
+              Burn
+            </el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item
+          label="Provider Name"
+          prop="provider"
         >
+          <el-select
+            v-model="form.provider"
+            placeholder="Select provider..."
+            clearable
+          >
+            <el-option
+              v-for="provider in providers"
+              :key="provider.id"
+              :label="provider.name"
+              :value="provider.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="Event Name"
+          prop="events"
+        >
+          <multiple-select
+            v-model="form.events"
+            :items="events"
+          />
+        </el-form-item>
+        <el-form-item
+          label="Rule Expression"
+          prop="ruleExpression"
+        >
+          <el-input
+            v-model="form.ruleExpression"
+            type="textarea"
+            :rows="4"
+          />
+        </el-form-item>
+        <el-form-item prop="enabled">
+          <el-switch
+            v-model="form.enabled"
+            active-color="#13ce66"
+            inactive-color="#a7a7a7"
+          />
+          <span
+            :class="[
+              $style.switchLabel,
+              form.enabled && $style.switchLabelActive,
+            ]"
+          >
+            Rule {{ form.enabled ? 'Enabled' : 'Disabled' }}
+          </span>
+        </el-form-item>
+        <div :class="$style.dates">
+          <el-form-item
+            label="Rule Start Date"
+            prop="startAt"
+          >
+            <el-date-picker
+              v-model="form.startAt"
+              v-mask="['##/##/####']"
+              type="date"
+              format="dd/MM/yyyy"
+              :value-format="datePickerFormat"
+              placeholder="Enter Date"
+            />
+          </el-form-item>
+          <el-form-item
+            label="Rule End Date"
+            prop="finishAt"
+          >
+            <el-date-picker
+              v-model="form.finishAt"
+              v-mask="['##/##/####']"
+              type="date"
+              format="dd/MM/yyyy"
+              :value-format="datePickerFormat"
+              placeholder="Enter Date"
+            />
+          </el-form-item>
+        </div>
+        <el-form-item
+          label="Rule Priority (0 - 5000)"
+          prop="priority"
+        >
+          <el-input v-model="form.priority" />
+        </el-form-item>
+        <div class="modal__footer">
           <el-button
             type="primary"
             class="el-button--wide"
@@ -234,7 +231,7 @@ export default {
             Save
           </el-button>
         </div>
-      </div>
+      </el-form>
     </el-dialog>
   </div>
 </template>

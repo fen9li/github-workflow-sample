@@ -6,8 +6,9 @@ import ui from './ui'
 import providers from './providers'
 import provider from './provider'
 import event from './event'
+import events from './events'
 import rule from './rule'
-import limit from './limit'
+import globalLimit from './global-limit.js'
 import membership from './membership'
 
 Vue.use(Vuex)
@@ -19,8 +20,9 @@ export default new Vuex.Store({
     providers,
     provider,
     event,
+    events,
     rule,
-    limit,
+    globalLimit,
     membership,
   },
 })

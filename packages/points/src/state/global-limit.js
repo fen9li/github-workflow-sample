@@ -1,20 +1,20 @@
 import api from '~/api'
 
 const state = {
-  limit: null,
+  globalLimit: null,
 }
 
 const getters = {}
 
 const mutations = {
   SET_LIMIT(state, payload) {
-    state.limit = payload
+    state.globalLimit = payload
   },
 }
 
 const actions = {
-  async getLimit({ commit }, limitId) {
-    const res = await api.get(`/limits/${limitId}`)
+  async getGlobalLimit({ commit }, limitId) {
+    const res = await api.get(`/global-limits/${limitId}`)
     const [err, limit] = res
 
     if (err) {
@@ -25,8 +25,8 @@ const actions = {
 
     return res
   },
-  async createLimit({ commit }, form) {
-    const res = await api.post('/limits/', form)
+  async createGlobalLimit({ commit }, form) {
+    const res = await api.post('/global-limits/', form)
     const [err] = res
 
     if (err) {
@@ -36,8 +36,8 @@ const actions = {
     return res
   },
 
-  async updateLimit({ commit }, { limitId, form }) {
-    const res = await api.put(`/limits/${limitId}`, form)
+  async updateGlobalLimit({ commit }, { limitId, form }) {
+    const res = await api.put(`/global-limits/${limitId}`, form)
     const [err, limit] = res
 
     if (err) {
@@ -49,8 +49,8 @@ const actions = {
     return res
   },
 
-  async deleteLimit({ commit }, limitId) {
-    const res = await api.delete(`/limits/${limitId}`)
+  async deleteGlobalLimit({ commit }, limitId) {
+    const res = await api.delete(`/global-limits/${limitId}`)
     const [err] = res
 
     if (err) {

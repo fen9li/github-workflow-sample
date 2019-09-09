@@ -1,5 +1,4 @@
-// import ApiProcessor from '@lib/processors/api-processor'
-import MockProcessor from '@lib/processors/mock-processor'
+import ApiProcessor from '@lib/processors/api-processor'
 
 const TABLE_FILTERS = [
   {
@@ -135,8 +134,13 @@ const TABLE_COLUMNS = [
     type: 'string',
     icon: 'el-icon-document',
     format: v => {
-      if (v) {
-        return 'Yes'
+      if (v instanceof Array) {
+        const { length } = v
+
+        if (length) {
+          return `Yes ${length}`
+        }
+        return 'No'
       }
 
       return 'No'
@@ -151,10 +155,9 @@ const TABLE_COLUMNS = [
 
 export default function(component) {
   return {
-    processor: new MockProcessor({
+    processor: new ApiProcessor({
       component,
-      // path: 'limits',
-      mockFrom: 'limits'
+      path: 'global-limits',
     }),
     filters: TABLE_FILTERS,
     columns: TABLE_COLUMNS,

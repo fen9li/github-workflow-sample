@@ -15,11 +15,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions('limit', ['deleteLimit']),
+    ...mapActions('globalLimit', ['deleteGlobalLimit']),
     async onSubmit() {
       this.progress = true
 
-      await this.deleteLimit(this.limit.id)
+      await this.deleteGlobalLimit(this.limit.id)
 
       this.$emit('close-modal')
       this.$emit('done')

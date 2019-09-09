@@ -1,14 +1,12 @@
 <script>
 import capitalize from 'lodash/capitalize'
-// import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import { formatDate } from '@lib/utils/format-date'
 import DataBox from '~/components/data-box'
 import DataList from '~/components/data-list'
 
 import CreateLimitModal from '../limits/modals/create-limit-modal'
 import DeleteLimitModal from './modals/delete-limit-modal'
-
-import LimitMock from './limit.mock.js'
 
 export default {
   name: 'LimitDetail',
@@ -26,7 +24,6 @@ export default {
   },
   data() {
     return {
-      limit: LimitMock,
       loading: false,
       modal: {
         edit: false,
@@ -35,26 +32,26 @@ export default {
     }
   },
   computed: {
-    // ...mapState('limit', ['limit']),
+    ...mapState('globalLimit', ['globalLimit']),
     title() {
-      const { limit } = this
+      const { globalLimit } = this
 
-      if (limit) {
-        return limit.name
+      if (globalLimit) {
+        return globalLimit.name
       }
 
       return ''
     },
   },
   created() {
-    // this.fetchLimitData()
+    this.fetchLimitData()
   },
   methods: {
-    // ...mapActions('limit', ['getLimit']),
+    ...mapActions('globalLimit', ['getGlobalLimit']),
     async fetchLimitData() {
       this.loading = true
 
-      const [err] = await this.getLimit(this.limitId)
+      const [err] = await this.getGlobalLimit(this.limitId)
 
       if (err) {
         this.$router.replace({ name: 'limits' })
@@ -96,42 +93,42 @@ export default {
     <data-box header="Limit Details">
       <data-list v-if="!loading">
         <dt>Date Created</dt>
-        <dd>{{ formatDate(limit.createdAt) }}</dd>
+        <dd>{{ formatDate(globalLimit.createdAt) }}</dd>
 
         <dt>Limit ID</dt>
-        <dd>{{ limit.id }}</dd>
+        <dd>{{ globalLimit.id }}</dd>
 
         <dt>Limit Name</dt>
-        <dd>{{ limit.name }}</dd>
+        <dd>{{ globalLimit.name }}</dd>
 
         <dt>Limit Type</dt>
-        <dd>{{ capitalize(limit.type) }}</dd>
+        <dd>{{ capitalize(globalLimit.type) }}</dd>
 
         <dt>Priority</dt>
-        <dd>{{ limit.priority }}</dd>
+        <dd>{{ globalLimit.priority }}</dd>
 
         <dt>Strict</dt>
-        <dd>{{ limit.strict ? 'Yes' : 'No' }}</dd>
+        <dd>{{ globalLimit.strict ? 'Yes' : 'No' }}</dd>
 
         <dt>Start At</dt>
-        <dd>{{ formatDate(limit.startAt) }}</dd>
+        <dd>{{ formatDate(globalLimit.startAt) }}</dd>
 
         <dt>Finish At</dt>
-        <dd>{{ formatDate(limit.endAt) }}</dd>
+        <dd>{{ formatDate(globalLimit.endAt) }}</dd>
 
         <dt>Event Limit</dt>
-        <dd>{{ limit.eventId ? 'Yes' : 'No' }}</dd>
+        <dd>{{ globalLimit.eventId ? 'Yes' : 'No' }}</dd>
 
         <dt>Provider Name</dt>
-        <dd>{{ limit.providerName }}</dd>
+        <dd>{{ globalLimit.providerName }}</dd>
 
         <dt>Event</dt>
-        <dd v-if="!limit.events || !limit.events.length">
+        <dd v-if="!globalLimit.events || !globalLimit.events.length">
           —
         </dd>
         <dd v-else>
           <div
-            v-for="event in limit.events"
+            v-for="event in globalLimit.events"
             :key="event.id"
           >
             {{ event.id }}
@@ -139,17 +136,17 @@ export default {
         </dd>
 
         <dt>Limit Expression</dt>
-        <dd>{{ limit.expression }}</dd>
+        <dd>{{ globalLimit.expression }}</dd>
 
         <dt>Last Updated</dt>
-        <dd>{{ formatDate(limit.updatedAt) }}</dd>
+        <dd>{{ formatDate(globalLimit.updatedAt) }}</dd>
       </data-list>
     </data-box>
 
     <create-limit-modal
       v-if="modal.edit"
       :visible.sync="modal.edit"
-      :limit="limit"
+      :limit="globalLimit"
       is-edit
       @close-modal="modal.edit = false"
     />
@@ -157,7 +154,7 @@ export default {
     <delete-limit-modal
       v-if="modal.delete"
       :visible.sync="modal.delete"
-      :limit="limit"
+      :limit="globalLimit"
       @close-modal="modal.delete = false"
       @done="$router.replace({ name: 'limits' })"
     />

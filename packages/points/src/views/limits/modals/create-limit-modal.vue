@@ -2,17 +2,9 @@
 import { mapActions, mapState } from 'vuex'
 import MultipleSelect from '~/components/multiple-select.vue'
 import pick from 'lodash/pick'
-
-const EventsList = [
-  {
-    name: 'Event 1',
-    id: '123',
-  },
-  {
-    name: 'Event 2',
-    id: '345',
-  },
-]
+import dateIsAfter from '@lib/utils/date-is-after'
+import dateIsPast from '@lib/utils/date-is-past'
+import dateIsSame from '@lib/utils/date-is-same'
 
 export default {
   name: 'CreateLimitModal',
@@ -32,38 +24,32 @@ export default {
   data() {
     return {
       progress: false,
-      EventsList,
       form: {
         name: '',
-        type: '',
-        providerName: '',
+        type: 'earn',
+        providerId: '',
         eventName: '',
         expression: '',
-        enabled: '',
-        strict: '',
-        startAt: '',
-        endAt: '',
-        priority: '',
+        enabled: false,
+        strict: false,
+        startAt: null,
+        endAt: null,
+        priority: -1,
         events: [],
       },
+      loaded: false,
+      enableSwitchDisabled: false,
     }
   },
   computed: {
     ...mapState('providers', ['providers']),
-    providerNames() {
-      const { providers } = this
-
-      if (providers && providers.length) {
-        return providers.map(p => ({
-          label: p.name,
-          value: p.name,
-        }))
-      }
-
-      return []
-    },
+    ...mapState('events', ['events']),
   },
   created() {
+    Promise.all([this.getProviders(), this.getEvents()]).then(() => {
+      this.loaded = true
+    })
+
     if (!this.isEdit) {
       return
     }
@@ -73,7 +59,7 @@ export default {
       ...pick(this.limit, [
         'name',
         'type',
-        'providerName',
+        'providerId',
         'eventName',
         'expression',
         'enabled',
@@ -81,17 +67,14 @@ export default {
         'startAt',
         'endAt',
         'priority',
+        'events',
       ]),
     }
   },
   methods: {
-    ...mapActions('limit', ['createLimit', 'updateLimit']),
-    addEvent() {
-      this.form.events.push(this.EventsList[0].id)
-    },
-    removeEvent(index) {
-      this.form.events.splice(index, 1)
-    },
+    ...mapActions('globalLimit', ['createGlobalLimit', 'updateGlobalLimit']),
+    ...mapActions('providers', ['getProviders']),
+    ...mapActions('events', ['getEvents']),
     async onSubmit() {
       const formValid = await this.$refs.form.validate().catch(() => false)
 
@@ -102,17 +85,57 @@ export default {
       this.progress = true
 
       if (this.isEdit) {
-        await this.updateLimit({
+        await this.updateGlobalLimit({
           limitId: this.limit.id,
           form: this.form,
         })
       } else {
-        await this.createLimit(this.form)
+        await this.createGlobalLimit(this.form)
       }
 
       this.$emit('close-modal')
       this.$emit('done')
       this.progress = false
+    },
+    onStartDateSet(newVal) {
+      const { form } = this
+      const { endAt } = form
+
+      if (endAt) {
+        const isBeforeEnd = dateIsAfter(endAt, newVal)
+        const isSameAsEnd = dateIsSame(endAt, newVal)
+
+        if (isBeforeEnd || isSameAsEnd) {
+          form.startAt = newVal
+        }
+      } else {
+        form.startAt = newVal
+      }
+    },
+    onEndDateSet(newVal) {
+      const { startAt } = this.form
+
+      if (startAt) {
+        const isAfterStart = dateIsAfter(newVal, startAt)
+        const isSameAsStart = dateIsSame(newVal, startAt)
+
+        if (isAfterStart || isSameAsStart) {
+          this.setEndDate(newVal)
+        }
+      } else {
+        this.setEndDate(newVal)
+      }
+    },
+    setEndDate(endDate) {
+      this.form.endAt = endDate
+
+      if (dateIsPast(endDate)) {
+        this.form.enabled = false
+        this.enableSwitchDisabled = true
+      }
+      else {
+        this.enableSwitchDisabled = false
+      }
     },
   },
 }
@@ -124,7 +147,14 @@ export default {
     v-bind="$attrs"
     v-on="$listeners"
   >
+    <div
+      v-if="!loaded"
+      v-loading="true"
+      class="modal-loader"
+    />
+
     <el-form
+      v-else
       ref="form"
       :model="form"
       label-position="top"
@@ -149,7 +179,6 @@ export default {
       </el-form-item>
 
       <el-form-item
-        required
         prop="type"
         label="Limit type"
       >
@@ -168,16 +197,18 @@ export default {
       </el-form-item>
 
       <el-form-item
-        required
-        prop="providerName"
+        prop="providerId"
         label="Provider Name"
       >
-        <el-select v-model="form.providerName">
+        <el-select
+          v-model="form.providerId"
+          clearable
+        >
           <el-option
-            v-for="name in providerNames"
-            :key="name.label"
-            :label="name.label"
-            :value="name.value"
+            v-for="provider in providers"
+            :key="provider.id"
+            :label="provider.name"
+            :value="provider.id"
           />
         </el-select>
       </el-form-item>
@@ -187,10 +218,8 @@ export default {
         prop="events"
       >
         <multiple-select
-          :values="form.events"
-          :items="EventsList"
-          @add="addEvent"
-          @remove="removeEvent"
+          v-model="form.events"
+          :items="events"
         />
       </el-form-item>
 
@@ -202,19 +231,38 @@ export default {
           v-model="form.expression"
           type="textarea"
           :rows="4"
+          maxlength="3000"
         />
       </el-form-item>
 
       <el-form-item>
-        <el-checkbox v-model="form.enabled">
+        <el-switch
+          v-model="form.enabled"
+          active-color="#13ce66"
+          inactive-color="#a7a7a7"
+          :disabled="enableSwitchDisabled"
+        />
+        <span
+          :class="[
+            $style.switchLabel,
+            form.enabled && $style.switchLabelActive,
+          ]"
+        >
           Limit Enabled
-        </el-checkbox>
+        </span>
       </el-form-item>
 
       <el-form-item>
-        <el-checkbox v-model="form.strict">
+        <el-switch
+          v-model="form.strict"
+          active-color="#13ce66"
+          inactive-color="#a7a7a7"
+        />
+        <span
+          :class="[$style.switchLabel, form.strict && $style.switchLabelActive]"
+        >
           Limit Strict Enabled
-        </el-checkbox>
+        </span>
       </el-form-item>
 
       <el-form-item>
@@ -222,12 +270,12 @@ export default {
           <el-form-item
             label="Limit Start Date"
             prop="startAt"
-            required
           >
             <el-date-picker
-              v-model="form.startAt"
+              :value="form.startAt"
               type="date"
               placeholder="Enter Date"
+              @input="onStartDateSet"
             />
           </el-form-item>
         </el-col>
@@ -236,27 +284,26 @@ export default {
           <el-form-item
             label="Limit End Date"
             prop="endAt"
-            required
           >
             <el-date-picker
-              v-model="form.endAt"
+              :value="form.endAt"
               type="date"
               placeholder="Enter Date"
+              @input="onEndDateSet"
             />
           </el-form-item>
         </el-col>
       </el-form-item>
 
       <el-form-item
-        label="Limit Priority (0 - 5000)"
+        label="Limit Priority (-4999 - 10001)"
         prop="priority"
-        required
       >
         <el-input-number
           v-model="form.priority"
           class="el-col el-col-24"
-          :min="0"
-          :max="5000"
+          :min="-4999"
+          :max="10001"
         />
       </el-form-item>
 
@@ -284,5 +331,13 @@ export default {
   .el-input__count-inner {
     line-height: 1;
   }
+}
+
+.switchLabel {
+  margin-left: rem(14px);
+}
+
+.switchLabelActive {
+  color: #13ce66;
 }
 </style>
