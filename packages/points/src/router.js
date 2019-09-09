@@ -71,12 +71,21 @@ const router = new Router({
       props: true,
     },
     {
-      path: '/event_occurrences',
-      name: 'event_occurrences',
-      component: () => lazy(import('./views/event_occurrences')),
+      path: '/event-occurrences',
+      name: 'event-occurrences',
+      component: () => lazy(import('./views/event-occurrences')),
       meta: {
-        menu: 'event_occurrences',
+        menu: 'event-occurrences',
       },
+    },
+    {
+      path: '/event-occurrences/:id',
+      name: 'event-occurrence-details',
+      component: () => lazy(import('./views/event-occurrence')),
+      meta: {
+        menu: 'event-occurrences',
+      },
+      props: true
     },
     {
       path: '/limits',

@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-  <main-layout title="Event Occurrences">
-    Event Occurrences Content
+  <main-layout title="Event Occurrence Details">
+    Event Occurrence Content
   </main-layout>
 </template>

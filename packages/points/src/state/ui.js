@@ -24,9 +24,9 @@ const getters = {
       menu: 'events',
     }, {
       title: 'Event Occurrences',
-      path: '/event_occurrences',
+      path: '/event-occurrences',
       icon: 'notebook-2',
-      menu: 'event_occurrences',
+      menu: 'event-occurrences',
     }, {
       title: 'Limits',
       path: '/limits',
