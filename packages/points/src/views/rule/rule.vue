@@ -1,6 +1,7 @@
 <script>
 import { formatDate } from '@lib/utils/format-date'
 import DataBox from '~/components/data-box'
+import DataList from '~/components/data-list'
 import get from 'lodash/get'
 import { mapActions } from 'vuex'
 
@@ -13,6 +14,7 @@ export default {
   name: 'RuleDetail',
   components: {
     DataBox,
+    DataList,
     RuleEditModal,
     RuleRemoveModal,
   },
@@ -110,49 +112,51 @@ export default {
       header="Rule Details"
       :status="status"
     >
-      <dt>Date Created</dt>
-      <dd>{{ formatDate(rule.createdAt) }}</dd>
+      <data-list>
+        <dt>Date Created</dt>
+        <dd>{{ formatDate(rule.createdAt) }}</dd>
 
-      <dt>Rule ID</dt>
-      <dd>{{ rule.id }}</dd>
+        <dt>Rule ID</dt>
+        <dd>{{ rule.id }}</dd>
 
-      <dt>Rule Name</dt>
-      <dd>{{ rule.name }}</dd>
+        <dt>Rule Name</dt>
+        <dd>{{ rule.name }}</dd>
 
-      <dt>Type</dt>
-      <dd>{{ rule.type }}</dd>
+        <dt>Type</dt>
+        <dd>{{ rule.type }}</dd>
 
-      <dt>Start At</dt>
-      <dd>{{ formatDate(rule.startAt) }}</dd>
+        <dt>Start At</dt>
+        <dd>{{ formatDate(rule.startAt) }}</dd>
 
-      <dt>Finish At</dt>
-      <dd>{{ formatDate(rule.finishAt) }}</dd>
+        <dt>Finish At</dt>
+        <dd>{{ formatDate(rule.finishAt) }}</dd>
 
-      <dt>Priority</dt>
-      <dd>{{ priority }}</dd>
+        <dt>Priority</dt>
+        <dd>{{ priority }}</dd>
 
-      <dt>Rule Scope</dt>
-      <dd>{{ rule.scope }}</dd>
+        <dt>Rule Scope</dt>
+        <dd>{{ rule.scope }}</dd>
 
-      <dt>Provider Name</dt>
-      <dd>{{ rule.provider }}</dd>
+        <dt>Provider Name</dt>
+        <dd>{{ rule.provider }}</dd>
 
-      <dt>Event</dt>
-      <dd>
-        <div
-          v-for="event in rule.events"
-          :key="event.id"
-          :class="$style.eventItem"
-        >
-          {{ event.name }}
-        </div>
-      </dd>
+        <dt>Event</dt>
+        <dd>
+          <div
+            v-for="event in rule.events"
+            :key="event.id"
+            :class="$style.eventItem"
+          >
+            {{ event.name }}
+          </div>
+        </dd>
 
-      <dt>Rule Expression</dt>
-      <dd>{{ rule.ruleExpression }}</dd>
+        <dt>Rule Expression</dt>
+        <dd>{{ rule.ruleExpression }}</dd>
 
-      <dt>Last Updated</dt>
-      <dd>{{ formatDate(rule.updatedAt) }}</dd>
+        <dt>Last Updated</dt>
+        <dd>{{ formatDate(rule.updatedAt) }}</dd>
+      </data-list>
     </data-box>
 
     <rule-edit-modal
