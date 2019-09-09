@@ -1,4 +1,5 @@
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'DeleteEventModalSuper',
   props: {
@@ -13,10 +14,30 @@ export default {
     }
   },
   methods: {
-    submit() {
+    ...mapActions('event', ['deleteEvent']),
+    async onSubmit() {
       this.progress = true
-      // After response
-      this.$router.push({ name: 'events' })
+
+      const [error, response] = await this.deleteEvent(this.id)
+
+      if (error) {
+        this.$notify({
+          type: 'error',
+          title: 'Error',
+          message: error.message,
+        })
+      }
+
+      if (response) {
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: `Successfuly deleted.`,
+        })
+      }
+
+      this.progress = false
+      this.$emit('close-modal')
     },
   },
 }
@@ -48,7 +69,7 @@ export default {
       class="el-button--wide"
       :class="$style.submit"
       :loading="progress"
-      @click="submit"
+      @click="onSubmit"
     >
       Delete Event
     </el-button>

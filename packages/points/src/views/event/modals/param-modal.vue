@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.progress = true
+      this.$emit('close-modal', this.form)
     }
   },
 }
@@ -80,13 +80,13 @@ export default {
           v-model="form.required"
         >
           <el-radio
-            label="yes"
+            :label="true"
             :class="$style.radio"
           >
             Yes
           </el-radio>
           <el-radio
-            label="no"
+            :label="false"
             :class="$style.radio"
           >
             No
@@ -97,7 +97,7 @@ export default {
         label="Default"
         required
       >
-        <el-input v-model="form.defaul" />
+        <el-input v-model="form.defaulValue" />
       </el-form-item>
       <el-button
         type="primary"

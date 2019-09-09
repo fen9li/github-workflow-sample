@@ -1,5 +1,6 @@
 import api from '~/api'
 
+
 const state = {}
 
 const getters = {}
@@ -15,8 +16,12 @@ const actions = {
     const result = await api.post('/events', form)
     return result
   },
-  async updateEvent(store, { id, form }) {
-    const result = await api.put(`/events/${id}`, form)
+  async updateEvent(store, form) {
+    const result = await api.put(`/events/${form.id}`, form)
+    return result
+  },
+  async deleteEvent(store, id) {
+    const result = await api.delete(`/events/${id}`)
     return result
   },
 }

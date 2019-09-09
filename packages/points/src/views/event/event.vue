@@ -6,8 +6,7 @@ import EditModal from './modals/event-modal'
 import DeleteModal from './modals/delete-modal'
 import ParamModal from './modals/param-modal'
 import DeleteParamModal from './modals/delete-param-modal'
-
-import userMock from '@tests/__fixtures__/event'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'EventPoints',
@@ -65,10 +64,36 @@ export default {
     this.getData()
   },
   methods: {
-    getData() {
+    ...mapActions('event', ['getEvent', 'updateEvent']),
+    async getData() {
       this.loading = true
+      const [, response] = await this.getEvent(this.$route.params.id)
+      this.event = response
+      this.loading = false
+    },
+    async setParams(parameters) {
+      this.loading = true
+      const [error] = await this.updateEvent({ ...this.event, parameters })
 
-      this.event = { ...userMock }
+      if (error) {
+        const violations = Object.keys(error.violations)
+        violations.forEach(violation => {
+          setTimeout(() => {
+            this.$notify({
+              type: 'error',
+              title: 'Error',
+              message: `${violation}: ${error.violations[violation][0]}`,
+            })
+          }, 50)
+        })
+      } else {
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: `Successfuly deleted.`,
+        })
+        await this.getData()
+      }
 
       this.loading = false
     },
@@ -86,6 +111,21 @@ export default {
     onParamDeleteClick(id) {
       this.paramId = id
       this.modals.deleteParam = true
+    },
+    onUpdated() {
+      this.modals.edit = false
+      this.getData()
+    },
+    onDeleted() {
+      this.modals.delete = false
+      this.$router.push({ name: 'events' })
+    },
+    onParamUpdated(data) {
+      this.modals.param = false
+      this.setParams([ ...(this.event.parameters || []), data ])
+    },
+    onParamDeleted(data) {
+      this.modals.deleteParam = false
     },
   },
 }
@@ -193,28 +233,28 @@ export default {
       v-if="modals.edit"
       :visible.sync="modals.edit"
       :event="event"
-      @close-modal="modals.edit = false"
+      @close-modal="onUpdated"
     />
 
     <delete-modal
       v-if="modals.delete"
       :id="id"
       :visible.sync="modals.delete"
-      @close-modal="modals.delete = false"
+      @close-modal="onDeleted"
     />
 
     <param-modal
       v-if="modals.param"
       :visible.sync="modals.param"
       :param="selectedParam"
-      @close-modal="modals.param = false"
+      @close-modal="onParamUpdated"
     />
 
     <delete-param-modal
       v-if="modals.deleteParam"
       :id="paramId"
       :visible.sync="modals.deleteParam"
-      @close-modal="modals.deleteParam = false"
+      @close-modal="onParamDeleted"
     />
   </main-layout>
 </template>

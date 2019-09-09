@@ -14,7 +14,7 @@ export default {
   },
   methods: {
     submit() {
-      this.progress = true
+      this.$emit('close-modal', this.id)
     },
   },
 }

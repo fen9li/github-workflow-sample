@@ -1,4 +1,5 @@
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: "EventModalSuper",
   props: {
@@ -10,9 +11,7 @@ export default {
   data() {
     return {
       progress: false,
-      form: {
-
-      },
+      form: {},
       rules: {},
     }
   },
@@ -20,8 +19,30 @@ export default {
     if (this.event) this.form = { ...this.event }
   },
   methods: {
-    onSubmit() {
+    ...mapActions('event', ['createEvent', 'updateEvent']),
+    async onSubmit() {
       this.progress = true
+
+      const [error, response] = await this[this.event.id ? 'updateEvent' : 'createEvent'](this.form)
+
+      if (error) {
+        this.$notify({
+          type: 'error',
+          title: 'Error',
+          message: error.message,
+        })
+      }
+
+      if (response) {
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: `Successfuly ${this.event.id ? 'updated' : 'created'}.`,
+        })
+      }
+
+      this.progress = false
+      this.$emit('close-modal')
     }
   },
 }
