@@ -1,16 +1,41 @@
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'RuleRemoveModal',
   inheritAttrs: false,
   props: {
-    progress: {
-      type: Boolean,
-      default: false,
+    id: {
+      type: String,
+      required: true,
     },
   },
+  data() {
+    return {
+      progress: false,
+    }
+  },
   methods: {
-    submit() {
-      this.$emit('submit')
+    ...mapActions('rule', ['removeRule']),
+    async submit() {
+      this.progress = true
+      const [error] = await this.removeRule(this.id)
+
+      if (error) {
+        this.$notify({
+          type: 'error',
+          title: 'Error',
+          message: 'This rule cannot be deleted because is being used by an event.',
+        })
+      } else {
+        this.$notify({
+          type: 'success',
+          title: 'Rule deleted',
+          message: 'Rule is successfully deleted.',
+        })
+        this.$emit('success')
+      }
+      this.progress = false
     },
   },
 }

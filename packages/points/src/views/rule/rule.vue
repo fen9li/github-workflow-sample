@@ -3,12 +3,11 @@ import { formatDate } from '@lib/utils/format-date'
 import DataBox from '~/components/data-box'
 import DataList from '~/components/data-list'
 import get from 'lodash/get'
-import { mapActions } from 'vuex'
+import capitalize from 'lodash/capitalize'
+import { mapActions, mapGetters } from 'vuex'
 
 import RuleEditModal from './modals/rule-edit-modal'
 import RuleRemoveModal from './modals/rule-remove-modal'
-
-import RuleMock from './rule.mock.js'
 
 export default {
   name: 'RuleDetail',
@@ -27,7 +26,6 @@ export default {
   data() {
     return {
       loading: false,
-      rule: RuleMock,
       modal: {
         edit: false,
         remove: false,
@@ -35,12 +33,18 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('rule', [
+      'rule',
+    ]),
     title() {
       return get(this.rule, 'name', '')
     },
     status() {
-      const eventRule = get(this.rule, 'eventRule', false)
-      return eventRule ? 'active' : 'inactive'
+      const active = get(this.rule, 'active', false)
+      return active ? 'active' : 'inactive'
+    },
+    type() {
+      return capitalize(get(this.rule, 'type', '-'))
     },
     priority() {
       const priority = get(this.rule, 'priority')
@@ -53,18 +57,19 @@ export default {
     },
   },
   created() {
-    // this.fetchRuleData()
+    this.fetchRuleData()
   },
   methods: {
     ...mapActions('rule', [
       'getRule',
+      'setRule',
     ]),
     async fetchRuleData() {
       this.loading = true
 
-      const err = await this.getRule(this.id)
+      const [error] = await this.getRule(this.id)
 
-      if (err) {
+      if (error) {
         this.$router.replace({ name: 'rules' })
       }
 
@@ -73,13 +78,10 @@ export default {
     formatDate(value) {
       return formatDate(value, 'DD/MM/YYYY hh:mm')
     },
-    async submitRemove() {
+    async onRemoveSuccess() {
       this.modal.remove = false
-      this.$notify({
-        type: 'success',
-        title: 'Rule deleted',
-        message: 'Rule is successfully deleted.',
-      })
+      await this.$router.replace({ name: 'rules' })
+      this.setRule(null)
     },
   },
 }
@@ -112,47 +114,52 @@ export default {
       header="Rule Details"
       :status="status"
     >
-      <data-list>
+      <data-list v-if="!loading">
         <dt>Date Created</dt>
         <dd>{{ formatDate(rule.createdAt) }}</dd>
 
         <dt>Rule ID</dt>
-        <dd>{{ rule.id }}</dd>
+        <dd>{{ rule.id || '-' }}</dd>
 
         <dt>Rule Name</dt>
-        <dd>{{ rule.name }}</dd>
+        <dd>{{ rule.name || '-' }}</dd>
 
         <dt>Type</dt>
-        <dd>{{ rule.type }}</dd>
+        <dd>{{ type }}</dd>
 
         <dt>Start At</dt>
         <dd>{{ formatDate(rule.startAt) }}</dd>
 
         <dt>Finish At</dt>
-        <dd>{{ formatDate(rule.finishAt) }}</dd>
+        <dd>{{ formatDate(rule.endAt) }}</dd>
 
         <dt>Priority</dt>
-        <dd>{{ priority }}</dd>
+        <dd>{{ priority || 0 }}</dd>
 
         <dt>Rule Scope</dt>
-        <dd>{{ rule.scope }}</dd>
+        <dd>{{ rule.scope || '-' }}</dd>
 
         <dt>Provider Name</dt>
-        <dd>{{ rule.provider }}</dd>
+        <dd>{{ rule.provider || '-' }}</dd>
 
         <dt>Event</dt>
         <dd>
-          <div
-            v-for="event in rule.events"
-            :key="event.id"
-            :class="$style.eventItem"
-          >
-            {{ event.name }}
-          </div>
+          <template v-if="rule.events.length > 0">
+            <div
+              v-for="event in rule.events"
+              :key="event.id"
+              :class="$style.eventItem"
+            >
+              {{ event.name }}
+            </div>
+          </template>
+          <template v-else>
+            -
+          </template>
         </dd>
 
         <dt>Rule Expression</dt>
-        <dd>{{ rule.ruleExpression }}</dd>
+        <dd>{{ rule.expression || '-' }}</dd>
 
         <dt>Last Updated</dt>
         <dd>{{ formatDate(rule.updatedAt) }}</dd>
@@ -167,8 +174,9 @@ export default {
     />
     <rule-remove-modal
       v-if="modal.remove"
+      :id="rule.id"
       :visible.sync="modal.remove"
-      @submit="submitRemove"
+      @success="onRemoveSuccess"
     />
   </main-layout>
 </template>

@@ -20,10 +20,10 @@ export default {
         type: 'earn',
         provider: '',
         events: [],
-        ruleExpression: '',
-        enabled: true,
+        expression: '',
+        active: true,
         startAt: null,
-        finishAt: null,
+        endAt: null,
         priority: 0,
       },
       rules: {
@@ -153,7 +153,7 @@ export default {
         </el-form-item>
         <el-form-item
           label="Rule Expression"
-          prop="ruleExpression"
+          prop="expression"
         >
           <el-input
             v-model="form.expression"
@@ -161,16 +161,16 @@ export default {
             :rows="4"
           />
         </el-form-item>
-        <el-form-item prop="enabled">
+        <el-form-item prop="active">
           <el-switch
-            v-model="form.enabled"
+            v-model="form.active"
             active-color="#13ce66"
             inactive-color="#a7a7a7"
           />
           <span
             :class="[
               $style.switchLabel,
-              form.enabled && $style.switchLabelActive,
+              form.active && $style.switchLabelActive,
             ]"
           >
             Rule Enabled
@@ -192,10 +192,10 @@ export default {
           </el-form-item>
           <el-form-item
             label="Rule End Date"
-            prop="finishAt"
+            prop="endAt"
           >
             <el-date-picker
-              v-model="form.finishAt"
+              v-model="form.endAt"
               v-mask="['##/##/####']"
               type="date"
               format="dd/MM/yyyy"
@@ -205,7 +205,7 @@ export default {
           </el-form-item>
         </div>
         <el-form-item
-          label="Rule Priority (-5000 — -1 or 5001 — 1000)"
+          label="Rule Priority (-5000 — -1 or 5001 — 10000)"
           prop="priority"
         >
           <el-input
@@ -213,14 +213,16 @@ export default {
             type="number"
           />
         </el-form-item>
-        <el-button
-          type="primary"
-          class="el-button--wide"
-          :loading="progress"
-          @click="onSubmit"
-        >
-          Save
-        </el-button>
+        <div class="modal__footer">
+          <el-button
+            type="primary"
+            class="el-button--wide"
+            :loading="progress"
+            @click="onSubmit"
+          >
+            Save
+          </el-button>
+        </div>
       </el-form>
     </el-dialog>
   </div>

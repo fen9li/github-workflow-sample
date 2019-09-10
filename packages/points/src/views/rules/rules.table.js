@@ -46,7 +46,7 @@ const TABLE_FILTERS = [{
 }, {
   attribute: 'priority',
   label: 'Priority',
-  icon: 'el-icon-date',
+  icon: 'el-icon-document',
   type: 'numeric'
 }, {
   attribute: 'eventRule',
@@ -66,7 +66,7 @@ const TABLE_FILTERS = [{
 }, {
   attribute: 'provider',
   label: 'Provider Name',
-  icon: 'el-icon-date',
+  icon: 'el-icon-document',
   type: 'string'
 }]
 

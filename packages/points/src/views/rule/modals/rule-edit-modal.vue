@@ -4,7 +4,6 @@ import { mapActions, mapState } from 'vuex'
 import { datePickerFormat } from '@lib/utils/date-helper'
 import { mask } from 'vue-the-mask'
 import pick from 'lodash/pick'
-import get from 'lodash/get'
 
 export default {
   name: 'RuleEditModal',
@@ -28,8 +27,8 @@ export default {
         type: null,
         provider: null,
         events: [],
-        ruleExpression: null,
-        enabled: false,
+        expression: null,
+        status: false,
         startAt: null,
         finishAt: null,
         priority: null,
@@ -48,36 +47,40 @@ export default {
       this.loaded = true
     })
 
-    this.form = {
-      ...pick(this.rule, [
-        'name',
-        'type',
-        'provider',
-        'events',
-        'ruleExpression',
-        'startAt',
-        'finishAt',
-        'priority',
-      ]),
-      enabled: get(this.rule, 'eventRule', false),
-    }
+    this.form = pick(this.rule, [
+      'name',
+      'type',
+      'provider',
+      'events',
+      'expression',
+      'startAt',
+      'finishAt',
+      'priority',
+      'active',
+    ])
   },
   methods: {
     ...mapActions('providers', ['getProviders']),
     ...mapActions('events', ['getEvents']),
-    onSubmit() {
-      this.$refs.form.validate(valid => {
-        if (!valid) {
-          return false
-        }
+    ...mapActions('rule', ['updateRule']),
+    async onSubmit() {
+      const formValid = await this.$refs.form.validate().catch(() => false)
 
-        this.progress = true
+      if (!formValid) {
+        return
+      }
 
-        setTimeout(() => {
-          this.progress = false
-          this.$emit('success')
-        }, 1000)
+      this.progress = true
+      const [error] = await this.updateRule({
+        ruleId: this.rule.id,
+        form: this.form,
       })
+      this.progress = false
+
+      if (error) {
+        return
+      }
+      this.$emit('success')
     },
   },
 }
@@ -123,13 +126,13 @@ export default {
             prop="type"
           >
             <el-radio
-              label="Earn"
+              label="earn"
               :class="$style.radio"
             >
               Earn
             </el-radio>
             <el-radio
-              label="Burn"
+              label="burn"
               :class="$style.radio"
             >
               Burn
@@ -164,27 +167,27 @@ export default {
         </el-form-item>
         <el-form-item
           label="Rule Expression"
-          prop="ruleExpression"
+          prop="expression"
         >
           <el-input
-            v-model="form.ruleExpression"
+            v-model="form.expression"
             type="textarea"
             :rows="4"
           />
         </el-form-item>
-        <el-form-item prop="enabled">
+        <el-form-item prop="active">
           <el-switch
-            v-model="form.enabled"
+            v-model="form.active"
             active-color="#13ce66"
             inactive-color="#a7a7a7"
           />
           <span
             :class="[
               $style.switchLabel,
-              form.enabled && $style.switchLabelActive,
+              form.active && $style.switchLabelActive,
             ]"
           >
-            Rule {{ form.enabled ? 'Enabled' : 'Disabled' }}
+            Rule {{ form.active ? 'Enabled' : 'Disabled' }}
           </span>
         </el-form-item>
         <div :class="$style.dates">
