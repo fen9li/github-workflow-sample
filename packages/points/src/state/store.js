@@ -7,6 +7,7 @@ import providers from './providers'
 import provider from './provider'
 import event from './event'
 import events from './events'
+import eventOccurrence from './event-occurrence'
 import rule from './rule'
 import globalLimit from './global-limit.js'
 import membership from './membership'
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     provider,
     event,
     events,
+    eventOccurrence,
     rule,
     globalLimit,
     membership,

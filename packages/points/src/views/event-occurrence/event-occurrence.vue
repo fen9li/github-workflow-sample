@@ -5,6 +5,7 @@ import { formatDate } from '@lib/utils/format-date'
 import capitalize from 'lodash/capitalize'
 import detailsMock from '@tests/__fixtures__/event-occurrence'
 import eventOccurrenceLog from './event-occurrence-log'
+import { mapActions } from 'vuex'
 
 const allStatuses = {
   approved: {
@@ -45,7 +46,7 @@ export default {
   data() {
     return {
       loading: false,
-      details: detailsMock
+      details: {}
     }
   },
   computed: {
@@ -57,7 +58,17 @@ export default {
       return allStatuses[this.details.status]
     }
   },
+  created() {
+    this.getData()
+  },
   methods: {
+    ...mapActions('eventOccurrence', ['approveEventOccurrence']),
+    getData() {
+      this.details = detailsMock
+    },
+    onApproveClick() {
+      this.approveEventOccurrence(this.id)
+    },
     capitalize,
     formatDate(value) {
       return formatDate(value, 'DD/MM/YYYY hh:mm')
@@ -69,8 +80,17 @@ export default {
 <template>
   <main-layout
     :title="`${details.id} - ${details.eventName}`"
+    :loading="loading"
     :back="{ name: 'event-occurrences' }"
   >
+    <el-button
+      v-if="details.status === 'pending'"
+      slot="header"
+      type="primary"
+      @click="onApproveClick"
+    >
+      Approve Event Occurrence
+    </el-button>
     <data-box
       header="Event Occurrence Details"
       :status-obj="statusObj"

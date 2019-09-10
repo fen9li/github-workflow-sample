@@ -75,7 +75,7 @@ const router = new Router({
       menu: 'event-occurrences',
     },
   }, {
-    path: '/event-occurrences/:id',
+    path: '/event-occurrence/:id',
     name: 'event-occurrence-details',
     component: () => lazy(import('./views/event-occurrence')),
     meta: {

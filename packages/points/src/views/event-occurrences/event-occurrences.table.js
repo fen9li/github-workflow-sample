@@ -164,7 +164,7 @@ const TABLE_COLUMNS = [
 export default component => ({
   // processor: new ApiProcessor({
   //   component,
-  //   path: 'events',
+  //   path: 'event-occurrences',
   // }),
   processor: new MockProcessor({
     component,
