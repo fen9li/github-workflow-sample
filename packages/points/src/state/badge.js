@@ -15,10 +15,7 @@ const actions = {
     const result = await api.post('/badges', form)
     return result
   },
-  async updateBadge(store, {
-    id,
-    form
-  }) {
+  async updateBadge(store, { id, form }) {
     const result = await api.put(`/badges/${ id }`, form)
     return result
   },

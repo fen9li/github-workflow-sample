@@ -14,50 +14,28 @@ const mutations = {
 
 const actions = {
   async getGlobalLimit({ commit }, limitId) {
-    const res = await api.get(`/global-limits/${limitId}`)
-    const [err, limit] = res
-
-    if (err) {
-      return err
+    const [error, result] = await api.get(`/global-limits/${limitId}`)
+    if (result) {
+      commit('SET_LIMIT', result)
     }
-
-    commit('SET_LIMIT', limit)
-
-    return res
+    return [error, result]
   },
   async createGlobalLimit({ commit }, form) {
-    const res = await api.post('/global-limits/', form)
-    const [err] = res
-
-    if (err) {
-      return err
-    }
-
-    return res
+    const response = await api.post('/global-limits/', form)
+    return response
   },
 
   async updateGlobalLimit({ commit }, { limitId, form }) {
-    const res = await api.put(`/global-limits/${limitId}`, form)
-    const [err, limit] = res
-
-    if (err) {
-      return err
+    const [error, result] = await api.put(`/global-limits/${limitId}`, form)
+    if (result) {
+      commit('SET_LIMIT', result)
     }
-
-    commit('SET_LIMIT', limit)
-
-    return res
+    return [error, result]
   },
 
   async deleteGlobalLimit({ commit }, limitId) {
-    const res = await api.delete(`/global-limits/${limitId}`)
-    const [err] = res
-
-    if (err) {
-      return err
-    }
-
-    return res
+    const response = await api.delete(`/global-limits/${limitId}`)
+    return response
   },
 }
 

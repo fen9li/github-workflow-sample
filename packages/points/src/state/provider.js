@@ -14,29 +14,19 @@ const mutations = {
 
 const actions = {
   async getProvider({ commit }, providerId) {
-    const res = await api.get(`/providers/${providerId}`)
-    const [err, provider] = res
-
-    if (err) {
-      return err
+    const [error, result] = await api.get(`/providers/${providerId}`)
+    if (result) {
+      commit('SET_PROVIDER', result)
     }
-
-    commit('SET_PROVIDER', provider)
-
-    return res
+    return [error, result]
   },
 
   async updateProvider({ commit }, { providerId, form }) {
-    const res = await api.put(`/providers/${providerId}`, form)
-    const [err, provider] = res
-
-    if (err) {
-      return err
+    const [error, result] = await api.put(`/providers/${providerId}`, form)
+    if (result) {
+      commit('SET_PROVIDER', result)
     }
-
-    commit('SET_PROVIDER', provider)
-
-    return res
+    return [error, result]
   },
 }
 
