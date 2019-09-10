@@ -12,6 +12,10 @@ export default {
       type: String,
       default: '160x60',
     },
+    placeholder: {
+      type: String,
+      default: '',
+    },
     image: {
       type: [Boolean, String],
       default: false,
@@ -73,9 +77,9 @@ export default {
     >
     <span
       v-else
-      :class="$style.uploaderTip"
+      :class="[$style.uploaderTip, 'image-uploader__tip']"
     >
-      {{ crop }}
+      {{ placeholder || crop }}
     </span>
     <el-button
       type="primary"
@@ -90,38 +94,38 @@ export default {
 </template>
 
 <style lang="scss" module>
-  .uploader {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin: 0;
+.uploader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
 
-    &--input {
-      padding-left: rem(15px);
-      border: rem(1px) solid #dcdfe6;
-      border-radius: rem(4px);
-    }
+  &--input {
+    padding-left: rem(15px);
+    border: rem(1px) solid #dcdfe6;
+    border-radius: rem(4px);
   }
+}
 
-  .uploaderPreview {
-    max-width: rem(160px);
-    min-height: rem(60px);
-    max-height: rem(60px);
-    margin: rem(15px 0);
-  }
+.uploaderPreview {
+  max-width: rem(160px);
+  min-height: rem(60px);
+  max-height: rem(60px);
+  margin: rem(15px 0);
+}
 
-  .uploaderButton {
-    position: absolute;
-    top: -1px;
-    right: -1px;
-    bottom: -1px;
-    min-height: 100%;
-    border-radius: rem(0 4px 4px 0);
-  }
+.uploaderButton {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  min-height: 100%;
+  border-radius: rem(0 4px 4px 0);
+}
 
-  .uploaderTip {
-    color: #c0c4cc
-  }
+.uploaderTip {
+  color: #c0c4cc
+}
 </style>
