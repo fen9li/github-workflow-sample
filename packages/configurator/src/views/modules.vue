@@ -5,9 +5,12 @@ export default {
 </script>
 
 <template>
-  <div :class="$style.root">
-    Modules View
-  </div>
+  <base-layout
+    title="Modules"
+    back="/home"
+  >
+    Menu
+  </base-layout>
 </template>
 
 <style lang="scss" module>

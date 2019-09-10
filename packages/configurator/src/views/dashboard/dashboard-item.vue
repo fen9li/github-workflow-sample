@@ -1,5 +1,4 @@
 <script>
-import capitalize from 'lodash/capitalize'
 import { mapMutations } from 'vuex'
 
 export default {
@@ -10,15 +9,11 @@ export default {
       required: true,
     },
   },
-  computed: {
-    title() {
-      return capitalize(this.widget.name)
-    },
-  },
   methods: {
     ...mapMutations('dashboard', {
       moveUp: 'MOVE_WIDGET_UP',
       moveDown: 'MOVE_WIDGET_DOWN',
+      deleteWidget: 'DELETE_WIDGET',
     }),
   },
 }
@@ -26,21 +21,26 @@ export default {
 
 <template>
   <base-menu-link
-    :title="title"
+    :title="widget.title"
+    to="/dashboard/widget"
   >
     <template slot="actions">
       <el-button
         icon="el-icon-arrow-down"
-        @click.stop="moveDown(widget)"
+        @click.stop.prevent="moveDown(widget)"
       />
       <el-button
         icon="el-icon-arrow-up"
-        @click.stop="moveUp(widget)"
+        @click.stop.prevent="moveUp(widget)"
+      />
+      <el-button
+        icon="el-icon-delete"
+        @click.stop.prevent="deleteWidget(widget)"
       />
     </template>
     <component
       :is="widget.preview"
-      :config="widget.data"
+      :config="widget.config"
     />
   </base-menu-link>
 </template>

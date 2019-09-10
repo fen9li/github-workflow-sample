@@ -1,3 +1,5 @@
+import Widget from '~/components/widgets/widget'
+
 const state = {
   /*
    * Available widgets
@@ -14,13 +16,22 @@ const getters = {
 }
 
 const mutations = {
-  REGISTER_WIDGET(state, payload) {
-    state.registered[payload.name] = payload
+  REGISTER_WIDGETS(state, widgets) {
+    const registered = {}
+
+    widgets.forEach(widget => {
+      registered[widget.name] = widget
+    })
+
+    state.registered = registered
   },
   ADD_WIDGET(state, payload) {
     state.widgets.push(payload)
   },
-  REMOVE_WIDGET() {
+  SELECT_WIDGET(state, widget) {
+    state.selectedWidget = widget
+  },
+  REMOVE_WIDGET(state, widget) {
 
   },
   MOVE_WIDGET_UP(state, widget) {
@@ -54,21 +65,24 @@ const actions = {
       commit('RESET')
 
       config.forEach(record => {
-        const widget = registered[record.name] || registered.unknown
+        const widget = new Widget({
+          config: record,
+          meta: registered[record.name]
+        })
 
-        if (widget) {
-          commit('ADD_WIDGET', {
-            ...widget,
-            data: record,
-          })
-        }
+        commit('ADD_WIDGET', widget)
       })
     }
   },
-  BUILD_CONFIG() {
-
+  SEND_CONFIG({ dispatch, getters }) {
+    dispatch('exchange/SEND_TO_FRAME', {
+      type: 'debi-dashboard',
+      payload: getters.widgets.map(widget => {
+        return widget.build()
+      }),
+    }, { root: true })
   },
-  RESET({ dispatch, commit, rootGetters }) {
+  RESET({ dispatch, rootGetters }) {
     const config = rootGetters['exchange/config'] || {}
     dispatch('INIT', config.dashboard)
   },

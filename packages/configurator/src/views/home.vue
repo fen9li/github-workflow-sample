@@ -11,48 +11,72 @@ export default {
       'url',
       'ready',
     ]),
-  },
-  watch: {
-    ready(ready) {
-      if (ready) {
-        this.$router.push({
-          name: 'index',
-        })
-      }
-    },
-  },
-  created() {
-    if (this.ready) {
-      this.$router.push({ name: 'index' })
+    menu() {
+      return [
+        {
+          title: 'Dashboard',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+          path: '/dashboard',
+        },
+        {
+          title: 'Modules',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+          path: '/modules',
+        },
+        {
+          title: 'Menu',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+          path: '/menu'
+        }
+      ]
     }
   },
 }
 </script>
 
 <template>
-  <div :class="$style.root">
-    <h1 :class="$style.title">
-      Debi Configuration Tool
-    </h1>
-    <div :class="$style.status">
-      <div :class="$style.statusHead">
-        <span v-if="waiting">Waiting for application...</span>
-        <span v-if="connecting">Connecting to:</span>
-        <span v-if="connected">Connected to:</span>
-      </div>
-      <div
-        v-if="connecting || connected"
-        :class="$style.statusUrl"
-      >
-        {{ url }}
-      </div>
-      <div :class="$style.statusTip">
-        <span v-if="connected">
-          Waiting for application readiness...
-        </span>
-      </div>
+  <base-layout :class="$style.root">
+    <img
+      slot="header"
+      :class="$style.logo"
+      src="//loyaltycorp.com.au/wp-content/uploads/logo-lc.svg"
+    >
+    <div
+      v-if="ready"
+      :class="$style.index"
+    >
+      <base-menu-link
+        v-for="item in menu"
+        :key="item.title"
+        :to="item.path"
+        :title="item.title"
+        :description="item.description"
+      />
     </div>
-  </div>
+    <template v-else>
+      <h1 :class="$style.title">
+        Debi Configuration Tool
+      </h1>
+      <div :class="$style.status">
+        <div :class="$style.statusHead">
+          <span v-if="waiting">Waiting for application...</span>
+          <span v-if="connecting">Connecting to:</span>
+          <span v-if="connected">Connected to:</span>
+        </div>
+        <div
+          v-if="connecting || connected"
+          :class="$style.statusUrl"
+        >
+          {{ url }}
+        </div>
+        <div :class="$style.statusTip">
+          <span v-if="connected">
+            Waiting for application readiness...
+          </span>
+        </div>
+      </div>
+    </template>
+  </base-layout>
 </template>
 
 <style lang="scss" module>
@@ -74,5 +98,15 @@ export default {
 .statusHead,
 .statusTip {
   font-weight: 300;
+}
+
+.index {
+  text-align: left;
+}
+
+.logo {
+  max-width: rem(160px);
+  height: 100%;
+  margin: auto;
 }
 </style>

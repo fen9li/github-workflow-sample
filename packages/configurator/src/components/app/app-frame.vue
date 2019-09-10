@@ -5,11 +5,13 @@ export default {
   name: 'AppFrame',
   computed: {
     ...mapGetters('exchange', [
-      'ready',
-      'connected',
       'connecting',
       'frameUrl',
+    ]),
+    ...mapGetters('frame', [
       'showFrame',
+      'frameId',
+      'viewport',
     ]),
   },
   methods: {
@@ -24,22 +26,42 @@ export default {
 </script>
 
 <template>
-  <iframe
-    v-if="connecting || showFrame"
-    v-show="showFrame"
-    id="app-frame"
-    ref="frame"
-    :class="$style.root"
-    :src="frameUrl"
-    @load="onLoad"
-  />
+  <div
+    :class="[
+      $style.root,
+      $style[viewport],
+    ]"
+  >
+    <iframe
+      v-if="connecting || showFrame"
+      :id="frameId"
+      :class="$style.frame"
+      :src="frameUrl"
+      sandbox="allow-same-origin allow-scripts"
+      @load="onLoad"
+    />
+  </div>
 </template>
 
 <style lang="scss" module>
-
 .root {
   width: 100%;
+  height: calc(100vh - #{var(--header-height)});
+  padding: rem(10px);
+  margin: auto;
+}
+
+.frame {
+  width: 100%;
   height: 100%;
-  border: none;
+  border: 1px solid var(--color-text-light);
+}
+
+.mobile {
+  width: rem(375px);
+}
+
+.tablet {
+  width: rem(768px);
 }
 </style>

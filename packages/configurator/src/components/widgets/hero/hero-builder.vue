@@ -1,15 +1,15 @@
 <script>
-import SettingsMixin from '../settings.mixin'
+import BuilderMixin from '../builder.mixin'
 
 export default {
   name: 'HeroWidget',
-  mixins: [SettingsMixin],
+  mixins: [BuilderMixin],
 }
 </script>
 
 <template>
   <div :class="$style.root">
-    Hero
+    Hero Settings
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import DashboardItem from './dashboard-item'
 
 export default {
@@ -12,27 +12,39 @@ export default {
       'widgets',
     ]),
   },
+  methods: {
+    ...mapMutations('dashboard', {
+      selectWidget: 'SELECT_WIDGET',
+    }),
+  },
 }
 </script>
 
 <template>
-  <div :class="$style.root">
-    <div :class="$style.widgets">
+  <base-layout
+    title="Dashboard"
+    back="/home"
+  >
+    <template v-for="(widget, idx) in widgets">
       <dashboard-item
-        v-for="(widget, idx) in widgets"
         :key="`${widget.name}-${idx}`"
         :widget="widget"
+        @click.native="selectWidget(widget)"
       />
-    </div>
-  </div>
+      <el-button
+        :key="`add-${idx}`"
+        :class="$style.add"
+        icon="el-icon-plus"
+      />
+    </template>
+  </base-layout>
 </template>
 
 <style lang="scss" module>
-.root {
-  position: relative;
-}
-
-.widgets {
-  padding: 0 rem(16px);
+.add {
+  display: block;
+  width: 100%;
+  padding: 4px 0;
+  border: none;
 }
 </style>

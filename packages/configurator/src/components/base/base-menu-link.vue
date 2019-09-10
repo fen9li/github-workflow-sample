@@ -19,9 +19,8 @@ export default {
 </script>
 
 <template>
-  <component
-    :is="to ? 'router-link' : 'div'"
-    :to="to || null"
+  <router-link
+    :to="to"
     :class="$style.root"
   >
     <div :class="$style.header">
@@ -41,13 +40,12 @@ export default {
       </p>
       <slot />
     </div>
-  </component>
+  </router-link>
 </template>
 
 <style lang="scss" module>
 .root {
   display: block;
-  padding: rem(14px);
   color: var(--color-text) !important;
   cursor: pointer;
   border: 2px solid var(--color-divider);
@@ -66,10 +64,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: rem(48px);
+  padding: rem(0 14px);
 }
 
 .actions {
+  flex-shrink: 0;
   flex-wrap: nowrap;
+  margin-left: 1rem;
 
   button {
     padding: rem(4px);
@@ -81,13 +83,20 @@ export default {
 
 .title {
   margin: 0;
+  overflow: hidden;
   font-size: rem(18px);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .body {
-  margin-top: rem(8px);
+  padding: rem(0 14px 14px);
   font-size: rem(14px);
   color: var(--color-text-light);
+
+  p {
+    margin: 0;
+  }
 }
 
 .description {

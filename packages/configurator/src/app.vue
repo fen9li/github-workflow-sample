@@ -1,31 +1,31 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import AppSidebar from '~/components/app/app-sidebar'
 import AppEntry from '~/components/app/app-entry'
 import AppFrame from '~/components/app/app-frame'
+import AppHeader from '~/components/app/app-header'
 
 export default {
   name: 'App',
   components: {
-    AppSidebar,
     AppEntry,
     AppFrame,
-  },
-  data() {
-    return {
-      iframe: false,
-      appUrl: 'localhost:8080',
-    }
+    AppHeader,
   },
   computed: {
     ...mapGetters('exchange', [
       'waiting',
       'connecting',
     ]),
-    frameUrl() {
-      const origin = window.location.origin
-
-      return `${this.appUrl}?origin=${origin}`
+    ...mapGetters('frame', [
+      'showFrame',
+    ]),
+    ...mapGetters('dashboard', [
+      'widgets',
+    ]),
+  },
+  watch: {
+    widgets(v) {
+      console.error(v)
     },
   },
   mounted() {
@@ -36,7 +36,6 @@ export default {
       initExchange: 'INIT',
     }),
     loadApp() {
-      this.iframe = true
       this.$router.push('/dashboard')
     },
   },
@@ -45,12 +44,18 @@ export default {
 
 <template>
   <main :class="$style.root">
-    <app-sidebar>
+    <div :class="$style.sidebar">
       <router-view />
-    </app-sidebar>
-    <div :class="$style.app">
-      <app-frame />
+    </div>
+    <div :class="$style.wrapper">
       <app-entry v-if="waiting || connecting" />
+      <div
+        v-show="showFrame"
+        :class="$style.app"
+      >
+        <app-header />
+        <app-frame />
+      </div>
     </div>
   </main>
 </template>
@@ -62,7 +67,15 @@ export default {
   height: 100vh;
 }
 
-.app {
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: rem(300px);
+  height: 100vh;
+  border-right: 1px solid var(--color-divider);
+}
+
+.wrapper {
   flex-grow: 1;
 }
 </style>

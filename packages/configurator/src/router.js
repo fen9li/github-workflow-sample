@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from './state/store'
 import lazy from '@lib/router/lazy'
+import Dashboard from './views/dashboard'
 
 Vue.use(VueRouter)
 
@@ -14,11 +15,6 @@ const router = new VueRouter({
       component: () => lazy(import('~/views/home')),
     },
     {
-      path: '/index',
-      name: 'index',
-      component: () => lazy(import('~/views/index')),
-    },
-    {
       path: '/modules',
       name: 'modules',
       component: () => lazy(import('~/views/modules')),
@@ -29,10 +25,12 @@ const router = new VueRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: () => lazy(import('~/views/dashboard')),
-      meta: {
-        title: 'Dashboard',
-      },
+      component: Dashboard,
+    },
+    {
+      path: '/dashboard/widget',
+      name: 'dashboard-widget',
+      component: () => lazy(import('~/views/dashboard/widget')),
     },
     {
       path: '/menu',
@@ -60,9 +58,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const frameReady = store.getters['exchange/ready']
 
-  if (frameReady) {
-    next()
-  } else if (to.name === 'home') {
+  if (frameReady || to.name === 'home') {
     next()
   } else {
     next({

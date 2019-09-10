@@ -17,7 +17,6 @@ const getters = {
   connecting: s => s.status === 'connecting',
   connected: s => s.status === 'connected',
   config: s => s.config,
-  showFrame: (s, g) => g.connected || g.ready,
 }
 
 const mutations = {
@@ -95,6 +94,13 @@ const actions = {
     } catch(err) {
       // catch error
     }
+  },
+  SEND_TO_FRAME({ rootGetters, getters }, payload) {
+    const frameId = rootGetters['frame/frameId']
+    const frame = window.frames[frameId]
+    const message = JSON.stringify(payload)
+
+    frame.contentWindow.postMessage(message, `https://${getters.url}`)
   },
 }
 

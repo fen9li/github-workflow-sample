@@ -1,8 +1,8 @@
 import HeroPreview from './hero-preview'
-import HeroSettings from './hero-settings'
+import HeroBuilder from './hero-builder'
 
 export default {
   name: 'hero',
   preview: HeroPreview,
-  settings: HeroSettings,
+  builder: HeroBuilder,
 }

@@ -5,10 +5,12 @@ import router from './router'
 import store from './state/store'
 import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'
-import './components/widgets'
+import widgets from './components/widgets'
 import './components/base'
 
 Vue.use(ElementUI, { locale })
+
+store.commit('dashboard/REGISTER_WIDGETS', widgets)
 
 new Vue({
   router,
