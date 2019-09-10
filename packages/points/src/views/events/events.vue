@@ -25,7 +25,10 @@ export default {
         },
       })
     },
-    onCreateEventClick() {},
+    async onCreateEventClick() {
+      this.table.processor.getData()
+      this.modals.create = false
+    },
     getExportedFilename() {
       return getExportedFilename(this.table.tableName)
     }
@@ -58,7 +61,7 @@ export default {
     <create-modal
       v-if="modals.create"
       :visible.sync="modals.create"
-      @close-modal="modals.create = false"
+      @close-modal="onCreateEventClick"
     />
   </main-layout>
 </template>

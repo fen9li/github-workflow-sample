@@ -6,7 +6,7 @@ import EditModal from './modals/event-modal'
 import DeleteModal from './modals/delete-modal'
 import ParamModal from './modals/param-modal'
 import DeleteParamModal from './modals/delete-param-modal'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'EventPoints',
@@ -26,7 +26,6 @@ export default {
   },
   data() {
     return {
-      event: {},
       loading: false,
       modals: {
         param: false,
@@ -60,6 +59,9 @@ export default {
       ],
     }
   },
+  computed: {
+    ...mapState('event', ['event'])
+  },
   created() {
     this.getData()
   },
@@ -67,8 +69,7 @@ export default {
     ...mapActions('event', ['getEvent', 'updateEvent']),
     async getData() {
       this.loading = true
-      const [, response] = await this.getEvent(this.$route.params.id)
-      this.event = response
+      await this.getEvent(this.$route.params.id)
       this.loading = false
     },
     async setParams(parameters) {
@@ -92,7 +93,7 @@ export default {
           title: 'Success',
           message: `Successfuly deleted.`,
         })
-        await this.getData()
+        await this.getEvent(this.$route.params.id)
       }
 
       this.loading = false
@@ -114,7 +115,7 @@ export default {
     },
     onUpdated() {
       this.modals.edit = false
-      this.getData()
+      this.getEvent(this.$route.params.id)
     },
     onDeleted() {
       this.modals.delete = false

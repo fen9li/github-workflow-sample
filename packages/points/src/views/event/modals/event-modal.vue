@@ -23,26 +23,36 @@ export default {
     async onSubmit() {
       this.progress = true
 
-      const [error, response] = await this[this.event.id ? 'updateEvent' : 'createEvent'](this.form)
+      const [error, response] = await this[this.event && this.event.id ? 'updateEvent' : 'createEvent'](this.form)
 
       if (error) {
-        this.$notify({
-          type: 'error',
-          title: 'Error',
-          message: error.message,
-        })
+        if (Object.keys(error.violations).length !== 0) {
+          Object.keys(error.violations).forEach(key => {
+            this.$notify({
+              type: 'error',
+              title: 'Error',
+              message: error.violations[key] && error.violations[key][0],
+            })
+          })
+        } else {
+          this.$notify({
+            type: 'error',
+            title: 'Error',
+            message: error.message,
+          })
+        }
       }
 
       if (response) {
         this.$notify({
           type: 'success',
           title: 'Success',
-          message: `Successfuly ${this.event.id ? 'updated' : 'created'}.`,
+          message: `Successfuly ${this.event && this.event.id ? 'updated' : 'created'}.`,
         })
+        this.$emit('close-modal')
       }
 
       this.progress = false
-      this.$emit('close-modal')
     }
   },
 }
