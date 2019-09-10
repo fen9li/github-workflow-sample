@@ -26,19 +26,17 @@ export default {
           message: 'External ID is required',
         },
       },
+      loaded: false,
       progress: false,
       showModal: false,
     }
   },
   computed: {
-    ...mapState('providers', [
-      'providers',
-    ]),
+    ...mapState('providers', ['providers']),
   },
   methods: {
-    ...mapActions('account', [
-      'createAccount',
-    ]),
+    ...mapActions('account', ['createAccount']),
+    ...mapActions('providers', ['getProviders']),
     async onSubmit() {
       const formValid = await this.$refs.form.validate().catch(() => false)
       if (!formValid) {
@@ -54,7 +52,14 @@ export default {
         title: 'Account created',
         message: `Account ${this.form.externalId} successfully created`,
       })
-    }
+    },
+    onShowModalClick() {
+      this.loaded = false
+      this.showModal = true
+      this.getProviders().then(() => {
+        this.loaded = true
+      })
+    },
   }
 }
 </script>
@@ -63,7 +68,7 @@ export default {
   <div ref="createAccount">
     <el-button
       type="primary"
-      @click="showModal = true"
+      @click="onShowModalClick"
     >
       Create Account
     </el-button>
@@ -73,7 +78,14 @@ export default {
       modal-append-to-body
       append-to-body
     >
+      <div
+        v-if="!loaded"
+        v-loading="true"
+        class="modal-loader"
+      />
+
       <el-form
+        v-else
         ref="form"
         :model="form"
         label-position="top"
