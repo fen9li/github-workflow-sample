@@ -5,8 +5,8 @@ import router from './router'
 import store from './state/store'
 import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'
-import widgets from './components/widgets'
-import './components/base'
+import widgets from './widgets'
+import './components'
 
 Vue.use(ElementUI, { locale })
 

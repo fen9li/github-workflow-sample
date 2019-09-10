@@ -1,12 +1,8 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import DashboardItem from './dashboard-item'
 
 export default {
   name: 'DashboardView',
-  components: {
-    DashboardItem,
-  },
   computed: {
     ...mapGetters('dashboard', [
       'widgets',
@@ -14,6 +10,9 @@ export default {
   },
   methods: {
     ...mapMutations('dashboard', {
+      moveWidgetUp: 'MOVE_WIDGET_UP',
+      moveWidgetDown: 'MOVE_WIDGET_DOWN',
+      deleteWidget: 'DELETE_WIDGET',
       selectWidget: 'SELECT_WIDGET',
     }),
   },
@@ -26,11 +25,31 @@ export default {
     back="/home"
   >
     <template v-for="(widget, idx) in widgets">
-      <dashboard-item
+      <base-menu-link
         :key="`${widget.name}-${idx}`"
-        :widget="widget"
+        :title="widget.title"
+        to="/dashboard/widget"
         @click.native="selectWidget(widget)"
-      />
+      >
+        <template slot="actions">
+          <el-button
+            icon="el-icon-arrow-down"
+            @click.stop.prevent="moveWidgetDown(widget)"
+          />
+          <el-button
+            icon="el-icon-arrow-up"
+            @click.stop.prevent="moveWidgetUp(widget)"
+          />
+          <el-button
+            icon="el-icon-delete"
+            @click.stop.prevent="deleteWidget(widget)"
+          />
+        </template>
+        <component
+          :is="widget.preview"
+          :config="widget.config"
+        />
+      </base-menu-link>
       <el-button
         :key="`add-${idx}`"
         :class="$style.add"

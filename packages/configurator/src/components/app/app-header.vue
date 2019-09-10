@@ -22,22 +22,12 @@ export default {
     ...mapMutations('frame', {
       setViewport: 'SET_VIEWPORT',
     }),
-    onViewportChange(size) {
-      this.setViewport(size.viewport)
-      this.$el.focus()
-    },
-    send() {
-      this.$store.dispatch('dashboard/SEND_CONFIG')
-    }
   },
 }
 </script>
 
 <template>
   <div :class="$style.root">
-    <button @click="send">
-      Send
-    </button>
     <div
       v-if="ready"
       :class="$style.sizes"
@@ -49,9 +39,9 @@ export default {
           $style.button,
           size.viewport === viewport && $style.selected,
         ]"
-        @click="onViewportChange(size)"
+        @click="setViewport(size.viewport)"
       >
-        <base-icon :svg="size.icon" />
+        <the-icon :svg="size.icon" />
       </el-button>
     </div>
   </div>

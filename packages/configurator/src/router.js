@@ -30,7 +30,12 @@ const router = new VueRouter({
     {
       path: '/dashboard/widget',
       name: 'dashboard-widget',
-      component: () => lazy(import('~/views/dashboard/widget')),
+      component: () => lazy(import('~/views/dashboard/dashboard-widget')),
+    },
+    {
+      path: '/dashboard/new',
+      name: 'dashboard-new',
+      component: () => lazy(import('~/views/dashboard/dashboard-new')),
     },
     {
       path: '/menu',

@@ -1,16 +1,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import AppEntry from '~/components/app/app-entry'
-import AppFrame from '~/components/app/app-frame'
-import AppHeader from '~/components/app/app-header'
 
 export default {
   name: 'App',
-  components: {
-    AppEntry,
-    AppFrame,
-    AppHeader,
-  },
   computed: {
     ...mapGetters('exchange', [
       'waiting',
@@ -24,14 +16,17 @@ export default {
     ]),
   },
   watch: {
-    widgets(v) {
-      console.error(v)
+    widgets() {
+      this.sendDashboardConfig()
     },
   },
   mounted() {
     this.initExchange()
   },
   methods: {
+    ...mapActions('dashboard', {
+      sendDashboardConfig: 'SEND_CONFIG',
+    }),
     ...mapActions('exchange', {
       initExchange: 'INIT',
     }),

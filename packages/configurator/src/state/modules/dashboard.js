@@ -1,4 +1,4 @@
-import Widget from '~/components/widgets/widget'
+import Widget from '~/widgets/widget'
 
 const state = {
   /*
@@ -31,8 +31,11 @@ const mutations = {
   SELECT_WIDGET(state, widget) {
     state.selectedWidget = widget
   },
-  REMOVE_WIDGET(state, widget) {
+  DELETE_WIDGET(state, widget) {
+    const { widgets } = state
+    const index = widgets.indexOf(widget)
 
+    widgets.splice(index, 1)
   },
   MOVE_WIDGET_UP(state, widget) {
     const { widgets } = state
@@ -40,7 +43,7 @@ const mutations = {
 
     if (index > 0) {
       const prevWidget = widgets[index - 1]
-      state.widgets.splice(index - 1, 2, widget, prevWidget)
+      widgets.splice(index - 1, 2, widget, prevWidget)
     }
   },
   MOVE_WIDGET_DOWN(state, widget) {
@@ -49,7 +52,7 @@ const mutations = {
 
     if (index < widgets.length) {
       const nextWidget = widgets[index + 1]
-      state.widgets.splice(index, 2, nextWidget, widget)
+      widgets.splice(index, 2, nextWidget, widget)
     }
   },
   RESET(state) {
@@ -75,12 +78,18 @@ const actions = {
     }
   },
   SEND_CONFIG({ dispatch, getters }) {
+    const config = getters.widgets.map(widget => {
+      return widget.build()
+    })
+
     dispatch('exchange/SEND_TO_FRAME', {
       type: 'debi-dashboard',
-      payload: getters.widgets.map(widget => {
-        return widget.build()
-      }),
+      payload: config,
     }, { root: true })
+
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('Send configuration', config)
+    }
   },
   RESET({ dispatch, rootGetters }) {
     const config = rootGetters['exchange/config'] || {}

@@ -70,29 +70,35 @@ const actions = {
       commit('SET_ERROR', 'No connection')
     }
   },
-  HANDLE_FRAME_MESSAGE({ commit, dispatch, getters }, payload) {
-    const trusted = new RegExp(payload.origin).test(getters.frameUrl)
+  HANDLE_FRAME_MESSAGE({ dispatch, getters }, message) {
+    const trusted = new RegExp(message.origin).test(getters.frameUrl)
 
     if (!trusted) return
 
     try {
-      const data = JSON.parse(payload.data)
+      let data = message.data
 
-      if (data.type === 'debi-loaded') {
-        const provider = get(data, 'payload.provider', '')
-        const config = get(data, 'payload.config', {})
-
-        commit('SET_READY_STATUS')
-        commit('SET_PROVIDER', provider)
-
-        if (config) {
-          commit('SET_CONFIG', config)
-          dispatch('dashboard/INIT', config.dashboard, { root: true })
-        }
+      if (typeof message.data === 'string' && /^(\[|\{)/.test(message.data)) {
+        data = JSON.parse(message.data)
       }
 
-    } catch(err) {
-      // catch error
+      if (data.type === 'debi-loaded') {
+        dispatch('ON_DEBI_LOADED', data)
+      }
+    } catch(error) {
+      console.error(error)
+    }
+  },
+  ON_DEBI_LOADED({ commit, dispatch }, data) {
+    const provider = get(data, 'payload.provider', '')
+    const config = get(data, 'payload.config', {})
+
+    commit('SET_READY_STATUS')
+    commit('SET_PROVIDER', provider)
+
+    if (config) {
+      commit('SET_CONFIG', config)
+      dispatch('dashboard/INIT', config.dashboard, { root: true })
     }
   },
   SEND_TO_FRAME({ rootGetters, getters }, payload) {
