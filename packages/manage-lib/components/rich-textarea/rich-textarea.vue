@@ -4,7 +4,7 @@ import { VPopover } from 'v-tooltip'
 export default {
   name: 'BaseRichTextarea',
   components: {
-    VPopover
+    VPopover,
   },
   props: {
     value: {
@@ -22,6 +22,10 @@ export default {
 
       linkURL: '',
       linkTooltipIsVisible: false,
+
+      defaultFontSize: 3,
+      maxAvailFontSize: 7,
+      minAvailFontSize: 1,
     }
   },
   watch: {
@@ -40,6 +44,9 @@ export default {
       }
     },
   },
+  mounted() {
+    this.selection = window.getSelection()
+  },
   methods: {
     onInput(e) {
       this.skipNextValueWatcher = true
@@ -55,9 +62,10 @@ export default {
 
       document.execCommand(cmdName, false, args)
     },
+
     makeSelectedLink() {
       // save current selection to use it later
-      this.saveSelection()
+      this.saveSelectedRanges()
 
       // nothing is selected - noop
       if (!this.savedSelectionRanges.length) {
@@ -73,26 +81,8 @@ export default {
         this.linkTooltipIsVisible = true
       }
     },
-    applyLinkURL() {
-      const { savedSelectionRanges, linkURL } = this
-
-      if (!linkURL.length) {
-        return
-      }
-
-      const currentSelection = window.getSelection()
-      currentSelection.removeAllRanges()
-
-      // programmatically select the text from previously saved ranges
-      savedSelectionRanges.forEach(r => currentSelection.addRange(r))
-
-      this.hideLinkTooltip()
-
-      this.executeCmd('createLink', linkURL)
-    },
-    saveSelection() {
-      const selection = window.getSelection()
-
+    saveSelectedRanges() {
+      const { selection } = this
       const { rangeCount } = selection
       const ranges = []
 
@@ -100,29 +90,123 @@ export default {
         ranges.push(selection.getRangeAt(i))
       }
 
-      this.savedSelection = selection
       this.savedSelectionRanges = ranges
     },
     hideLinkTooltip() {
       this.linkTooltipIsVisible = false
-      this.savedSelection = null
       this.savedSelectionRanges = []
       this.linkURL = ''
     },
-    isSelectionContainLink() {
-      if (!Selection.prototype.containsNode) {
-        return false
+    applyLinkURL() {
+      const { savedSelectionRanges, linkURL, selection } = this
+
+      if (!linkURL.length) {
+        return
       }
 
-      const { savedSelection } = this
+      selection.removeAllRanges()
+
+      // programmatically select the text from previously saved ranges
+      savedSelectionRanges.forEach(r => selection.addRange(r))
+
+      this.hideLinkTooltip()
+
+      this.executeCmd('createLink', linkURL)
+
+      selection.removeAllRanges()
+    },
+    isSelectionContainLink() {
+      const { selection } = this
       const { area } = this.$refs
       const links = [...area.querySelectorAll('a')]
 
-      return links.some(l => savedSelection.containsNode(l, true))
+      return links.some(l => selection.containsNode(l, true))
     },
+
+    selectAllInArea() {
+      const { area } = this.$refs
+      const { selection } = this
+      const areaRange = document.createRange()
+
+      // create selection range for our editable area
+      areaRange.selectNodeContents(area)
+
+      // remove any existing selections
+      selection.removeAllRanges()
+      // select the whole area content
+      selection.addRange(areaRange)
+    },
+    isAnythingSelected() {
+      const { area } = this.$refs
+      const { selection } = this
+      const { rangeCount } = selection
+
+      if (rangeCount > 0) {
+        const range = selection.getRangeAt(0)
+        const { startOffset, endOffset, commonAncestorContainer } = range
+
+        if (
+          area.contains(commonAncestorContainer) &&
+          startOffset !== endOffset
+        ) {
+          return true
+        }
+      }
+
+      return false
+    },
+
+    getFontSizeInSelection() {
+      const { selection, defaultFontSize } = this
+      const { area } = this.$refs
+      const fontNodes = [...area.querySelectorAll('font')]
+      const sizesList = fontNodes
+        .filter(fn => selection.containsNode(fn, true))
+        .map(fn => parseInt(fn.size, 10) || defaultFontSize)
+      const result = {
+        min: defaultFontSize,
+        max: defaultFontSize,
+      }
+
+      if (sizesList.length) {
+        result.min = Math.min(...sizesList)
+        result.max = Math.max(...sizesList)
+      }
+
+      return result
+    },
+    increaseFontSize() {
+      const { maxAvailFontSize } = this
+      const { max } = this.getFontSizeInSelection()
+      let nextSize = max + 1
+
+      if (nextSize > maxAvailFontSize) {
+        nextSize = maxAvailFontSize
+      }
+
+      this.executeCmd('fontSize', nextSize)
+    },
+    decreaseFontSize() {
+      const { minAvailFontSize } = this
+      const { min } = this.getFontSizeInSelection()
+      let nextSize = min - 1
+
+      if (nextSize < minAvailFontSize) {
+        nextSize = minAvailFontSize
+      }
+
+      this.executeCmd('fontSize', nextSize)
+    },
+
     removeFormat() {
+      if (!this.isAnythingSelected()) {
+        this.selectAllInArea()
+      }
+
       this.executeCmd('removeFormat')
       this.executeCmd('unlink')
+
+      this.selection.removeAllRanges()
     },
   },
 }
@@ -156,6 +240,34 @@ export default {
         >
           <path
             d="M704 64h128v416c0 159.058-143.268 288-320 288-176.73 0-320-128.942-320-288v-416h128v416c0 40.166 18.238 78.704 51.354 108.506 36.896 33.204 86.846 51.494 140.646 51.494s103.75-18.29 140.646-51.494c33.116-29.802 51.354-68.34 51.354-108.506v-416zM192 832h640v128h-640z"
+          />
+        </svg>
+      </div>
+      <div
+        class="base-rich-textarea__control"
+        @click="increaseFontSize"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 1024 1024"
+        >
+          <path
+            d="M194.018 832l57.6-192h264.764l57.6 192h113.632l-192-640h-223.232l-192 640h113.636zM347.618 320h72.764l57.6 192h-187.964l57.6-192zM704 832l160-256 160 256h-320z"
+          />
+        </svg>
+      </div>
+      <div
+        class="base-rich-textarea__control"
+        @click="decreaseFontSize"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 1024 1024"
+        >
+          <path
+            d="M194.018 832l57.6-192h264.764l57.6 192h113.632l-192-640h-223.232l-192 640h113.636zM347.618 320h72.764l57.6 192h-187.964l57.6-192zM1024 192l-160 256-160-256h320z"
           />
         </svg>
       </div>
@@ -214,34 +326,6 @@ export default {
         </v-popover>
       </div>
       <div class="base-rich-textarea__divider" />
-      <div
-        class="base-rich-textarea__control"
-        @click="executeCmd('undo')"
-      >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 1024 1024"
-        >
-          <path
-            d="M512 64c-141.384 0-269.376 57.32-362.032 149.978l-149.968-149.978v384h384l-143.532-143.522c69.496-69.492 165.492-112.478 271.532-112.478 212.068 0 384 171.924 384 384 0 114.696-50.292 217.636-130.018 288l84.666 96c106.302-93.816 173.352-231.076 173.352-384 0-282.77-229.23-512-512-512z"
-          />
-        </svg>
-      </div>
-      <div
-        class="base-rich-textarea__control"
-        @click="executeCmd('redo')"
-      >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 1024 1024"
-        >
-          <path
-            d="M0 576c0 152.924 67.048 290.184 173.35 384l84.666-96c-79.726-70.364-130.016-173.304-130.016-288 0-212.076 171.93-384 384-384 106.042 0 202.038 42.986 271.53 112.478l-143.53 143.522h384v-384l-149.97 149.978c-92.654-92.658-220.644-149.978-362.030-149.978-282.77 0-512 229.23-512 512z"
-          />
-        </svg>
-      </div>
       <div
         class="base-rich-textarea__control"
         @click="removeFormat"
