@@ -29,7 +29,7 @@ export default {
         :key="`${widget.name}-${idx}`"
         :title="widget.title"
         to="/dashboard/widget"
-        @click.native="selectWidget(widget)"
+        @click.native.capture="selectWidget(widget)"
       >
         <template slot="actions">
           <el-button

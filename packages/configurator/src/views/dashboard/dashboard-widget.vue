@@ -10,7 +10,7 @@ export default {
     ]),
     title() {
       const title = get(this.selectedWidget, 'title', '')
-      return title ? `${title} Widget` : 'Widget'
+      return title ? `${title}` : 'Widget'
     }
   },
 }
