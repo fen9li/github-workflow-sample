@@ -15,12 +15,9 @@ export default {
     initialConfig() {
       return this.widget.config
     },
-    config() {
-      return this.form
-    },
   },
   watch: {
-    config: {
+    form: {
       handler: debounce(function(value) {
         this.sendConfig()
       }, 300),

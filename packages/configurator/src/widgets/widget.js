@@ -10,7 +10,9 @@ class Widget {
 
   get title() {
     const name = get(this.meta, 'name', 'widget')
-    return capitalize(name)
+    const title = get(this.meta, 'title')
+
+    return title || capitalize(name)
   }
 
   get preview() {
@@ -26,7 +28,17 @@ class Widget {
   }
 
   build() {
-    return this.config
+    const { builderInstance, config } = this
+    const widgetData = {
+      ...config,
+    }
+
+    if (builderInstance && builderInstance.form) {
+      widgetData.props = builderInstance.form
+      this.config.props = builderInstance.form
+    }
+
+    return widgetData
   }
 }
 

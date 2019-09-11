@@ -7,14 +7,11 @@ export default {
   data: () => ({
     form: null,
   }),
-  computed: {
-    config() {
-      return this.form
-    },
-  },
   created() {
     if (!this.form) {
-      this.form = this.initialConfig.props
+      this.form = {
+        ...this.initialConfig.props,
+      }
     }
   },
 }

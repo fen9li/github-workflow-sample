@@ -6,7 +6,7 @@ export default {
       default: ''
     },
     value: {
-      type: [String, Object],
+      type: [String, Object, Boolean],
       default: '',
     },
   },

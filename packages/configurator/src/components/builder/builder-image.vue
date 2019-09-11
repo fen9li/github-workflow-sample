@@ -30,7 +30,7 @@ export default {
 </script>
 
 <template>
-  <div class="form-element">
+  <div class="builder-image form-element">
     <div class="block-label">
       {{ label }}
     </div>
