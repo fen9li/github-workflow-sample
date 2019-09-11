@@ -20,6 +20,7 @@ export default {
       <router-link
         v-if="back"
         :to="back"
+        @click.native="$emit('back')"
       >
         <el-button
           class="base-layout__back"
@@ -44,6 +45,7 @@ export default {
 
 <style lang="scss">
 .base-layout {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: rem(300px);

@@ -50,7 +50,7 @@ const mutations = {
     const { widgets } = state
     const index = widgets.indexOf(widget)
 
-    if (index < widgets.length) {
+    if (index + 1 < widgets.length) {
       const nextWidget = widgets[index + 1]
       widgets.splice(index, 2, nextWidget, widget)
     }
