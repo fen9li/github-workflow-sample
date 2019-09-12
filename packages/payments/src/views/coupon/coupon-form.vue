@@ -16,6 +16,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    errors: {
+      type: Object,
+      default: null,
+    },
   },
   data() {
     return {
@@ -75,6 +79,7 @@ export default {
     label-position="top"
   >
     <el-form-item
+      :error="errors.name"
       label="Coupon Name"
       prop="name"
     >
@@ -85,6 +90,7 @@ export default {
     </el-form-item>
 
     <el-form-item
+      :error="errors.code"
       label="Coupon Code"
       prop="code"
     >
@@ -97,6 +103,7 @@ export default {
 
     <div class="united-field">
       <el-form-item
+        :error="errors.start_at"
         label="Effective Start Date"
         prop="start_at"
       >
@@ -128,6 +135,7 @@ export default {
       <el-form-item
         label="Validity Period (Months)"
         :prop="edit ? '' : 'validity_period'"
+        :error="errors.validity_period"
       >
         <el-input
           v-mask="['#', '##']"
@@ -144,6 +152,7 @@ export default {
     </div>
 
     <el-form-item
+      :error="errors.resource"
       :class="$style.radios"
       label="Discount Type"
       prop="resource"
@@ -163,6 +172,7 @@ export default {
     </el-form-item>
 
     <el-form-item
+      :error="errors.amount"
       label="Amount"
       prop="amount"
     >

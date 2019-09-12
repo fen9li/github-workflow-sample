@@ -2,12 +2,14 @@
 import couponForm from './coupon-form'
 import set from 'lodash/set'
 import isPast from '@lib/utils/date-is-past'
+import FormValidation from '@lib/utils/form-validation'
 
 export default {
   name: 'CouponCreateEditModal',
   components: {
     couponForm,
   },
+  mixins: [FormValidation],
   inheritAttrs: false,
   props: {
     coupon: {
@@ -31,6 +33,7 @@ export default {
         discount_type: 'fixed_amount',
         amount: null,
       },
+      errors: {},
     }
   },
   computed: {
@@ -51,7 +54,7 @@ export default {
     async onSubmit() {
       const { form, edit } = this
 
-      if (!this.validateAll().some(item => item === false)) {
+      if (await this.validation.validate()) {
         this.processing = true
 
         const request = {
@@ -92,25 +95,9 @@ export default {
           this.$emit('update:visible', false)
           this.$emit('updated')
         } else if (error) {
-          const violations = Object.keys(error.violations)
-          violations.forEach(violation => {
-            setTimeout(() => {
-              this.$notify({
-                type: 'error',
-                title: 'Error',
-                message: `${violation}: ${error.violations[violation][0]}`,
-              })
-            }, 50)
-          })
+          this.validation.mapViolations(error.violations)
         }
       }
-    },
-    validateAll() {
-      const result = []
-      this.$refs.form.$children[0].validate( valid => {
-        result.push(valid)
-      })
-      return result
     },
   },
 }
@@ -127,6 +114,7 @@ export default {
       ref="form"
       :edit="edit"
       :coupon="form"
+      :errors="errors"
       @changeValue="updateCouponValue"
     />
     <el-button
