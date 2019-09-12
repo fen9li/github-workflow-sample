@@ -52,6 +52,7 @@ export default {
 }
 
 .frame {
+  box-sizing: content-box;
   width: 100%;
   height: 100%;
   border: 1px solid var(--color-text-light);
@@ -62,6 +63,7 @@ export default {
 }
 
 .tablet {
+  box-sizing: content-box;
   width: rem(768px);
 }
 </style>

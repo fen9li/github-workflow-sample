@@ -4,6 +4,7 @@ import Slider from './slider'
 import Text from './text'
 import Popular from './popular'
 import Image from './image'
+import Tiles from './tiles'
 
 export default [
   Hero,
@@ -12,4 +13,5 @@ export default [
   Text,
   Popular,
   Image,
+  Tiles,
 ]

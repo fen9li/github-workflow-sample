@@ -20,16 +20,15 @@ export default {
 <template>
   <div>
     <builder-image
-      v-model="form"
+      v-model="form.image"
       :ratio="{
         mobile: '2:1',
         desktop: '4:1',
       }"
       label="Image"
     />
-    <builder-textarea
-      v-model="form.link"
-      label="Link"
+    <builder-cta
+      v-model="form.cta"
     />
   </div>
 </template>
