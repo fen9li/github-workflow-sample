@@ -3,7 +3,7 @@ import HeroBuilder from './hero-builder'
 
 export default {
   name: 'hero',
-  title: 'Hero Widget',
+  title: 'Hero banner',
   preview: HeroPreview,
   builder: HeroBuilder,
 }

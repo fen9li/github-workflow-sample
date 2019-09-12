@@ -25,8 +25,21 @@ const mutations = {
 
     state.registered = registered
   },
-  ADD_WIDGET(state, payload) {
-    state.widgets.push(payload)
+  ADD_WIDGET(state, { index, config, select }) {
+    const widget = new Widget({
+      config,
+      meta: state.registered[config.name],
+    })
+
+    if (index) {
+      state.widgets.splice(index, 0, widget)
+    } else {
+      state.widgets.push(widget)
+    }
+
+    if (select) {
+      state.selectedWidget = widget
+    }
   },
   SELECT_WIDGET(state, widget) {
     state.selectedWidget = widget
@@ -61,19 +74,14 @@ const mutations = {
 }
 
 const actions = {
-  INIT({ commit, getters }, config) {
-    const registered = getters.registered
-
-    if (config instanceof Array) {
+  INIT({ commit }, dashboard) {
+    if (dashboard instanceof Array) {
       commit('RESET')
 
-      config.forEach(record => {
-        const widget = new Widget({
+      dashboard.forEach(record => {
+        commit('ADD_WIDGET', {
           config: record,
-          meta: registered[record.name]
         })
-
-        commit('ADD_WIDGET', widget)
       })
     }
   },

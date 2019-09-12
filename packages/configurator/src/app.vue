@@ -15,24 +15,13 @@ export default {
       'widgets',
     ]),
   },
-  watch: {
-    widgets() {
-      this.sendDashboardConfig()
-    },
-  },
   mounted() {
     this.initExchange()
   },
   methods: {
-    ...mapActions('dashboard', {
-      sendDashboardConfig: 'SEND_CONFIG',
-    }),
     ...mapActions('exchange', {
       initExchange: 'INIT',
     }),
-    loadApp() {
-      this.$router.push('/dashboard')
-    },
   },
 }
 </script>

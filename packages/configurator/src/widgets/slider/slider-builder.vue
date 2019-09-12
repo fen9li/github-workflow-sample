@@ -122,6 +122,7 @@ export default {
       :title="orderMap.get(slideToEdit)"
       :back="{}"
       :class="$style.editView"
+      popup
       @back="slideToEdit = null"
     >
       <builder-textarea
@@ -152,11 +153,5 @@ export default {
 .add {
   margin-top: 1rem;
   text-align: center;
-}
-.editView {
-  position: absolute !important;
-  top: 0;
-  left: 0;
-  background: white;
 }
 </style>

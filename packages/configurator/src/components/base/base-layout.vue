@@ -7,15 +7,24 @@ export default {
       default: '',
     },
     back: {
-      type: [String, Object],
-      default: null,
+      type: [String, Object, Boolean],
+      default: () => ({}),
+    },
+    popup: {
+      type: Boolean,
+      default: false,
     },
   },
 }
 </script>
 
 <template>
-  <div class="base-layout">
+  <div
+    :class="[
+      'base-layout',
+      popup && 'base-layout--popup',
+    ]"
+  >
     <div class="base-layout__header">
       <router-link
         v-if="back"
@@ -51,6 +60,13 @@ export default {
   width: rem(300px);
   height: 100vh;
   border-right: 1px solid var(--color-divider);
+
+  &--popup {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: white;
+  }
 
   &__header {
     display: flex;

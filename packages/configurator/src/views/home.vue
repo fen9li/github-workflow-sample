@@ -35,7 +35,10 @@ export default {
 </script>
 
 <template>
-  <base-layout :class="$style.root">
+  <base-layout
+    :class="$style.root"
+    :back="false"
+  >
     <img
       slot="header"
       :class="$style.logo"
@@ -50,8 +53,9 @@ export default {
         :key="item.title"
         :to="item.path"
         :title="item.title"
-        :description="item.description"
-      />
+      >
+        {{ item.description }}
+      </base-menu-link>
     </div>
     <template v-else>
       <h1 :class="$style.title">
