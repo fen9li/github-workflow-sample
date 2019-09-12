@@ -1,5 +1,7 @@
 <script>
 import { mapGetters } from 'vuex'
+import Vue from 'vue'
+import { API } from '@loyaltycorp/manage-lib/processors/api-processor'
 
 export default {
   computed: {
@@ -103,6 +105,16 @@ export default {
           ],
         },
       ]
+    },
+  },
+  methods: {
+    handleLoginEvent(data) {
+      const authHeader = `Bearer ${data.accessToken}`
+
+      Vue.prototype.$accessToken = data.accessToken
+
+
+      API.defaults.headers.common['Authorization'] = authHeader
     },
   },
 }

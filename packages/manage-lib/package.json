@@ -10,7 +10,7 @@
     "bodybuilder": "^2.2.17",
     "dayjs": "^1.8.15",
     "deepmerge": "^3.2.0",
-    "elasticsearch": "^15.4.1",
+    "elasticsearch": "^16.3.0",
     "element-ui": "2.8.2",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.11",

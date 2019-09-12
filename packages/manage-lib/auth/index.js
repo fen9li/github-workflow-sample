@@ -1,5 +1,5 @@
-import authService from './auth.service'
-import authState from './auth.state'
+import authService from "./auth.service"
+import authState from "./auth.state"
 
 export default {
   install(Vue, options) {
@@ -18,27 +18,29 @@ export default {
     Vue.mixin({
       created() {
         if (this.handleLoginEvent) {
-          authService.addListener('loginEvent', this.handleLoginEvent)
+          authService.addListener("loginEvent", this.handleLoginEvent)
         }
       },
 
       destroyed() {
         if (this.handleLoginEvent) {
-          authService.removeListener('loginEvent', this.handleLoginEvent)
+          authService.removeListener("loginEvent", this.handleLoginEvent)
         }
-      },
+      }
     })
 
     /*
      * Register auth state
      */
     if (store) {
-      store.registerModule('auth', authState)
+      store.registerModule("auth", authState)
 
-      authService.addListener('loginEvent', e => {
+      authService.addListener("loginEvent", e => {
         const profile = e.loggedIn ? e.profile : null
-        store.commit('auth/SET_PROFILE', profile)
+        const accessToken = e.loggedIn ? e.accessToken : null
+        store.commit("auth/SET_PROFILE", profile)
+        store.commit("auth/SET_TOKEN", accessToken)
       })
     }
-  },
+  }
 }
