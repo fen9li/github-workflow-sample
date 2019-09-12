@@ -3,6 +3,7 @@ import TileImage from './tile-image'
 import Slider from './slider'
 import Text from './text'
 import Popular from './popular'
+import Image from './image'
 
 export default [
   Hero,
@@ -10,4 +11,5 @@ export default [
   Slider,
   Text,
   Popular,
+  Image,
 ]

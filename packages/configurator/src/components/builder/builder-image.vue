@@ -19,6 +19,7 @@ export default {
       mobile: '',
       desktop: '',
       alt: '',
+      link: ''
     },
   }),
   methods: {
