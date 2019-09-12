@@ -49,7 +49,14 @@ export default {
     },
     addSlide() {
       const { slides, orderMap } = this
-      const newSlide = {}
+      const newSlide = {
+        title: 'New slide',
+        cta: {},
+        image: {
+          desktop: 'https://ucarecdn.com/3ac0ec3c-3c34-428b-99cf-139255c72d1b/-/crop/1920x633/0,129/-/preview/',
+          mobile: 'https://ucarecdn.com/15965329-782c-4d02-ad30-a486aede231b/-/crop/1646x1080/142,0/-/preview/',
+        }
+      }
 
       slides.push(newSlide)
       orderMap.set(newSlide, `Slide ${++this.lastOrderNum}`)
