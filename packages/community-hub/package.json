@@ -1,14 +1,14 @@
 {
   "name": "@loyaltycorp/community-hub",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:ci": "cross-env ANALYZE=true vue-cli-service build"
   },
   "dependencies": {
-    "@loyaltycorp/manage-lib": "0.6.0",
+    "@loyaltycorp/manage-lib": "0.7.0",
     "axios": "^0.19.0",
     "uploadcare-vue": "^1.0.0",
     "vue": "^2.6.10",

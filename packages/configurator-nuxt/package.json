@@ -1,6 +1,6 @@
 {
   "name": "@loyaltycorp/configurator-nuxt",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Configurator",
   "author": "Loyalty Corp",
   "private": true,
@@ -13,7 +13,7 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
-    "@loyaltycorp/manage-lib": "0.6.0",
+    "@loyaltycorp/manage-lib": "0.7.0",
     "@nuxtjs/axios": "^5.6.0",
     "cross-env": "^5.2.0",
     "element-ui": "2.12.0",
