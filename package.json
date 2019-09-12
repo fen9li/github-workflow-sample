@@ -1,6 +1,10 @@
 {
   "name": "manage-v2-frontend",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/loyaltycorp/manage-v2-frontend.git"
+  },
   "scripts": {
     "bootstrap": "lerna bootstrap --nohoist=*",
     "bootstrap:ci": "lerna bootstrap --ci --force-local",
@@ -10,7 +14,7 @@
     "clean": "lerna clean --yes && yarn && yarn bootstrap",
     "cli": "node scripts/cli.js",
     "commit": "npx git-cz",
-    "publish-packages": "lerna publish --yes",
+    "publish-packages": "lerna publish --yes --registry=\"https://npm.pkg.github.com/\"",
     "lint": "eslint --ext .js,.vue --fix . && stylelint --fix \"packages/**/*.vue\" \"packages/**/*.scss\" && prettier --list-different --write \"**/*.{json,css,scss,md}\" && markdownlint *.md",
     "list-package": "lerna ls -l",
     "unit": "vue-cli-service test:unit",
