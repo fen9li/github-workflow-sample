@@ -16,23 +16,25 @@ export default {
     return {
       localValue: this.value,
       skipNextValueWatcher: false,
+      readInputInNextTick: false,
 
-      savedSelectionRanges: [],
       savedSelection: null,
-
+      savedSelectionRanges: [],
       linkURL: '',
       linkTooltipIsVisible: false,
 
-      defaultFontSize: 3,
-      maxAvailFontSize: 7,
-      minAvailFontSize: 1,
+      fontSizeChangingStep: 0.25, // em
+      maxAvailFontSize: 5, // em
+      defaultFontSize: 1, // em
+      minAvailFontSize: 0.25, // em
+      fontSizeSeries: [],
     }
   },
   watch: {
     value() {
       const { localValue, value, skipNextValueWatcher } = this
 
-      if (!(typeof value === 'string')) {
+      if (typeof value !== 'string') {
         this.localValue = ''
       } else if (localValue !== value) {
         // Avoid of unwanted innerHTML re-rendering and blur event
@@ -44,14 +46,25 @@ export default {
       }
     },
   },
+  created() {
+    this.createSizeSeries()
+  },
   mounted() {
     this.selection = window.getSelection()
   },
   methods: {
-    onInput(e) {
+    onInput({ target }) {
       this.skipNextValueWatcher = true
 
-      this.$emit('input', e.target.innerHTML)
+      if (this.readInputInNextTick) {
+        this.readInputInNextTick = false
+
+        this.$nextTick(() => {
+          this.$emit('input', target.innerHTML)
+        })
+      } else {
+        this.$emit('input', target.innerHTML)
+      }
     },
     executeCmd(cmdName, args) {
       const { area } = this.$refs
@@ -62,7 +75,37 @@ export default {
 
       document.execCommand(cmdName, false, args)
     },
+    executeStyleCmd(cmdName, args) {
+      const { area } = this.$refs
 
+      if (area) {
+        area.focus()
+      }
+
+      // use style attr instead of html tag
+      document.execCommand('styleWithCSS', false, true)
+      document.execCommand(cmdName, false, args)
+      document.execCommand('styleWithCSS', false, false)
+    },
+
+    isSelectionContainLink() {
+      const { selection } = this
+      const { area } = this.$refs
+      const links = [...area.querySelectorAll('a')]
+
+      return links.some(l => selection.containsNode(l, true))
+    },
+    saveSelectedRanges() {
+      const { selection } = this
+      const { rangeCount } = selection
+      const ranges = []
+
+      for (let i = 0; i < rangeCount; i++) {
+        ranges.push(selection.getRangeAt(i))
+      }
+
+      this.savedSelectionRanges = ranges
+    },
     makeSelectedLink() {
       // save current selection to use it later
       this.saveSelectedRanges()
@@ -80,22 +123,6 @@ export default {
         // to type url link
         this.linkTooltipIsVisible = true
       }
-    },
-    saveSelectedRanges() {
-      const { selection } = this
-      const { rangeCount } = selection
-      const ranges = []
-
-      for (let i = 0; i < rangeCount; i++) {
-        ranges.push(selection.getRangeAt(i))
-      }
-
-      this.savedSelectionRanges = ranges
-    },
-    hideLinkTooltip() {
-      this.linkTooltipIsVisible = false
-      this.savedSelectionRanges = []
-      this.linkURL = ''
     },
     applyLinkURL() {
       const { savedSelectionRanges, linkURL, selection } = this
@@ -115,27 +142,140 @@ export default {
 
       selection.removeAllRanges()
     },
-    isSelectionContainLink() {
-      const { selection } = this
-      const { area } = this.$refs
-      const links = [...area.querySelectorAll('a')]
-
-      return links.some(l => selection.containsNode(l, true))
+    hideLinkTooltip() {
+      this.linkTooltipIsVisible = false
+      this.savedSelectionRanges = []
+      this.linkURL = ''
     },
 
-    selectAllInArea() {
-      const { area } = this.$refs
-      const { selection } = this
-      const areaRange = document.createRange()
+    createSizeSeries() {
+      const {
+        fontSizeChangingStep,
+        maxAvailFontSize,
+        minAvailFontSize,
+        fontSizeSeries,
+      } = this
+      let current = minAvailFontSize
 
-      // create selection range for our editable area
-      areaRange.selectNodeContents(area)
+      while (current < maxAvailFontSize) {
+        fontSizeSeries.push(current)
 
-      // remove any existing selections
-      selection.removeAllRanges()
-      // select the whole area content
-      selection.addRange(areaRange)
+        current += fontSizeChangingStep
+      }
+
+      fontSizeSeries.push(maxAvailFontSize)
     },
+    getElsWithSizeStyle() {
+      const { selection } = this
+      const { area } = this.$refs
+      const nodes = [...area.querySelectorAll('[style*=font-size]')]
+
+      // choose only ones that are inside selection
+      return nodes.filter(fn => selection.containsNode(fn, true))
+    },
+    getFontSizeInSelection() {
+      const { defaultFontSize } = this
+      const nodesList = this.getElsWithSizeStyle()
+      const sizesList = nodesList.map(n => parseFloat(n.style.fontSize))
+
+      const result = {
+        min: defaultFontSize,
+        max: defaultFontSize,
+      }
+
+      // There are may be many sizes under selection
+      // but we need to get a single value from them all.
+      // To do that we search for a minimum and maximum values.
+      // We will use min value for font size decreasing and
+      // max value for increasing.
+      if (sizesList.length) {
+        result.min = Math.min(...sizesList)
+        result.max = Math.max(...sizesList)
+      }
+
+      return result
+    },
+    getNextFontSize() {
+      const { fontSizeSeries } = this
+      const seriesLength = fontSizeSeries.length
+      const currentFontSize = this.getFontSizeInSelection().max
+      let nextSizeIndex = -1
+
+      for (let i = 0; i < seriesLength; i++) {
+        const value = fontSizeSeries[i]
+
+        // choose the first bigger value than current
+        if (value > currentFontSize) {
+          nextSizeIndex = i
+          break
+        }
+      }
+
+      if (nextSizeIndex === -1) {
+        nextSizeIndex = seriesLength - 1
+      }
+
+      return fontSizeSeries[nextSizeIndex]
+    },
+    getPrevFontSize() {
+      const { fontSizeSeries } = this
+      const seriesLength = fontSizeSeries.length
+      const currentFontSize = this.getFontSizeInSelection().min
+      let prevSizeIndex = -1
+
+      for (let i = seriesLength - 1; i >= 0; i--) {
+        const value = fontSizeSeries[i]
+
+        // choose the first smaller value than current
+        if (value < currentFontSize) {
+          prevSizeIndex = i
+          break
+        }
+      }
+
+      if (prevSizeIndex === -1) {
+        prevSizeIndex = 0
+      }
+
+      return fontSizeSeries[prevSizeIndex]
+    },
+    increaseFontSize() {
+      const { executeStyleCmd, defaultFontSize } = this
+      const nextFontSize = this.getNextFontSize()
+
+      if (nextFontSize === defaultFontSize) {
+        executeStyleCmd('fontSize', 3) // 3 is a default
+      } else {
+        this.readInputInNextTick = true
+
+        executeStyleCmd('fontSize', 2)
+
+        const nodesList = this.getElsWithSizeStyle()
+
+        nodesList.forEach(n => {
+          n.style.fontSize = `${nextFontSize}em`
+        })
+      }
+    },
+    decreaseFontSize() {
+      const { executeStyleCmd, defaultFontSize } = this
+      const prevFontSize = this.getPrevFontSize()
+
+      if (prevFontSize === defaultFontSize) {
+        executeStyleCmd('fontSize', 3) // 3 is a default
+      } else {
+        this.readInputInNextTick = true
+
+        executeStyleCmd('fontSize', 2)
+
+        const nodesList = this.getElsWithSizeStyle()
+
+        nodesList.forEach(n => {
+          n.style.fontSize = `${prevFontSize}em`
+        })
+      }
+    },
+
     isAnythingSelected() {
       const { area } = this.$refs
       const { selection } = this
@@ -155,52 +295,9 @@ export default {
 
       return false
     },
-
-    getFontSizeInSelection() {
-      const { selection, defaultFontSize } = this
-      const { area } = this.$refs
-      const fontNodes = [...area.querySelectorAll('font')]
-      const sizesList = fontNodes
-        .filter(fn => selection.containsNode(fn, true))
-        .map(fn => parseInt(fn.size, 10) || defaultFontSize)
-      const result = {
-        min: defaultFontSize,
-        max: defaultFontSize,
-      }
-
-      if (sizesList.length) {
-        result.min = Math.min(...sizesList)
-        result.max = Math.max(...sizesList)
-      }
-
-      return result
-    },
-    increaseFontSize() {
-      const { maxAvailFontSize } = this
-      const { max } = this.getFontSizeInSelection()
-      let nextSize = max + 1
-
-      if (nextSize > maxAvailFontSize) {
-        nextSize = maxAvailFontSize
-      }
-
-      this.executeCmd('fontSize', nextSize)
-    },
-    decreaseFontSize() {
-      const { minAvailFontSize } = this
-      const { min } = this.getFontSizeInSelection()
-      let nextSize = min - 1
-
-      if (nextSize < minAvailFontSize) {
-        nextSize = minAvailFontSize
-      }
-
-      this.executeCmd('fontSize', nextSize)
-    },
-
     removeFormat() {
       if (!this.isAnythingSelected()) {
-        this.selectAllInArea()
+        this.executeCmd('selectAll')
       }
 
       this.executeCmd('removeFormat')
