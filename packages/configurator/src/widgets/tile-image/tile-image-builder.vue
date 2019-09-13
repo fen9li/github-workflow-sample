@@ -13,6 +13,7 @@ export default {
         align: 'left',
         imageSize: 'half',
         space: true,
+        size: 'base',
         ...this.initialConfig.props,
       }
     }
@@ -56,6 +57,14 @@ export default {
       :options="[
         { label: '1/2', value: 'half' },
         { label: '3/4', value: 'long' },
+      ]"
+    />
+    <builder-radio
+      v-model="form.size"
+      label="Content size"
+      :options="[
+        { label: 'Default', value: 'base' },
+        { label: 'Large', value: 'large' },
       ]"
     />
     <builder-radio
