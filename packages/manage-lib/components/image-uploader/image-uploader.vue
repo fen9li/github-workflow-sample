@@ -49,6 +49,7 @@ export default {
   },
   methods: {
     onSuccessUpload(image) {
+      image.cdnUrl = image.cdnUrl.replace(/(^\w+:|^)/, '')
       this.preview = image.cdnUrl
       this.$emit('onUpload', image)
     },
