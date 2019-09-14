@@ -15,6 +15,7 @@ export default {
         { viewport: 'mobile', icon: 'mobile' },
         { viewport: 'tablet', icon: 'tablet' },
         { viewport: 'full', icon: 'desktop' },
+        { viewport: 'adaptive', icon: 'adaptive' },
       ]
     },
   },
