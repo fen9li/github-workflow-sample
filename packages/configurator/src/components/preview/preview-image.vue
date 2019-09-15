@@ -8,7 +8,10 @@ export default {
 </script>
 
 <template>
-  <div :class="$style.root">
+  <div
+    v-if="desktop || mobile"
+    :class="$style.root"
+  >
     <div
       v-if="desktop"
       :class="$style.wrapper"

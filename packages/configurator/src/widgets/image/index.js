@@ -1,4 +1,4 @@
-import ImagePreview from './image-preview'
+import ImagePreview from '~/widgets/preview-default'
 import ImageBuilder from './image-builder'
 
 export default {

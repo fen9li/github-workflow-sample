@@ -1,4 +1,4 @@
-import HeroPreview from './hero-preview'
+import HeroPreview from '~/widgets/preview-default'
 import HeroBuilder from './hero-builder'
 
 export default {

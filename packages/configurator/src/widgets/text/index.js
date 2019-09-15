@@ -1,9 +1,9 @@
-import textPreview from './text-preview'
-import textBuilder from './text-builder'
+import TextPreview from '~/widgets/preview-default'
+import TextBuilder from './text-builder'
 
 export default {
   name: 'text',
-  title: 'Text Widget',
-  preview: textPreview,
-  builder: textBuilder,
+  title: 'Text',
+  preview: TextPreview,
+  builder: TextBuilder,
 }

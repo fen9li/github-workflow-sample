@@ -1,5 +1,5 @@
 <script>
-import PreviewMixin from '../preview.mixin'
+import PreviewMixin from '~/widgets/preview.mixin'
 
 export default {
   name: 'PopularPreview',
@@ -8,13 +8,7 @@ export default {
 </script>
 
 <template>
-  <div :class="$style.root">
+  <div class="popular-preview">
     Show your popular brands from API
   </div>
 </template>
-
-<style lang="scss" module>
-.root {
-  position: relative;
-}
-</style>

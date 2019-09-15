@@ -342,6 +342,20 @@ export default {
       </div>
       <div
         class="base-rich-textarea__control"
+        @click="executeCmd('italic')"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 1024 1024"
+        >
+          <path
+            d="M896 64v64h-128l-320 768h128v64h-448v-64h128l320-768h-128v-64z"
+          />
+        </svg>
+      </div>
+      <div
+        class="base-rich-textarea__control"
         @click="increaseFontSize"
       >
         <svg
@@ -365,20 +379,6 @@ export default {
         >
           <path
             d="M194.018 832l57.6-192h264.764l57.6 192h113.632l-192-640h-223.232l-192 640h113.636zM347.618 320h72.764l57.6 192h-187.964l57.6-192zM1024 192l-160 256-160-256h320z"
-          />
-        </svg>
-      </div>
-      <div
-        class="base-rich-textarea__control"
-        @click="executeCmd('italic')"
-      >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 1024 1024"
-        >
-          <path
-            d="M896 64v64h-128l-320 768h128v64h-448v-64h128l320-768h-128v-64z"
           />
         </svg>
       </div>

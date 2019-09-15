@@ -1,4 +1,3 @@
-
 export default {
   props: {
     label: {
@@ -6,18 +5,25 @@ export default {
       default: ''
     },
     value: {
-      type: [String, Object, Boolean],
+      type: [String, Object, Number, Boolean, Array],
       default: '',
+    },
+    exclude: {
+      type: String,
+      default: ''
     },
   },
   watch: {
     form: {
-      handler(value) {
-        this.onInput(value)
+      handler(form) {
+        this.onInput(form)
       },
       deep: true,
     },
   },
+  data: () => ({
+    form: {},
+  }),
   created() {
     this.initForm()
   },
@@ -31,10 +37,23 @@ export default {
       if (value && value instanceof Object) {
         for (const key in value) {
           if (form.hasOwnProperty(key)) {
-            form[key] = value[key]
+            const formValue = form[key]
+            const inValue = value[key]
+
+            if (inValue instanceof Object) {
+              form[key] = {
+                ...(formValue || {}),
+                ...(inValue || {}),
+              }
+            } else {
+              form[key] = value[key]
+            }
           }
         }
       }
+    },
+    shown(field) {
+      return this.exclude.indexOf(field) < 0
     },
   },
 }

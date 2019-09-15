@@ -1,16 +1,20 @@
 <script>
-import BuilderMixin from '../builder.mixin'
+import BuilderMixin from '~/widgets/builder-record.mixin'
 
 export default {
-  name: 'TileImageBuilder',
+  name: 'SliderItemBuilder',
   mixins: [BuilderMixin],
+  data: () => ({
+    form: null,
+  }),
 }
 </script>
 
 <template>
-  <div class="tile-image-builder">
+  <div class="slider-item-builder">
     <builder-content
       v-model="form.content"
+      exclude="size|text"
     />
     <builder-image
       v-model="form.image"
@@ -18,20 +22,10 @@ export default {
         mobile: '13:4',
         desktop: '32:5',
       }"
-      label="Image"
     />
     <builder-cta
       v-model="form.cta"
       label="Link"
-    />
-    <builder-radio
-      v-model="form.short"
-      label="Short text tile"
-      type="boolean"
-    />
-    <builder-wrapper
-      v-model="form.wrapper"
-      exclude="row"
     />
   </div>
 </template>

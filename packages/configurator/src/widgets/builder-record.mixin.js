@@ -1,6 +1,5 @@
 import get from 'lodash/get'
 import debounce from 'lodash/debounce'
-import { getTemplate } from './templates'
 import cloneDeep from 'lodash/cloneDeep'
 
 export default {
@@ -17,14 +16,8 @@ export default {
     initialConfig() {
       return this.widget.config
     },
-    props() {
-      return get(this.widget, 'config.props', {})
-    },
-    template() {
-      const name = get(this.widget, 'meta.name')
-      const template = getTemplate(name)
-
-      return get(template, 'data.props', {})
+    config() {
+      return get(this.widget, 'config', {})
     },
   },
   created() {
@@ -36,12 +29,7 @@ export default {
   },
   methods: {
     initForm() {
-      const { template, props } = this
-
-      this.form = cloneDeep({
-        ...template,
-        ...props,
-      })
+      this.form = cloneDeep(this.config)
     },
   },
 }

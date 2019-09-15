@@ -8,14 +8,21 @@ export default {
     },
   },
   computed: {
+    wdata() {
+      if (this.config.hasOwnProperty('props')) {
+        return get(this.config, 'props', {})
+      }
+
+      return this.config || {}
+    },
     title() {
-      return get(this.config, 'props.content.title', '')
+      return get(this.wdata, 'content.title', '')
     },
     text() {
-      return get(this.config, 'props.content.text', '')
+      return get(this.wdata, 'content.text', '')
     },
     image() {
-      return get(this.config, 'props.image', null)
+      return get(this.wdata, 'image', null)
     },
     mobile() {
       return get(this.image, 'mobile', '')

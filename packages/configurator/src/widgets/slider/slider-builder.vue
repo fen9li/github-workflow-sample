@@ -1,164 +1,21 @@
 <script>
+import { SliderItem } from './'
 import BuilderMixin from '../builder.mixin'
 
 export default {
   name: 'SliderBuilder',
   mixins: [BuilderMixin],
   data: () => ({
-    form: null,
-    slides: null,
-    orderMap: new WeakMap(),
-    lastOrderNum: -1,
-    slideToEdit: null,
+    meta: SliderItem,
   }),
-  computed: {
-    config() {
-      return this.form
-    },
-  },
-  created() {
-    if (!this.form) {
-      const { props } = this.initialConfig
-
-      this.form = props
-      this.slides = props.slides
-    }
-
-    this.buildOrderMap()
-  },
-  methods: {
-    moveSlideUp(index) {
-      const { slides } = this
-
-      if (index > 0) {
-        const slide = slides[index]
-        const prevSlide = slides[index - 1]
-
-        slides.splice(index - 1, 2, slide, prevSlide)
-      }
-    },
-    moveSlideDown(index) {
-      const { slides } = this
-
-      if (index + 1 < slides.length) {
-        const slide = slides[index]
-        const nextSlide = slides[index + 1]
-
-        slides.splice(index, 2, nextSlide, slide)
-      }
-    },
-    addSlide() {
-      const { slides, orderMap } = this
-      const newSlide = {
-        title: 'New slide',
-        cta: {},
-        image: {
-          desktop: 'https://ucarecdn.com/3ac0ec3c-3c34-428b-99cf-139255c72d1b/-/crop/1920x633/0,129/-/preview/',
-          mobile: 'https://ucarecdn.com/15965329-782c-4d02-ad30-a486aede231b/-/crop/1646x1080/142,0/-/preview/',
-        }
-      }
-
-      slides.push(newSlide)
-      orderMap.set(newSlide, `Slide ${++this.lastOrderNum}`)
-    },
-    removeSlide(index) {
-      const { slides } = this
-
-      slides.splice(index, 1)
-    },
-    buildOrderMap() {
-      const { slides, orderMap } = this
-
-      slides.forEach((slide, index) => {
-        orderMap.set(slide, `Slide ${index + 1}`)
-      })
-
-      this.lastOrderNum = slides.length
-    },
-  },
 }
 </script>
 
 <template>
-  <div class="hero-builder">
-    <template v-if="!slideToEdit">
-      <div
-        v-if="!slides.length"
-        :class="$style.empty"
-      >
-        There are no slides yet
-      </div>
-
-      <base-menu-link
-        v-for="(slide, index) in slides"
-        v-else
-        :key="index"
-        :title="orderMap.get(slide)"
-        @click.native="slideToEdit = slide"
-      >
-        <template slot="actions">
-          <el-button
-            icon="el-icon-arrow-down"
-            @click.stop.prevent="moveSlideDown(index)"
-          />
-          <el-button
-            icon="el-icon-arrow-up"
-            @click.stop.prevent="moveSlideUp(index)"
-          />
-          <el-button
-            icon="el-icon-delete"
-            @click.stop.prevent="removeSlide(index)"
-          />
-        </template>
-        {{ slide.cta ? slide.cta.path : '' }}
-      </base-menu-link>
-
-      <div :class="$style.add">
-        <el-button
-          icon="el-icon-plus"
-          round
-          @click="addSlide"
-        >
-          New Slide
-        </el-button>
-      </div>
-    </template>
-
-    <base-layout
-      v-else
-      :title="orderMap.get(slideToEdit)"
-      :back="{}"
-      :class="$style.editView"
-      popup
-      @back="slideToEdit = null"
-    >
-      <builder-textarea
-        v-model="slideToEdit.title"
-        label="Title"
-      />
-      <builder-image
-        v-model="slideToEdit.image"
-        :ratio="{
-          mobile: '32:21',
-          desktop: '288:95',
-        }"
-        label="Image"
-      />
-      <builder-cta
-        v-model="slideToEdit.cta"
-        label="Link"
-      />
-    </base-layout>
+  <div class="slider-builder">
+    <builder-items
+      v-model="form.items"
+      :meta="meta"
+    />
   </div>
 </template>
-
-<style lang="scss" module>
-.empty {
-  font-size: 1.2rem;
-  text-align: center;
-}
-.add {
-  margin-top: 1rem;
-  text-align: center;
-}
-</style>

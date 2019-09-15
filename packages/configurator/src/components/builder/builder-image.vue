@@ -33,7 +33,7 @@ export default {
 <template>
   <div class="builder-image form-element">
     <div class="block-label">
-      {{ label }}
+      {{ label || 'Image' }}
     </div>
     <div :class="$style.body">
       <div :class="$style.media">

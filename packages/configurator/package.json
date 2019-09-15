@@ -16,6 +16,7 @@
     "@loyaltycorp/manage-lib": "0.7.1",
     "element-ui": "^2.8.3",
     "normalize.css": "^8.0.1",
-    "nprogress": "^0.2.0"
+    "nprogress": "^0.2.0",
+    "vue": "^2.6.10"
   }
 }

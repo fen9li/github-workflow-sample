@@ -12,29 +12,14 @@ export default {
       return this.form
     },
   },
-  watch: {
-    initialConfig: {
-      handler(newVal, oldVal) {
-        if (newVal) {
-          this.form = this.initialConfig.props
-        }
-      },
-      deep: true,
-    },
-  },
-  created() {
-    if (!this.form) {
-      this.form = this.initialConfig.props
-    }
-  },
 }
 </script>
 
 <template>
   <div class="hero-builder">
-    <builder-textarea
-      v-model="form.text"
-      label="Text"
+    <builder-content
+      v-model="form.content"
+      exclude="title|size"
     />
   </div>
 </template>

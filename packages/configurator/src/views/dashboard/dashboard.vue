@@ -92,6 +92,7 @@ export default {
       v-else-if="selectedWidget"
       :widget="selectedWidget"
       @back="selectedWidget = null"
+      @build="sendConfig()"
     />
   </base-layout>
 </template>

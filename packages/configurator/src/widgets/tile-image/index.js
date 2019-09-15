@@ -1,4 +1,4 @@
-import TileImagePreview from './tile-image-preview'
+import TileImagePreview from '~/widgets/preview-default'
 import TileImageBuilder from './tile-image-builder'
 
 export default {

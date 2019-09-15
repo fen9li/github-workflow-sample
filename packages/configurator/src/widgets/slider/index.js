@@ -1,8 +1,17 @@
-import SliderPreview from './slider-preview'
+import DefaultPreview from '~/widgets/preview-default'
 import SliderBuilder from './slider-builder'
+import SliderItemBuilder from './slider-item-builder'
 
-export default {
+export const Slider = {
   name: 'slider',
-  preview: SliderPreview,
+  title: 'Slider',
+  preview: DefaultPreview,
   builder: SliderBuilder,
+}
+
+export const SliderItem = {
+  parent: Slider.name,
+  title: 'Slider Item',
+  preview: DefaultPreview,
+  builder: SliderItemBuilder,
 }

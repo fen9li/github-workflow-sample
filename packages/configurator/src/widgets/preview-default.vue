@@ -1,15 +1,16 @@
 <script>
-import PreviewMixin from '../preview.mixin'
+import PreviewMixin from '~/widgets/preview.mixin'
 
 export default {
-  name: 'TileImagePreview',
+  name: 'PreviewDefault',
   mixins: [PreviewMixin],
 }
 </script>
 
 <template>
-  <div class="tile-image-preview">
+  <div class="preview-default">
     <preview-image :config="config" />
     <preview-content :config="config" />
+    <preview-tiles :config="config" />
   </div>
 </template>

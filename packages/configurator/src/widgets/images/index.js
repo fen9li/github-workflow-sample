@@ -3,7 +3,7 @@ import ImagesBuilder from './images-builder'
 
 export default {
   name: 'images',
-  title: 'Images Widget',
+  title: 'Images',
   preview: ImagesPreview,
   builder: ImagesBuilder,
 }

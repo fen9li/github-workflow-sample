@@ -27,6 +27,7 @@ export default {
     <component
       :is="widget.builder"
       :widget="widget"
+      @build="$emit('build')"
     />
   </base-layout>
 </template>

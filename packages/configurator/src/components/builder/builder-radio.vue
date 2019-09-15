@@ -68,7 +68,7 @@ export default {
         :key="option.value"
         :label="option.value"
       >
-        {{ option.label }}
+        {{ option.label || option.value }}
       </el-radio-button>
     </el-radio-group>
   </div>

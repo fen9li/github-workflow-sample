@@ -7,7 +7,7 @@ export default {
   mixins: [PreviewMixin],
   computed: {
     textCount() {
-      const count = get(this.config, 'props.tiles.length', 0)
+      const count = get(this.config, 'props.items.length', 0)
 
       if (count === 1) {
         return `${count} record`
@@ -17,19 +17,18 @@ export default {
 
       return 'No records'
     },
+    visible() {
+      return get(this.config, 'props.items', false)
+    },
   },
 }
 </script>
 
 <template>
-  <div :class="$style.root">
+  <div
+    v-if="visible"
+    class="preview-tiles"
+  >
     <span>{{ textCount }}</span>
   </div>
 </template>
-
-<style lang="scss" module>
-.root {
-  display: flex;
-  flex-direction: column;
-}
-</style>

@@ -1,9 +1,17 @@
-import TilesPreview from './tiles-preview'
+import DefaultPreview from '~/widgets/preview-default'
 import TilesBuilder from './tiles-builder'
+import TilesItemBuilder from './tiles-item-builder'
 
-export default {
+export const Tiles = {
   name: 'tiles',
   title: 'Content Tiles',
-  preview: TilesPreview,
+  preview: DefaultPreview,
   builder: TilesBuilder,
+}
+
+export const Tile = {
+  parent: 'tiles',
+  title: 'Content Tile',
+  preview: DefaultPreview,
+  builder: TilesItemBuilder,
 }

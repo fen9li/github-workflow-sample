@@ -1,4 +1,5 @@
 import get from 'lodash/get'
+import cloneDeep from 'lodash/cloneDeep'
 import capitalize from 'lodash/capitalize'
 
 class Widget {
@@ -29,17 +30,18 @@ class Widget {
   }
 
   build() {
-    const { builderInstance, config } = this
-    const widgetData = {
-      ...config,
+    const data = cloneDeep(this.config || {})
+    const hasProps = this.config.hasOwnProperty('props')
+    const form = get(this.builderInstance, 'form', null)
+
+    if (hasProps && form) {
+      this.config.props = form
+      data.props = form
+
+      return data
     }
 
-    if (builderInstance && builderInstance.form) {
-      widgetData.props = builderInstance.form
-      this.config.props = builderInstance.form
-    }
-
-    return widgetData
+    return form || data
   }
 }
 
