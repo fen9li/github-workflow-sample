@@ -1,14 +1,17 @@
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import DashboardCreateWidget from './dashboard-create-widget'
+import DashboardWidgetCreate from './dashboard-widget-create'
+import DashboardWidgetBuild from './dashboard-widget-build'
 
 export default {
   name: 'DashboardView',
   components: {
-    DashboardCreateWidget,
+    DashboardWidgetCreate,
+    DashboardWidgetBuild,
   },
   data: () => ({
     insertBy: null,
+    selectedWidget: null,
   }),
   computed: {
     ...mapGetters('dashboard', [
@@ -32,15 +35,22 @@ export default {
       addWidget: 'ADD_WIDGET',
     }),
     onSelectTemplate(template) {
+      const index = this.insertBy + 1
+
       this.addWidget({
-        index: this.insertBy + 1,
+        index,
         config: template,
-        select: true,
       })
       this.insertBy = null
-      this.$router.push({
-        name: 'dashboard-widget',
-      })
+
+      const widget = this.widgets[index]
+
+      if (widget) {
+        this.selectWidget(widget)
+      }
+    },
+    selectWidget(widget) {
+      this.selectedWidget = widget
     },
   },
 }
@@ -52,36 +62,36 @@ export default {
     back="/home"
   >
     <template v-for="(widget, idx) in widgets">
-      <router-link
-        :key="`${widget.name}-${idx}`"
-        :class="$style.link"
-        to="/dashboard/widget"
+      <base-block-editable
+        :key="widget.key"
+        :title="widget.title"
+        @click="selectWidget(widget)"
+        @down="moveWidgetDown(widget)"
+        @up="moveWidgetUp(widget)"
+        @delete="deleteWidget(widget)"
       >
-        <base-block-editable
-          :title="widget.title"
-          @click.capture="selectWidget(widget)"
-          @down="moveWidgetDown(widget)"
-          @up="moveWidgetUp(widget)"
-          @delete="deleteWidget(widget)"
-        >
-          <component
-            :is="widget.preview"
-            :config="widget.config"
-          />
-        </base-block-editable>
-      </router-link>
+        <component
+          :is="widget.preview"
+          :config="widget.config"
+        />
+      </base-block-editable>
       <el-button
-        :key="`add-${idx}`"
+        :key="`${widget.key}_add`"
         :class="$style.add"
         icon="el-icon-plus"
         @click="insertBy = idx"
       />
     </template>
 
-    <dashboard-create-widget
+    <dashboard-widget-create
       v-if="insertBy !== null"
       @back="insertBy = null"
       @select="onSelectTemplate"
+    />
+    <dashboard-widget-build
+      v-else-if="selectedWidget"
+      :widget="selectedWidget"
+      @back="selectedWidget = null"
     />
   </base-layout>
 </template>
@@ -92,9 +102,5 @@ export default {
   width: 100%;
   padding: 4px 0;
   border: none;
-}
-
-.link {
-  color: inherit;
 }
 </style>

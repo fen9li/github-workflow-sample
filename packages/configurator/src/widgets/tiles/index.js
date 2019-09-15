@@ -3,7 +3,7 @@ import TilesBuilder from './tiles-builder'
 
 export default {
   name: 'tiles',
-  title: 'Tiles',
+  title: 'Content Tiles',
   preview: TilesPreview,
   builder: TilesBuilder,
 }

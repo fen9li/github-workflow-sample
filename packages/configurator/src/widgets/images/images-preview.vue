@@ -2,13 +2,13 @@
 import PreviewMixin from '../preview.mixin'
 
 export default {
-  name: 'ImagePreview',
+  name: 'ImagesPreview',
   mixins: [PreviewMixin],
 }
 </script>
 
 <template>
-  <div class="image-preview">
-    <preview-image :config="config" />
+  <div class="images-preview">
+    <preview-tiles :config="config" />
   </div>
 </template>

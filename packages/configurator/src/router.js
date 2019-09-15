@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from './state/store'
 import lazy from '@lib/router/lazy'
-import Dashboard from './views/dashboard'
 
 Vue.use(VueRouter)
 
@@ -22,12 +21,7 @@ const router = new VueRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: Dashboard,
-    },
-    {
-      path: '/dashboard/widget',
-      name: 'dashboard-widget',
-      component: () => lazy(import('~/views/dashboard/dashboard-widget')),
+      component: () => lazy(import('~/views/dashboard')),
     },
     {
       path: '/menu',

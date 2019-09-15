@@ -7,20 +7,13 @@ export default {
   data: () => ({
     form: null,
   }),
-  created() {
-    if (!this.form) {
-      this.form = {
-        ...this.initialConfig.props,
-      }
-    }
-  },
 }
 </script>
 
 <template>
   <div class="hero-builder">
     <builder-textarea
-      v-model="form.text"
+      v-model="form.content.text"
       label="Text"
     />
     <builder-image

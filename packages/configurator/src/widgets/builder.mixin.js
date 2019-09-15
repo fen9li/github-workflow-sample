@@ -1,5 +1,7 @@
-import { mapActions } from 'vuex'
+import get from 'lodash/get'
 import debounce from 'lodash/debounce'
+import cloneDeep from 'lodash/cloneDeep'
+import { mapActions } from 'vuex'
 
 export default {
   props: {
@@ -15,6 +17,9 @@ export default {
     initialConfig() {
       return this.widget.config
     },
+    props() {
+      return get(this.widget, 'config.props', {})
+    },
   },
   watch: {
     form: {
@@ -26,6 +31,7 @@ export default {
   },
   created() {
     this.widget.registerBuilder(this)
+    this.form = cloneDeep(this.props)
   },
   methods: {
     ...mapActions('dashboard', {

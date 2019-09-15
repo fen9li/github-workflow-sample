@@ -6,13 +6,11 @@ const state = {
    */
   registered: {},
   widgets: [],
-  selectedWidget: null,
 }
 
 const getters = {
   widgets: s => s.widgets,
   registered: s => s.registered,
-  selectedWidget: s => s.selectedWidget,
 }
 
 const mutations = {
@@ -28,6 +26,8 @@ const mutations = {
   ADD_WIDGET(state, { index, config, select }) {
     const widget = new Widget({
       config,
+      // unique key for render optimization
+      key: `${state.widgets.length}_${Date.now()}`,
       meta: state.registered[config.name],
     })
 
@@ -40,9 +40,6 @@ const mutations = {
     if (select) {
       state.selectedWidget = widget
     }
-  },
-  SELECT_WIDGET(state, widget) {
-    state.selectedWidget = widget
   },
   DELETE_WIDGET(state, widget) {
     const { widgets } = state

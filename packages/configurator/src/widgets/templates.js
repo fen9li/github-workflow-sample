@@ -26,7 +26,9 @@ export default [
     data: {
       name: 'text',
       props: {
-        text: 'Widget text',
+        content: {
+          text: 'Widget text',
+        },
       }
     },
   },
@@ -46,7 +48,34 @@ export default [
     data: {
       name: 'images',
       props: {
-        text: 'Widget text',
+        wrapper: {
+          space: true,
+          row: {
+            md: 2
+          }
+        },
+        tiles: [
+          {
+            image: {
+              mobile: "//ucarecdn.com/6232f3c3-acfb-47c3-b04f-7c74c3939ab7/",
+              desktop: "//ucarecdn.com/ac23df71-d858-46ab-b7fa-e482102b323b/",
+              alt: "Test alt text"
+            },
+            cta: {
+              path: "/"
+            }
+          },
+          {
+            image: {
+              mobile: "//ucarecdn.com/6232f3c3-acfb-47c3-b04f-7c74c3939ab7/",
+              desktop: "//ucarecdn.com/ac23df71-d858-46ab-b7fa-e482102b323b/",
+              alt: "Test alt text"
+            },
+            cta: {
+              path: "/retailer/coles"
+            }
+          }
+        ]
       }
     },
   },
@@ -73,33 +102,22 @@ export default [
     },
   },
   {
-    label: 'Slider',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-    data: {
-      name: 'slider',
-      props: {
-        slides: [],
-      }
-    }
-  },
-  {
     label: 'Content tiles',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
     data: {
-      name: 'content-tiles',
+      name: 'tiles',
       props: {
-        "tileClass": "w-full sm:w-1/3",
-        "tiles": [
+        tiles: [
           {
-            "title": "Coles",
-            "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur</p>",
-            "image": {
-              "mobile": "//ucarecdn.com/6232f3c3-acfb-47c3-b04f-7c74c3939ab7/",
-              "alt": "Coles"
+            title: "Coles",
+            text: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur</p>",
+            image: {
+              mobile: "//ucarecdn.com/6232f3c3-acfb-47c3-b04f-7c74c3939ab7/",
+              alt: "Coles"
             },
-            "cta": {
-              "path": "/retailer/david-jones",
-              "label": "Discover more"
+            cta: {
+              path: "/retailer/david-jones",
+              label: "Discover more"
             }
           },
         ]
@@ -110,20 +128,19 @@ export default [
     label: 'Short content tiles',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
     data: {
-      name: 'short-content-tiles',
+      name: 'tiles-short',
       props: {
-        "tileClass": "w-full sm:w-1/3",
-        "tiles": [
+        tiles: [
           {
-            "title": "Coles",
-            "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur</p>",
-            "image": {
-              "mobile": "//ucarecdn.com/6232f3c3-acfb-47c3-b04f-7c74c3939ab7/",
-              "alt": "Coles"
+            title: 'Coles',
+            text: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur</p>",
+            image: {
+              mobile: "//ucarecdn.com/6232f3c3-acfb-47c3-b04f-7c74c3939ab7/",
+              alt: "Coles"
             },
-            "cta": {
-              "path": "/retailer/david-jones",
-              "label": "Discover more"
+            cta: {
+              path: "/retailer/david-jones",
+              label: "Discover more"
             }
           },
         ]
@@ -131,10 +148,20 @@ export default [
     },
   },
   {
+    label: 'Slider',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+    data: {
+      name: 'slider',
+      props: {
+        slides: [],
+      }
+    }
+  },
+  {
     label: 'Popular brands',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
     data: {
-      'name': 'popular',
+      name: 'popular',
     },
   }
 ]

@@ -19,7 +19,7 @@ export default {
 
 <template>
   <base-layout
-    class="dashboard-create-widget"
+    class="dashboard-widget-create"
     title="Select new widget"
     popup
     @back="$emit('back')"

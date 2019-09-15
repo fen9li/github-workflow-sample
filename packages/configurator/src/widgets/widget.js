@@ -5,6 +5,7 @@ class Widget {
   constructor(payload) {
     this.config = payload.config
     this.meta = payload.meta
+    this.key = payload.key
     this.builderInstance = null
   }
 
