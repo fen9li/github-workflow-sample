@@ -36,7 +36,7 @@ export default {
 
   * {
     margin: 0;
-    font-size: inherit;
+    font-size: inherit !important;
     font-weight: inherit;
     color: inherit;
   }

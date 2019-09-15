@@ -22,12 +22,14 @@ export default {
 <template>
   <div class="builder-cta form-element">
     <div class="block-label">
-      {{ label }}
+      {{ label || 'Link' }}
     </div>
-    <div class="input-label">
-      Label
-    </div>
-    <el-input v-model="form.label" />
+    <template v-if="shown('label')">
+      <div class="input-label">
+        Label
+      </div>
+      <el-input v-model="form.label" />
+    </template>
     <div class="input-label">
       Path
     </div>

@@ -1,6 +1,6 @@
 import DefaultPreview from '~/widgets/preview-default'
 import TilesBuilder from './tiles-builder'
-import TilesItemBuilder from './tiles-item-builder'
+import TilesItemBuilder from './tiles-builder-item'
 
 export const Tiles = {
   name: 'tiles',

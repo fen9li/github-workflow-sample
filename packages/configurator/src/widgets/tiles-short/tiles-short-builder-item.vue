@@ -2,16 +2,16 @@
 import BuilderMixin from '~/widgets/builder-record.mixin'
 
 export default {
-  name: 'SliderItemBuilder',
+  name: 'TilesShortBuilderItem',
   mixins: [BuilderMixin],
 }
 </script>
 
 <template>
-  <div class="slider-item-builder">
+  <div class="tiles-short-builder-item">
     <builder-content
       v-model="form.content"
-      exclude="size|text"
+      exclude="size|title"
     />
     <builder-image
       v-model="form.image"
@@ -23,7 +23,6 @@ export default {
     <builder-cta
       v-model="form.cta"
       label="Link"
-      exclude="label"
     />
   </div>
 </template>

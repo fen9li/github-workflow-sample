@@ -1,34 +1,25 @@
 <script>
+import { ImagesItem } from './'
 import BuilderMixin from '../builder.mixin'
 
 export default {
-  name: 'ImageBuilder',
+  name: 'ImagesBuilder',
   mixins: [BuilderMixin],
   data: () => ({
-    form: null,
+    meta: ImagesItem,
   }),
-  created() {
-    if (!this.form) {
-      this.form = {
-        ...this.initialConfig.props,
-      }
-    }
-  },
 }
 </script>
 
 <template>
-  <div>
-    <builder-image
-      v-model="form.image"
-      :ratio="{
-        mobile: '2:1',
-        desktop: '4:1',
-      }"
-      label="Image"
+  <div class="images-builder">
+    <builder-wrapper
+      v-model="form.wrapper"
+      exclude="space"
     />
-    <builder-cta
-      v-model="form.cta"
+    <builder-items
+      v-model="form.items"
+      :meta="meta"
     />
   </div>
 </template>

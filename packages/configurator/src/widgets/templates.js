@@ -28,7 +28,27 @@ export const itemTemplates = {
     cta: {
       path: '/retailer/david-jones',
     },
-  }
+  },
+  'tiles-short': {
+    content: {
+      text: 'Tile text'
+    },
+    image: {
+      desktop: '//placeimg.com/960/604/tech',
+      mobile: '//placeimg.com/640/400/tech',
+      alt: '',
+    },
+    cta: {
+      path: '/',
+    },
+  },
+  images: {
+    image: {
+      mobile: "//ucarecdn.com/6232f3c3-acfb-47c3-b04f-7c74c3939ab7/",
+      desktop: "//ucarecdn.com/ac23df71-d858-46ab-b7fa-e482102b323b/",
+      alt: ''
+    },
+  },
 }
 
 const templates = [
@@ -38,7 +58,9 @@ const templates = [
     data: {
       name: 'hero',
       props: {
-        text: 'Hero Text',
+        content: {
+          text: 'Hero Text',
+        },
         image: {
           desktop: "//i.ewalletcdn.com/8c238593-f39b-4bed-a9f2-efe69412e90e/",
           mobile: "//i.ewalletcdn.com/c7bc3b5e-7dd4-428b-bf1c-0d745cd8dc26/",
@@ -70,7 +92,11 @@ const templates = [
     data: {
       name: 'image',
       props: {
-        text: 'Widget text',
+        image: {
+          mobile: "//ucarecdn.com/6232f3c3-acfb-47c3-b04f-7c74c3939ab7/",
+          desktop: "//ucarecdn.com/ac23df71-d858-46ab-b7fa-e482102b323b/",
+          alt: "Test alt text"
+        },
       }
     },
   },
@@ -87,26 +113,8 @@ const templates = [
           }
         },
         items: [
-          {
-            image: {
-              mobile: "//ucarecdn.com/6232f3c3-acfb-47c3-b04f-7c74c3939ab7/",
-              desktop: "//ucarecdn.com/ac23df71-d858-46ab-b7fa-e482102b323b/",
-              alt: "Test alt text"
-            },
-            cta: {
-              path: "/"
-            }
-          },
-          {
-            image: {
-              mobile: "//ucarecdn.com/6232f3c3-acfb-47c3-b04f-7c74c3939ab7/",
-              desktop: "//ucarecdn.com/ac23df71-d858-46ab-b7fa-e482102b323b/",
-              alt: "Test alt text"
-            },
-            cta: {
-              path: "/retailer/coles"
-            }
-          }
+          itemTemplates.images,
+          itemTemplates.images,
         ]
       }
     },
@@ -144,18 +152,9 @@ const templates = [
       name: 'tiles',
       props: {
         items: [
-          {
-            title: "Coles",
-            text: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur</p>",
-            image: {
-              mobile: "//ucarecdn.com/6232f3c3-acfb-47c3-b04f-7c74c3939ab7/",
-              alt: "Coles"
-            },
-            cta: {
-              path: "/retailer/david-jones",
-              label: "Discover more"
-            }
-          },
+          itemTemplates.tiles,
+          itemTemplates.tiles,
+          itemTemplates.tiles,
         ]
       }
     },
@@ -167,9 +166,9 @@ const templates = [
       name: 'tiles-short',
       props: {
         items: [
-          itemTemplates.tiles,
-          itemTemplates.tiles,
-          itemTemplates.tiles,
+          itemTemplates['tiles-short'],
+          itemTemplates['tiles-short'],
+          itemTemplates['tiles-short'],
         ]
       }
     },
@@ -180,7 +179,10 @@ const templates = [
     data: {
       name: 'slider',
       props: {
-        items: [],
+        items: [
+          itemTemplates.slider,
+          itemTemplates.slider,
+        ],
       }
     }
   },

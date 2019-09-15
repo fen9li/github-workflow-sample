@@ -11,6 +11,6 @@ export default {
   <div class="preview-default">
     <preview-image :config="config" />
     <preview-content :config="config" />
-    <preview-tiles :config="config" />
+    <preview-items :config="config" />
   </div>
 </template>
