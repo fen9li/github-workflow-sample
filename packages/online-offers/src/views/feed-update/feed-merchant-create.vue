@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       form: {
-        classifications: [],
+        categories: [],
         name: this.row.map.name,
         logo: this.row.map.logo,
         website: this.row.map.website,
@@ -352,8 +352,8 @@ export default {
         label="Classifications"
       >
         <el-checkbox-group
-          v-model="form.classifications"
-          :class="$style.classifications"
+          v-model="form.categories"
+          :class="$style.categories"
         >
           <el-checkbox
             v-for="option in categories"
@@ -485,7 +485,7 @@ export default {
   overflow: hidden;
 }
 
-.classifications {
+.categories {
   display: flex;
   flex-wrap: wrap;
 }
