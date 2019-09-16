@@ -29,7 +29,7 @@ export default {
       })
     },
     getExportedFilename() {
-      return getExportedFilename(this.table.tableName)
+      return getExportedFilename('ClientListing')
     }
   },
 }
