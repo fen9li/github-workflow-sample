@@ -10,6 +10,7 @@ import CellImage from './cell-image'
 import CellUserAvatar from './cell-user-avatar'
 import CellToggle from './cell-toggle'
 import CellLogo from './cell-logo'
+import CellStatus from './cell-status'
 import { getFormattedValue, getCellData } from './utils.js'
 
 export default {
@@ -24,6 +25,7 @@ export default {
     CellUserAvatar,
     CellToggle,
     CellLogo,
+    CellStatus,
   },
   props: {
     attribute: {

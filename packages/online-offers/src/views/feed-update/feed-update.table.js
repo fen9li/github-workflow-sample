@@ -11,7 +11,22 @@ const TABLE_FILTERS_MERCHANTS = [{
   label: 'Last Updated',
   type: 'date',
   icon: 'el-icon-date',
-}]
+}, {
+  attribute: 'status',
+  label: 'Status',
+  icon: 'el-icon-circle-check',
+  type: 'boolean',
+  booleanValues: {
+    is_true: {
+      label: 'Enabled',
+      value: 'active',
+    },
+    is_false: {
+      label: 'Disabled',
+      value: 'inactive',
+    },
+  },
+},]
 
 const TABLE_FILTERS_OFFERS = [{
   attribute: 'name',
@@ -45,6 +60,25 @@ const TABLE_COLUMNS_MERCHANTS = [{
   icon: 'el-icon-date',
   format: 'date',
   width: 200,
+}, {
+  name: 'status',
+  label: 'Status',
+  icon: 'el-icon-circle-check',
+  format: value => {
+    return value === 'active' ? 'Enabled' : 'Disabled'
+  },
+  component: {
+    is: 'cell-status',
+    props: {
+      styleObj(val) {
+        if (val === 'active') {
+          return { color: '#0fbd1c' }
+        } else {
+          return { color: '#909399' }
+        }
+      },
+    },
+  },
 }, {
   sortable: false,
   overflowTooltip: false,
