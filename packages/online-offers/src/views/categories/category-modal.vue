@@ -16,7 +16,6 @@ export default {
   data() {
     return {
       form: {
-        group_name: 'Classifications',
         name: '',
       },
       progress: false,
@@ -25,7 +24,6 @@ export default {
   created() {
     if (this.item) {
       this.form = {
-        group_name: this.item.group_name,
         name: this.item.name,
       }
     }
@@ -71,12 +69,6 @@ export default {
     v-on="$listeners"
   >
     <el-form label-position="top">
-      <el-form-item
-        label="Group Name"
-        required
-      >
-        <el-input v-model="form.group_name" />
-      </el-form-item>
       <el-form-item
         label="Name"
         required
