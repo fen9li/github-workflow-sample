@@ -51,6 +51,8 @@ export default {
   },
   mounted() {
     this.selection = window.getSelection()
+
+    this.addEditLinkListeners()
   },
   methods: {
     onInput({ target }) {
@@ -139,6 +141,7 @@ export default {
       this.hideLinkTooltip()
 
       this.executeCmd('createLink', linkURL)
+      this.addEditLinkListeners()
 
       selection.removeAllRanges()
     },
@@ -146,6 +149,24 @@ export default {
       this.linkTooltipIsVisible = false
       this.savedSelectionRanges = []
       this.linkURL = ''
+    },
+    updateLinkURL({ target }) {
+      const hrefRange = document.createRange()
+
+      hrefRange.selectNode(target)
+      this.savedSelectionRanges.push(hrefRange)
+
+      this.linkURL = target.getAttribute('href')
+      this.linkTooltipIsVisible = true
+    },
+    addEditLinkListeners() {
+      const { area } = this.$refs
+      const hrefList = [...area.querySelectorAll('a')]
+
+      hrefList.forEach(h => {
+        h.removeEventListener('click', this.updateLinkURL)
+        h.addEventListener('click', this.updateLinkURL)
+      })
     },
 
     createSizeSeries() {
