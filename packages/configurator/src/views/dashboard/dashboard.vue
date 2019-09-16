@@ -27,6 +27,9 @@ export default {
     ...mapActions('dashboard', {
       sendConfig: 'SEND_CONFIG',
     }),
+    ...mapActions('exchange', {
+      sendToFrame: 'SEND_TO_FRAME',
+    }),
     ...mapMutations('dashboard', {
       moveWidgetUp: 'MOVE_WIDGET_UP',
       moveWidgetDown: 'MOVE_WIDGET_DOWN',
@@ -51,6 +54,12 @@ export default {
     },
     selectWidget(widget) {
       this.selectedWidget = widget
+      this.sendToFrame({
+        type: 'debi-select-widget',
+        payload: {
+          index: this.widgets.indexOf(widget)
+        },
+      })
     },
   },
 }

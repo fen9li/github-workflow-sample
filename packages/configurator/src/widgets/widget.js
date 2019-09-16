@@ -32,16 +32,17 @@ class Widget {
   build() {
     const data = cloneDeep(this.config || {})
     const hasProps = this.config.hasOwnProperty('props')
-    const form = get(this.builderInstance, 'form', null)
+    const form = get(this.builderInstance, 'form') || {}
+    const hasFormData = Object.keys(form).length > 0
 
-    if (hasProps && form) {
+    if (hasProps && hasFormData) {
       this.config.props = form
       data.props = form
 
       return data
     }
 
-    return form || data
+    return hasFormData ? form : data
   }
 }
 
