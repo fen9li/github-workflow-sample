@@ -27,7 +27,6 @@ export default {
         min: 'Min',
         max: 'Max',
         type: 'Commission Type',
-        url: 'Merchant Tracking URL',
       },
     }
   },
