@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/manage-online-offers@0.7.2...@loyaltycorp/manage-online-offers@0.8.0) (2019-09-16)
+
+### Bug Fixes
+
+- **category-modal:** remove group name field ([357e07f](https://github.com/loyaltycorp/manage-v2-frontend/commit/357e07f))
+- **feed-offer:** feed merchant fields ([8666d87](https://github.com/loyaltycorp/manage-v2-frontend/commit/8666d87))
+- **global merchant:** remove tracking url field ([ac8e75f](https://github.com/loyaltycorp/manage-v2-frontend/commit/ac8e75f))
+- **merchant-edit:** capitalised error messages ([0783e5e](https://github.com/loyaltycorp/manage-v2-frontend/commit/0783e5e))
+- **online-offers:** add associate btn to feed merch view ([5bbc2cd](https://github.com/loyaltycorp/manage-v2-frontend/commit/5bbc2cd))
+- **online-offers:** rename categories field on feed merch creating ([c75c056](https://github.com/loyaltycorp/manage-v2-frontend/commit/c75c056))
+
+### Features
+
+- **feed-update:** merchants status ([101763d](https://github.com/loyaltycorp/manage-v2-frontend/commit/101763d))
+- **online-offers:** add enable/disable client btn ([f559c01](https://github.com/loyaltycorp/manage-v2-frontend/commit/f559c01))
+- **online-offers:** update export name for clients table ([3073716](https://github.com/loyaltycorp/manage-v2-frontend/commit/3073716))
+
 ## [0.7.2](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/manage-online-offers@0.7.1...@loyaltycorp/manage-online-offers@0.7.2) (2019-09-16)
 
 **Note:** Version bump only for package @loyaltycorp/manage-online-offers

@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.1](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/manage-payments@0.8.0...@loyaltycorp/manage-payments@0.8.1) (2019-09-16)
+
+**Note:** Version bump only for package @loyaltycorp/manage-payments
+
 # [0.8.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/manage-payments@0.7.1...@loyaltycorp/manage-payments@0.8.0) (2019-09-16)
 
 ### Features

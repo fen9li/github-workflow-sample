@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/manage-lib@0.8.0...@loyaltycorp/manage-lib@0.9.0) (2019-09-16)
+
+### Features
+
+- **feed-update:** merchants status ([101763d](https://github.com/loyaltycorp/manage-v2-frontend/commit/101763d))
+- **online-offers:** add enable/disable client btn ([f559c01](https://github.com/loyaltycorp/manage-v2-frontend/commit/f559c01))
+- **rich-textarea:** add ability to edit existing links ([e53599d](https://github.com/loyaltycorp/manage-v2-frontend/commit/e53599d))
+
 # [0.8.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/manage-lib@0.7.1...@loyaltycorp/manage-lib@0.8.0) (2019-09-16)
 
 ### Features

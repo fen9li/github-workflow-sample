@@ -1,6 +1,6 @@
 {
   "name": "@loyaltycorp/manage-lib",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "scripts": {
     "unit": "vue-cli-service test:unit"
   },

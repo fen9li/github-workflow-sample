@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/configurator@1.3.0...@loyaltycorp/configurator@1.4.0) (2019-09-16)
+
+### Features
+
+- **configurator:** add adaptive view for configurator ([cba6036](https://github.com/loyaltycorp/manage-v2-frontend/commit/cba6036))
+- **configurator:** save last url to local storage ([790f8cc](https://github.com/loyaltycorp/manage-v2-frontend/commit/790f8cc))
+- **configurator:** scroll to widget when it selected ([f43d503](https://github.com/loyaltycorp/manage-v2-frontend/commit/f43d503))
+
 # [1.3.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/configurator@1.2.1...@loyaltycorp/configurator@1.3.0) (2019-09-16)
 
 ### Bug Fixes
