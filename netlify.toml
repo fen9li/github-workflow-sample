@@ -36,7 +36,7 @@
   environment = { VUE_APP_API_URL = "https://api.dev.payments.eonx.com/", VUE_APP_AUTH0_AUDIENCE="https://api.dev.payments.eonx.com/", VUE_APP_ELASTIC_HOST="https://api.dev.payments.eonx.com/search" }
 
 
-[context."release/manage-test"]
+[context."release/manage-super-test"]
   command = "yarn clean && lerna exec --scope @loyaltycorp/manage-super -- yarn build"
   publish = "./packages/super/dist"
   environment = { VUE_APP_BASE_URL="/", VUE_APP_API_URL = "https://api.dev.manage.eonx.com/", VUE_APP_AUTH0_AUDIENCE="https://test-api.com", VUE_APP_AUTH0_CLIENT_ID="TvJExlVBQLRPIrztvFgYZIaw7PAa0q0a", VUE_APP_AUTH0_DOMAIN="eonx-dev.au.auth0.com"}
