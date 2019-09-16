@@ -15,9 +15,13 @@ export default {
       required: true,
     },
     processor: {
-      type: ApiProcessor,
+      type: [ApiProcessor, Object],
       required: true,
     },
+    showButton: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -56,7 +60,7 @@ export default {
         this.$notify({
           type: 'info',
           title: 'Detached',
-          message: 'Successfuly detached',
+          message: 'Successfully detached',
         })
         this.processor.getData()
       })
@@ -71,7 +75,15 @@ export default {
       :class="$style.link"
       @click.stop.prevent="showDetachDialog = true"
     >
-      Detach
+      <el-button
+        v-if="showButton"
+        type="danger"
+      >
+        Detach
+      </el-button>
+      <span v-else>
+        Detach
+      </span>
     </div>
     <state-dialog
       :visible.sync="showDetachDialog"
@@ -110,7 +122,15 @@ export default {
       :class="$style.link"
       @click.stop.prevent="showCreate = true"
     >
-      Create / Associate
+      <el-button
+        v-if="showButton"
+        type="success"
+      >
+        Create / Associate
+      </el-button>
+      <span v-else>
+        Create / Associate
+      </span>
     </div>
     <el-dialog
       ref="dialog"
