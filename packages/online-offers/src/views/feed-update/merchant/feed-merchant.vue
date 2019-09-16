@@ -2,9 +2,13 @@
 import { mapActions } from 'vuex'
 import formatDollar from '@lib/utils/format-dollar'
 import capitalize from 'lodash/capitalize'
+import FeedMerchantDialog from '../feed-merchant-dialog-container.vue'
 
 export default {
   name: 'FeedDetails',
+  components: {
+    FeedMerchantDialog
+  },
   props: {
     id: {
       type: String,
@@ -35,6 +39,9 @@ export default {
     name() {
       return this.ready ? this.details.map.name : ''
     },
+    canAttach() {
+      return this.details.status === 'active'
+    }
   },
   async created() {
     await this.getDetails()
@@ -74,15 +81,18 @@ export default {
         id: this.details.id,
       })
       this.submitting = false
+
       if (error) {
         console.error('Error while requesting data', error.message)
       }
+
       if (response) {
         this.$notify({
           type: 'success',
           title: 'Success',
-          message: 'Successfuly updated',
+          message: 'Successfully updated',
         })
+
         this.getDetails()
       }
     },
@@ -101,8 +111,19 @@ export default {
       :class="$style.card"
     >
       <div :class="$style.wrap">
-        <div :class="$style.wrapTitle">
+        <div :class="[$style.wrapTitle, $style.flexWrap]">
           General Information
+          <!--          <el-button type="success">-->
+          <!--            Create/Associate {{ canAttach }}-->
+          <!--          </el-button>-->
+          <feed-merchant-dialog
+            :row="details"
+            :processor="{ getData: getDetails }"
+            show-button
+            value=""
+            formatted-value=""
+            attribute=""
+          />
         </div>
         <dl :class="['datalist', $style.list]">
           <dt>Merchant ID</dt>

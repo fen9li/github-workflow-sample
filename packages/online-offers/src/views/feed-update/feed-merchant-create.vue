@@ -13,7 +13,7 @@ export default {
       required: true,
     },
     processor: {
-      type: DataProcessor,
+      type: [DataProcessor, Object],
       required: true,
     },
   },
