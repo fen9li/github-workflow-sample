@@ -39,4 +39,4 @@
 [context."release/manage-super-test"]
   command = "yarn clean && lerna exec --scope @loyaltycorp/manage-super -- yarn build"
   publish = "./packages/super/dist"
-  environment = { VUE_APP_BASE_URL="/", VUE_APP_API_URL = "https://api.dev.manage.eonx.com/", VUE_APP_AUTH0_AUDIENCE="https://test-api.com", VUE_APP_AUTH0_CLIENT_ID="TvJExlVBQLRPIrztvFgYZIaw7PAa0q0a", VUE_APP_AUTH0_DOMAIN="eonx-dev.au.auth0.com"}
+  environment = { VUE_APP_BASE_URL="/", VUE_APP_API_URL = "https://api.dev.manage.eonx.com/", VUE_APP_AUTH0_AUDIENCE="https://test-api.com", VUE_APP_AUTH0_CLIENT_ID="TvJExlVBQLRPIrztvFgYZIaw7PAa0q0a", VUE_APP_AUTH0_DOMAIN="eonx-dev.au.auth0.com", VUE_APP_AUTH0_SCOPES="read:events update:events product:read product:create product:delete product:update product_version:create product_version:delete product_version:read product_version:update provider:create provider:delete provider:read provider:update roles_matrix:update user:create user:delete user:read user:update"}
