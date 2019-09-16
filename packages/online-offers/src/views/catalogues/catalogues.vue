@@ -30,6 +30,9 @@ export default {
     },
     getExportedFilename() {
       return getExportedFilename('ClientListing')
+    },
+    greyOutRowText(row) {
+      return !row.enabled
     }
   },
 }
@@ -46,6 +49,7 @@ export default {
       :filters="table.filters"
       :columns="table.columns"
       :export-filename="getExportedFilename"
+      :grey-out-row-text="greyOutRowText"
       @row-click="onRowClick"
     />
     <el-button

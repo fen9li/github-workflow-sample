@@ -2,12 +2,14 @@
 import { mapActions } from 'vuex'
 import get from 'lodash/get'
 import CatalogueEditModal from './catalogue-edit-modal.vue'
+import CatalogueStatusModal from './catalogue-status-modal'
 import ApiProcessor from '@lib/processors/api-processor'
 
 export default {
   name: 'CatalogueHeader',
   components: {
     CatalogueEditModal,
+    CatalogueStatusModal
   },
   props: {
     catalogue: {
@@ -23,6 +25,7 @@ export default {
     return {
       form: {},
       showEditModal: false,
+      showDisableModal: false,
     }
   },
   computed: {
@@ -63,7 +66,7 @@ export default {
               <div :class="$style.formRowLabel">
                 Client Name
               </div>
-              <div :class="$style.formRowValue">
+              <div :class="[$style.formRowValue, {[$style.disabled]: !catalogue.enabled}]">
                 {{ catalogue.name }}
               </div>
             </div>
@@ -72,7 +75,7 @@ export default {
               <div :class="$style.formRowLabel">
                 Aggregator Feeds
               </div>
-              <div :class="$style.formRowValue">
+              <div :class="[$style.formRowValue, {[$style.disabled]: !catalogue.enabled}]">
                 <div
                   v-if="!!feeds.length"
                   :class="$style.catalogueFeeds"
@@ -93,22 +96,45 @@ export default {
           </div>
 
           <div :class="$style.formInnerRight">
-            <el-button
-              type="primary"
-              icon="el-icon-edit"
-              circle
-              data-test="edit"
-              @click="showEditModal = true"
+            <div :class="$style.formInnerRightBtns">
+              <el-button
+                v-if="catalogue.enabled"
+                type="danger"
+                @click="showDisableModal = true"
+              >
+                Disable Client
+              </el-button>
+              <el-button
+                v-else
+                type="success"
+                @click="showDisableModal = true"
+              >
+                Enable Client
+              </el-button>
+              <el-button
+                type="primary"
+                icon="el-icon-edit"
+                data-test="edit"
+                @click="showEditModal = true"
+              >
+                Edit Client
+              </el-button>
+            </div>
+            <catalogue-status-modal
+              :id="catalogue.id"
+              :status="catalogue.enabled"
+              :visible.sync="showDisableModal"
+              @catalogues-updated="cataloguesUpdated"
+            />
+            <catalogue-edit-modal
+              :visible.sync="showEditModal"
+              :processor="processor"
+              :catalogue="catalogue"
+              modal-append-to-body
+              append-to-body
+              @catalogues-updated="cataloguesUpdated"
             />
           </div>
-          <catalogue-edit-modal
-            :visible.sync="showEditModal"
-            :processor="processor"
-            :catalogue="catalogue"
-            modal-append-to-body
-            append-to-body
-            @catalogues-updated="cataloguesUpdated"
-          />
         </div>
       </div>
     </div>
@@ -157,10 +183,9 @@ export default {
   width: calc(100% - 10rem);
 }
 
-.formInnerRight {
-  flex-shrink: 0;
-  width: 10rem;
-  text-align: right;
+.formInnerRightBtns {
+  display: flex;
+  width: 100%;
 }
 
 .formRow {
@@ -203,5 +228,9 @@ export default {
       }
     }
   }
+}
+
+.disabled {
+  color: #909399;
 }
 </style>

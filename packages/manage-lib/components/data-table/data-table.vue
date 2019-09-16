@@ -59,6 +59,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    greyOutRowText: {
+      type: Function,
+      default: () => false,
+    },
   },
   data() {
     return {
@@ -161,8 +165,8 @@ export default {
       return false
     },
     rowClassName({ row, rowIndex }) {
-      const { showRowLink, $style, highlightRow } = this
-      return `${showRowLink ? $style.rowActive : ''} ${highlightRow(row) ? $style.rowHighlighten : ''} ${this.inactiveRowHover(row) ? 'el-table__row-inactive' : ''}`
+      const { showRowLink, $style, highlightRow, greyOutRowText } = this
+      return `${showRowLink ? $style.rowActive : ''} ${highlightRow(row) ? $style.rowHighlighten : ''} ${this.inactiveRowHover(row) ? 'el-table__row-inactive' : ''} ${greyOutRowText(row) ? $style.greyText : ''}`
     },
   },
 }
@@ -282,6 +286,10 @@ export default {
 
 .rowHighlighten {
   background-color: #f2f9ff !important;
+}
+
+.greyText {
+  color: #A4A6AB;
 }
 </style>
 
