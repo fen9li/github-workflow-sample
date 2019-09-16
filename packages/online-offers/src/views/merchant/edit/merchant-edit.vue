@@ -58,7 +58,7 @@ export default {
           label: 'Merchant name',
           path: 'name',
           component: 'el-input',
-          rules: [{ required: true, message: 'merchant name is required' }],
+          rules: [{ required: true, message: 'Merchant name is required' }],
         },
         {
           changed: false,
@@ -66,7 +66,7 @@ export default {
           label: 'Merchant Image',
           path: 'logo',
           component: 'edit-layout-image',
-          rules: [{ required: true, message: 'merchant logo is required' }],
+          rules: [{ required: true, message: 'Merchant logo is required' }],
         },
         {
           changed: false,
@@ -84,7 +84,7 @@ export default {
           key: 'website',
           label: 'Merchant Website',
           path: 'website',
-          rules: [{ required: true, message: 'website url is required' }],
+          rules: [{ required: true, message: 'Website url is required' }],
           component: 'el-input',
           componentSlots: [
             {
@@ -97,7 +97,7 @@ export default {
           key: 'categories',
           label: 'Classification',
           path: 'categories',
-          rules: [{ required: true, message: 'classification is required' }],
+          rules: [{ required: true, message: 'Classification is required' }],
           component: 'edit-layout-categories',
           componentBindings: {
             categories: this.categories,
@@ -108,7 +108,7 @@ export default {
           key: 'terms',
           label: 'Terms & Conditions',
           path: 'terms',
-          rules: [{ required: true, message: 'terms is required' }],
+          rules: [{ required: true, message: 'Terms is required' }],
           component: 'el-input',
           componentBindings: {
             type: 'textarea',
