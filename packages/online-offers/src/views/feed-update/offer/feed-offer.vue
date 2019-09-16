@@ -19,7 +19,7 @@ export default {
       return get(this.offer, 'map') || {}
     },
     feedMerchant() {
-      return get(this.offer, 'feed_merchant.merchant') || {}
+      return get(this.offer, 'feed_merchant.map') || {}
     },
     advertiserName() {
       return get(this.offer, 'payload.advertisername')
@@ -139,8 +139,6 @@ export default {
           <dd>{{ normalizedValues.description || '—' }}</dd>
           <dt>Terms & Conditions</dt>
           <dd>{{ normalizedValues.terms || '—' }}</dd>
-          <dt>Offer Tracking URL</dt>
-          <dd>{{ normalizedValues.tracking_url || '—' }}</dd>
         </dl>
       </div>
     </el-card>
