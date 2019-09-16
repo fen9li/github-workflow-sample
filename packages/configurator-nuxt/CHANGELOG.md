@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/configurator-nuxt@1.1.2...@loyaltycorp/configurator-nuxt@1.1.3) (2019-09-16)
+
+**Note:** Version bump only for package @loyaltycorp/configurator-nuxt
+
 ## [1.1.2](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/configurator-nuxt@1.1.1...@loyaltycorp/configurator-nuxt@1.1.2) (2019-09-12)
 
 **Note:** Version bump only for package @loyaltycorp/configurator-nuxt

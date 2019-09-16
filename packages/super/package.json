@@ -1,14 +1,14 @@
 {
   "name": "@loyaltycorp/manage-super",
   "private": true,
-  "version": "0.2.1",
+  "version": "0.2.2",
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:ci": "cross-env ANALYZE=true vue-cli-service build"
   },
   "dependencies": {
-    "@loyaltycorp/manage-lib": "0.7.1",
+    "@loyaltycorp/manage-lib": "0.8.0",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",
     "vue-the-mask": "^0.11.1",

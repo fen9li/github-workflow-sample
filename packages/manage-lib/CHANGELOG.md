@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/manage-lib@0.7.1...@loyaltycorp/manage-lib@0.8.0) (2019-09-16)
+
+### Features
+
+- **configurator:** add new builders ([cc7a857](https://github.com/loyaltycorp/manage-v2-frontend/commit/cc7a857))
+- **element-form:** add mixin for form validation ([52c6f0c](https://github.com/loyaltycorp/manage-v2-frontend/commit/52c6f0c))
+- **lib:** image-uploader no protocol in imageUrl ([6b04fdb](https://github.com/loyaltycorp/manage-v2-frontend/commit/6b04fdb))
+- **manage-lib:** add font size controls to rich-textarea ([af0e5a4](https://github.com/loyaltycorp/manage-v2-frontend/commit/af0e5a4))
+- **rich-textarea:** rewrite font size changing ([02dd199](https://github.com/loyaltycorp/manage-v2-frontend/commit/02dd199))
+
 ## [0.7.1](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/manage-lib@0.7.0...@loyaltycorp/manage-lib@0.7.1) (2019-09-12)
 
 **Note:** Version bump only for package @loyaltycorp/manage-lib
