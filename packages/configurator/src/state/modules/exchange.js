@@ -1,11 +1,13 @@
 import get from 'lodash/get'
 
+const LS_URL_KEY = 'configurator-last-url'
+
 const state = {
   status: 'waiting',
   provider: '',
   error: '',
   config: null,
-  url: 'localhost:8080',
+  url: process.env.VUE_APP_DEFAULT_URL,
 }
 
 const getters = {
@@ -38,6 +40,7 @@ const mutations = {
   },
   SET_ERROR(state, error) {
     state.error = error
+    state.status = 'waiting'
   },
   SET_PROVIDER(state, provider) {
     state.provider = provider
@@ -48,7 +51,7 @@ const mutations = {
 }
 
 const actions = {
-  INIT({ dispatch }) {
+  INIT({ dispatch, commit }) {
     const handler = payload => {
       dispatch('HANDLE_FRAME_MESSAGE', payload)
     }
@@ -58,16 +61,24 @@ const actions = {
     } else if (window.attachEvent) {
       window.attachEvent('onmessage', handler)
     }
+
+    const savedUrl = localStorage.getItem(LS_URL_KEY)
+
+    if (savedUrl) {
+      commit('SET_URL', savedUrl)
+      dispatch('CONNECT_TO_FRAME')
+    }
   },
   async CONNECT_TO_FRAME({ commit, getters }) {
     try {
+      commit('SET_CONNECTING_STATUS')
+
       await fetch(getters.frameUrl, {
         mode: 'no-cors'
       })
-
-      commit('SET_CONNECTING_STATUS')
     } catch(err) {
       commit('SET_ERROR', 'No connection')
+      localStorage.removeItem(LS_URL_KEY)
     }
   },
   HANDLE_FRAME_MESSAGE({ dispatch, getters }, message) {
@@ -89,12 +100,14 @@ const actions = {
       console.error(error)
     }
   },
-  ON_DEBI_LOADED({ commit, dispatch }, data) {
+  ON_DEBI_LOADED({ getters, commit, dispatch }, data) {
     const provider = get(data, 'payload.provider', '')
     const config = get(data, 'payload.config', {})
 
     commit('SET_READY_STATUS')
     commit('SET_PROVIDER', provider)
+
+    localStorage.setItem(LS_URL_KEY, getters.url)
 
     if (config) {
       commit('SET_CONFIG', config)
@@ -107,6 +120,10 @@ const actions = {
     const message = JSON.stringify(payload)
 
     frame.contentWindow.postMessage(message, `https://${getters.url}`)
+  },
+  RESET() {
+    localStorage.removeItem(LS_URL_KEY)
+    window.location.reload()
   },
 }
 

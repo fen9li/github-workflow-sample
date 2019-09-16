@@ -1,11 +1,12 @@
 <script>
-import { mapMutations, mapGetters } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'AppHeader',
   computed: {
     ...mapGetters('exchange', [
       'ready',
+      'url',
     ]),
     ...mapGetters('frame', [
       'viewport',
@@ -20,6 +21,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions('exchange', {
+      reset: 'RESET',
+    }),
     ...mapMutations('frame', {
       setViewport: 'SET_VIEWPORT',
     }),
@@ -29,9 +33,10 @@ export default {
 
 <template>
   <div :class="$style.root">
+    <div :class="$style.left" />
     <div
       v-if="ready"
-      :class="$style.sizes"
+      :class="$style.center"
     >
       <el-button
         v-for="size in sizes"
@@ -43,6 +48,21 @@ export default {
         @click="setViewport(size.viewport)"
       >
         <the-icon :svg="size.icon" />
+      </el-button>
+    </div>
+    <div
+      v-if="ready"
+      :class="$style.right"
+    >
+      <div :class="$style.connected">
+        Connected to <span :class="$style.url">{{ url }}</span>
+      </div>
+      <el-button
+        :class="$style.change"
+        type="text"
+        @click="reset"
+      >
+        Change application
       </el-button>
     </div>
   </div>
@@ -67,7 +87,38 @@ export default {
   border: none;
 }
 
+.left,
+.right {
+  flex-basis: 30%;
+  align-self: center;
+  padding: 0 rem(24px);
+}
+
+.center {
+  flex-basis: 40%;
+  align-self: center;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.right {
+  text-align: right;
+}
+
+.connected {
+  font-size: rem(14px);
+}
+
+.url {
+  font-weight: bold;
+}
+
 .selected {
   color: var(--color-primary);
+}
+
+.change {
+  padding: 0;
+  margin: 0;
 }
 </style>

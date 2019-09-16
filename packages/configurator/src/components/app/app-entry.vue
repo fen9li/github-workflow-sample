@@ -36,6 +36,7 @@ export default {
         :disabled="connecting"
         placeholder="Enter application URL"
         @input="setUrl"
+        @keyup.enter.native="connectToFrame()"
       >
         <template slot="prepend">
           https://
@@ -75,6 +76,7 @@ export default {
 }
 
 .error {
+  height: rem(24px);
   color: var(--color-error);
 }
 
