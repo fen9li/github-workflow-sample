@@ -31,10 +31,10 @@ export default {
       return formatCommission(commission) || {}
     },
     categories() {
-      const categories = this.merchant
+      const categories = get(this.merchant, 'categories', [])
 
       if (categories && categories.length) {
-        return categories.map(this.capitalize).join(', ')
+        return categories.map(el => this.capitalize(el.name)).join(', ')
       }
 
       return '–'

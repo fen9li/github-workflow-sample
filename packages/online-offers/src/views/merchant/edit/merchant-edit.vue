@@ -146,7 +146,7 @@ export default {
         let categoriesLabel = '—'
 
         if (feedCategories.length) {
-          categoriesLabel = feedCategories.map(c => c.name).join(', ')
+          categoriesLabel = feedCategories.join(', ')
         }
 
         const feedObject = {
