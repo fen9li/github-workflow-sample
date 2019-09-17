@@ -195,7 +195,7 @@ export default {
             selected: false,
             isSelectable: true,
             component: 'edit-layout-table',
-            value: feed.feed,
+            value: feed.external_id,
             label: false,
             componentBindings: {
               labels: {
@@ -240,6 +240,7 @@ export default {
     commissionForFeed(feed) {
       return {
         key: get(feed, 'map.feed'),
+        id: get(feed, 'external_id'),
         items: {
           base: {
             value: get(feed, 'map.commission.base', 0),

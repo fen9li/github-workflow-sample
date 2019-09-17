@@ -19,7 +19,15 @@ export default {
   },
   computed: {
     currentValue() {
-      return this.values.find(el => el.key === this.value)
+      const { value, values } = this
+
+      const valByKey = values.find(el => el.key === value)
+
+      if (valByKey) {
+        return valByKey
+      }
+
+      return values.find(el => el.id === value)
     },
     keys() {
       return Object.keys(get(this.currentValue, 'items', {}))
