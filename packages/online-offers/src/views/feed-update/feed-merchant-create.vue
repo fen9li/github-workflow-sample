@@ -170,7 +170,7 @@ export default {
       this.$notify({
         type: 'success',
         title: 'Success',
-        message: `FeedMerchant successfully ${this.merchantId ? 'associated' : 'created'}`,
+        message: `Global Merchant successfully ${this.merchantId ? 'associated' : 'created'}`,
       })
     },
     onCreateClick() {
