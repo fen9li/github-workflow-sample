@@ -28,6 +28,33 @@ export default {
 
       this.updateCatalogue({ enabled: !status , id }).then(response => {
         this.processing = false
+        const [error,] = response
+        if(error) {
+          if(error.violations) {
+            const violations = Object.keys(error.violations)
+            violations.forEach(violation => {
+              setTimeout(() => {
+                this.$notify({
+                  type: 'error',
+                  title: `Unable to ${status ? 'disable' : 'enable'} client`,
+                  message: `${violation}: ${error.violations[violation][0]}`,
+                })
+              }, 50)
+            })
+          } else {
+            this.$notify({
+              type: 'error',
+              title: `Unable to ${status ? 'disable' : 'enable'} client`,
+              message: error.message,
+            })
+          }
+        } else {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: `Client successfully ${status ? 'disabled' : 'enabled'}`,
+          })
+        }
         this.$emit('catalogues-updated')
         this.$emit('update:visible', false)
       })

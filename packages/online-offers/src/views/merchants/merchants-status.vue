@@ -3,6 +3,7 @@ import cellToggle from '@lib/components/data-table/cells/cell-toggle.vue'
 import { mapActions, mapMutations } from 'vuex'
 
 export default {
+  name: 'MerchantStatus',
   components: {
     cellToggle,
   },
@@ -41,13 +42,35 @@ export default {
         payload: {
           enabled: this.enabled,
         },
-      }).then(() =>
-        this.$notify({
-          type: 'success',
-          title: 'Success',
-          message: `Merchant status successfully changed`,
-        })
-      )
+      }).then(response => {
+        const [error,] = response
+        if(error) {
+          if(error.violations) {
+            const violations = Object.keys(error.violations)
+            violations.forEach(violation => {
+              setTimeout(() => {
+                this.$notify({
+                  type: 'error',
+                  title: `Unable to change Merchant status`,
+                  message: `${violation}: ${error.violations[violation][0]}`,
+                })
+              }, 50)
+            })
+          } else {
+            this.$notify({
+              type: 'error',
+              title: `Unable to change Merchant status`,
+              message: error.message,
+            })
+          }
+        } else {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: `Merchant status successfully changed`,
+          })
+        }
+      })
     },
   },
 }

@@ -194,14 +194,36 @@ export default {
         payload: {
           enabled: this.offer.enabled,
         },
-      }).then(() => {
-        this.$notify({
-          type: 'success',
-          title: 'Success',
-          message: `Status successfully changed to ${
-            this.offer.enabled ? 'enabled' : 'disabled'
-          }`,
-        })
+      }).then(response => {
+        const [error] = response
+        if(error) {
+          if(error.violations) {
+            const violations = Object.keys(error.violations)
+            violations.forEach(violation => {
+              setTimeout(() => {
+                this.$notify({
+                  type: 'error',
+                  title: `Unable to change status`,
+                  message: `${violation}: ${error.violations[violation][0]}`,
+                })
+              }, 50)
+            })
+          } else {
+            this.$notify({
+              type: 'error',
+              title: `Unable to change status`,
+              message: error.message,
+            })
+          }
+        } else {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: `Status successfully changed to ${
+              this.offer.enabled ? 'enabled' : 'disabled'
+            }`,
+          })
+        }
       })
     },
     async submitUpdateOffer(notes) {
@@ -220,18 +242,35 @@ export default {
         payload,
       })
 
-      if (error) {
-        console.error(error)
-        return
+      if(error) {
+        if(error.violations) {
+          const violations = Object.keys(error.violations)
+          violations.forEach(violation => {
+            setTimeout(() => {
+              this.$notify({
+                type: 'error',
+                title: `Unable to update details`,
+                message: `${violation}: ${error.violations[violation][0]}`,
+              })
+            }, 50)
+          })
+        } else {
+          this.$notify({
+            type: 'error',
+            title: `Unable to update details`,
+            message: error.message,
+          })
+        }
+      } else {
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: 'Offer details updated successfully.',
+        })
+        this.onEdit(false)
+        this.offer = response
       }
 
-      this.onEdit(false)
-      this.offer = response
-      this.$notify({
-        type: 'success',
-        title: 'Success',
-        message: 'Offer details updated successfully.',
-      })
       await this.activateFeedOffer({
         feedOfferId: this.feedOfferId,
         payload: { acknowledgement: 'acknowledged' },
@@ -242,17 +281,33 @@ export default {
       // TODO: send notes
       const [error] = await this.deleteGlobalOffer(this.id)
 
-      if (error) {
-        console.error(error)
-        return
+      if(error) {
+        if(error.violations) {
+          const violations = Object.keys(error.violations)
+          violations.forEach(violation => {
+            setTimeout(() => {
+              this.$notify({
+                type: 'error',
+                title: `Unable to delete offer`,
+                message: `${violation}: ${error.violations[violation][0]}`,
+              })
+            }, 50)
+          })
+        } else {
+          this.$notify({
+            type: 'error',
+            title: `Unable to delete offer`,
+            message: error.message,
+          })
+        }
+      } else {
+        this.$notify({
+          type: 'info',
+          title: 'Deleted',
+          message: 'Offer deleted successfully.',
+        })
+        this.$router.push('/offers')
       }
-
-      this.$router.push('/offers')
-      this.$notify({
-        type: 'info',
-        title: 'Deleted',
-        message: 'Offer deleted successfully.',
-      })
     },
     async onEdit(value) {
       this.isEdit = value

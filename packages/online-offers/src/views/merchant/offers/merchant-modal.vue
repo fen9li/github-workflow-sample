@@ -68,17 +68,39 @@ export default {
         offers,
         enabled: this.activate,
       })
-        .then(() => {
+        .then(response => {
           this.progress = false
-          this.showModal = false
-          this.$notify({
-            type: 'success',
-            title: 'Success',
-            message: `${offersCount} successfully ${
-              this.activate ? 'activated' : 'deactivated'
-            }`,
-          })
-          this.offersProcessor.getData()
+          const [error] = response
+          if(error) {
+            if(error.violations) {
+              const violations = Object.keys(error.violations)
+              violations.forEach(violation => {
+                setTimeout(() => {
+                  this.$notify({
+                    type: 'error',
+                    title: `Unable to ${this.activate ? 'activate' : 'deactivate'} offer`,
+                    message: `${violation}: ${error.violations[violation][0]}`,
+                  })
+                }, 50)
+              })
+            } else {
+              this.$notify({
+                type: 'error',
+                title: `Unable to ${this.activate ? 'activate' : 'deactivate'} offer`,
+                message: error.message,
+              })
+            }
+          } else {
+            this.showModal = false
+            this.$notify({
+              type: 'success',
+              title: 'Success',
+              message: `${offersCount} successfully ${
+                this.activate ? 'activated' : 'deactivated'
+              }`,
+            })
+            this.offersProcessor.getData()
+          }
         })
     },
   },

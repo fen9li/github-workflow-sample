@@ -55,12 +55,34 @@ export default {
         payload: {
           enabled: this.merchant.enabled,
         },
-      }).then(() => {
-        this.$notify({
-          type: 'success',
-          title: 'Success',
-          message: `Merchant status successfully changed`,
-        })
+      }).then(response => {
+        const [error,] = response
+        if(error) {
+          if(error.violations) {
+            const violations = Object.keys(error.violations)
+            violations.forEach(violation => {
+              setTimeout(() => {
+                this.$notify({
+                  type: 'error',
+                  title: `Unable to change merchant status`,
+                  message: `${violation}: ${error.violations[violation][0]}`,
+                })
+              }, 50)
+            })
+          } else {
+            this.$notify({
+              type: 'error',
+              title: `Unable to change merchant status`,
+              message: error.message,
+            })
+          }
+        } else {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: `Merchant status successfully changed`,
+          })
+        }
       })
     },
   },

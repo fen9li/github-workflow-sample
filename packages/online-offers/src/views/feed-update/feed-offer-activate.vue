@@ -5,6 +5,7 @@ import ApiProcessor from '@lib/processors/api-processor'
 import offerCanActivate from '../../utils/offer-can-activate'
 
 export default {
+  name: 'FeedOfferActivate',
   mixins: [CellMixin],
   props: {
     row: {
@@ -43,21 +44,55 @@ export default {
         feed_offer: this.row.external_id,
         name: this.row.name,
       })
-        .then(() => {
+        .then(response => {
           this.progress = false
+          const [error] = response
+
+          if(error) {
+            this.responseNotify(response, 'create')
+            return
+          }
           this.activateFeedOffer({
             feedOfferId: this.row.id,
             payload: {
               acknowledgement: 'acknowledged',
             },
+          }).then(resp => {
+            const [err] = resp
+            this.responseNotify(response, 'activate')
+            if(!err) this.processor.getData()
           })
-          this.$notify({
-            type: 'success',
-            title: 'Success',
-            message: 'Successfuly activated',
-          })
-          this.processor.getData()
         })
+    },
+    responseNotify(response, action) {
+      const [error,] = response
+      if(error) {
+        if(error.violations) {
+          const violations = Object.keys(error.violations)
+          violations.forEach(violation => {
+            setTimeout(() => {
+              this.$notify({
+                type: 'error',
+                title: `Unable to ${action === 'create' ? 'create global offer' : 'activate feed'}`,
+                message: `${violation}: ${error.violations[violation][0]}`,
+              })
+            }, 50)
+          })
+        } else {
+          this.$notify({
+            type: 'error',
+            title: `Unable to ${action === 'create' ? 'create global offer' : 'activate feed'}`,
+            message: error.message,
+          })
+        }
+      } else {
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: `Successfully activated`,
+        })
+      }
+      return !error
     }
   },
 }

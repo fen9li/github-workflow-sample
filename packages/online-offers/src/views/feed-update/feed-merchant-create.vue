@@ -7,6 +7,7 @@ import sortBy from 'lodash/sortBy'
 import concat from 'lodash/concat'
 
 export default {
+  name: 'CreateAssociateGlobalMerchant',
   props: {
     row: {
       type: Object,
@@ -146,32 +147,56 @@ export default {
           merchantId: this.merchantId,
           feedmerchantId: this.row.id,
         })
-          .then(() => this.activateFeedMerchant({
+          .then(resp => resp[0] && this.onSubmitResponse(resp))
+          .then(resp => this.activateFeedMerchant({
             feedmerchantId: this.row.id,
             payload: {
               acknowledgement: 'acknowledged',
             },
           }))
-          .then(() => this.onSubmitResponse())
-          .then(() => this.processor.getData())
+          .then(resp => this.onSubmitResponse(resp))
+          .then(resp => resp && this.processor.getData())
       } else {
         const payload = {
           feed_merchant: this.row.external_id,
           ...this.form,
         }
         this.createGlobalMerchant(payload)
-          .then(() => this.onSubmitResponse())
-          .then(() => this.processor.getData())
+          .then(resp => this.onSubmitResponse(resp))
+          .then(resp => resp && this.processor.getData())
       }
     },
-    onSubmitResponse() {
+    onSubmitResponse(response) {
+      const [error,] = response
       this.progress = false
-      this.$emit('close-dialog')
-      this.$notify({
-        type: 'success',
-        title: 'Success',
-        message: `Global Merchant successfully ${this.merchantId ? 'associated' : 'created'}`,
-      })
+      if(error) {
+        if(error.violations) {
+          const violations = Object.keys(error.violations)
+          violations.forEach(violation => {
+            setTimeout(() => {
+              this.$notify({
+                type: 'error',
+                title: `Unable to ${this.merchantId ? 'associate' : 'create'} Global Merchant`,
+                message: `${violation}: ${error.violations[violation][0]}`,
+              })
+            }, 50)
+          })
+        } else {
+          this.$notify({
+            type: 'error',
+            title: `Unable to ${this.merchantId ? 'associate' : 'create'} Global Merchant`,
+            message: error.message,
+          })
+        }
+      } else {
+        this.$emit('close-dialog')
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          message: `Global Merchant successfully ${this.merchantId ? 'associated' : 'created'}`,
+        })
+      }
+      return !error
     },
     onCreateClick() {
       this.selectedItem = this.newItem

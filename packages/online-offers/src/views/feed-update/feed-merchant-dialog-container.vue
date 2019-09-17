@@ -54,15 +54,38 @@ export default {
       this.detachFeedMerchantFromGlobamMerchant({
         merchantId: this.merchant.id,
         feedmerchantId: this.row.id,
-      }).then(() => {
+      }).then(response => {
         this.progress = false
-        this.showDetachDialog = false
-        this.$notify({
-          type: 'info',
-          title: 'Detached',
-          message: 'Successfully detached',
-        })
-        this.processor.getData()
+
+        const [error,] = response
+        if(error) {
+          if(error.violations) {
+            const violations = Object.keys(error.violations)
+            violations.forEach(violation => {
+              setTimeout(() => {
+                this.$notify({
+                  type: 'error',
+                  title: `Unable to detach`,
+                  message: `${violation}: ${error.violations[violation][0]}`,
+                })
+              }, 50)
+            })
+          } else {
+            this.$notify({
+              type: 'error',
+              title: `Unable to detach`,
+              message: error.message,
+            })
+          }
+        } else {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: `Successfully detached`,
+          })
+          this.showDetachDialog = false
+          this.processor.getData()
+        }
       })
     },
   },

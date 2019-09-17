@@ -22,11 +22,38 @@ export default {
     }),
     onDelete() {
       this.progress = true
-      this.deleteCategory(this.row.id).then(() => {
+      this.deleteCategory(this.row.id).then(response => {
         this.progress = false
-        this.showDeleteDialog = false
-        this.processor.getData()
-          .then(data => this.setCategories(data))
+        const [error,] = response
+        if(error) {
+          if(error.violations) {
+            const violations = Object.keys(error.violations)
+            violations.forEach(violation => {
+              setTimeout(() => {
+                this.$notify({
+                  type: 'error',
+                  title: `Unable to delete category`,
+                  message: `${violation}: ${error.violations[violation][0]}`,
+                })
+              }, 50)
+            })
+          } else {
+            this.$notify({
+              type: 'error',
+              title: `Unable to delete category`,
+              message: error.message,
+            })
+          }
+        } else {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: `Category successfully deleted`,
+          })
+          this.showDeleteDialog = false
+          this.processor.getData()
+            .then(data => this.setCategories(data))
+        }
       })
     },
   },

@@ -5,6 +5,7 @@ import merchantsModalTable from './merchants-modal.table.js'
 import { mapActions } from 'vuex'
 
 export default {
+  name:'LinkModal',
   props: {
     name: {
       type: String,
@@ -59,11 +60,11 @@ export default {
       })
     },
     onClick() {
-      const { merchantsCount } = this
+      const { merchantsCount, link } = this
       const merchants = this.items.map(i => i.id)
       let operation = 'linkMerchantToCatalogue'
 
-      if (!this.link) {
+      if (!link) {
         operation = 'unlinkMerchantFromCatalogue'
       }
 
@@ -73,17 +74,39 @@ export default {
         catalogueId: this.id,
         merchants,
       })
-        .then(() => {
-          this.showModal = false
+        .then(response => {
           this.progress = false
-          this.merchantsProcessor.getData()
-          this.$notify({
-            type: 'success',
-            title: 'Success',
-            message: `${merchantsCount} successfully ${
-              this.link ? 'linked' : 'unlinked'
-            }`,
-          })
+          const [error,] = response
+          if(error) {
+            if(error.violations) {
+              const violations = Object.keys(error.violations)
+              violations.forEach(violation => {
+                setTimeout(() => {
+                  this.$notify({
+                    type: 'error',
+                    title: `Unable to ${link ? 'link' : 'unlink'} merchant`,
+                    message: `${violation}: ${error.violations[violation][0]}`,
+                  })
+                }, 50)
+              })
+            } else {
+              this.$notify({
+                type: 'error',
+                title: `Unable to ${link ? 'link' : 'unlink'} merchant`,
+                message: error.message,
+              })
+            }
+          } else {
+            this.$notify({
+              type: 'success',
+              title: 'Success',
+              message: `${merchantsCount} successfully ${
+                link ? 'linked' : 'unlinked'
+              }`,
+            })
+            this.showModal = false
+            this.merchantsProcessor.getData()
+          }
         })
     },
   },

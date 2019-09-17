@@ -102,10 +102,37 @@ export default {
 
         this.progress = true
 
-        this[operation](payload).then(() => {
+        this[operation](payload).then(response => {
           this.progress = false
-          this.$emit(this.catalogue ? 'catalogues-updated' : 'catalogues-created')
-          this.processor.getData()
+          const [error,] = response
+          if(error) {
+            if(error.violations) {
+              const violations = Object.keys(error.violations)
+              violations.forEach(violation => {
+                setTimeout(() => {
+                  this.$notify({
+                    type: 'error',
+                    title: `Unable to ${this.catalogue ? 'update' : 'create'} client`,
+                    message: `${violation}: ${error.violations[violation][0]}`,
+                  })
+                }, 50)
+              })
+            } else {
+              this.$notify({
+                type: 'error',
+                title: `Unable to ${this.catalogue ? 'update' : 'create'} client`,
+                message: error.message,
+              })
+            }
+          } else {
+            this.$notify({
+              type: 'success',
+              title: 'Success',
+              message: `Client successfully ${this.catalogue ? 'updated' : 'created'}`,
+            })
+            this.$emit(this.catalogue ? 'catalogues-updated' : 'catalogues-created')
+            this.processor.getData()
+          }
         })
 
         this.$emit('submit', this.form.notes)

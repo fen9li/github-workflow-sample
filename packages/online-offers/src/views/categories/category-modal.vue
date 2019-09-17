@@ -3,6 +3,7 @@ import { mapActions, mapMutations } from 'vuex'
 import DataProcessor from '@lib/processors/data-processor'
 
 export default {
+  name: 'CategoryModal',
   props: {
     item: {
       type: Object,
@@ -50,13 +51,39 @@ export default {
         request = this.createCategory(form)
       }
 
-      request.then(() => {
-        this.processor.getData()
-          .then(data => this.setCategories(data))
+      request.then(response => {
+        this.progress = false
+        const [error,] = response
+        if(error) {
+          if(error.violations) {
+            const violations = Object.keys(error.violations)
+            violations.forEach(violation => {
+              setTimeout(() => {
+                this.$notify({
+                  type: 'error',
+                  title: `Unable to ${this.item ? 'update' : 'create'} category`,
+                  message: `${violation}: ${error.violations[violation][0]}`,
+                })
+              }, 50)
+            })
+          } else {
+            this.$notify({
+              type: 'error',
+              title: `Unable to ${this.item ? 'update' : 'create'} category`,
+              message: error.message,
+            })
+          }
+        } else {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            message: `Category successfully ${this.item ? 'updated' : 'created'}`,
+          })
+          this.processor.getData()
+            .then(data => this.setCategories(data))
+          this.$emit('close-modal')
+        }
       })
-
-      this.$emit('close-modal')
-      this.progress = false
     },
   },
 }
