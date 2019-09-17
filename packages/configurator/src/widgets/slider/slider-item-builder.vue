@@ -12,12 +12,13 @@ export default {
     <builder-content
       v-model="form.content"
       exclude="size|text"
+      :limits="{ title: 70 }"
     />
     <builder-image
       v-model="form.image"
       :ratio="{
-        mobile: '13:4',
-        desktop: '32:5',
+        mobile: '520:416',
+        desktop: '1180:390',
       }"
     />
     <builder-cta

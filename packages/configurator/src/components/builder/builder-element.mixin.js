@@ -12,6 +12,14 @@ export default {
       type: String,
       default: ''
     },
+    limits: {
+      type: Object,
+      default: () => ({})
+    },
+    limit: {
+      type: null,
+      default: undefined
+    }
   },
   watch: {
     form: {

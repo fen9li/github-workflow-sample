@@ -15,12 +15,13 @@ export default {
     <builder-textarea
       v-model="form.content.text"
       label="Text"
+      :limit="135"
     />
     <builder-image
       v-model="form.image"
       :ratio="{
-        mobile: '13:4',
-        desktop: '32:5',
+        mobile: '640:280',
+        desktop: '1920:400',
       }"
       label="Image"
     />

@@ -4,6 +4,11 @@ import BuilderMixin from '../builder.mixin'
 export default {
   name: 'TileImageBuilder',
   mixins: [BuilderMixin],
+  computed: {
+    isShort() {
+      return this.form.short
+    }
+  }
 }
 </script>
 
@@ -11,12 +16,13 @@ export default {
   <div class="tile-image-builder">
     <builder-content
       v-model="form.content"
+      :limits="{ title: isShort ? 20 : 80, text: 135 }"
     />
     <builder-image
       v-model="form.image"
       :ratio="{
-        mobile: '13:4',
-        desktop: '32:5',
+        mobile: '580:290',
+        desktop: isShort ? '878:285' : '575:285',
       }"
       label="Image"
     />

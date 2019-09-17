@@ -18,6 +18,7 @@ export default {
     </div>
     <rich-textarea
       :value="value"
+      :limit="limit"
       @input="onInput"
     />
   </div>

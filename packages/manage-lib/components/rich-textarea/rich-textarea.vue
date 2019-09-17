@@ -11,9 +11,14 @@ export default {
       type: String,
       default: '',
     },
+    limit: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {
+      oldValue: '',
       localValue: this.value,
       skipNextValueWatcher: false,
       readInputInNextTick: false,
@@ -56,17 +61,30 @@ export default {
   },
   methods: {
     onInput({ target }) {
+      const { limit } = this
+
+      if (limit > 0 && target.innerText.length > limit) {
+        target.innerHTML = this.oldValue
+
+        return
+      }
+
       this.skipNextValueWatcher = true
 
       if (this.readInputInNextTick) {
         this.readInputInNextTick = false
 
-        this.$nextTick(() => {
-          this.$emit('input', target.innerHTML)
-        })
+        this.$nextTick(() => this.emitInputEvt(target))
       } else {
-        this.$emit('input', target.innerHTML)
+        this.emitInputEvt(target)
       }
+    },
+    emitInputEvt(target) {
+      const { innerHTML } = target
+
+      this.oldValue = innerHTML
+
+      this.$emit('input', innerHTML)
     },
     executeCmd(cmdName, args) {
       const { area } = this.$refs
