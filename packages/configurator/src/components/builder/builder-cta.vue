@@ -28,7 +28,10 @@ export default {
       <div class="input-label">
         Label
       </div>
-      <el-input v-model="form.label" />
+      <el-input
+        v-model="form.label"
+        :maxlength="limit"
+      />
     </template>
     <div class="input-label">
       Path

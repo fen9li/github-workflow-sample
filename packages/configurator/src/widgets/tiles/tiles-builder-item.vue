@@ -15,17 +15,19 @@ export default {
     <builder-content
       v-model="form.content"
       exclude="size"
+      :limits="{ title: 250, text: 350 }"
     />
     <builder-image
       v-model="form.image"
       :ratio="{
-        mobile: '13:4',
-        desktop: '32:5',
+        mobile: '321:200',
+        desktop: '365:228',
       }"
     />
     <builder-cta
       v-model="form.cta"
       label="Link"
+      :limit="40"
     />
   </div>
 </template>

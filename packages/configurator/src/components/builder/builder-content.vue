@@ -20,11 +20,13 @@ export default {
       v-if="shown('title')"
       v-model="form.title"
       label="Title"
+      :limit="limits.title"
     />
     <builder-textarea
       v-if="shown('text')"
       v-model="form.text"
       label="Text"
+      :limit="limits.text"
     />
     <builder-radio
       v-if="shown('size')"

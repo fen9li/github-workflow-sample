@@ -21,6 +21,10 @@ export default {
   <div class="image-builder">
     <builder-image
       v-model="form.image"
+      :ratio="{
+        mobile: '580:290',
+        desktop: '1180:285',
+      }"
     />
     <builder-cta
       v-model="form.cta"
