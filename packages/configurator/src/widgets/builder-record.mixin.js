@@ -13,9 +13,6 @@ export default {
     form: {},
   }),
   computed: {
-    initialConfig() {
-      return this.widget.config
-    },
     config() {
       return get(this.widget, 'config', {})
     },
@@ -26,6 +23,9 @@ export default {
     this.$watch('form', debounce(function(value) {
       this.$emit('build')
     }, 300), { deep: true })
+  },
+  beforeDestroy() {
+    this.widget.config = cloneDeep(this.form)
   },
   methods: {
     initForm() {

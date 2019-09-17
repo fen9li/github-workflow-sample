@@ -32,7 +32,7 @@ export default {
     this.initForm()
     this.$watch('form', debounce(function(value) {
       this.$emit('build')
-    }, 300), { deep: true })
+    }, 400), { deep: true })
   },
   methods: {
     initForm() {

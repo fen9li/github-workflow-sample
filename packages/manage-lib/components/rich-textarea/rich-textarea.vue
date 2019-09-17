@@ -141,7 +141,7 @@ export default {
       } else {
         // no links inside selection - open tooltip
         // to type url link
-        this.linkTooltipIsVisible = true
+        this.showLinkTooltip()
       }
     },
     applyLinkURL() {
@@ -168,6 +168,13 @@ export default {
       this.savedSelectionRanges = []
       this.linkURL = ''
     },
+    showLinkTooltip() {
+      this.linkTooltipIsVisible = true
+
+      setTimeout(() => {
+        this.$refs.tooltipInput.focus()
+      }, 100)
+    },
     updateLinkURL({ target }) {
       const hrefRange = document.createRange()
 
@@ -175,7 +182,7 @@ export default {
       this.savedSelectionRanges.push(hrefRange)
 
       this.linkURL = target.getAttribute('href')
-      this.linkTooltipIsVisible = true
+      this.showLinkTooltip()
     },
     addEditLinkListeners() {
       const { area } = this.$refs
@@ -448,6 +455,7 @@ export default {
             class="base-rich-textarea__tooltip"
           >
             <el-input
+              ref="tooltipInput"
               v-model="linkURL"
               placeholder="Type url..."
               @keydown.native.prevent.enter="applyLinkURL"

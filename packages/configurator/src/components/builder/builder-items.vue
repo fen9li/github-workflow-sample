@@ -1,16 +1,19 @@
 <script>
 import get from 'lodash/get'
+import cloneDeep from 'lodash/cloneDeep'
 import Widget from '~/widgets/widget'
 import { getItemTemplate } from '~/widgets/templates'
-import BuilderElement from './builder-element.mixin'
 
 export default {
   name: 'BuilderItems',
-  mixins: [BuilderElement],
   props: {
     meta: {
       type: Object,
       default: null,
+    },
+    value: {
+      type: Array,
+      default: () => [],
     },
   },
   data: () => ({
@@ -34,7 +37,7 @@ export default {
       if (this.value instanceof Array && this.meta) {
         this.value.forEach(item => {
           this.addWidget({
-            config: item,
+            config: cloneDeep(item)
           })
         })
       }
@@ -100,7 +103,7 @@ export default {
         return widget.build()
       })
 
-      this.onInput(config)
+      this.$emit('input', config)
     },
   },
 }

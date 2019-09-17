@@ -20,7 +20,7 @@ export default {
   },
   watch: {
     widgets() {
-      this.sendConfig()
+      this.build()
     },
   },
   methods: {
@@ -60,6 +60,9 @@ export default {
           index: this.widgets.indexOf(widget)
         },
       })
+    },
+    build() {
+      this.sendConfig()
     },
   },
 }
@@ -101,7 +104,7 @@ export default {
       v-else-if="selectedWidget"
       :widget="selectedWidget"
       @back="selectedWidget = null"
-      @build="sendConfig()"
+      @build="build()"
     />
   </base-layout>
 </template>
