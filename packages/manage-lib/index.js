@@ -14,6 +14,7 @@ import utils from './utils'
 import {
   ApiHelper
 } from './api'
+import notifier from './notifier'
 
 dayjs.extend(utc)
 dayjs.extend(customParseFormat)
@@ -37,6 +38,8 @@ export default {
     Vue.prototype.$api = new ApiHelper({
       baseURL: process.env.VUE_APP_API_URL,
     })
+
+    Vue.prototype.$notifier = notifier
 
     Vue.config.productionTip = process.env.NODE_ENV === 'production'
   },
