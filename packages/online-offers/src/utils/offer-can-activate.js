@@ -9,10 +9,4 @@ export default offer => {
     && offer.updated_at
     && merchant.name
     && map.name
-    && map.code
-    && map.start_date
-    && map.end_date
-    && map.description
-    && map.terms
-    && map.tracking_url
 }
