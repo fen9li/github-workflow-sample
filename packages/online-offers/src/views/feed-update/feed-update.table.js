@@ -29,7 +29,7 @@ const TABLE_FILTERS_MERCHANTS = [{
 },]
 
 const TABLE_FILTERS_OFFERS = [{
-  attribute: 'name',
+  attribute: 'feed_merchant.map.name',
   label: 'Merchant',
   type: 'string',
   icon: 'el-icon-document',
@@ -95,7 +95,7 @@ const TABLE_COLUMNS_MERCHANTS = [{
 }]
 
 const TABLE_COLUMNS_OFFERS = [{
-  name: 'name',
+  name: 'feed_merchant.map.name',
   label: 'Merchant Name',
   icon: 'el-icon-document',
   width: 200,
