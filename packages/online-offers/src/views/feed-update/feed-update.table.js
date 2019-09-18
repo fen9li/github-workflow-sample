@@ -2,16 +2,6 @@ import MerchantDialog from './feed-merchant-dialog-container.vue'
 import OfferActivate from './feed-offer-activate.vue'
 
 const TABLE_FILTERS_MERCHANTS = [{
-  attribute: 'name',
-  label: 'Merchant',
-  type: 'string',
-  icon: 'el-icon-document',
-}, {
-  attribute: 'updated_at',
-  label: 'Last Updated',
-  type: 'date',
-  icon: 'el-icon-date',
-}, {
   attribute: 'status',
   label: 'Status',
   icon: 'el-icon-circle-check',
@@ -26,6 +16,16 @@ const TABLE_FILTERS_MERCHANTS = [{
       value: 'inactive',
     },
   },
+}, {
+  attribute: 'name',
+  label: 'Merchant',
+  type: 'string',
+  icon: 'el-icon-document',
+}, {
+  attribute: 'updated_at',
+  label: 'Last Updated',
+  type: 'date',
+  icon: 'el-icon-date',
 },]
 
 const TABLE_FILTERS_OFFERS = [{
@@ -45,22 +45,6 @@ const TABLE_FILTERS_OFFERS = [{
 }]
 
 const TABLE_COLUMNS_MERCHANTS = [{
-  name: 'map.name',
-  label: 'Merchant Name',
-  icon: 'el-icon-document',
-  width: 300,
-}, {
-  name: 'merchant.name',
-  label: 'Global Merchant',
-  icon: 'el-icon-document',
-  width: 300,
-}, {
-  name: 'updated_at',
-  label: 'Last Updated',
-  icon: 'el-icon-date',
-  format: 'date',
-  width: 200,
-}, {
   name: 'status',
   label: 'Status',
   icon: 'el-icon-circle-check',
@@ -79,6 +63,22 @@ const TABLE_COLUMNS_MERCHANTS = [{
       },
     },
   },
+}, {
+  name: 'map.name',
+  label: 'Merchant Name',
+  icon: 'el-icon-document',
+  width: 300,
+}, {
+  name: 'merchant.name',
+  label: 'Global Merchant',
+  icon: 'el-icon-document',
+  width: 300,
+}, {
+  name: 'updated_at',
+  label: 'Last Updated',
+  icon: 'el-icon-date',
+  format: 'date',
+  width: 200,
 }, {
   sortable: false,
   overflowTooltip: false,
