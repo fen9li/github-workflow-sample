@@ -69,7 +69,7 @@ const TABLE_COLUMNS = [
 ]
 
 export default component => ({
-  processor: new ApiProcessor({ component, path: 'catalogues' }),
+  processor: new ApiProcessor({ component, path: 'catalogues', query: { pageSize: 25 } }),
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
   tableName: 'catalogues'

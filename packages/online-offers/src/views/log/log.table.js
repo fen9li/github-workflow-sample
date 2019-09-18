@@ -47,6 +47,7 @@ export default component => ({
   processor: new ApiProcessor({
     path: 'userlogs',
     component,
+    query: { pageSize: 25 }
   }),
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,

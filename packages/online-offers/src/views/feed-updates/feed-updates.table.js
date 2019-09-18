@@ -134,7 +134,7 @@ const TABLE_COLUMNS = [
 ]
 
 export default component => ({
-  processor: new ApiProcessor({ component, path: '/feeds/logs' }),
+  processor: new ApiProcessor({ component, path: '/feeds/logs', query: { pageSize: 25 } }),
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
   tableName: 'feed-updates'

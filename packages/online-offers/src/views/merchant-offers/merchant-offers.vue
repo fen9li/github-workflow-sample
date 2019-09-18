@@ -58,6 +58,7 @@ export default {
       this.table.processor = new ApiProcessor({
         component: this,
         path: this.path,
+        query: { pageSize: 25 }
       })
     },
     onRowClick(row) {

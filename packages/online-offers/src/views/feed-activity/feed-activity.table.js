@@ -114,6 +114,7 @@ export default component => ({
     component,
     path: '/feeds/sync-logs',
     index: 'merchants',
+    query: { pageSize: 25 }
   }),
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
