@@ -76,39 +76,21 @@ export default {
     },
     async onSubmit() {
       this.submitting = true
-      const [error] = await this.updateFeedMerchant({
+      const response = await this.updateFeedMerchant({
         payload: this.form,
         id: this.details.id,
       })
       this.submitting = false
 
-      if(error) {
-        if(error.violations) {
-          const violations = Object.keys(error.violations)
-          violations.forEach(violation => {
-            setTimeout(() => {
-              this.$notify({
-                type: 'error',
-                title: `Unable to update feed`,
-                message: `${violation}: ${error.violations[violation][0]}`,
-              })
-            }, 50)
-          })
-        } else {
-          this.$notify({
-            type: 'error',
-            title: `Unable to update feed`,
-            message: error.message,
-          })
+      this.$notifier({
+        response,
+        errorTitle: `Unable to update feed`,
+        successMsg: `Feed successfully updated`
+      }).then(success => {
+        if(success) {
+          this.getDetails()
         }
-      } else {
-        this.$notify({
-          type: 'success',
-          title: 'Success',
-          message: `Feed successfully updated`,
-        })
-        this.getDetails()
-      }
+      })
     },
   },
 }

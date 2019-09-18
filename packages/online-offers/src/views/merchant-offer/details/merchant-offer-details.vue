@@ -29,33 +29,11 @@ export default {
           enabled: !this.details.enabled,
         },
       }).then(response => {
-        const [error] = response
-        if(error) {
-          if(error.violations) {
-            const violations = Object.keys(error.violations)
-            violations.forEach(violation => {
-              setTimeout(() => {
-                this.$notify({
-                  type: 'error',
-                  title: `Unable to change status`,
-                  message: `${violation}: ${error.violations[violation][0]}`,
-                })
-              }, 50)
-            })
-          } else {
-            this.$notify({
-              type: 'error',
-              title: `Unable to change status`,
-              message: error.message,
-            })
-          }
-        } else {
-          this.$notify({
-            type: 'success',
-            title: 'Success',
-            message: `Status successfully changed to ${this.details.enabled ? 'enabled' : 'disabled'}`,
-          })
-        }
+        this.$notifier({
+          response,
+          errorTitle: `Unable to change status`,
+          successMsg: `Status successfully changed to ${this.details.enabled ? 'enabled' : 'disabled'}`
+        })
       })
     },
   },

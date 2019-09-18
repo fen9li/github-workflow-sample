@@ -56,36 +56,16 @@ export default {
         feedmerchantId: this.row.id,
       }).then(response => {
         this.progress = false
-
-        const [error,] = response
-        if(error) {
-          if(error.violations) {
-            const violations = Object.keys(error.violations)
-            violations.forEach(violation => {
-              setTimeout(() => {
-                this.$notify({
-                  type: 'error',
-                  title: `Unable to detach`,
-                  message: `${violation}: ${error.violations[violation][0]}`,
-                })
-              }, 50)
-            })
-          } else {
-            this.$notify({
-              type: 'error',
-              title: `Unable to detach`,
-              message: error.message,
-            })
+        this.$notifier({
+          response,
+          errorTitle: `Unable to detach`,
+          successMsg: `Successfully detached`
+        }).then(success => {
+          if(success) {
+            this.showDetachDialog = false
+            this.processor.getData()
           }
-        } else {
-          this.$notify({
-            type: 'success',
-            title: 'Success',
-            message: `Successfully detached`,
-          })
-          this.showDetachDialog = false
-          this.processor.getData()
-        }
+        })
       })
     },
   },

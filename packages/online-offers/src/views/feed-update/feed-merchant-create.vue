@@ -169,33 +169,15 @@ export default {
     onSubmitResponse(response) {
       const [error,] = response
       this.progress = false
-      if(error) {
-        if(error.violations) {
-          const violations = Object.keys(error.violations)
-          violations.forEach(violation => {
-            setTimeout(() => {
-              this.$notify({
-                type: 'error',
-                title: `Unable to ${this.merchantId ? 'associate' : 'create'} Global Merchant`,
-                message: `${violation}: ${error.violations[violation][0]}`,
-              })
-            }, 50)
-          })
-        } else {
-          this.$notify({
-            type: 'error',
-            title: `Unable to ${this.merchantId ? 'associate' : 'create'} Global Merchant`,
-            message: error.message,
-          })
+      this.$notifier({
+        response,
+        errorTitle: `Unable to ${this.merchantId ? 'associate' : 'create'} Global Merchant`,
+        successMsg: `Global Merchant successfully ${this.merchantId ? 'associated' : 'created'}`
+      }).then(success => {
+        if(success) {
+          this.$emit('close-dialog')
         }
-      } else {
-        this.$emit('close-dialog')
-        this.$notify({
-          type: 'success',
-          title: 'Success',
-          message: `Global Merchant successfully ${this.merchantId ? 'associated' : 'created'}`,
-        })
-      }
+      })
       return !error
     },
     onCreateClick() {

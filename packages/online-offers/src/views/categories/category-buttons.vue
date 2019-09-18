@@ -24,36 +24,18 @@ export default {
       this.progress = true
       this.deleteCategory(this.row.id).then(response => {
         this.progress = false
-        const [error,] = response
-        if(error) {
-          if(error.violations) {
-            const violations = Object.keys(error.violations)
-            violations.forEach(violation => {
-              setTimeout(() => {
-                this.$notify({
-                  type: 'error',
-                  title: `Unable to delete category`,
-                  message: `${violation}: ${error.violations[violation][0]}`,
-                })
-              }, 50)
-            })
-          } else {
-            this.$notify({
-              type: 'error',
-              title: `Unable to delete category`,
-              message: error.message,
-            })
+
+        this.$notifier({
+          response,
+          errorTitle: 'Unable to delete category',
+          successMsg: 'Category successfully deleted'
+        }).then(success => {
+          if(success) {
+            this.showDeleteDialog = false
+            this.processor.getData()
+              .then(data => this.setCategories(data))
           }
-        } else {
-          this.$notify({
-            type: 'success',
-            title: 'Success',
-            message: `Category successfully deleted`,
-          })
-          this.showDeleteDialog = false
-          this.processor.getData()
-            .then(data => this.setCategories(data))
-        }
+        })
       })
     },
   },

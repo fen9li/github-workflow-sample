@@ -195,35 +195,11 @@ export default {
           enabled: this.offer.enabled,
         },
       }).then(response => {
-        const [error] = response
-        if(error) {
-          if(error.violations) {
-            const violations = Object.keys(error.violations)
-            violations.forEach(violation => {
-              setTimeout(() => {
-                this.$notify({
-                  type: 'error',
-                  title: `Unable to change status`,
-                  message: `${violation}: ${error.violations[violation][0]}`,
-                })
-              }, 50)
-            })
-          } else {
-            this.$notify({
-              type: 'error',
-              title: `Unable to change status`,
-              message: error.message,
-            })
-          }
-        } else {
-          this.$notify({
-            type: 'success',
-            title: 'Success',
-            message: `Status successfully changed to ${
-              this.offer.enabled ? 'enabled' : 'disabled'
-            }`,
-          })
-        }
+        this.$notifier({
+          response,
+          errorTitle: `Unable to change status`,
+          successMsg: `Status successfully changed to ${this.offer.enabled ? 'enabled' : 'disabled'}`
+        })
       })
     },
     async submitUpdateOffer(notes) {
@@ -237,39 +213,23 @@ export default {
         field.changed = false
       }
 
-      const [error, response] = await this.updateGlobalOffer({
+      const response = await this.updateGlobalOffer({
         id: this.id,
         payload,
       })
 
-      if(error) {
-        if(error.violations) {
-          const violations = Object.keys(error.violations)
-          violations.forEach(violation => {
-            setTimeout(() => {
-              this.$notify({
-                type: 'error',
-                title: `Unable to update details`,
-                message: `${violation}: ${error.violations[violation][0]}`,
-              })
-            }, 50)
-          })
-        } else {
-          this.$notify({
-            type: 'error',
-            title: `Unable to update details`,
-            message: error.message,
-          })
+      const [,successful] = response
+
+      this.$notifier({
+        response,
+        errorTitle: `Unable to update details`,
+        successMsg: `Offer details updated successfully`
+      }).then(success => {
+        if(success) {
+          this.onEdit(false)
+          this.offer = successful
         }
-      } else {
-        this.$notify({
-          type: 'success',
-          title: 'Success',
-          message: 'Offer details updated successfully.',
-        })
-        this.onEdit(false)
-        this.offer = response
-      }
+      })
 
       await this.activateFeedOffer({
         feedOfferId: this.feedOfferId,
@@ -279,35 +239,16 @@ export default {
     async submitDeleteOffer(notes) {
       this.modals.remove = false
       // TODO: send notes
-      const [error] = await this.deleteGlobalOffer(this.id)
-
-      if(error) {
-        if(error.violations) {
-          const violations = Object.keys(error.violations)
-          violations.forEach(violation => {
-            setTimeout(() => {
-              this.$notify({
-                type: 'error',
-                title: `Unable to delete offer`,
-                message: `${violation}: ${error.violations[violation][0]}`,
-              })
-            }, 50)
-          })
-        } else {
-          this.$notify({
-            type: 'error',
-            title: `Unable to delete offer`,
-            message: error.message,
-          })
+      const response = await this.deleteGlobalOffer(this.id)
+      this.$notifier({
+        response,
+        errorTitle: `Unable to delete offer`,
+        successMsg: `Offer deleted successfully`
+      }).then(success => {
+        if(success) {
+          this.$router.push('/offers')
         }
-      } else {
-        this.$notify({
-          type: 'info',
-          title: 'Deleted',
-          message: 'Offer deleted successfully.',
-        })
-        this.$router.push('/offers')
-      }
+      })
     },
     async onEdit(value) {
       this.isEdit = value
