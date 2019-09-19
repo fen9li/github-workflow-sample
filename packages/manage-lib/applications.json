@@ -13,7 +13,7 @@
     "path": "/payments",
     "icon": "payments.svg"
   },
-  "eStore": {
+  "estore": {
     "label": "eStore",
     "icon": "eStore.svg"
   },
