@@ -11,6 +11,9 @@ export default {
     ...mapGetters('frame', [
       'viewport',
     ]),
+    ...mapGetters('dashboard', [
+      'publishing',
+    ]),
     sizes() {
       return [
         { viewport: 'mobile', icon: 'mobile' },
@@ -24,6 +27,9 @@ export default {
     ...mapActions('exchange', {
       reset: 'RESET',
     }),
+    ...mapActions('dashboard', {
+      publish: 'PUBLISH',
+    }),
     ...mapMutations('frame', {
       setViewport: 'SET_VIEWPORT',
     }),
@@ -33,38 +39,43 @@ export default {
 
 <template>
   <div :class="$style.root">
-    <div :class="$style.left" />
-    <div
-      v-if="ready"
-      :class="$style.center"
-    >
-      <el-button
-        v-for="size in sizes"
-        :key="size.viewport"
-        :class="[
-          $style.button,
-          size.viewport === viewport && $style.selected,
-        ]"
-        @click="setViewport(size.viewport)"
-      >
-        <the-icon :svg="size.icon" />
-      </el-button>
-    </div>
-    <div
-      v-if="ready"
-      :class="$style.right"
-    >
-      <div :class="$style.connected">
-        Connected to <span :class="$style.url">{{ url }}</span>
+    <template v-if="ready">
+      <div :class="$style.left">
+        <el-button
+          type="primary"
+          :loading="publishing"
+          @click="publish()"
+        >
+          Publish
+        </el-button>
       </div>
-      <el-button
-        :class="$style.change"
-        type="text"
-        @click="reset"
-      >
-        Change application
-      </el-button>
-    </div>
+      <div :class="$style.center">
+        <el-button
+          v-for="size in sizes"
+          :key="size.viewport"
+          :class="[
+            $style.button,
+            size.viewport === viewport && $style.selected,
+          ]"
+          @click="setViewport(size.viewport)"
+        >
+          <the-icon :svg="size.icon" />
+        </el-button>
+      </div>
+      <div :class="$style.right">
+        <div :class="$style.connected">
+          {{ }}
+          Connected to <span :class="$style.url">{{ url }}</span>
+        </div>
+        <el-button
+          :class="$style.change"
+          type="text"
+          @click="reset"
+        >
+          Change application
+        </el-button>
+      </div>
+    </template>
   </div>
 </template>
 

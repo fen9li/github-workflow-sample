@@ -5,6 +5,7 @@ const LS_URL_KEY = 'configurator-last-url'
 const state = {
   status: 'waiting',
   provider: '',
+  env: '',
   error: '',
   config: null,
   url: process.env.VUE_APP_DEFAULT_URL,
@@ -15,6 +16,8 @@ const getters = {
   frameUrl: s => `https://${s.url}?origin=${window.location.origin}`,
   ready: s => s.status === 'ready',
   error: s => s.error,
+  env: s => s.env,
+  provider: s => s.provider,
   waiting: s => s.status === 'waiting',
   connecting: s => s.status === 'connecting',
   connected: s => s.status === 'connected',
@@ -44,6 +47,9 @@ const mutations = {
   },
   SET_PROVIDER(state, provider) {
     state.provider = provider
+  },
+  SET_ENV(state, env) {
+    state.env = env
   },
   SET_CONFIG(state, config) {
     state.config = config
@@ -102,10 +108,12 @@ const actions = {
   },
   ON_DEBI_LOADED({ getters, commit, dispatch }, data) {
     const provider = get(data, 'payload.provider', '')
+    const env = get(data, 'payload.env', '')
     const config = get(data, 'payload.config', {})
 
     commit('SET_READY_STATUS')
     commit('SET_PROVIDER', provider)
+    commit('SET_ENV', env)
 
     localStorage.setItem(LS_URL_KEY, getters.url)
 
