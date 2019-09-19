@@ -63,6 +63,10 @@ export default {
       type: Function,
       default: () => false,
     },
+    cellStyle: {
+      type: Function,
+      default: () => {}
+    }
   },
   data() {
     return {
@@ -186,6 +190,7 @@ export default {
       ]"
       :summary-method="summaryMethod"
       :show-summary="showSummary"
+      :cell-style="cellStyle"
       @row-click="onRowClick"
       @selection-change="handleSelectionChange"
     >
