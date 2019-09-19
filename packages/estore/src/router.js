@@ -25,6 +25,15 @@ const router = new Router({
       },
     },
     {
+      path: '/providers/:id',
+      name: 'provider-details',
+      component: () => lazy(import('./views/provider')),
+      meta: {
+        menu: 'providers',
+      },
+      props: true
+    },
+    {
       path: '/provider-products',
       name: 'provider-products',
       component: () => lazy(import('./views/provider-products')),
