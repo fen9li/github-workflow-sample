@@ -25,7 +25,10 @@ export default {
       popup && 'base-layout--popup',
     ]"
   >
-    <div class="base-layout__header">
+    <div
+      v-if="back || title"
+      class="base-layout__header"
+    >
       <router-link
         v-if="back"
         :to="back"
@@ -44,7 +47,6 @@ export default {
       >
         {{ title }}
       </h1>
-      <slot name="header" />
     </div>
     <div class="base-layout__body">
       <slot />
@@ -58,7 +60,8 @@ export default {
   display: flex;
   flex-direction: column;
   width: rem(300px);
-  height: 100vh;
+  max-width: 100%;
+  height: 100%;
   border-right: 1px solid var(--color-divider);
 
   &--popup {

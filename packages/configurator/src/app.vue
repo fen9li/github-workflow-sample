@@ -1,5 +1,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import api from '@lib/api'
 
 export default {
   name: 'App',
@@ -22,16 +23,24 @@ export default {
     ...mapActions('exchange', {
       initExchange: 'INIT',
     }),
+    handleLoginEvent(data) {
+      const authHeader = `Bearer ${data.accessToken}`
+      api.axios.defaults.headers.common['Authorization'] = authHeader
+    },
   },
 }
 </script>
 
 <template>
-  <main :class="$style.root">
-    <div :class="$style.sidebar">
-      <router-view />
-    </div>
-    <div :class="$style.wrapper">
+  <app-layout>
+    <router-view
+      slot="sidebar"
+      :key="$route.path"
+    />
+    <div
+      slot="authorized"
+      :class="$style.wrapper"
+    >
       <app-entry v-if="waiting || connecting" />
       <div
         v-show="showFrame"
@@ -41,7 +50,7 @@ export default {
         <app-frame />
       </div>
     </div>
-  </main>
+  </app-layout>
 </template>
 
 <style lang="scss" module>
@@ -59,7 +68,11 @@ export default {
   border-right: 1px solid var(--color-divider);
 }
 
+.app {
+  height: 100%;
+}
+
 .wrapper {
-  flex-grow: 1;
+  height: 100%;
 }
 </style>

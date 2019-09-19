@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from './state/store'
+// import store from './state/store'
 import lazy from '@lib/router/lazy'
 
 Vue.use(VueRouter)
@@ -43,16 +43,16 @@ const router = new VueRouter({
   },
 })
 
-router.beforeEach((to, from, next) => {
-  const frameReady = store.getters['exchange/ready']
+// router.beforeEach((to, from, next) => {
+//   // const frameReady = store.getters['exchange/ready']
 
-  if (frameReady || to.name === 'home') {
-    next()
-  } else {
-    next({
-      name: 'home',
-    })
-  }
-})
+//   // if (frameReady || to.name === 'home') {
+//   //   next()
+//   // } else {
+//   //   next({
+//   //     name: 'home',
+//   //   })
+//   // }
+// })
 
 export default router
