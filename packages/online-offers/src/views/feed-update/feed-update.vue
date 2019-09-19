@@ -62,25 +62,6 @@ export default {
         component: this,
         path: this.path,
         query: { pageSize: 25 },
-        dataTransform: [
-          {
-            path: 'payload',
-            key: 'name',
-            values: [
-              'advertisername',
-              'name',
-              'merchantname',
-            ],
-          },
-          {
-            path: 'payload',
-            key: 'description',
-            values: [
-              'description',
-              'offerdescription',
-            ],
-          },
-        ],
       })
     },
     onTabClick() {
