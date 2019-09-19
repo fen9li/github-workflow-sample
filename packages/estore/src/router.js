@@ -66,6 +66,14 @@ const router = new Router({
       },
     },
     {
+      path: '/product-categories',
+      name: 'product-categories',
+      component: () => lazy(import('./views/product-categories')),
+      meta: {
+        menu: 'product-categories',
+      },
+    },
+    {
       path: '*',
       redirect: '/',
     }

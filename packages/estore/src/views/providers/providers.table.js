@@ -48,6 +48,7 @@ const TABLE_COLUMNS = [
   {
     name: 'created_at',
     label: 'Date Created',
+    format: 'dateTime',
     icon: 'el-icon-document',
     width: 100,
   },
