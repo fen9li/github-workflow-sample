@@ -44,16 +44,28 @@ export default {
           :class="$style.aside"
           width="null"
         >
-          <app-sidebar v-bind="$attrs" />
+          <slot
+            v-if="$slots.sidebar"
+            name="sidebar"
+          />
+          <app-sidebar
+            v-else
+            v-bind="$attrs"
+          />
         </el-aside>
         <el-main>
           <slot />
+          <slot name="authorized" />
         </el-main>
       </el-container>
     </el-container>
   </div>
   <div v-else>
-    <slot />
+    <slot v-if="$slots.default" />
+    <router-view
+      v-else
+      :key="$route.path"
+    />
   </div>
 </template>
 
