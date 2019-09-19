@@ -194,6 +194,16 @@ export default {
                 </template>
               </el-input>
             </el-form-item>
+            <el-form-item
+              label="Baseline Tracking URL"
+              :class="$style.input"
+            >
+              <el-input v-model="form.baseline_url">
+                <template slot="prepend">
+                  URL
+                </template>
+              </el-input>
+            </el-form-item>
             <div :class="$style.buttonWrapper">
               <el-button
                 type="primary"
