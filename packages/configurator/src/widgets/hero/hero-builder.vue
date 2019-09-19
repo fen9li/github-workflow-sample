@@ -4,18 +4,17 @@ import BuilderMixin from '../builder.mixin'
 export default {
   name: 'HeroBuilder',
   mixins: [BuilderMixin],
-  data: () => ({
-    form: null,
-  }),
+  // data: () => ({
+  //   form: null,
+  // }),
 }
 </script>
 
 <template>
   <div class="hero-builder">
-    <builder-textarea
-      v-model="form.content.text"
-      label="Text"
-      :limit="135"
+    <builder-content
+      v-model="form.content"
+      exclude="title|size"
     />
     <builder-image
       v-model="form.image"
