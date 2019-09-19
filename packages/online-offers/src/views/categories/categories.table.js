@@ -22,6 +22,6 @@ const TABLE_COLUMNS = [
 export default component => ({
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
-  processor: new ApiProcessor({ component, path: 'categories' }),
+  processor: new ApiProcessor({ component, path: 'categories', query: { pageSize: 25 } }),
   tableName: 'categories'
 })

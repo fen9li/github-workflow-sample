@@ -71,6 +71,7 @@ export default component => ({
   processor: new ApiProcessor({
     component,
     path: 'merchants',
+    query: { pageSize: 25 }
   }),
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
