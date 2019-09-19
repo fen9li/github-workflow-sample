@@ -37,7 +37,7 @@ export default {
     formatValue(key) {
       const item = this.currentValue.items[key]
       const type = this.currentValue.items.type.value
-      return get(item, 'format', (type, el) => el)(type, item.value)
+      return get(item, 'format', (type, el) => el || '-')(type, item.value)
     },
   },
 }

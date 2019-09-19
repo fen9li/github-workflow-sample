@@ -231,6 +231,10 @@ export default {
       return capitalize(type)
     },
     formatCommissionValue(type, value) {
+      if (!value) {
+        return '-'
+      }
+
       if (type === 'PERCENTAGE') {
         return `${value}%`
       }
