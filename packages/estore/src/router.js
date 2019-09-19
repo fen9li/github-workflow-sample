@@ -31,7 +31,7 @@ const router = new Router({
       meta: {
         menu: 'providers',
       },
-      props: true
+      props: true,
     },
     {
       path: '/provider-products',
@@ -74,9 +74,18 @@ const router = new Router({
       },
     },
     {
+      path: '/product-categories/:id',
+      name: 'product-category-details',
+      component: () => lazy(import('./views/product-category-details')),
+      props: true,
+      meta: {
+        menu: 'product-categories',
+      },
+    },
+    {
       path: '*',
       redirect: '/',
-    }
+    },
   ],
 })
 

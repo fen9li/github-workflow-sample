@@ -8,6 +8,8 @@ import RichEditor from './rich-editor'
 import RichTextarea from './rich-textarea'
 import RichRenderer from './rich-renderer'
 import TheIcon from './the-icon'
+import DataBox from './data-box'
+import DataList from './data-list'
 
 
 export default {
@@ -22,5 +24,7 @@ export default {
     Vue.component('rich-textarea', RichTextarea)
     Vue.component('rich-renderer', RichRenderer)
     Vue.component('the-icon', TheIcon)
+    Vue.component('data-box', DataBox)
+    Vue.component('data-list', DataList)
   },
 }
