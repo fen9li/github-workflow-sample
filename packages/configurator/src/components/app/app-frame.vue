@@ -8,6 +8,9 @@ export default {
   computed: {
     ...mapGetters('exchange', ['connecting', 'frameUrl']),
     ...mapGetters('frame', ['showFrame', 'frameId', 'viewport']),
+    ...mapGetters('dashboard', [
+      'getConfig',
+    ]),
   },
   methods: {
     ...mapMutations('exchange', {
@@ -32,6 +35,14 @@ export default {
         data-side="left"
         @mousedown="onControlMousedown"
       />
+
+      <!-- <base-frame
+        :id="frameId"
+        :class="$style.frame"
+      >
+        <widgets-builder :widgets="getConfig()" />
+      </base-frame> -->
+
       <iframe
         v-if="connecting || showFrame"
         :id="frameId"
@@ -54,7 +65,7 @@ export default {
 <style lang="scss" module>
 .root {
   width: 100%;
-  height: calc(100vh - #{var(--header-height)});
+  height: calc(100% - #{var(--header-height)});
   padding: rem(10px);
   margin: auto;
 }
