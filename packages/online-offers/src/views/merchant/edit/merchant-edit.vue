@@ -109,7 +109,7 @@ export default {
           label: 'Terms & Conditions',
           path: 'terms',
           rules: [{ required: true, message: 'Terms is required' }],
-          component: 'rich-textarea',
+          component: 'rich-editor',
         },
         {
           type: 'divider',
