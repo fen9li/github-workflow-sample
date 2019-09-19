@@ -292,6 +292,7 @@ export default {
               v-model="form[field.key].value"
               v-bind="field.componentBindings"
               :disabled="isSelected(field)"
+              :class="$style.columnComponent"
               @input="changeField(field)"
               @checked="checkChanged($event, field)"
               @imageLoaded="imageLoaded($event, field)"
@@ -430,6 +431,10 @@ export default {
       padding-left: rem(24px);
     }
   }
+}
+
+.columnComponent {
+  width: 100%;
 }
 
 .columnFeedHeader {

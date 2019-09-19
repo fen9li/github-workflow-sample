@@ -109,11 +109,7 @@ export default {
           label: 'Terms & Conditions',
           path: 'terms',
           rules: [{ required: true, message: 'Terms is required' }],
-          component: 'el-input',
-          componentBindings: {
-            type: 'textarea',
-            rows: 3,
-          },
+          component: 'rich-textarea',
         },
         {
           type: 'divider',
