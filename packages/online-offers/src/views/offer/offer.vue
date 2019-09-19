@@ -5,7 +5,6 @@ import { formatDate } from '@lib/utils/format-date'
 import EditLayout from '../../components/edit-layout/edit-layout'
 import RemoveModal from './remove-offer-modal'
 import UpdateModal from './update-offer-modal'
-import isPast from '@lib/utils/date-is-past'
 
 export default {
   name: 'Offer',
@@ -102,13 +101,6 @@ export default {
     },
     startDate() {
       return get(this.offer, 'feed_offer.map.start_date')
-    },
-    isRemove() {
-      if (!this.endDate) {
-        return true
-      } else {
-        return !isPast(this.endDate)
-      }
     },
     back() {
       if (this.isEdit) {
@@ -334,7 +326,7 @@ export default {
       :source="offer"
       :fields="fields"
       :presets="feedOffers"
-      :is-remove="isRemove"
+      :is-remove="true"
       @cancel="onEdit(false)"
       @update="modals.update = true"
       @remove="modals.remove = true"
