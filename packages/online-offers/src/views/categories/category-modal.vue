@@ -53,36 +53,17 @@ export default {
 
       request.then(response => {
         this.progress = false
-        const [error,] = response
-        if(error) {
-          if(error.violations) {
-            const violations = Object.keys(error.violations)
-            violations.forEach(violation => {
-              setTimeout(() => {
-                this.$notify({
-                  type: 'error',
-                  title: `Unable to ${this.item ? 'update' : 'create'} category`,
-                  message: `${violation}: ${error.violations[violation][0]}`,
-                })
-              }, 50)
-            })
-          } else {
-            this.$notify({
-              type: 'error',
-              title: `Unable to ${this.item ? 'update' : 'create'} category`,
-              message: error.message,
-            })
+        this.$notifier({
+          response,
+          errorTitle: `Unable to ${this.item ? 'update' : 'create'} category`,
+          successMsg: `Category successfully ${this.item ? 'updated' : 'created'}`
+        }).then(success => {
+          if(success) {
+            this.processor.getData()
+              .then(data => this.setCategories(data))
+            this.$emit('close-modal')
           }
-        } else {
-          this.$notify({
-            type: 'success',
-            title: 'Success',
-            message: `Category successfully ${this.item ? 'updated' : 'created'}`,
-          })
-          this.processor.getData()
-            .then(data => this.setCategories(data))
-          this.$emit('close-modal')
-        }
+        })
       })
     },
   },

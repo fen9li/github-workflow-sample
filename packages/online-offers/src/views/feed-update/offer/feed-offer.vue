@@ -72,34 +72,11 @@ export default {
         .then(this.fetchFeedOffer)
         .then(response => {
           this.progress = false
-
-          const [error,] = response
-          if(error) {
-            if(error.violations) {
-              const violations = Object.keys(error.violations)
-              violations.forEach(violation => {
-                setTimeout(() => {
-                  this.$notify({
-                    type: 'error',
-                    title: `Unable to activate feed`,
-                    message: `${violation}: ${error.violations[violation][0]}`,
-                  })
-                }, 50)
-              })
-            } else {
-              this.$notify({
-                type: 'error',
-                title: `Unable to activate feed`,
-                message: error.message,
-              })
-            }
-          } else {
-            this.$notify({
-              type: 'success',
-              title: 'Success',
-              message: `Successfully activated`,
-            })
-          }
+          this.$notifier({
+            response,
+            errorTitle: `Unable to activate feed`,
+            successMsg: `Successfully activated`
+          })
         })
     },
     formatDate(value, format) {

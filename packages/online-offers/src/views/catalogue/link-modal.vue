@@ -76,37 +76,16 @@ export default {
       })
         .then(response => {
           this.progress = false
-          const [error,] = response
-          if(error) {
-            if(error.violations) {
-              const violations = Object.keys(error.violations)
-              violations.forEach(violation => {
-                setTimeout(() => {
-                  this.$notify({
-                    type: 'error',
-                    title: `Unable to ${link ? 'link' : 'unlink'} merchant`,
-                    message: `${violation}: ${error.violations[violation][0]}`,
-                  })
-                }, 50)
-              })
-            } else {
-              this.$notify({
-                type: 'error',
-                title: `Unable to ${link ? 'link' : 'unlink'} merchant`,
-                message: error.message,
-              })
+          this.$notifier({
+            response,
+            errorTitle: `Unable to ${link ? 'link' : 'unlink'} merchant`,
+            successMsg: `${merchantsCount} successfully ${link ? 'linked' : 'unlinked' }`
+          }).then(success => {
+            if(success) {
+              this.showModal = false
+              this.merchantsProcessor.getData()
             }
-          } else {
-            this.$notify({
-              type: 'success',
-              title: 'Success',
-              message: `${merchantsCount} successfully ${
-                link ? 'linked' : 'unlinked'
-              }`,
-            })
-            this.showModal = false
-            this.merchantsProcessor.getData()
-          }
+          })
         })
     },
   },

@@ -293,72 +293,36 @@ export default {
         payload,
       }).then(response => {
         this.progress = false
-        const [error, success] = response
-        if(error) {
-          if(error.violations) {
-            const violations = Object.keys(error.violations)
-            violations.forEach(violation => {
-              setTimeout(() => {
-                this.$notify({
-                  type: 'error',
-                  title: `Unable to update merchant details`,
-                  message: `${violation}: ${error.violations[violation][0]}`,
-                })
-              }, 50)
-            })
-          } else {
-            this.$notify({
-              type: 'error',
-              title: `Unable to update merchant details`,
-              message: error.message,
-            })
+        const [,successful] = response
+        this.$notifier({
+          response,
+          errorTitle: `Unable to update merchant details`,
+          successMsg: `Merchant details updated successfully`
+        }).then(success => {
+          if(success) {
+            this.modals.update = false
+            this.$emit('cancel')
+            this.$emit('update', successful)
           }
-        } else {
-          this.modals.update = false
-          this.$emit('cancel')
-          this.$emit('update', success)
-          this.$notify({
-            type: 'success',
-            title: 'Success',
-            message: `Merchant details updated successfully`,
-          })
-        }
+        })
       })
     },
     async submitDelete(notes) {
       this.modals.remove = false
       // TODO: send notes
-      const [error] = await this.deleteGlobalMerchant({
+      const response = await this.deleteGlobalMerchant({
         merchantId: this.merchant.id,
       })
 
-      if(error) {
-        if(error.violations) {
-          const violations = Object.keys(error.violations)
-          violations.forEach(violation => {
-            setTimeout(() => {
-              this.$notify({
-                type: 'error',
-                title: `Unable to delete global merchant`,
-                message: `${violation}: ${error.violations[violation][0]}`,
-              })
-            }, 50)
-          })
-        } else {
-          this.$notify({
-            type: 'error',
-            title: `Unable to delete global merchant`,
-            message: error.message,
-          })
+      this.$notifier({
+        response,
+        errorTitle: `Unable to delete global merchant`,
+        successMsg: `Global merchant deleted successfully`
+      }).then(success => {
+        if(success) {
+          this.$router.push('/merchants')
         }
-      } else {
-        this.$router.push('/merchants')
-        this.$notify({
-          type: 'info',
-          title: 'Deleted',
-          message: 'Global merchant deleted successfully.',
-        })
-      }
+      })
     },
     updateFeedMerchantsAck() {
       this.feeds.forEach(({ id }) =>
