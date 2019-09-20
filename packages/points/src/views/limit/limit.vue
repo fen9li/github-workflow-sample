@@ -2,8 +2,8 @@
 import capitalize from 'lodash/capitalize'
 import { mapActions, mapState } from 'vuex'
 import { formatDate } from '@lib/utils/format-date'
-import DataBox from '~/components/data-box'
-import DataList from '~/components/data-list'
+import DataBox from '@lib/components/data-box'
+import DataList from '@lib/components/data-list'
 
 import CreateLimitModal from '../limits/modals/create-limit-modal'
 import DeleteLimitModal from './modals/delete-limit-modal'

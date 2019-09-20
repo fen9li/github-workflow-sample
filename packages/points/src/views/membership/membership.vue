@@ -2,11 +2,11 @@
 import { mapActions, mapState } from 'vuex'
 import { formatDate } from '@lib/utils/format-date'
 import get from 'lodash/get'
-import DataBox from '~/components/data-box'
-import DataList from '~/components/data-list'
 import EditModal from './modals/membership-modal'
 import DeleteModal from './modals/delete-modal'
 import ForbidDeleteModal from './modals/forbid-delete-modal'
+import DataBox from '@lib/components/data-box'
+import DataList from '@lib/components/data-list'
 
 export default {
   name: "MembershipPoints",

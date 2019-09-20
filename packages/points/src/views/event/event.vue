@@ -1,12 +1,12 @@
 <script>
 import { formatDate } from '@lib/utils/format-date'
-import DataBox from '~/components/data-box'
-import DataList from '~/components/data-list'
 import EditModal from './modals/event-modal'
 import DeleteModal from './modals/delete-modal'
 import ParamModal from './modals/param-modal'
 import DeleteParamModal from './modals/delete-param-modal'
 import { mapActions, mapState } from 'vuex'
+import DataBox from '@lib/components/data-box'
+import DataList from '@lib/components/data-list'
 
 export default {
   name: 'EventPoints',

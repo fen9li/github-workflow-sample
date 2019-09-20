@@ -1,10 +1,10 @@
 <script>
 import { formatDate } from '@lib/utils/format-date'
-import DataBox from '~/components/data-box'
-import DataList from '~/components/data-list'
 import get from 'lodash/get'
 import capitalize from 'lodash/capitalize'
 import { mapActions, mapGetters } from 'vuex'
+import DataBox from '@lib/components/data-box'
+import DataList from '@lib/components/data-list'
 
 import RuleEditModal from './modals/rule-edit-modal'
 import RuleRemoveModal from './modals/rule-remove-modal'

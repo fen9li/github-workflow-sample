@@ -1,11 +1,11 @@
 <script>
-import DataBox from '~/components/data-box'
-import DataList from '~/components/data-list'
 import { formatDate } from '@lib/utils/format-date'
 import capitalize from 'lodash/capitalize'
 import detailsMock from '@tests/__fixtures__/event-occurrence'
 import eventOccurrenceLog from './event-occurrence-log'
 import { mapActions } from 'vuex'
+import DataBox from '@lib/components/data-box'
+import DataList from '@lib/components/data-list'
 
 const allStatuses = {
   approved: {

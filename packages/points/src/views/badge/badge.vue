@@ -1,9 +1,9 @@
 <script>
 import { formatDate } from '@lib/utils/format-date'
-import DataBox from '~/components/data-box'
-import DataList from '~/components/data-list'
 import get from 'lodash/get'
 import { mapActions } from 'vuex'
+import DataBox from '@lib/components/data-box'
+import DataList from '@lib/components/data-list'
 
 import BadgeEditModal from './modals/badge-edit-modal'
 import BadgeArchiveModal from './modals/badge-archive-modal'
