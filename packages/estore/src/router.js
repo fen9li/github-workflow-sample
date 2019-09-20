@@ -66,14 +66,6 @@ const router = new Router({
       },
     },
     {
-      path: '/product-categories',
-      name: 'product-categories',
-      component: () => lazy(import('./views/product-categories')),
-      meta: {
-        menu: 'product-categories',
-      }
-    },
-    {
       path: '/contracts/:id',
       name: 'contract-details',
       component: () => lazy(import('./views/contract')),
@@ -81,6 +73,14 @@ const router = new Router({
       meta: {
         menu: 'contracts',
       },
+    },
+    {
+      path: '/product-categories',
+      name: 'product-categories',
+      component: () => lazy(import('./views/product-categories')),
+      meta: {
+        menu: 'product-categories',
+      }
     },
     {
       path: '/product-categories/:id',
