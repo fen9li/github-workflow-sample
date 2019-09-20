@@ -50,6 +50,14 @@ const router = new Router({
       },
     },
     {
+      path: '/suppliers/:id/:tab?',
+      name: 'supplier-details',
+      component: () => lazy(import('./views/supplier')),
+      meta: {
+        menu: 'suppliers',
+      },
+    },
+    {
       path: '/supplier-products',
       name: 'supplier-products',
       component: () => lazy(import('./views/supplier-products')),
