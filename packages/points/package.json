@@ -1,14 +1,14 @@
 {
   "name": "@loyaltycorp/manage-points",
   "private": true,
-  "version": "0.1.3",
+  "version": "0.1.4",
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:ci": "cross-env ANALYZE=true vue-cli-service build"
   },
   "dependencies": {
-    "@loyaltycorp/manage-lib": "0.9.0",
+    "@loyaltycorp/manage-lib": "0.10.0",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",
     "vue-the-mask": "^0.11.1",

@@ -1,6 +1,6 @@
 {
   "name": "@loyaltycorp/configurator",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Configurator",
   "author": "Loyalty Corp",
   "private": true,
@@ -13,7 +13,7 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
-    "@loyaltycorp/manage-lib": "0.9.0",
+    "@loyaltycorp/manage-lib": "0.10.0",
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "vue": "^2.6.10",

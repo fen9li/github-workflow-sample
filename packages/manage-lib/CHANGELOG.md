@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/manage-lib@0.9.0...@loyaltycorp/manage-lib@0.10.0) (2019-09-20)
+
+### Bug Fixes
+
+- **configurator:** twice config sending for items ([3a5e7f3](https://github.com/loyaltycorp/manage-v2-frontend/commit/3a5e7f3))
+
+### Features
+
+- **configurator:** add widget text length restrictions ([0ec0a2d](https://github.com/loyaltycorp/manage-v2-frontend/commit/0ec0a2d))
+- **estore:** add mocked category details view ([4e571a0](https://github.com/loyaltycorp/manage-v2-frontend/commit/4e571a0))
+- **estore:** init project ([083ae41](https://github.com/loyaltycorp/manage-v2-frontend/commit/083ae41))
+- **lib:** add modified global notifier ([8223b9a](https://github.com/loyaltycorp/manage-v2-frontend/commit/8223b9a))
+- **manage-lib:** update app-layout ([ef88057](https://github.com/loyaltycorp/manage-v2-frontend/commit/ef88057))
+- **online-offers:** remove dataTransform in api proccessor ([e14cd57](https://github.com/loyaltycorp/manage-v2-frontend/commit/e14cd57))
+- **rich-editor:** add quill text editor as rich-editor base component ([17359b8](https://github.com/loyaltycorp/manage-v2-frontend/commit/17359b8))
+
 # [0.9.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/manage-lib@0.8.0...@loyaltycorp/manage-lib@0.9.0) (2019-09-16)
 
 ### Features

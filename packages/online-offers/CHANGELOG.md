@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/manage-online-offers@0.8.0...@loyaltycorp/manage-online-offers@0.9.0) (2019-09-20)
+
+### Bug Fixes
+
+- **feed merchant:** remove tracking, commissions ([ea5f882](https://github.com/loyaltycorp/manage-v2-frontend/commit/ea5f882))
+- **feed-merchant:** rakuten tracking url field ([f248528](https://github.com/loyaltycorp/manage-v2-frontend/commit/f248528))
+- **feed-offers:** can activate fix ([8836f3a](https://github.com/loyaltycorp/manage-v2-frontend/commit/8836f3a))
+- **feed-update:** offers merchants names ([b1db165](https://github.com/loyaltycorp/manage-v2-frontend/commit/b1db165))
+- **merchant:** fix word ([b539e5c](https://github.com/loyaltycorp/manage-v2-frontend/commit/b539e5c))
+- **merchant-details:** categories ([e4c8714](https://github.com/loyaltycorp/manage-v2-frontend/commit/e4c8714))
+- **merchant-edit:** fix commission rates displaying ([835bc5c](https://github.com/loyaltycorp/manage-v2-frontend/commit/835bc5c))
+- **offer-deletion:** let admin to delete offer from details ([891b6c7](https://github.com/loyaltycorp/manage-v2-frontend/commit/891b6c7))
+
+### Features
+
+- **feed merchants:** table fields order ([6e485bd](https://github.com/loyaltycorp/manage-v2-frontend/commit/6e485bd))
+- **merchant-edit:** include rich editor on global merchant detail page ([e068d99](https://github.com/loyaltycorp/manage-v2-frontend/commit/e068d99))
+- **online-offers:** add api error handlers ([d15053a](https://github.com/loyaltycorp/manage-v2-frontend/commit/d15053a))
+- **online-offers:** fix table per page listings ([ddbd8c9](https://github.com/loyaltycorp/manage-v2-frontend/commit/ddbd8c9))
+- **online-offers:** remove dataTransform in api proccessor ([e14cd57](https://github.com/loyaltycorp/manage-v2-frontend/commit/e14cd57))
+- **online-offers:** remove merchant ext ID ([ef169c7](https://github.com/loyaltycorp/manage-v2-frontend/commit/ef169c7))
+- **online-offers:** use new notifier on api resp ([0a6a459](https://github.com/loyaltycorp/manage-v2-frontend/commit/0a6a459))
+- **rich-editor:** add quill text editor as rich-editor base component ([17359b8](https://github.com/loyaltycorp/manage-v2-frontend/commit/17359b8))
+
 # [0.8.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/manage-online-offers@0.7.2...@loyaltycorp/manage-online-offers@0.8.0) (2019-09-16)
 
 ### Bug Fixes

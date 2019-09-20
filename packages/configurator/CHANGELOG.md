@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/configurator@1.4.0...@loyaltycorp/configurator@1.5.0) (2019-09-20)
+
+### Bug Fixes
+
+- **configurator:** prevent reset text in hero ([69a2abf](https://github.com/loyaltycorp/manage-v2-frontend/commit/69a2abf))
+- **configurator:** twice config sending for items ([3a5e7f3](https://github.com/loyaltycorp/manage-v2-frontend/commit/3a5e7f3))
+
+### Features
+
+- **configurator:** add widget text length restrictions ([0ec0a2d](https://github.com/loyaltycorp/manage-v2-frontend/commit/0ec0a2d))
+- **configurator:** connect to auth0 ([e5e5024](https://github.com/loyaltycorp/manage-v2-frontend/commit/e5e5024))
+- **configurator:** publish feature ([8f96223](https://github.com/loyaltycorp/manage-v2-frontend/commit/8f96223))
+- **configurator:** work of separate frame ([a087ea9](https://github.com/loyaltycorp/manage-v2-frontend/commit/a087ea9))
+
 # [1.4.0](https://github.com/loyaltycorp/manage-v2-frontend/compare/@loyaltycorp/configurator@1.3.0...@loyaltycorp/configurator@1.4.0) (2019-09-16)
 
 ### Features
