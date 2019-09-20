@@ -73,7 +73,7 @@ export default {
     },
     prefillForm() {
       const { form } = this
-      const { map: { trackingUrl, commission } } = this.details
+      const { map: { website: trackingUrl, commission } } = this.details
 
       form.baseline_rate = commission.base
       form.baseline_url = trackingUrl
