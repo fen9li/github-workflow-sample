@@ -21,8 +21,8 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'Supplier',
-    label: 'supplier',
+    attribute: 'supplierName',
+    label: 'Supplier',
     type: 'string',
     icon: 'el-icon-document',
   },
@@ -69,8 +69,8 @@ const TABLE_COLUMNS = [
     width: 130
   },
   {
-    name: 'Supplier',
-    label: 'supplier',
+    name: 'supplierName',
+    label: 'Supplier',
     icon: 'el-icon-document',
     width: 130
   },

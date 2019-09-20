@@ -2,6 +2,7 @@
 import { mapActions } from 'vuex'
 import { formatDate } from '@lib/utils/format-date'
 import DeleteCategoryModal from './modals/delete-category.modal'
+import HeaderDropdown from '~/components/header-dropdown'
 
 import CategoryMock from './category.mock.js'
 
@@ -9,6 +10,7 @@ export default {
   name: 'ProductCategoryDetails',
   components: {
     DeleteCategoryModal,
+    HeaderDropdown,
   },
   props: {
     id: {
@@ -24,6 +26,16 @@ export default {
         delete: false,
       },
       backRoute: { name: 'product-categories' },
+      dropdownItems: [
+        {
+          label: 'Edit Default Product Category Supplier',
+          action: this.onEditClick,
+        },
+        {
+          label: 'Delete Default Product Category',
+          action: () => { this.modals.delete = true },
+        },
+      ],
     }
   },
   async created() {
@@ -57,22 +69,10 @@ export default {
     :back="backRoute"
     :loading="loading"
   >
-    <el-dropdown
+    <header-dropdown
       slot="header"
-      trigger="click"
-    >
-      <div :class="$style.drop">
-        <i class="el-icon-more" />
-      </div>
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item @click.native="onEditClick">
-          Edit Default Product Category
-        </el-dropdown-item>
-        <el-dropdown-item @click.native="modals.delete = true">
-          Delete Default Product Category
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
+      :items="dropdownItems"
+    />
 
     <data-box header="Category Details">
       <data-list>
@@ -129,27 +129,6 @@ export default {
 </template>
 
 <style lang="scss" module>
-.drop {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.4rem;
-  font-size: 1.4rem;
-  color: var(--color-primary-lightest);
-  cursor: pointer;
-  background-color: transparent;
-  border-radius: 3px;
-  transition: background-color 0.2s ease-in-out;
-
-  &:hover {
-    background-color: var(--color-primary-transparent);
-  }
-
-  i {
-    transform: rotate(90deg);
-  }
-}
-
 .noBold {
   font-weight: normal;
 }

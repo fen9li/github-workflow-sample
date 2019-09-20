@@ -2,6 +2,8 @@
 // import { mapActions, mapState } from 'vuex'
 import capitalize from 'lodash/capitalize'
 
+import HeaderDropdown from '~/components/header-dropdown'
+
 import SupplierInformation from './tabs/supplier-information'
 import SupplierContracts from './tabs/supplier-contracts'
 import SupplierCatalogue from './tabs/supplier-catalogue'
@@ -18,6 +20,7 @@ export default {
     title: 'Supplier',
   },
   components: {
+    HeaderDropdown,
     SupplierInformation,
     SupplierContracts,
     SupplierCatalogue,
@@ -50,24 +53,21 @@ export default {
           name: 'catalogue',
         },
       ],
-      commands: [
+      dropdownItems: [
         {
-          name: 'editSupplier',
           label: 'Edit Supplier',
-        },
-        {
-          name: 'updateStatus',
+          action: () => this.onMenuSelect('editSupplier'),
+        }, {
           label: 'Update Status',
-        },
-        {
-          name: 'addProduct',
+          action: () => this.onMenuSelect('updateStatus'),
+        }, {
           label: 'Add Supplier Product',
-        },
-        {
-          name: 'deleteSupplier',
+          action: () => this.onMenuSelect('addProduct'),
+        }, {
           label: 'Delete Supplier',
+          action: () => this.onMenuSelect('deleteSupplier'),
         },
-      ]
+      ],
     }
   },
   computed: {
@@ -116,30 +116,10 @@ export default {
     :back="{ name: 'suppliers' }"
     :loading="loading"
   >
-    <el-dropdown
+    <header-dropdown
       slot="header"
-      trigger="click"
-      @command="onMenuSelect"
-    >
-      <el-button
-        :class="$style.button"
-        size="small"
-      >
-        <i
-          class="el-icon-more"
-          :class="$style.buttonIcon"
-        />
-      </el-button>
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item
-          v-for="(command, index) in commands"
-          :key="index"
-          :command="command.name"
-        >
-          {{ command.label }}
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
+      :items="dropdownItems"
+    />
     <el-tabs
       :class="$style.tabs"
       :value="activeTab"
