@@ -15,7 +15,7 @@ export default {
   methods: {
     onRowClick(row) {
       this.$router.push({
-        name: 'product',
+        name: 'provider-product',
         params: {
           id: row.id,
         },
