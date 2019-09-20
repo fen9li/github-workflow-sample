@@ -6,10 +6,10 @@ const TABLE_FILTERS = [
     attribute: 'created_at',
     label: 'Date Created',
     type: 'date',
-    icon: 'el-icon-date',
+    icon: 'el-icon-document',
   },
   {
-    attribute: 'providerId',
+    attribute: 'ProviderId',
     label: 'Provider ID',
     type: 'string',
     icon: 'el-icon-document',
@@ -33,12 +33,6 @@ const TABLE_FILTERS = [
     icon: 'el-icon-document',
   },
   {
-    attribute: 'supplierName',
-    label: 'Supplier Name',
-    type: 'string',
-    icon: 'el-icon-document',
-  },
-  {
     attribute: 'sku',
     label: 'SKU',
     type: 'string',
@@ -46,19 +40,19 @@ const TABLE_FILTERS = [
   },
   {
     attribute: 'brand',
-    label: 'SKU',
+    label: 'Brand',
     type: 'string',
     icon: 'el-icon-document',
   },
   {
-    attribute: 'productName',
+    attribute: 'name',
     label: 'Product Name',
     type: 'string',
     icon: 'el-icon-document',
   },
   {
     attribute: 'updated_at',
-    label: 'Last updated',
+    label: 'Last update',
     icon: 'el-icon-date',
     type: 'date',
   },
@@ -84,8 +78,9 @@ const TABLE_COLUMNS = [
   {
     name: 'created_at',
     label: 'Date Created',
-    icon: 'el-icon-date',
-    width: 150
+    format: 'dateTime',
+    icon: 'el-icon-document',
+    width: 100,
   },
   {
     name: 'providerId',
@@ -96,49 +91,42 @@ const TABLE_COLUMNS = [
     name: 'providerName',
     label: 'Provider Name',
     icon: 'el-icon-document',
-    width: 130
   },
   {
     name: 'contractId',
     label: 'Contract ID',
     icon: 'el-icon-document',
-    width: 130
   },
   {
     name: 'supplierProductId',
     label: 'Supplier ID',
     icon: 'el-icon-document',
-    width: 100
   },
   {
     name: 'supplierName',
     label: 'Supplier Name',
     icon: 'el-icon-document',
-    width: 130
   },
   {
     name: 'sku',
     label: 'SKU',
     icon: 'el-icon-document',
-    width: 100
   },
   {
     name: 'brand',
-    label: 'Brand',
     icon: 'el-icon-document',
-    width: 100
   },
   {
     name: 'name',
     label: 'Product Name',
     icon: 'el-icon-document',
-    width: 130
   },
   {
     name: 'updated_at',
-    label: 'Last updated',
-    icon: 'el-icon-date',
-    width: 160
+    label: 'Last Updated',
+    format: 'dateTime',
+    icon: 'el-icon-document',
+    width: 100,
   },
   {
     name: 'availability.enabled',
@@ -163,12 +151,12 @@ const TABLE_COLUMNS = [
 ]
 
 export default component => ({
-  // processor: new ApiProcessor({ component, path: 'provider-products' }),
+  // processor: new ApiProcessor({ component, path: 'providers' }),
   processor: new MockProcessor({
     component,
     mockFrom: 'provider-products',
   }),
   filters: TABLE_FILTERS,
   columns: TABLE_COLUMNS,
-  tableName: 'provider-catalogue',
+  tableName: 'provider-products'
 })
