@@ -1,8 +1,10 @@
 <script>
 import { mapActions } from 'vuex'
+import get from 'lodash/get'
 import formatDollar from '@lib/utils/format-dollar'
 import capitalize from 'lodash/capitalize'
 import FeedMerchantDialog from '../feed-merchant-dialog-container.vue'
+import formatCommission from '@lib/utils/format-commission'
 
 export default {
   name: 'FeedDetails',
@@ -41,7 +43,11 @@ export default {
     },
     canAttach() {
       return this.details.status === 'active'
-    }
+    },
+    commission() {
+      const commission = get(this.details, 'map.commission', {})
+      return formatCommission(commission)
+    },
   },
   async created() {
     await this.getDetails()
@@ -53,6 +59,7 @@ export default {
       'updateFeedMerchant',
     ]),
     capitalize,
+    formatCommission,
     async getDetails() {
       try {
         const [, response] = await this.getFeedMerchant({ merchantId: this.id })
@@ -144,19 +151,25 @@ export default {
           <dt>Commission Aggregator</dt>
           <dd>{{ details.feed }}</dd>
 
-          <dt>Summary</dt>
-          <dd>{{ details.map.summary || '—' }}</dd>
-
           <template v-if="!rakuten">
+            <dt>Commission Type</dt>
+            <dd>{{ commission.type || '–' }}</dd>
             <dt>Commission Rate</dt>
             <dd>
-              {{
-                details.map.commission
-                  ? formatDollar(details.map.commission.base)
-                  : '—'
-              }}
+              <span :class="$style.rate">
+                {{ commission.base || '–' }}
+              </span>
+              <span :class="$style.rate">
+                {{ commission.min || '–' }}
+              </span>
+              <span :class="$style.rate">
+                {{ commission.max || '–' }}
+              </span>
             </dd>
           </template>
+
+          <dt>Summary</dt>
+          <dd>{{ details.map.summary || '—' }}</dd>
 
           <dt>Merchant Website</dt>
           <dd>{{ details.map.website || '—' }}</dd>
@@ -326,5 +339,17 @@ export default {
   display: flex;
   justify-content: flex-end;
   width: 100%;
+}
+
+.rate {
+  padding-right: 0.5rem;
+
+  @media screen and (max-width: 1280px) {
+    display: block;
+  }
+
+  @media screen and (min-width: 1280px) {
+    padding-right: 2.5rem;
+  }
 }
 </style>
