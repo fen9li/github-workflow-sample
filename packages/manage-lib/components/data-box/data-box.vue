@@ -1,5 +1,5 @@
 <script>
-import capitalize from 'lodash/capitalize'
+import get from 'lodash/get'
 
 export default {
   name: 'DataBox',
@@ -9,17 +9,43 @@ export default {
       default: '',
     },
     status: {
-      type: String,
-      default: '',
+      type: [String, Object],
+      default: () => ({
+        icon: 'close',
+        label: 'Inactive',
+        color: '#e21d1f'
+      }),
+      validator: v => {
+        if (typeof v === 'string') {
+          return ['active', 'inactive'].includes(v)
+        }
+        return true
+      },
     },
-    statusObj: {
-      type: Object,
-      default: () => {}
+  },
+  data() {
+    return {
+      defaultStatuses: {
+        active: {
+          icon: 'check',
+          label: 'Active',
+          color: '#36d544'
+        },
+        inactive: {
+          icon: 'close',
+          label: 'Inactive',
+          color: '#e21d1f'
+        },
+      },
     }
   },
   computed: {
-    capitalizedStatus() {
-      return capitalize(this.status)
+    statusObj() {
+      if (typeof this.status === 'string') {
+        return get(this.defaultStatuses, this.status, {})
+      } else {
+        return this.status
+      }
     },
   },
 }
@@ -36,25 +62,15 @@ export default {
         {{ header }}
 
         <div
-          v-if="capitalizedStatus"
-          :class="[$style.status, $style[`status${capitalizedStatus}`]]"
-        >
-          <el-icon
-            :name="status === 'active' ? 'check' : 'close'"
-            :class="$style.statusIcon"
-          />
-          <span>{{ capitalizedStatus }}</span>
-        </div>
-        <div
-          v-else-if="statusObj"
           :class="$style.status"
           :style="{color: statusObj.color}"
         >
           <el-icon
+            v-if="statusObj.icon"
             :name="statusObj.icon"
             :class="$style.statusIcon"
           />
-          <span>{{ statusObj.label }}</span>
+          <span v-if="statusObj.label">{{ statusObj.label }}</span>
         </div>
       </div>
       <slot name="boxHeader" />
@@ -82,14 +98,6 @@ export default {
   padding: 0;
   margin-left: rem(85px);
   font-size: 1rem;
-}
-
-.statusActive {
-  color: #36d544;
-}
-
-.statusInactive {
-  color: #e21d1f;
 }
 
 .statusIcon {

@@ -93,7 +93,7 @@ export default {
     </el-button>
     <data-box
       header="Event Occurrence Details"
-      :status-obj="statusObj"
+      :status="statusObj"
     >
       <data-list v-if="!loading">
         <dt>Date Created</dt>
