@@ -32,7 +32,7 @@ export default {
 </script>
 
 <template>
-  <app-layout>
+  <app-layout :class="$style.root">
     <router-view
       slot="sidebar"
       :key="$route.path"
@@ -58,6 +58,10 @@ export default {
   display: flex;
   width: 100vw;
   height: 100vh;
+
+  :global(.el-header) {
+    display: none;
+  }
 }
 
 .sidebar {
