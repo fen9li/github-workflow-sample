@@ -42,6 +42,47 @@ const router = new Router({
       },
     },
     {
+      path: '/provider-product/:id',
+      name: 'provider-product',
+      component: () => lazy(import('./views/provider-product')),
+      props: true,
+    },
+    {
+      path: '/provider-product/:id/edit',
+      name: 'provider-product-edit',
+      component: () => lazy(import('./views/provider-product/edit-provider-product.vue')),
+      redirect: {
+        name: 'provider-product-edit-product',
+      },
+      children: [
+        {
+          path: 'product',
+          name: 'provider-product-edit-product',
+          component: () => lazy(import('./views/provider-product/edit/product.vue')),
+          props: true,
+        },
+        {
+          path: 'price',
+          name: 'provider-product-edit-price',
+          component: () => lazy(import('./views/provider-product/edit/price.vue')),
+          props: true,
+        },
+        {
+          path: 'dimensions',
+          name: 'provider-product-edit-dimensions',
+          component: () => lazy(import('./views/provider-product/edit/dimensions.vue')),
+          props: true,
+        },
+        {
+          path: 'shipping',
+          name: 'provider-product-edit-shipping',
+          component: () => lazy(import('./views/provider-product/edit/shipping.vue')),
+          props: true,
+        },
+      ],
+
+    },
+    {
       path: '/suppliers',
       name: 'suppliers',
       component: () => lazy(import('./views/suppliers')),
