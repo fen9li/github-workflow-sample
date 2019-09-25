@@ -66,7 +66,7 @@
     "jest-canvas-mock": "^2.0.0-beta.1",
     "jest-junit": "^6.3.0",
     "jest-mock-axios": "^2.4.0",
-    "lerna": "^3.13.0",
+    "lerna": "^3.16.4",
     "lint-staged": "^8.1.5",
     "markdownlint-cli": "0.15.0",
     "merge-deep": "^3.0.2",
@@ -112,6 +112,7 @@
     "access": "restricted"
   },
   "dependencies": {
+    "dotenv": "^8.1.0",
     "md5": "^2.2.1"
   }
 }

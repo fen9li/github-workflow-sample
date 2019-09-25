@@ -1,0 +1,29 @@
+name: JS SDK for Eoneo V2 CI
+
+on:
+  push:
+    branches:
+    - develop
+    - feat/dev-27
+
+jobs:
+  build:
+    name: release new package and upload to aws s3 bucket - dev environment
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v1
+    - name: build
+      uses: ./.github/build
+  #    env:
+  #      DEV_CI_RUNTIME_TOKEN: ${{ secrets.DEV_CI_TOKEN }}
+    - name: upload to s3 bucket
+      uses: ./.github/s3sync
+      env:
+        SOURCE_DIR: '/github/workspace/packages'
+        AWS_S3_BUCKET: 'dev.manage.oo.eonx.com'
+        AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_KEY_SECRET }}
+        AWS_REGION: ap-southeast-2
+        CDN_DISTRIBUTION_ID: E2SADXJ83C0NXF
