@@ -21,7 +21,7 @@ jobs:
     - name: upload to s3 bucket
       uses: ./.github/s3sync
       env:
-        SOURCE_DIR: '/github/workspace/packages'
+        SOURCE_DIR: '/github/workspace/packages/online-offers/dist'
         AWS_S3_BUCKET: 'dev.manage.oo.eonx.com'
         AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_KEY_SECRET }}
